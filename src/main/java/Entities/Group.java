@@ -7,4 +7,11 @@ public class Group {
     private PurchaseBalance purchaseBalance;
     private static String[] groups;
 
+    public Group(String[] users, PurchaseList purchaseList, PlanningList planningList, String[] groups){
+        this.users = users;
+        this.purchaseList = purchaseList;
+        this.planningList = planningList;
+        this.groups = groups;
+    }
+
 }

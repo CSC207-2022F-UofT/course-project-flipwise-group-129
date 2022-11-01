@@ -1,6 +1,7 @@
 package Entities;
+import java.util.ArrayList;
+import java.util.List;
 
 abstract public class ItemList {
-
-    private String[] items;
+    ArrayList<String> items;
 }
