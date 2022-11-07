@@ -9,4 +9,8 @@ public class PurchaseBalance {
     public PurchaseBalance(){
         this.allDebts = new ArrayList<>();
     }
+
+    public ArrayList<Debt> getAllDebts() {
+        return allDebts;
+    }
 }

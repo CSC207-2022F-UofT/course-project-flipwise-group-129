@@ -10,4 +10,16 @@ public class Item {
         this.buyer = buyer;
         this.price = price;
     }
+
+    public String getItemName(){
+        return itemName;
+    }
+
+    public String getBuyer(){
+        return buyer;
+    }
+
+    public Float getPrice(){
+        return price;
+    }
 }

@@ -12,4 +12,16 @@ public class User {
         this.password = password;
         this.groups = groups;
     }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public String getUsername(){
+        return username;
+    }
+
+    public ArrayList<Group> getGroups() {
+        return groups;
+    }
 }
