@@ -24,12 +24,12 @@ public class UserLoginView extends JFrame{
             loginButton = new JButton("Continue");
 
             // setting positions
-            t1.setBounds(70, 40, 200, 40);
-            t2.setBounds(70, 100, 100, 20);
-            username.setBounds(70, 120, 200, 30);
-            t3.setBounds(70, 170, 100, 20);
-            password.setBounds(70, 190, 200, 30);
-            loginButton.setBounds(170, 240, 100, 30);
+            t1.setBounds(70, 40, 300, 40);
+            t2.setBounds(70, 100, 200, 20);
+            username.setBounds(70, 120, 300, 30);
+            t3.setBounds(70, 170, 200, 20);
+            password.setBounds(70, 190, 300, 30);
+            loginButton.setBounds(170, 240, 200, 30);
 
             // adding
             add(t1);
@@ -42,7 +42,7 @@ public class UserLoginView extends JFrame{
             // JFrame Setup
             setLayout(null);
             setVisible(true);
-            setSize(400, 400);
+            setSize(450, 450);
             setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
             loginButton.addActionListener(new ActionListener() {
@@ -54,9 +54,9 @@ public class UserLoginView extends JFrame{
 
         }
 
-//        public static void main(String[] args) {
-//            UserLoginView login = new UserLoginView();
-//        }
+        public static void main(String[] args) {
+            UserLoginView login = new UserLoginView();
+        }
     }
 
 
