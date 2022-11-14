@@ -13,6 +13,7 @@ public class UserRegister {
 
     public boolean checkUsernameAvaliable(String username) {
         return groups.contains();
+        // how to find a the usernames that exist.
     }
 
     public boolean checkPasswordsMatch(String password1, String password2) {
