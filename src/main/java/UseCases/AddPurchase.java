@@ -4,9 +4,11 @@ import DataStructures.PurchaseInfo;
 import DataStructures.UpdatedLists;
 import Entities.Group;
 import Entities.Item;
+import Entities.PurchaseList;
 import Entities.User;
 import Presenters.AddPurchasePresenter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AddPurchase {
@@ -26,9 +28,15 @@ public class AddPurchase {
         this.purchaseGroup = purchaseInfo.getPurchaseGroup();
 
         // Dont i need the group and shit to do this lol?
-        this.purchaseGroup.removeFromPlanningList(this.purchasedItem);
-        this.purchaseGroup.addToPurchasedList(this.purchasedItem, price, participatingUsers);
+        this.purchaseGroup.removeFromPlanningList(this.purchasedItem); // Sophie doing this
+        this.purchaseGroup.addToPurchaseList(this.purchasedItem, price, participatingUsers);
 
-        newLists = UpdatedLists(this.purchaseGroup.getPlanningList(), this.purchaseGroup.getPurchasedList());
+        PurchaseList purchaseList = this.purchaseGroup.getPurchaseList();
+        purchasedItem.setPrice(price);
+        List<Item> tempList = purchaseList.getItems();
+        tempList.add(purchasedItem);
+        purchaseList.setItems(tempList);
+
+        newLists = new UpdatedLists(this.purchaseGroup.getPlanningList(), this.purchaseGroup.getPurchaseList());
     }
 }

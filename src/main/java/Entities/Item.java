@@ -22,4 +22,6 @@ public class Item {
     public Float getPrice(){
         return price;
     }
+
+    public void setPrice(float price) { this.price = price; }
 }
