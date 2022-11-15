@@ -1,4 +1,5 @@
 package Entities;
+import java.util.List;
 import java.util.ArrayList;
 
 public class User {
@@ -6,6 +7,8 @@ public class User {
     private String username;
     private String password;
     private ArrayList<Group> groups;
+
+    private static List<User> allUsers = new ArrayList<>();
 
     public User(String username, String password, ArrayList<Group> groups){
         this.username = username;
@@ -23,5 +26,13 @@ public class User {
 
     public ArrayList<Group> getGroups() {
         return groups;
+    }
+
+    public List<User> getUsers(){
+        return allUsers;
+    }
+
+    public void addUser(User newUser){
+        allUsers.add(newUser);
     }
 }
