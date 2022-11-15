@@ -5,6 +5,6 @@ import java.util.ArrayList;
 public class PurchaseList extends ItemList{
 
     public PurchaseList(){
-        this.items = new ArrayList<>();
+        super.setItems(new ArrayList<>());
     }
 }
