@@ -1,4 +1,5 @@
 package DataStructures;
+import Entities.Group;
 import Entities.Item;
 import Entities.User;
 
@@ -8,11 +9,13 @@ public class PurchaseInfo {
     private final Item purchasedItem;
     private final List<User> participatingUsers;
     private final float price;
+    private final Group purchaseGroup;
 
-    public PurchaseInfo(Item item, List<User> users, float itemPrice) {
+    public PurchaseInfo(Item item, List<User> users, float itemPrice, Group purchaseGroup) {
         this.purchasedItem = item;
         this.participatingUsers = users;
         this.price = itemPrice;
+        this.purchaseGroup = purchaseGroup;
     }
 
     public Item getItem(){
@@ -26,4 +29,6 @@ public class PurchaseInfo {
     public float getPrice(){
         return this.price;
     }
+
+    public Group getPurchaseGroup() { return this.purchaseGroup; }
 }
