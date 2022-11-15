@@ -3,5 +3,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 abstract public class ItemList {
-    ArrayList<String> items;
+    private List<String> items;
+
+    public List<String> getItems(){
+        return this.items;
+    }
+
+    public void setItems(List<String> items){
+        this.items = items;
+    }
 }
