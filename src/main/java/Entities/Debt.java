@@ -2,29 +2,39 @@ package Entities;
 
 public class Debt {
 
-    private User user1;
-    private User user2;
+    private User userOwed;
+    private User userOwing;
     private String groupId;
+    private Double debtValue;
 
     private Debt(User user1, User user2, String groupId){
-        this.user1 = user1;
-        this.user2 = user2;
+        this.userOwed = user1;
+        this.userOwing = user2;
         this.groupId = groupId;
+        this.debtValue = 0.0;
     }
 
-    public User getUser1(){
-        return this.user1;
+    public User getUserOwed(){
+        return this.userOwed;
     }
 
-    public User getUser2() {
-        return this.user2;
+    public User getUserOwing() {
+        return this.userOwing;
     }
 
     public User[] getUsers(){
         User[] users = new User[2];
-        users[0] = this.user1;
-        users[1] = this.user2;
+        users[0] = this.userOwed;
+        users[1] = this.userOwing;
         return users;
+    }
+
+    public Double getDebtValue(){
+        return this.debtValue;
+    }
+
+    public void setDebtValue(Double debtValue){
+        this.debtValue = debtValue;
     }
 
     public String getGroupId() {
