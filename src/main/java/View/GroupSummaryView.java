@@ -1,12 +1,12 @@
 package View;
 
 import Entities.PurchaseList;
-
+import View.BalanceView;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 
-public class GroupSummaryView extends JFrame{
+public class GroupSummaryView extends JFrame {
 
     private JTabbedPane t;
     private JComponent p1, p2, p3;
@@ -25,16 +25,33 @@ public class GroupSummaryView extends JFrame{
         t.setMnemonicAt(1, KeyEvent.VK_2);
         t.addTab("Balances", p3);
         t.setMnemonicAt(2, KeyEvent.VK_3);
+        BalanceView b = new BalanceView();
 
-        p3.setPreferredSize(new Dimension(410, 50));
+
 
         add(t);
 
+
         setSize(1000,600);
         setVisible(true);
-        }
+    }
 
-        public static void main(String[] args) {
+    public void update(){
+        if (t.getSelectedIndex() == 0){
+            //this selects planning
+
+        }
+        else if (t.getSelectedIndex() == 1){
+            //this selects purchases
+        }
+        else {
+            //this selects payment
+
+        }
+    }
+
+
+    public static void main(String[] args) {
             GroupSummaryView group = new GroupSummaryView();
         }
 
