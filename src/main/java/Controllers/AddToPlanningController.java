@@ -1,17 +1,14 @@
 package Controllers;
-import UseCases.AddToPlanningList;
 import DataStructures.PlannedItemInfo;
+import DataStructures.UpdatedLists;
+import InputBoundary.AddToPlanningBoundaryIn;
 public class AddToPlanningController {
-    public PlannedItemInfo itemInfo;
-    public PlannedItemInfo getItemInfo() {
-        return itemInfo;
+    public AddToPlanningBoundaryIn inputBoundary;
+    public AddToPlanningController(AddToPlanningBoundaryIn inputBoundary) {
+        this.inputBoundary = inputBoundary;
     }
-
-    public void setItemInfo(String name, Float price) {
-        this.itemInfo = new PlannedItemInfo(name, price);
-    }
-
-    public void performPlanningAdd() {
-        AddToPlanningList.addPlanning(itemInfo);
+    public UpdatedLists performPlanningAdd(String name, Float price, String groupId) {
+        PlannedItemInfo itemInfo = new PlannedItemInfo(name, price, groupId);
+        return inputBoundary.addPlanning(itemInfo);
     }
 }

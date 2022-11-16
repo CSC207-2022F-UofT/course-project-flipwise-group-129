@@ -1,12 +1,17 @@
 package DataStructures;
 
 public class PlannedItemInfo {
-    private String name;
-    private String buyer;
-    private Float price;
+    final private String name;
+    final private Float price;
+    final private String groupId;
 
-    public PlannedItemInfo(String name, Float price){
+    public PlannedItemInfo(String name, Float price, String groupId){
         this.name = name;
         this.price = price;
+        this.groupId = groupId;
     }
+
+    public String getName(){    return name;    }
+    public Float getPrice(){    return price;   }
+    public String getGroupId(){ return groupId; }
 }

@@ -1,5 +1,7 @@
 package InputBoundary;
+import DataStructures.PlannedItemInfo;
+import DataStructures.UpdatedLists;
 
 public interface AddToPlanningBoundaryIn {
-    public void performPlanningAdd();
+    UpdatedLists addPlanning(PlannedItemInfo item);
 }
