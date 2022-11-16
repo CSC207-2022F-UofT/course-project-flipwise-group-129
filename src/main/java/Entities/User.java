@@ -6,11 +6,14 @@ public class User {
 
     private String username;
     private String password;
+
+    private String userId;
     private List<Group> groups;
 
 //    private static List<User> allUsers = new ArrayList<>();
 
     public User(String username, String password, List<Group> groups){
+        // this.userId = will be implemented once datastore has been
         this.username = username;
         this.password = password;
         this.groups = groups;
