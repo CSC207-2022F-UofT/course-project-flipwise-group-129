@@ -6,11 +6,11 @@ public class User {
 
     private String username;
     private String password;
-    private ArrayList<Group> groups;
+    private List<Group> groups;
 
-    private static List<User> allUsers = new ArrayList<>();
+//    private static List<User> allUsers = new ArrayList<>();
 
-    public User(String username, String password, ArrayList<Group> groups){
+    public User(String username, String password, List<Group> groups){
         this.username = username;
         this.password = password;
         this.groups = groups;
@@ -24,15 +24,27 @@ public class User {
         return username;
     }
 
-    public ArrayList<Group> getGroups() {
+    public List<Group> getGroups() {
         return groups;
     }
 
-    public List<User> getUsers(){
-        return allUsers;
+//    public List<User> getUsers(){
+//        return allUsers;
+//    }
+//
+//    public void addUser(User newUser){
+//        allUsers.add(newUser);
+//    }
+
+    public void addGroup(Group group){
+        this.groups.add(group);
     }
 
-    public void addUser(User newUser){
-        allUsers.add(newUser);
+    public boolean removeFromGroup(Group group){
+        if (this.groups.contains(group)){
+            this.groups.remove(group);
+            return true;
+        }
+        return false;
     }
 }

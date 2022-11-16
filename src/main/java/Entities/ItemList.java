@@ -12,4 +12,8 @@ abstract public class ItemList {
     public void setItems(List<Item> items){
         this.items = items;
     }
+
+    public void addItems(Item item){
+        this.items.add(item);
+    }
 }
