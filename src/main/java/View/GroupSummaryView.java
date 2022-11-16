@@ -11,7 +11,6 @@ public class GroupSummaryView extends JFrame{
     private JTabbedPane t;
     private JComponent p1, p2, p3;
 
-
     public GroupSummaryView() {
         super("Group view");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -38,7 +37,6 @@ public class GroupSummaryView extends JFrame{
         public static void main(String[] args) {
             GroupSummaryView group = new GroupSummaryView();
         }
-
 
     }
 
