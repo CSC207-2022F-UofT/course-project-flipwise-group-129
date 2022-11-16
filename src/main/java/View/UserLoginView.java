@@ -29,7 +29,8 @@ public class UserLoginView extends JFrame{
             username.setBounds(70, 120, 300, 30);
             t3.setBounds(70, 170, 200, 20);
             password.setBounds(70, 190, 300, 30);
-            loginButton.setBounds(170, 240, 200, 30);
+            loginButton.setBounds(170, 240, 200
+                    , 30);
 
             // adding
             add(t1);
