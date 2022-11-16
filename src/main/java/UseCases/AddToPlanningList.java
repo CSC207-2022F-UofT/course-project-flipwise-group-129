@@ -13,9 +13,13 @@ public class AddToPlanningList implements AddToPlanningBoundaryIn{
     @Override
     public UpdatedLists addPlanning(PlannedItemInfo item) {
         // retrieve group from groupID using item.getGroupId()
-        Item newItem = new Item(item.getName(), null , item.getPrice());
+        Item newItem = createItem(item);
         // code to append newItem to the planningList of the group
         UpdatedLists updatedLists = new UpdatedLists(new PlanningList(), new PurchaseList());
         return outputBoundary.displayLists(updatedLists);
+    }
+
+    public Item createItem(PlannedItemInfo item){
+        return new Item(item.getName(), null , item.getPrice());
     }
 }
