@@ -4,6 +4,7 @@ import DataStructures.PurchaseInfo;
 import DataStructures.UpdatedLists;
 import Entities.*;
 import InputBoundary.AddPurchaseBoundaryIn;
+import OutputBoundary.AddPurchaseBoundaryOut;
 import Presenters.AddPurchasePresenter;
 import java.util.List;
 
@@ -15,9 +16,10 @@ public class AddPurchase implements AddPurchaseBoundaryIn {
     private Group purchaseGroup;
     private UpdatedLists newLists;
     private User buyer;
+    private AddPurchaseBoundaryOut presenter;
 
     @Override
-    public UpdatedLists executeUseCase(PurchaseInfo purchaseInfo) {
+    public void executeUseCase(PurchaseInfo purchaseInfo) {
         this.purchaseInfo = purchaseInfo;
 
         this.purchasedItem = purchaseInfo.getItem();
@@ -25,6 +27,7 @@ public class AddPurchase implements AddPurchaseBoundaryIn {
         this.price = purchaseInfo.getPrice();
         this.purchaseGroup = purchaseInfo.getPurchaseGroup();
         this.buyer = purchaseInfo.getBuyer();
+        this.presenter = purchaseInfo.getPresenter();
 
         PlanningList planningList = this.purchaseGroup.getPlanningList();
         planningList.removeFromList(this.purchasedItem);
@@ -35,6 +38,7 @@ public class AddPurchase implements AddPurchaseBoundaryIn {
         purchaseList.addItems(this.purchasedItem);
 
         newLists = new UpdatedLists(this.purchaseGroup.getPlanningList(), this.purchaseGroup.getPurchaseList());
-        return newLists;
+
+        presenter.updateView(newLists);
     }
 }

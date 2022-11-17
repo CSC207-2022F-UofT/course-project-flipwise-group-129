@@ -4,5 +4,5 @@ import DataStructures.PurchaseInfo;
 import DataStructures.UpdatedLists;
 
 public interface AddPurchaseBoundaryIn {
-    public UpdatedLists executeUseCase(PurchaseInfo purchaseInfo);
+    public void executeUseCase(PurchaseInfo purchaseInfo);
 }

@@ -15,7 +15,7 @@ public class AddPurchaseController {
     private AddPurchaseBoundaryOut addPurchaseBoundaryOut;
 
     public void controlAddPurchaseUseCase(Item purchasedItem, List<User> participatingUsers, User buyer, float price, Group purchaseGroup) {
-        PurchaseInfo purchaseInfo = new PurchaseInfo(purchasedItem, participatingUsers, buyer, price, purchaseGroup);
+        PurchaseInfo purchaseInfo = new PurchaseInfo(purchasedItem, participatingUsers, buyer, price, purchaseGroup, presenter);
 
         addPurchaseUseCaseBoundaryIn.executeUseCase(purchaseInfo);
     }
