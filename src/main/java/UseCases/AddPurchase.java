@@ -26,14 +26,10 @@ public class AddPurchase {
 
         PlanningList planningList = this.purchaseGroup.getPlanningList();
         planningList.removeFromList(this.purchasedItem);
-
-        this.purchaseGroup.addToPurchaseList(this.purchasedItem, price, participatingUsers);
-
+            
         PurchaseList purchaseList = this.purchaseGroup.getPurchaseList();
-        purchasedItem.setPrice(price);
-        List<Item> tempList = purchaseList.getItems();
-        tempList.add(purchasedItem);
-        purchaseList.setItems(tempList);
+        this.purchasedItem.setPrice(this.price);
+        purchaseList.addItems(this.purchasedItem);
 
         newLists = new UpdatedLists(this.purchaseGroup.getPlanningList(), this.purchaseGroup.getPurchaseList());
     }
