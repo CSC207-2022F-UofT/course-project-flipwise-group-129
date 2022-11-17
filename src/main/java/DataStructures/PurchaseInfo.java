@@ -8,12 +8,14 @@ import java.util.List;
 public class PurchaseInfo {
     private final Item purchasedItem;
     private final List<User> participatingUsers;
+    private final User buyer;
     private final float price;
     private final Group purchaseGroup;
 
-    public PurchaseInfo(Item item, List<User> users, float itemPrice, Group purchaseGroup) {
+    public PurchaseInfo(Item item, List<User> users, User buyer, float itemPrice, Group purchaseGroup) {
         this.purchasedItem = item;
         this.participatingUsers = users;
+        this.buyer = buyer;
         this.price = itemPrice;
         this.purchaseGroup = purchaseGroup;
     }
@@ -31,4 +33,6 @@ public class PurchaseInfo {
     }
 
     public Group getPurchaseGroup() { return this.purchaseGroup; }
+
+    public User getBuyer() { return this.buyer; }
 }
