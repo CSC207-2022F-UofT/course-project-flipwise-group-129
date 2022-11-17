@@ -9,7 +9,7 @@ public class GroupCreationView extends JFrame {
         JButton btn_create = new JButton();
         JButton btn_leave = new JButton();
         JLabel label_title = new JLabel();
-        JTextArea filler = new JTextArea();
+        JTextArea filler;
 
         public GroupCreationView() {
             super("Group Creation");

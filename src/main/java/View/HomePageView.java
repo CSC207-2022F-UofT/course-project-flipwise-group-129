@@ -11,9 +11,9 @@ public class HomePageView extends JFrame{
         public HomePageView() {
             super("Home Page");
 
-            setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            setSize(600, 500);
-            setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
+                setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                setSize(600, 500);
+                setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
 
             homePage = new JLabel("HomePage");
             homePage.setAlignmentX(Component.CENTER_ALIGNMENT);
