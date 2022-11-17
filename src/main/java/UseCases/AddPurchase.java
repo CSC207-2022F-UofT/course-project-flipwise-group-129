@@ -24,25 +24,33 @@ public class AddPurchase implements AddPurchaseBoundaryIn {
     public void executeUseCase(PurchaseInfo purchaseInfo) {
         this.purchaseInfo = purchaseInfo;
 
+        extractInformation(purchaseInfo);
+
+        PlanningList planningList = this.purchaseGroup.getPlanningList();
+        planningList.removeFromList(this.purchasedItem);
+
+        PurchaseList purchaseList = this.purchaseGroup.getPurchaseList();
+        addToPurchase(purchaseList);
+
+        List<String> planningListItemIds = convertList(planningList);
+        List<String> purchasedListItemIds = convertList(purchaseList);
+        newLists = new UpdatedLists(planningListItemIds, purchasedListItemIds);
+        this.presenter.updateView(newLists);
+    }
+
+    private void addToPurchase(PurchaseList purchaseList) {
+        this.purchasedItem.setPrice(this.price);
+        this.purchasedItem.setBuyer(this.buyer);
+        purchaseList.addItems(this.purchasedItem);
+    }
+
+    private void extractInformation(PurchaseInfo purchaseInfo) {
         this.purchasedItem = getItemById(purchaseInfo.getItem());
         extractUsers(purchaseInfo);
         this.price = purchaseInfo.getPrice();
         this.purchaseGroup = getGroupById(purchaseInfo.getPurchaseGroup());
         this.buyer = getUserByUsername(purchaseInfo.getBuyer());
         this.presenter = purchaseInfo.getPresenter();
-
-        PlanningList planningList = this.purchaseGroup.getPlanningList();
-        planningList.removeFromList(this.purchasedItem);
-
-        PurchaseList purchaseList = this.purchaseGroup.getPurchaseList();
-        this.purchasedItem.setPrice(this.price);
-        this.purchasedItem.setBuyer(this.buyer);
-        purchaseList.addItems(this.purchasedItem);
-
-        List<String> planningListItemIds = convertList(planningList);
-        List<String> purchasedListItemIds = convertList(purchaseList);
-        newLists = new UpdatedLists(planningListItemIds, purchasedListItemIds);
-        presenter.updateView(newLists);
     }
 
     private void extractUsers(PurchaseInfo purchaseInfo) {
