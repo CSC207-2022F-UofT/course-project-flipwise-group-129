@@ -7,12 +7,14 @@ public class Item {
     private User buyer;
     private Float price;
 
+    private String itemId;
     private List<User> usersInvolved;
 
-    public Item(String itemName, User buyer, Float price){
+    public Item(String itemName, User buyer, Float price, List<User> usersInvolved){
         this.itemName = itemName;
         this.buyer = buyer;
         this.price = price;
+        this.usersInvolved = usersInvolved;
     }
 
     public String getItemName(){
@@ -26,6 +28,8 @@ public class Item {
     public Float getPrice(){
         return price;
     }
+
+    public String getItemId(){ return this.itemId; }
 
     public void setPrice(Float price){
         this.price = price;
