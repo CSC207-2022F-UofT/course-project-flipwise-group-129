@@ -43,20 +43,18 @@ public class AddPurchase implements AddPurchaseBoundaryIn {
         this.purchasedItem.setBuyer(this.buyer);
         purchaseList.addItems(this.purchasedItem);
 
-        List<Item> planningListItems = planningList.getItems();
-        List<String> planningListItemIds = new ArrayList<String>();
-        for (Item item: planningListItems) {
-            planningListItemIds.add(item.id);
-        }
-
-        List<Item> purchasedListItems = planningList.getItems();
-        List<String> purchasedListItemIds = new ArrayList<String>();
-        for (Item item: purchasedListItems) {
-            purchasedListItemIds.add(item.id);
-        }
-
+        List<String> planningListItemIds = convertList(planningList);
+        List<String> purchasedListItemIds = convertList(purchaseList);
         newLists = new UpdatedLists(planningListItemIds, purchasedListItemIds);
-
         presenter.updateView(newLists);
+    }
+
+    public List<String> convertList(ItemList inputList) {
+        List<Item> tempListItems = inputList.getItems();
+        List<String> tempListItemIds = new ArrayList<String>();
+        for (Item item: tempListItems) {
+            tempListItemIds.add(item.id);
+        }
+        return tempListItemIds;
     }
 }
