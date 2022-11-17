@@ -25,11 +25,7 @@ public class AddPurchase implements AddPurchaseBoundaryIn {
         this.purchaseInfo = purchaseInfo;
 
         this.purchasedItem = getItemById(purchaseInfo.getItem());
-        this.participatingUsers = getUsersByUsername(purchaseInfo.getUsers());
-        List<String> usernames = purchaseInfo.getUsers();
-        for (String username : usernames) {
-            this.participatingUsers.add(getUserById(username));
-        }
+        extractUsers(purchaseInfo);
         this.price = purchaseInfo.getPrice();
         this.purchaseGroup = getGroupById(purchaseInfo.getPurchaseGroup());
         this.buyer = getUserByUsername(purchaseInfo.getBuyer());
@@ -47,6 +43,13 @@ public class AddPurchase implements AddPurchaseBoundaryIn {
         List<String> purchasedListItemIds = convertList(purchaseList);
         newLists = new UpdatedLists(planningListItemIds, purchasedListItemIds);
         presenter.updateView(newLists);
+    }
+
+    private void extractUsers(PurchaseInfo purchaseInfo) {
+        List<String> usernames = purchaseInfo.getUsers();
+        for (String username : usernames) {
+            this.participatingUsers.add(getUserById(username));
+        }
     }
 
     public List<String> convertList(ItemList inputList) {
