@@ -49,7 +49,7 @@ public class Item {
         this.usersInvolved = users;
     }
 
-    public void addUsersInvolved?(User user){
+    public void addUsersInvolved(User user){
         this.usersInvolved.add(user);
     }
 }
