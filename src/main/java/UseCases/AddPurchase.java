@@ -2,10 +2,7 @@ package UseCases;
 
 import DataStructures.PurchaseInfo;
 import DataStructures.UpdatedLists;
-import Entities.Group;
-import Entities.Item;
-import Entities.PurchaseList;
-import Entities.User;
+import Entities.*;
 import Presenters.AddPurchasePresenter;
 
 import java.util.ArrayList;
@@ -27,8 +24,9 @@ public class AddPurchase {
         this.price = purchaseInfo.getPrice();
         this.purchaseGroup = purchaseInfo.getPurchaseGroup();
 
-        // Dont i need the group and shit to do this lol?
-        this.purchaseGroup.removeFromPlanningList(this.purchasedItem); // Sophie doing this
+        PlanningList planningList = this.purchaseGroup.getPlanningList();
+        planningList.removeFromList(this.purchasedItem);
+
         this.purchaseGroup.addToPurchaseList(this.purchasedItem, price, participatingUsers);
 
         PurchaseList purchaseList = this.purchaseGroup.getPurchaseList();
