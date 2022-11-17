@@ -6,8 +6,6 @@ public class User {
 
     private String username;
     private String password;
-
-    private String userId;
     private List<Group> groups;
 
 //    private static List<User> allUsers = new ArrayList<>();
