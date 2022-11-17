@@ -11,7 +11,6 @@ import Presenters.AddPurchasePresenter;
 import java.util.List;
 
 public class AddPurchaseController {
-
     private AddPurchaseBoundaryIn addPurchaseUseCaseBoundaryIn;
 
     public void controlAddPurchaseUseCase(Item purchasedItem, List<User> participatingUsers, User buyer, float price, Group purchaseGroup) {
