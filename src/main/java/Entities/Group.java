@@ -7,12 +7,18 @@ public class Group {
     private PurchaseList purchaseList;
     private PlanningList planningList;
     private PurchaseBalance purchaseBalance;
+
+    private String groupName;
+
+    private String groupId;
     private static Set<Group> groups;
 
-    public Group(Set<User> users, PurchaseList purchaseList, PlanningList planningList){
+    public Group(String name, Set<User> users){
+        // this.groupId = will be implemented ones daatstore has been
+        this.groupName = name;
         this.users = users;
-        this.purchaseList = purchaseList;
-        this.planningList = planningList;
+        this.purchaseList = new PurchaseList();
+        this.planningList = new PlanningList();
         groups.add(this);
     }
 
@@ -34,5 +40,9 @@ public class Group {
 
     public static Set<Group> getGroups(){
         return groups;
+    }
+
+    public void addUser(User user){
+        this.users.add(user);
     }
 }

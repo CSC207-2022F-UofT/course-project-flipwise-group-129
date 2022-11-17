@@ -11,6 +11,7 @@ public class User {
 //    private static List<User> allUsers = new ArrayList<>();
 
     public User(String username, String password, List<Group> groups){
+        // this.userId = will be implemented once datastore has been
         this.username = username;
         this.password = password;
         this.groups = groups;
