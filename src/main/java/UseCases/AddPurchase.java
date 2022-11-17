@@ -6,6 +6,8 @@ import Entities.*;
 import InputBoundary.AddPurchaseBoundaryIn;
 import OutputBoundary.AddPurchaseBoundaryOut;
 import Presenters.AddPurchasePresenter;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class AddPurchase implements AddPurchaseBoundaryIn {
@@ -22,11 +24,15 @@ public class AddPurchase implements AddPurchaseBoundaryIn {
     public void executeUseCase(PurchaseInfo purchaseInfo) {
         this.purchaseInfo = purchaseInfo;
 
-        this.purchasedItem = purchaseInfo.getItem();
-        this.participatingUsers = purchaseInfo.getUsers();
+        this.purchasedItem = getItemById(purchaseInfo.getItem());
+        this.participatingUsers = getUsersByUsername(purchaseInfo.getUsers());
+        List<String> usernames = purchaseInfo.getUsers();
+        for (String username : usernames) {
+            this.participatingUsers.add(getUserById(username));
+        }
         this.price = purchaseInfo.getPrice();
-        this.purchaseGroup = purchaseInfo.getPurchaseGroup();
-        this.buyer = purchaseInfo.getBuyer();
+        this.purchaseGroup = getGroupById(purchaseInfo.getPurchaseGroup());
+        this.buyer = getUserByUsername(purchaseInfo.getBuyer());
         this.presenter = purchaseInfo.getPresenter();
 
         PlanningList planningList = this.purchaseGroup.getPlanningList();
@@ -37,7 +43,19 @@ public class AddPurchase implements AddPurchaseBoundaryIn {
         this.purchasedItem.setBuyer(this.buyer);
         purchaseList.addItems(this.purchasedItem);
 
-        newLists = new UpdatedLists(this.purchaseGroup.getPlanningList(), this.purchaseGroup.getPurchaseList());
+        List<Item> planningListItems = planningList.getItems();
+        List<String> planningListItemIds = new ArrayList<String>();
+        for (Item item: planningListItems) {
+            planningListItemIds.add(item.id);
+        }
+
+        List<Item> purchasedListItems = planningList.getItems();
+        List<String> purchasedListItemIds = new ArrayList<String>();
+        for (Item item: purchasedListItems) {
+            purchasedListItemIds.add(item.id);
+        }
+
+        newLists = new UpdatedLists(planningListItemIds, purchasedListItemIds);
 
         presenter.updateView(newLists);
     }

@@ -3,20 +3,22 @@ package DataStructures;
 import Entities.PlanningList;
 import Entities.PurchaseList;
 
-public class UpdatedLists {
-    private final PlanningList newPlanningList;
-    private final PurchaseList newPurchasedList;
+import java.util.List;
 
-    public UpdatedLists(PlanningList updatedPlanning, PurchaseList updatedPurchase) {
+public class UpdatedLists {
+    private final List<String> newPlanningList;
+    private final List<String> newPurchasedList;
+
+    public UpdatedLists(List<String> updatedPlanning, List<String> updatedPurchase) {
         this.newPlanningList = updatedPlanning;
         this.newPurchasedList = updatedPurchase;
     }
 
-    public PlanningList getNewPlanningList(){
+    public List<String> getNewPlanningList(){
         return this.newPlanningList;
     }
 
-    public PurchaseList getNewPurchasedList(){
+    public List<String> getNewPurchasedList(){
         return this.newPurchasedList;
     }
 }
