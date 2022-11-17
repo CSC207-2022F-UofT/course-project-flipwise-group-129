@@ -1,19 +1,22 @@
 package UseCases;
-import Entities.Group;
-import Entities.User;
+import Entities.*;
 
 import java.util.ArrayList;
 import java.util.Objects;
 
 public class UserRegister {
+    /**
+     * Registers a new user. BChec
+     *
+     */
 
-    public ArrayList intializeGroup() {
+    public ArrayList<Group> initializeGroup() {
         return new ArrayList<Group>();
     }
 
-    public boolean checkUsernameAvaliable(String username) {
-        return groups.contains();
-        // how to find a the usernames that exist.
+    public boolean checkUsernameAvailable(String username) {
+        ArrayList<String> all_users = User.getAllUsers();
+        return all_users.contains(username);
     }
 
     public boolean checkPasswordsMatch(String password1, String password2) {
@@ -21,8 +24,8 @@ public class UserRegister {
     }
 
     public void createNewUser(String username, String password1, String password2) {
-        if (this.checkUsernameAvaliable(username) & this.checkPasswordsMatch(password1, password2)) {
-            User user = new User(username, password, intializeGroup());
+        if (this.checkUsernameAvailable(username) & this.checkPasswordsMatch(password1, password2)) {
+            User user = new User(username, password1, initializeGroup());
         }
     }
 }
