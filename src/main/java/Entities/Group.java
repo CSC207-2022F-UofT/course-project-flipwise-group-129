@@ -1,26 +1,22 @@
 package Entities;
-
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 public class Group {
-    private User[] users;
+    private Set<User> users;
     private PurchaseList purchaseList;
     private PlanningList planningList;
     private PurchaseBalance purchaseBalance;
-    private static Group[] groups;
+    private static Set<Group> groups;
 
-    public Group(User[] users, PurchaseList purchaseList, PlanningList planningList, Group[] groups){
+    public Group(Set<User> users, PurchaseList purchaseList, PlanningList planningList){
         this.users = users;
         this.purchaseList = purchaseList;
         this.planningList = planningList;
-        this.groups = groups;
+        groups.add(this);
     }
 
-    public Group(User[] users, PurchaseList purchaseList, PlanningList planningList){
-        this.users = users;
-        this.purchaseList = purchaseList;
-        this.planningList = planningList;
-    }
-
-    public User[] getUsers(){
+    public Set<User> getUsers(){
         return this.users;
     }
 
@@ -36,7 +32,7 @@ public class Group {
         return purchaseBalance;
     }
 
-    public Group[] getGroups(){
+    public static Set<Group> getGroups(){
         return groups;
     }
 }
