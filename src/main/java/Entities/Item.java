@@ -1,9 +1,13 @@
 package Entities;
 
+import java.util.List;
+
 public class Item {
     private String itemName;
     private User buyer;
     private Float price;
+
+    private List<User> usersInvolved;
 
     public Item(String itemName, User buyer, Float price){
         this.itemName = itemName;
@@ -33,5 +37,9 @@ public class Item {
 
     public void setBuyer(User buyer){
         this.buyer = buyer;
+    }
+
+    public void setUsersInvolved(List<User> users){
+        this.usersInvolved = users;
     }
 }
