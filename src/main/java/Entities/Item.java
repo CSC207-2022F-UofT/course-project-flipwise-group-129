@@ -31,6 +31,8 @@ public class Item {
 
     public String getItemId(){ return this.itemId; }
 
+    public List<User> getUsersInvolved() { return this.usersInvolved; }
+
     public void setPrice(Float price){
         this.price = price;
     }
@@ -45,5 +47,9 @@ public class Item {
 
     public void setUsersInvolved(List<User> users){
         this.usersInvolved = users;
+    }
+
+    public void addUsersInvolved?(User user){
+        this.usersInvolved.add(user);
     }
 }
