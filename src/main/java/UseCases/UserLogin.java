@@ -1,7 +1,7 @@
 package UseCases;
-import UseCases.*;
 
-import java.util.ArrayList;
+
+import java.util.*;
 
 public class UserLogin {
     public boolean loginSuccessful(String username, String password) {
