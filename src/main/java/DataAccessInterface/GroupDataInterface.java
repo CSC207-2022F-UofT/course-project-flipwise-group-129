@@ -1,7 +1,9 @@
 package DataAccessInterface;
 import DataStructures.*;
 
+import java.io.IOException;
+
 public interface GroupDataInterface {
-    void createItem(PlannedItemInfo itemInfo);
-    void retrieveGroup();
+    void addGroup(String groupId, String groupInfo) throws IOException;
+    String groupAsString(String groupId);
 }
