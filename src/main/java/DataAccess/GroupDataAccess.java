@@ -1,15 +1,13 @@
 package DataAccess;
 
 import DataAccessInterface.GroupDataInterface;
-import DataStructures.PlannedItemInfo;
-import org.*;
+//import org.*;
 import java.io.FileWriter;
 import org.json.simple.JSONObject;
 import java.io.File;
 import org.json.simple.JSONArray;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import java.lang.reflect.Array;
 import java.util.*;
 import java.io.*;
 
@@ -54,8 +52,8 @@ public class GroupDataAccess implements GroupDataInterface {
     }
 
     @Override
-    public void addGroup(String groupId, String groupInfo) throws IOException {
-        // needs inputted the new group to string alongside the group's id
+    public void addorUpdateGroup(String groupId, String groupInfo) throws IOException {
+        // needs inputted the new or updated group to string alongside the group's id
         groups.put(groupId, groupInfo);
         save();
     }
