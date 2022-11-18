@@ -14,30 +14,33 @@ public class BalanceView extends JPanel{
 
     public BalanceView() {
 
-
         data = new String[][]{{"101", "Amit", "670000", "2"},
                 {"102", "Jai", "780000", "2"},
                 {"101", "Sachin", "700000", "3"},
                 {"1", "2", "3", "4"}};
         header = new String[]{"NAME", "YOU OWE", "THEY OWE", "DEBT"};
         j = new JTable(data, header);
-//        j.setModel(tableModel);
         j.setSize(400, 400);
-        s = new JScrollPane();
+
+        DefaultTableModel tableModel = new DefaultTableModel(data, header) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                //all cells false
+                return false;
+            }
+        };
+
+        j.setModel(tableModel);
+
+        s = new JScrollPane(j);
 
         setVisible(true);
         setSize(400, 400);
-        this.add(j);
+        add(s);
 
     }
 
-    DefaultTableModel tableModel = new DefaultTableModel() {
-        @Override
-        public boolean isCellEditable(int row, int column) {
-            //all cells false
-            return false;
-        }
-    };
+
 
 }
 
