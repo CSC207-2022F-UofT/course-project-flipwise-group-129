@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AddPurchaseView extends JFrame {
+public class AddPurchaseView extends JPanel {
 
     List<String> members = new ArrayList<String>(); //NEEDS TO BE REFINED
     JButton confirm;
@@ -17,10 +17,8 @@ public class AddPurchaseView extends JFrame {
     JTextArea price_information;
     public AddPurchaseView() {
         //set window
-        setTitle("Item Cost");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(500, 250);
-        setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         setVisible(true);
 
         //set text asking for cost

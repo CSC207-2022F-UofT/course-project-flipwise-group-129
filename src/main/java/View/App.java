@@ -5,7 +5,9 @@ public class App {
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-                new HomePageView();
+                JFrame frame = new JFrame();
+                frame.add(new GroupSummaryView());
+                frame.setVisible(true);
             }
         });
     }

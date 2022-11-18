@@ -7,16 +7,17 @@ import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 
-public class GroupSummaryView extends JFrame {
+public class GroupSummaryView extends JPanel {
 
     private JTabbedPane t;
     private JComponent p1, p2, p3;
     private JTextArea temp, RHS, group_members;
+    JButton add_item = new JButton("Add Item");
+    JButton clear_debt = new JButton("Clear Debt");
+    JButton return_to_homepage = new JButton("Return to Homepage");
 
 
     public GroupSummaryView() {
-        super("Group view");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1000,600);
         setVisible(true);
         setLayout(new BorderLayout());
@@ -36,8 +37,20 @@ public class GroupSummaryView extends JFrame {
                 "Group Name: " + "\n" +
                 "Group Code: " + "\n");
         RHS.setEditable(false);
+
+        JPanel btn_group = new JPanel();
+        btn_group.add(add_item);
+        btn_group.add(clear_debt);
+        btn_group.add(return_to_homepage);
+
+        JPanel text_group = new JPanel();
+        text_group.add(RHS);
+
+
         JPanel right_hand_side = new JPanel();
-        right_hand_side.add(RHS);
+        right_hand_side.setLayout(new BoxLayout(right_hand_side, BoxLayout.PAGE_AXIS));
+        right_hand_side.add(text_group);
+        right_hand_side.add(btn_group);
 
         PlanningListView c = new PlanningListView();
         PurchaseListView p = new PurchaseListView();
