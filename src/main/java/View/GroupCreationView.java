@@ -3,7 +3,7 @@ package View;
 import javax.swing.*;
 import java.awt.*;
 
-public class GroupCreationView extends JFrame {
+public class GroupCreationView extends JPanel {
         JLabel groupName = new JLabel();
         JTextField groupNameInfo = new JTextField();
         JButton btn_create = new JButton();
@@ -12,11 +12,9 @@ public class GroupCreationView extends JFrame {
         JTextArea filler;
 
         public GroupCreationView() {
-            super("Group Creation");
 
-            setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             setSize(600, 500);
-            setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
+            setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
             groupName = new JLabel("Group Name:");
             groupNameInfo = new JTextField(20);

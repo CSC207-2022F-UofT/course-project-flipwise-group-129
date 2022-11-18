@@ -3,7 +3,7 @@ package View;
 import javax.swing.*;
 import java.awt.*;
 
-public class GroupJoinView extends JFrame {
+public class GroupJoinView extends JPanel {
     JLabel label_ID = new JLabel();
     JTextField text_ID = new JTextField();
     JButton btn_create = new JButton();
@@ -12,11 +12,8 @@ public class GroupJoinView extends JFrame {
     JTextArea filler = new JTextArea();
 
     public GroupJoinView() {
-        super("Join Group");
-
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(600, 500);
-        setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         label_ID = new JLabel("Group ID:");
         text_ID = new JTextField(15);

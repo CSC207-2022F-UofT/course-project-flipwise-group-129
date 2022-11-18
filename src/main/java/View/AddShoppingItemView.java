@@ -2,7 +2,7 @@ package View;
 
 import javax.swing.*;
 
-public class AddShoppingItemView extends JFrame {
+public class AddShoppingItemView extends JPanel {
 
     JTextArea confirmation;
     JTextArea item_request_text;
@@ -12,10 +12,8 @@ public class AddShoppingItemView extends JFrame {
     JButton reject;
     public AddShoppingItemView() {
         //set window
-        setTitle("Add Item");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(500, 250);
-        setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         setVisible(true);
 
         //set text asking for item name

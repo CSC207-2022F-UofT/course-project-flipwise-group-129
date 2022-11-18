@@ -1,6 +1,4 @@
 package View;
-import Entities.User;
-
 import javax.swing.*;
 
 public class App {
@@ -8,10 +6,9 @@ public class App {
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 JFrame frame = new JFrame();
-                frame.add(new UserRegisterView());
+                frame.add(new GroupSummaryView());
                 frame.setVisible(true);
             }
-
         });
     }
 }

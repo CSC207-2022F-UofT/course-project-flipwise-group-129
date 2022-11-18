@@ -2,18 +2,15 @@ package View;
 import javax.swing.*;
 import java.awt.*;
 
-public class HomePageView extends JFrame{
-        JButton btn_create = new JButton();
-        JButton btn_join = new JButton();
-        JLabel homePage = new JLabel();
+public class HomePageView extends JPanel{
+        JButton btn_create;
+        JButton btn_join;
+        JLabel homePage;
 
 
         public HomePageView() {
-            super("Home Page");
-
-                setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                setSize(600, 500);
-                setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
+            setSize(600, 500);
+            setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
             homePage = new JLabel("HomePage");
             homePage.setAlignmentX(Component.CENTER_ALIGNMENT);
