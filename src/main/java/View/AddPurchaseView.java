@@ -48,4 +48,7 @@ public class AddPurchaseView extends JFrame {
 
     }
 
+    public static void main(String[] args) {
+        new AddPurchaseView();
+    }
 }
