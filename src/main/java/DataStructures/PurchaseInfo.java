@@ -1,7 +1,4 @@
 package DataStructures;
-import Entities.Group;
-import Entities.Item;
-import Entities.User;
 import OutputBoundary.AddPurchaseBoundaryOut;
 
 import java.util.List;

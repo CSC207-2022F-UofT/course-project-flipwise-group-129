@@ -1,8 +1,5 @@
 package DataStructures;
 
-import Entities.PlanningList;
-import Entities.PurchaseList;
-
 import java.util.List;
 
 public class UpdatedLists {
