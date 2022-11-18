@@ -18,11 +18,9 @@ public class PurchaseListView extends JPanel{
                 {"1", "2", "3", "4"}};
         header = new String[]{"NAME", "YOU OWE", "THEY OWE", "DEBT"};
         j = new JTable(data, header);
-        s = new JScrollPane();
-        j.setSize(400, 402);
-        j.setAlignmentY(700);
+        s = new JScrollPane(j);
 
-        this.add(j);
+        this.add(s);
 
         setVisible(true);
         setSize(1000, 1000);

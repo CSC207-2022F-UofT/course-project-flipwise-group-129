@@ -5,11 +5,12 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class UserRegisterView extends JFrame{
+public class UserRegisterView extends JPanel implements ViewInterface{
     private final JButton loginButton;
     private final JTextField username;
     private final JPasswordField p1, p2;
     private final JLabel t1, t2, t3, t4;
+    private JButton exitButton;
 
 
     public UserRegisterView(){
@@ -25,6 +26,7 @@ public class UserRegisterView extends JFrame{
         t4 = new JLabel("Re-enter Password");
         p2 = new JPasswordField();
         loginButton = new JButton("Create");
+        exitButton = new JButton("Exit");
 
         // setting positions
         t1.setBounds(70, 40, 300, 40);
@@ -34,7 +36,8 @@ public class UserRegisterView extends JFrame{
         p1.setBounds(70, 190, 300, 30);
         t4.setBounds(70, 220, 200, 20);
         p2.setBounds(70, 240, 300, 30);
-        loginButton.setBounds(170, 300, 200, 30);
+        loginButton.setBounds(200, 300, 100, 30);
+        exitButton.setBounds(70, 300, 100, 30);
 
         // adding
         add(t1);
@@ -45,22 +48,21 @@ public class UserRegisterView extends JFrame{
         add(t4);
         add(p2);
         add(loginButton);
+        add(exitButton);
 
         // JFrame Setup
         setLayout(null);
         setVisible(true);
         setSize(450, 450);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        loginButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println(username.getText());
-            }
-        });
+        loginButton.addActionListener(this::actionPerformed);
+
 
     }
 
+    public void actionPerformed(ActionEvent e) {
+        System.out.println(username.getText());
+    }
     public static void main(String[] args) {
         UserRegisterView login = new UserRegisterView();
     }
