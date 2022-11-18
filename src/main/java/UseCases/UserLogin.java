@@ -1,16 +1,27 @@
 package UseCases;
+import DataAccessInterface.UserDataInterface;
 
 
 import java.util.*;
 
-public class UserLogin {
+public class UserLogin implements UserDataInterface{
     public boolean loginSuccessful(String username, String password) {
-        ArrayList<String> all_users= User.getAllUsers();
-        if (!all_users.contains(username)) {
-            return false;
+        boolean exists = this.existsByUsername(username);
+        if (exists & ) {
+
+            return true;
         } else {
-            // Need to get a user object from the username
-            // Then get the password and make check it matches
+            return false;
         }
+    }
+
+    @Override
+    public void addUser(String username, String password) {
+
+    }
+
+    @Override
+    public boolean existsByUsername(String username) {
+
     }
 }
