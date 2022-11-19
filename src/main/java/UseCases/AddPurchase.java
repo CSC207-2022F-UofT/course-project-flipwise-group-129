@@ -60,6 +60,7 @@ public class AddPurchase implements AddPurchaseBoundaryIn {
     private void addToPurchase(PurchaseList purchaseList) {
         this.purchasedItem.setPrice(this.price);
         this.purchasedItem.setBuyer(this.buyer);
+        this.purchasedItem.setUsersInvolved(this.participatingUsers);
         purchaseList.addItems(this.purchasedItem);
     }
 
@@ -98,7 +99,7 @@ public class AddPurchase implements AddPurchaseBoundaryIn {
         List<Item> tempListItems = inputList.getItems();
         List<String> tempListItemIds = new ArrayList<String>();
         for (Item item: tempListItems) {
-            tempListItemIds.add(item.id);
+            tempListItemIds.add(item.getItemId());
         }
         return tempListItemIds;
     }
