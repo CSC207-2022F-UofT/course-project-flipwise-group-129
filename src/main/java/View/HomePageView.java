@@ -18,6 +18,8 @@ public class HomePageView extends JFrame implements ActionListener {
 
         JButton[] button_array = createGroupButtons(group_names);
 
+        ButtonGroup TRUE_BUTTON_GROUP;
+
 
         public HomePageView() {
 
@@ -34,6 +36,7 @@ public class HomePageView extends JFrame implements ActionListener {
             //Algorithm implementation
             for (int i = 0; i < group_names.length; i++) {
                 group_btns.add(button_array[i]);
+                TRUE_BUTTON_GROUP.add(button_array[i]);
             }
 
             //DUMMY
