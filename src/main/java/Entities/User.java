@@ -1,4 +1,7 @@
 package Entities;
+import org.json.simple.JSONObject;
+
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -8,10 +11,7 @@ public class User {
     private String password;
     private List<Group> groups;
 
-//    private static List<User> allUsers = new ArrayList<>();
-
     public User(String username, String password, List<Group> groups){
-        // this.userId = will be implemented once datastore has been
         this.username = username;
         this.password = password;
         this.groups = groups;
@@ -49,9 +49,19 @@ public class User {
         return false;
     }
 
+    public JSONObject toJSON(){
+        JSONObject obj = new JSONObject();
+        obj.put("username", this.username);
+        obj.put("password", this.password);
+        List<String> groupStrings = new ArrayList<>();
+        this.groups.forEach(group -> groupStrings.add(group.toString()));
+        obj.put("groups", groupStrings);
+
+        return obj;
+    }
     @Override
     public String toString() {
-        return
+        return this.toJSON().toJSONString();
     }
 
 }

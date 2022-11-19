@@ -1,4 +1,6 @@
 package Entities;
+import org.json.simple.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,5 +30,18 @@ public class PurchaseBalance {
             return true;
         }
         return false;
+    }
+
+    public JSONObject toJSON(){
+        JSONObject obj = new JSONObject();
+        List<String> allDebts = new ArrayList<>();
+        this.allDebts.forEach(debt -> allDebts.add(debt.toString()));
+        obj.put("allDebts", allDebts);
+
+        return obj;
+    }
+    @Override
+    public String toString() {
+        return this.toJSON().toJSONString();
     }
 }

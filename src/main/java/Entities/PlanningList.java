@@ -1,6 +1,9 @@
 package Entities;
 
+import org.json.simple.JSONObject;
+
 import java.util.ArrayList;
+import java.util.List;
 
 public class PlanningList extends ItemList{
 
@@ -15,5 +18,9 @@ public class PlanningList extends ItemList{
         }else{
             return false;
         }
+    }
+    @Override
+    public String toString() {
+        return this.toJSON().toJSONString();
     }
 }

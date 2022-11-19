@@ -1,5 +1,9 @@
 package Entities;
-import org.json.simple.
+import org.json.simple.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class Debt {
 
     private User userOwed;
@@ -43,5 +47,18 @@ public class Debt {
 
     public String getGroupId() {
         return this.groupId;
+    }
+
+    public JSONObject toJSON(){
+        JSONObject obj = new JSONObject();
+        obj.put("userOwed", this.userOwed.toString());
+        obj.put("userOwing", this.userOwing.toString());
+        obj.put("groupId", this.groupId);
+        obj.put("debtValue", this.debtValue);
+        return obj;
+    }
+    @Override
+    public String toString() {
+        return this.toJSON().toJSONString();
     }
 }
