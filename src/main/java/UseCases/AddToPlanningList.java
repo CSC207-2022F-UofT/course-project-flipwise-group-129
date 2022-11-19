@@ -6,7 +6,9 @@ import InputBoundary.AddToPlanningBoundaryIn;
 import DataStructures.UpdatedLists;
 import OutputBoundary.AddToPlanningBoundaryOut;
 import DataAccessInterface.*;
+import com.fasterxml.jackson.core.JsonProcessingException;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,19 +19,18 @@ public class AddToPlanningList implements AddToPlanningBoundaryIn{
         this.outputBoundary = outputBoundary;
     }
     @Override
-    public UpdatedLists addPlanning(PlannedItemInfo item) {
+    public UpdatedLists addPlanning(PlannedItemInfo item) throws IOException {
         String groupId = item.getGroupId();
         GroupDataInterface groupAccess = new GroupDataAccess(groupJasonPath);
         Group currGroup = retreiveGroupInfo(groupId, groupAccess);
         Item newItem = createItem(item);
         currGroup.getPlanningList().addItems(newItem);
-        saveGroup(groupId, groupAccess);
+        saveGroup(groupId, currGroup.toString(), groupAccess);
         UpdatedLists updatedLists = new UpdatedLists(
                 getUpdatedPlanning(currGroup.getPlanningList()), getUpdatedPurchase(currGroup.getPurchaseList()));
-        // how detailed do you want retrieved from updated lists <-- all the info for items, I guess?
         return outputBoundary.displayLists(updatedLists);
     }
-    private List<List<String>> getUpdatedPurchase(PlanningList planningList){
+    private List<List<String>> getUpdatedPlanning(PlanningList planningList){
         List<List<String>> stringPlanningList = new ArrayList<>();
         for(Item curItem: planningList.getItems()){
             List<String> currentItem = new ArrayList<>();
@@ -40,7 +41,7 @@ public class AddToPlanningList implements AddToPlanningBoundaryIn{
         return stringPlanningList;
     }
 
-    private List<List<String>> getUpdatedPlanning(PurchaseList purchaseList){
+    private List<List<String>> getUpdatedPurchase(PurchaseList purchaseList){
         List<List<String>> stringPurchasedList = new ArrayList<>();
         for(Item curItem: purchaseList.getItems()){
             List<String> currentItem = new ArrayList<>();
@@ -52,20 +53,18 @@ public class AddToPlanningList implements AddToPlanningBoundaryIn{
         }
         return stringPurchasedList;
     }
-    private Item createItem(PlannedItemInfo item){
-        String itemId = ""; // UTC timestamp
-        Item newItem = new Item(itemId, item.getName(), null , item.getPrice());
-        String itemStringify = newItem.toString();
+    private Item createItem(PlannedItemInfo item) throws IOException {
+        Item newItem = new Item(item.getName(), null , item.getPrice(), new ArrayList<>());
         ItemDataInterface itemAccess = new ItemDataAccess(itemJasonPath);
-        itemAccess.addorUpdateItem(itemStringify);
+        itemAccess.addorUpdateItem(newItem.getItemId(), newItem.toString());
         return newItem;
     }
-    private Group retreiveGroupInfo(String groupId, GroupDataInterface groupAccess){
-        String groupInfo = groupAccess.groupAsString(groupID);
-        return new Group(groupInfo); //the fromString is a constructor, right?
+    private Group retreiveGroupInfo(String groupId, GroupDataInterface groupAccess) throws JsonProcessingException {
+        String groupInfo = groupAccess.groupAsString(groupId);
+        return Group.fromString(groupInfo);
     }
 
-    private void saveGroup(String groupId, GroupDataInterface groupAccess){
-        groupAccess.addorUpdateGroup(groupId);
+    private void saveGroup(String groupId, String groupData, GroupDataInterface groupAccess) throws IOException {
+        groupAccess.addorUpdateGroup(groupId, groupData);
     }
 }
