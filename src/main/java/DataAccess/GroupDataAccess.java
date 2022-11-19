@@ -62,4 +62,13 @@ public class GroupDataAccess implements GroupDataInterface {
     public String groupAsString(String groupId) {
         return groups.get(groupId);
     }
+
+//    public static void main(String[] args) throws IOException {
+//        File newFile = new File("groups.json");
+//
+//        FileWriter writer = new FileWriter(newFile);
+//        JSONObject groupDetails = new JSONObject();
+//        groupDetails.put("groupId", "groupkey");
+//        writer.write(groupDetails.toJSONString());
+//    }
 }
