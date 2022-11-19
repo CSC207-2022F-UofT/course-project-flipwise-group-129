@@ -82,4 +82,9 @@ public class Item {
             throw new RuntimeException(e);
         }
     }
+
+    public static Item fromString(String itemString) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        return mapper.readValue(itemString, Item.class);
+    }
 }

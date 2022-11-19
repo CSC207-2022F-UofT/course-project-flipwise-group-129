@@ -100,4 +100,9 @@ public class Group {
             throw new RuntimeException(e);
         }
     }
+
+    public static Group fromString(String groupString) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        return mapper.readValue(groupString, Group.class);
+    }
 }
