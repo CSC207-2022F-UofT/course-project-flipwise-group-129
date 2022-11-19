@@ -34,7 +34,7 @@ public class AddPurchase implements AddPurchaseBoundaryIn {
         extractInformation(purchaseInfo);
 
         PlanningList planningList = this.purchaseGroup.getPlanningList();
-        planningList.removeFromList(this.purchasedItem);
+        boolean removeCheck = planningList.removeFromList(this.purchasedItem);
 
         PurchaseList purchaseList = this.purchaseGroup.getPurchaseList();
         addToPurchase(purchaseList);
