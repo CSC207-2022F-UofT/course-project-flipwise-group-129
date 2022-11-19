@@ -1,11 +1,10 @@
 package UseCases;
-import DataAccess.GroupDataAccess;
+import DataAccessInterface.*;
 import DataStructures.PlannedItemInfo;
 import Entities.*;
 import InputBoundary.AddToPlanningBoundaryIn;
 import DataStructures.UpdatedLists;
 import OutputBoundary.AddToPlanningBoundaryOut;
-import DataAccessInterface.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import java.io.IOException;
@@ -14,14 +13,19 @@ import java.util.List;
 
 public class AddToPlanningList implements AddToPlanningBoundaryIn{
     AddToPlanningBoundaryOut outputBoundary;
+    GroupDataInterface groupAccess;
+    ItemDataInterface itemAccess;
 
-    public AddToPlanningList(AddToPlanningBoundaryOut outputBoundary){
+    public AddToPlanningList(
+            AddToPlanningBoundaryOut outputBoundary, GroupDataInterface groupAccess, ItemDataInterface itemAccess){
         this.outputBoundary = outputBoundary;
+        this.groupAccess = groupAccess;
+        this.itemAccess = itemAccess;
     }
     @Override
     public UpdatedLists addPlanning(PlannedItemInfo item) throws IOException {
         String groupId = item.getGroupId();
-        GroupDataInterface groupAccess = new GroupDataAccess(groupJasonPath);
+//        GroupDataInterface groupAccess = new GroupDataAccess(groupJasonPath);
         Group currGroup = retreiveGroupInfo(groupId, groupAccess);
         Item newItem = createItem(item);
         currGroup.getPlanningList().addItems(newItem);
@@ -55,7 +59,7 @@ public class AddToPlanningList implements AddToPlanningBoundaryIn{
     }
     private Item createItem(PlannedItemInfo item) throws IOException {
         Item newItem = new Item(item.getName(), null , item.getPrice(), new ArrayList<>());
-        ItemDataInterface itemAccess = new ItemDataAccess(itemJasonPath);
+//        ItemDataInterface itemAccess = new ItemDataAccess(itemJasonPath);
         itemAccess.addorUpdateItem(newItem.getItemId(), newItem.toString());
         return newItem;
     }
