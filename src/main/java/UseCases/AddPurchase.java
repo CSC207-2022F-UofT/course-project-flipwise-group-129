@@ -1,24 +1,71 @@
 package UseCases;
 
 import DataStructures.PurchaseInfo;
-import Entities.Item;
-import Entities.User;
+import DataStructures.UpdatedLists;
+import Entities.*;
+import InputBoundary.AddPurchaseBoundaryIn;
+import OutputBoundary.AddPurchaseBoundaryOut;
+import Presenters.AddPurchasePresenter;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class AddPurchase {
-    private final PurchaseInfo purchaseInfo;
+public class AddPurchase implements AddPurchaseBoundaryIn {
+    private PurchaseInfo purchaseInfo;
     private Item purchasedItem;
     private List<User> participatingUsers;
     private float price;
+    private Group purchaseGroup;
+    private UpdatedLists newLists;
+    private User buyer;
+    private AddPurchaseBoundaryOut presenter;
 
-    public AddPurchase(PurchaseInfo purchaseInfo) {
+    @Override
+    public void executeUseCase(PurchaseInfo purchaseInfo) {
         this.purchaseInfo = purchaseInfo;
 
-        this.purchasedItem = purchaseInfo.getItem();
-        this.participatingUsers = purchaseInfo.getUsers();
-        this.price = purchaseInfo.getPrice();
+        extractInformation(purchaseInfo);
 
-        // Dont i need the group and shit to do this lol?
+        PlanningList planningList = this.purchaseGroup.getPlanningList();
+        planningList.removeFromList(this.purchasedItem);
+
+        PurchaseList purchaseList = this.purchaseGroup.getPurchaseList();
+        addToPurchase(purchaseList);
+
+        List<String> planningListItemIds = convertList(planningList);
+        List<String> purchasedListItemIds = convertList(purchaseList);
+        newLists = new UpdatedLists(planningListItemIds, purchasedListItemIds);
+        this.presenter.updateView(newLists);
+    }
+
+    private void addToPurchase(PurchaseList purchaseList) {
+        this.purchasedItem.setPrice(this.price);
+        this.purchasedItem.setBuyer(this.buyer);
+        purchaseList.addItems(this.purchasedItem);
+    }
+
+    private void extractInformation(PurchaseInfo purchaseInfo) {
+        this.purchasedItem = getItemById(purchaseInfo.getItem());
+        extractUsers(purchaseInfo);
+        this.price = purchaseInfo.getPrice();
+        this.purchaseGroup = getGroupById(purchaseInfo.getPurchaseGroup());
+        this.buyer = getUserByUsername(purchaseInfo.getBuyer());
+        this.presenter = purchaseInfo.getPresenter();
+    }
+
+    private void extractUsers(PurchaseInfo purchaseInfo) {
+        List<String> usernames = purchaseInfo.getUsers();
+        for (String username : usernames) {
+            this.participatingUsers.add(getUserById(username));
+        }
+    }
+
+    public List<String> convertList(ItemList inputList) {
+        List<Item> tempListItems = inputList.getItems();
+        List<String> tempListItemIds = new ArrayList<String>();
+        for (Item item: tempListItems) {
+            tempListItemIds.add(item.id);
+        }
+        return tempListItemIds;
     }
 }
