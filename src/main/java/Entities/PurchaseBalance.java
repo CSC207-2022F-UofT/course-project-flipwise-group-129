@@ -8,6 +8,10 @@ import java.util.List;
 
 public class PurchaseBalance {
 
+    /*
+    Represents a list of all the debts
+     */
+
     private List<Debt> allDebts;
 
     public PurchaseBalance(){
@@ -17,16 +21,18 @@ public class PurchaseBalance {
         this.allDebts = debts;
     }
 
-
     public List<Debt> getAllDebts() {
+        // return a list of all the debts
         return allDebts;
     }
 
     public void addDebtPair(Debt debt){
+        // add a pair of debts between two users
         this.allDebts.add(debt);
     }
 
     public boolean removeDebtPair(Debt debt){
+        //remove a debt between two users
         if (this.allDebts.contains(debt)){
             this.allDebts.remove(debt);
             return true;
