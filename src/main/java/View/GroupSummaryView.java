@@ -5,9 +5,11 @@ import View.BalanceView;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
-public class GroupSummaryView extends JPanel {
+public class GroupSummaryView extends JFrame implements ActionListener {
 
     private JTabbedPane t;
     private JComponent p1, p2, p3;
@@ -18,6 +20,7 @@ public class GroupSummaryView extends JPanel {
 
 
     public GroupSummaryView() {
+
         setSize(1000,600);
         setVisible(true);
         setLayout(new BorderLayout());
@@ -81,6 +84,13 @@ public class GroupSummaryView extends JPanel {
         add(right_hand_side, BorderLayout.CENTER);
         add(bottoms_up, BorderLayout.SOUTH);
 
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getActionCommand().equals("")){
+
+        }
     }
 
     public static void main(String[] args) {

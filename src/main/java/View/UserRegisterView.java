@@ -5,17 +5,16 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class UserRegisterView extends JPanel implements ViewInterface{
-    private final JButton loginButton;
+public class UserRegisterView extends JPanel implements ActionListener{
+    private final JButton signupButton;
     private final JTextField username;
     private final JPasswordField p1, p2;
     private final JLabel t1, t2, t3, t4;
     private JButton exitButton;
 
-
     public UserRegisterView(){
 
-        // Defining
+        // Defining JComponents
         t1 = new JLabel("Create an Account");
         Font f = new Font("Arial", Font.BOLD, 20);
         t1.setFont(f);
@@ -25,10 +24,10 @@ public class UserRegisterView extends JPanel implements ViewInterface{
         p1 = new JPasswordField();
         t4 = new JLabel("Re-enter Password");
         p2 = new JPasswordField();
-        loginButton = new JButton("Create");
+        signupButton = new JButton("Continue");
         exitButton = new JButton("Exit");
 
-        // setting positions
+        // Setting positions of JComponents
         t1.setBounds(70, 40, 300, 40);
         t2.setBounds(70, 100, 200, 20);
         username.setBounds(70, 120, 300, 30);
@@ -36,10 +35,10 @@ public class UserRegisterView extends JPanel implements ViewInterface{
         p1.setBounds(70, 190, 300, 30);
         t4.setBounds(70, 220, 200, 20);
         p2.setBounds(70, 240, 300, 30);
-        loginButton.setBounds(200, 300, 100, 30);
+        signupButton.setBounds(200, 300, 100, 30);
         exitButton.setBounds(70, 300, 100, 30);
 
-        // adding
+        // Adding JComponents
         add(t1);
         add(t2);
         add(username);
@@ -47,24 +46,37 @@ public class UserRegisterView extends JPanel implements ViewInterface{
         add(p1);
         add(t4);
         add(p2);
-        add(loginButton);
+        add(signupButton);
         add(exitButton);
 
-        // JFrame Setup
+        // JPanel Setup
         setLayout(null);
         setVisible(true);
         setSize(450, 450);
 
-        loginButton.addActionListener(this::actionPerformed);
+        signupButton.addActionListener(this);
+        exitButton.addActionListener(this);
 
 
     }
 
     public void actionPerformed(ActionEvent e) {
-        System.out.println(username.getText());
-    }
-    public static void main(String[] args) {
-        UserRegisterView login = new UserRegisterView();
-    }
+        if (e.getActionCommand().equals("Continue")){
+//            controller.callUserLoginInteractor(email.getText(), String.valueOf(password.getPassword()));
+//            try {
+////                userRegisterController.create(email.getText(),
+////                        String.valueOf(password.getPassword()),
+////                        String.valueOf(repeatPassword.getPassword()),
+////                        String.valueOf(name.getText()));
+////                String output = String.format("%s Individual created.", name.getText());
+////                JOptionPane.showMessageDialog(this, output);
+//            } catch (Exception e) {
+//                JOptionPane.showMessageDialog(this, e.getMessage());
+//            }
+        }
+  }
+    public JButton getSignUpButton() { return signupButton; }
+    public JButton getExitButton() { return exitButton; }
+
 }
 

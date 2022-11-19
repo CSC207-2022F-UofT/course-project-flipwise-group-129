@@ -1,8 +1,10 @@
 package View;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-public class HomePageView extends JPanel{
+public class HomePageView extends JPanel implements ActionListener {
         JButton btn_create;
         JButton btn_join;
         JLabel homePage;
@@ -42,6 +44,24 @@ public class HomePageView extends JPanel{
 
 
             setVisible(true);
+            btn_create.addActionListener(this);
+            btn_join.addActionListener(this);
         }
+
+        public void actionPerformed(ActionEvent e){
+            if (e.getActionCommand().equals("Create Group")){
+                JOptionPane.showInputDialog("Please enter in Group Name:");
+                //Create a Group Object and controller stuff
+            }
+
+            if (e.getActionCommand().equals("Join Group")){
+                JOptionPane.showInputDialog("Please enter in Group ID:");
+                //Create a Group Object and controller stuff
+
+
+            }
+        }
+
+//        public void getNumberOfGroups(){ return }
 
 }

@@ -6,14 +6,14 @@ import java.awt.event.ActionListener;
 import View.ViewInterface;
 
 
-public class UserLoginView extends JPanel implements ViewInterface{
+public class UserLoginView extends JPanel implements ActionListener{
 
     private JLabel title;
 
     private final JTextField username;
     private final JPasswordField password;
     private final JButton loginButton;
-    private JButton exitButton;
+    private JButton newButton;
     private final JLabel t1, t2, t3;
 
 
@@ -28,7 +28,7 @@ public class UserLoginView extends JPanel implements ViewInterface{
             t3 = new JLabel("Password");
             password = new JPasswordField(20);
             loginButton = new JButton("Continue");
-            exitButton = new JButton("Exit");
+            newButton = new JButton("New to Flipwise?");
 
 
             // Setting positions of JComponents
@@ -37,37 +37,33 @@ public class UserLoginView extends JPanel implements ViewInterface{
             username.setBounds(70, 120, 300, 30);
             t3.setBounds(70, 170, 200, 20);
             password.setBounds(70, 190, 300, 30);
-            loginButton.setBounds(200, 240, 100, 30);
-            exitButton.setBounds(70, 240, 100, 30);
+            loginButton.setBounds(240, 240, 130, 30);
+            newButton.setBounds(70, 240, 130, 30);
 
-            // Adding JComponents to JFrame
+            // Adding JComponents to JPanel
             this.add(t1);
             this.add(t2);
             this.add(username);
             this.add(t3);
             this.add(password);
             this.add(loginButton);
-            this.add(exitButton);
+            this.add(newButton);
 
-
-            this.setSize(450, 450);
-
-            // JFrame SetUp
-            setLayout(null);
+            // JPanel SetUp
+            this.setLayout(null);
             setVisible(true);
+            this.setSize(1000, 1000);
 
-            this.setSize(450, 450);
-
-            loginButton.addActionListener(this::actionPerformed);
+            loginButton.addActionListener(this);
+            newButton.addActionListener(this);
 
         }
 
 //    @Override
     public void actionPerformed(ActionEvent e) {
-
-//        if (e.getActionCommand().equals("login User")) {
+        if (e.getActionCommand().equals("Continue")) {
 //            controller.callUserLoginInteractor(email.getText(), String.valueOf(password.getPassword()));
-//        }
+        }
     }
 
     /**
@@ -76,14 +72,14 @@ public class UserLoginView extends JPanel implements ViewInterface{
      */
     public void showFailureLoginMessage(String errorMessage) {
         JOptionPane.showMessageDialog(this, errorMessage);
-
+    }
+    public JButton getLoginButton(){
+        return loginButton;
     }
 
-    public JButton getExitLoginButton() { return exitButton; }
-
-    public static void main(String[] args) {
-            UserLoginView login = new UserLoginView();
-        }
+    public JButton getNewButton(){
+        return newButton;
+    }
 
 }
 
