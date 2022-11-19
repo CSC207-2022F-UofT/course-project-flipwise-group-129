@@ -107,6 +107,10 @@ public class AddPurchase implements AddPurchaseBoundaryIn {
             List<String> tempList = new ArrayList<String>();
             tempList.add(item.getItemId());
             tempList.add(item.getItemName());
+            if (inputList instanceof PurchaseList) {
+                tempList.add(item.getPrice().toString());
+                tempList.add(item.getBuyer().getUsername());
+            }
             tempListItemStrings.add(tempList);
         }
         return tempListItemStrings;
