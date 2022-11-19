@@ -16,11 +16,11 @@ public class AddToPlanningList implements AddToPlanningBoundaryIn{
     public UpdatedLists addPlanning(PlannedItemInfo item) {
         String groupId = item.getGroupId();
         GroupDataInterface groupAccess = new GroupDataAccess(groupJasonPath);
-        Group groupInfo = retreiveGroupInfo(groupId, groupAccess);
+        Group currGroup = retreiveGroupInfo(groupId, groupAccess);
         Item newItem = createItem(item);
-        groupInfo.getPlanningList().addItems(newItem);
+        currGroup.getPlanningList().addItems(newItem);
         saveGroup(groupId, groupAccess);
-        UpdatedLists updatedLists = new UpdatedLists(new PlanningList(), new PurchaseList());
+        UpdatedLists updatedLists = new UpdatedLists(currGroup.getPlanningList(), currGroup.getPurchaseList());
         // how detailed do you want retrieved from updated lists <-- all the info for items, I guess?
         return outputBoundary.displayLists(updatedLists);
     }
