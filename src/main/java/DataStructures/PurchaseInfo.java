@@ -18,6 +18,7 @@ public class PurchaseInfo {
     private final UserDataInterface userData;
 
     public PurchaseInfo(String purchasedItemId, List<String> participatingUsernames, String buyerUsername, float itemPrice, String purchaseGroupId, AddPurchaseBoundaryOut presenter, GroupDataInterface groupData, ItemDataInterface itemData, UserDataInterface userData) {
+        // Instantiate the private attributes of all the different pieces of data packaged into this data structure for the use cases use
         this.purchasedItemId = purchasedItemId;
         this.participatingUsernames = participatingUsernames;
         this.buyerUsername = buyerUsername;
@@ -28,6 +29,8 @@ public class PurchaseInfo {
         this.itemData = itemData;
         this.userData = userData;
     }
+
+    // Since this data structure will only be read from, define and implement getters for each of the attributes
 
     public String getItemId(){
         return this.purchasedItemId;
