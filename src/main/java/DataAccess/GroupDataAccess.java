@@ -2,9 +2,7 @@ package DataAccess;
 
 import DataAccessInterface.GroupDataInterface;
 //import org.*;
-import java.io.FileWriter;
 import org.json.simple.JSONObject;
-import java.io.File;
 import org.json.simple.JSONArray;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
