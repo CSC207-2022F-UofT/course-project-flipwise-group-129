@@ -2,15 +2,23 @@ package DataStructures;
 
 public class JoinGroupRequest {
 
-    private String groupId;
+    /*
+     Represents all the information passed in by the user to join a group
+     */
 
-    private String userId;
+    private String groupId; // the id of the group that you need to join
 
-    public JoinGroupRequest(String groupId, String userId){
+    private String username; // the username of the user that wants to join a group
+
+    public JoinGroupRequest(String groupId, String username){
         this.groupId = groupId;
-        this.userId = userId;
+        this.username = username;
     }
 
-    public String getGroupId() { return this.groupId; }
-    public String getUserId() { return this.userId; }
+    public String getGroupId() {
+        // get the id of the group to join
+        return this.groupId; }
+    public String getUsername() {
+        // get the username of the user
+        return this.username; }
 }
