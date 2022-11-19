@@ -1,5 +1,4 @@
 package DataStructures;
-import DataAccess.UserDataAccess;
 import DataAccessInterface.GroupDataInterface;
 import DataAccessInterface.ItemDataInterface;
 import DataAccessInterface.UserDataInterface;
@@ -16,8 +15,9 @@ public class PurchaseInfo {
     private final AddPurchaseBoundaryOut presenter;
     private final GroupDataInterface groupData;
     private final ItemDataInterface itemData;
+    private final UserDataInterface userData;
 
-    public PurchaseInfo(String purchasedItemId, List<String> participatingUsernames, String buyerUsername, float itemPrice, String purchaseGroupId, AddPurchaseBoundaryOut presenter, GroupDataInterface groupData, ItemDataInterface itemData) {
+    public PurchaseInfo(String purchasedItemId, List<String> participatingUsernames, String buyerUsername, float itemPrice, String purchaseGroupId, AddPurchaseBoundaryOut presenter, GroupDataInterface groupData, ItemDataInterface itemData, UserDataInterface userData) {
         this.purchasedItemId = purchasedItemId;
         this.participatingUsernames = participatingUsernames;
         this.buyerUsername = buyerUsername;
@@ -26,9 +26,10 @@ public class PurchaseInfo {
         this.presenter = presenter;
         this.groupData = groupData;
         this.itemData = itemData;
+        this.userData = userData;
     }
 
-    public String getItem(){
+    public String getItemId(){
         return this.purchasedItemId;
     }
 
@@ -47,4 +48,6 @@ public class PurchaseInfo {
     public GroupDataInterface getGroupData() { return this.groupData; }
 
     public ItemDataInterface getItemData() { return this.itemData; }
+
+    public UserDataInterface getUserData() { return this.userData; }
 }

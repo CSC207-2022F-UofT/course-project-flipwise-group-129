@@ -8,7 +8,6 @@ import DataStructures.UpdatedLists;
 import Entities.*;
 import InputBoundary.AddPurchaseBoundaryIn;
 import OutputBoundary.AddPurchaseBoundaryOut;
-import Presenters.AddPurchasePresenter;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import java.io.IOException;
@@ -26,6 +25,7 @@ public class AddPurchase implements AddPurchaseBoundaryIn {
     private AddPurchaseBoundaryOut presenter;
     private GroupDataInterface groupData;
     private ItemDataInterface itemData;
+    private UserDataInterface userData;
 
     @Override
     public void executeUseCase(PurchaseInfo purchaseInfo) {
@@ -50,8 +50,8 @@ public class AddPurchase implements AddPurchaseBoundaryIn {
 
     private void writeData() {
         try {
-            groupData.addorUpdateGroup(this.purchaseInfo.getPurchaseGroup(), this.purchaseGroup.toString());
-            itemData.addorUpdateItem(this.purchaseInfo.getItem(), this.purchasedItem.toString());
+            this.groupData.addorUpdateGroup(this.purchaseInfo.getPurchaseGroup(), this.purchaseGroup.toString());
+            this.itemData.addorUpdateItem(this.purchaseInfo.getItemId(), this.purchasedItem.toString());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -65,26 +65,27 @@ public class AddPurchase implements AddPurchaseBoundaryIn {
     }
 
     private void extractInformation(PurchaseInfo purchaseInfo) {
+        this.groupData = purchaseInfo.getGroupData();
+        this.itemData = purchaseInfo.getItemData();
+        this.userData = purchaseInfo.getUserData();
         try {
-            this.purchasedItem = Item.fromString(purchaseInfo.getItem());
+            this.purchasedItem = Item.fromString(this.itemData.itemAsString(this.purchaseInfo.getItemId()));
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
         extractUsers(purchaseInfo);
         this.price = purchaseInfo.getPrice();
         try {
-            this.purchaseGroup = Group.fromString(groupData.groupAsString(purchaseInfo.getPurchaseGroup()));
+            this.purchaseGroup = Group.fromString(this.groupData.groupAsString(purchaseInfo.getPurchaseGroup()));
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
         try {
-            this.buyer = User.fromString(userData.userAsString(purchaseInfo.getBuyer()));
+            this.buyer = User.fromString(this.userData.userAsString(purchaseInfo.getBuyer()));
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
         this.presenter = purchaseInfo.getPresenter();
-        this.groupData = purchaseInfo.getGroupData();
-        this.itemData = purchaseInfo.getItemData();
 
     }
 
@@ -92,7 +93,7 @@ public class AddPurchase implements AddPurchaseBoundaryIn {
         List<String> usernames = purchaseInfo.getUsers();
         for (String username : usernames) {
             try {
-                this.participatingUsers.add(User.fromString(userData.userAsString(username)));
+                this.participatingUsers.add(User.fromString(this.userData.userAsString(username)));
             } catch (JsonProcessingException e) {
                 throw new RuntimeException(e);
             }
