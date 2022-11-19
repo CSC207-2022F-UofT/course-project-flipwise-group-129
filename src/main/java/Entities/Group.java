@@ -31,6 +31,7 @@ public class Group {
         this.users = users;
         this.purchaseList = new PurchaseList();
         this.planningList = new PlanningList();
+        this.purchaseBalance = new PurchaseBalance();
     }
 
 //    public Group(String jsonString){
@@ -81,6 +82,7 @@ public class Group {
         // return the name of the group
         return this.groupName;
     }
+
 
     public void addUser(User user){
         // add a user into the group
