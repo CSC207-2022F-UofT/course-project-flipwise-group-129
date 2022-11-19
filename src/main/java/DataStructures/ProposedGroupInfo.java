@@ -1,9 +1,9 @@
 package DataStructures;
 public class ProposedGroupInfo {
 
-    private String name;
+    private final String name;
 
-    private String userId;
+    private final String userId;
 
     public ProposedGroupInfo(String name, String userId){
         this.name = name;
@@ -13,4 +13,5 @@ public class ProposedGroupInfo {
     public String getName(){
         return this.name;
     }
+    public String getUserId() { return this.userId;}
 }

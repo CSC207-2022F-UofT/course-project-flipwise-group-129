@@ -13,12 +13,10 @@ import java.util.ArrayList;
 import java.util.List;
 public class GroupCreate implements GroupCreateBoundaryIn{
     final UserObtainDsGateway userDsGateway;
-    final ProposedGroupInfo newGroupInfo;
     final GroupCreateBoundaryOut groupCreatePresenter;
     final GroupFactory groupFactory;
 
-    public GroupCreate(ProposedGroupInfo newGroupInfo, GroupCreateBoundaryOut presenter, GroupFactory groupFactory){
-        this.newGroupInfo = newGroupInfo;
+    public GroupCreate(GroupCreateBoundaryOut presenter, GroupFactory groupFactory){
         this.groupCreatePresenter = presenter;
         this.groupFactory = groupFactory;
     }
