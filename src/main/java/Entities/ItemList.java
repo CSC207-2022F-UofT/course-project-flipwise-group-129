@@ -19,10 +19,10 @@ abstract public class ItemList {
         this.items.add(item);
     }
 
-    public JSONObject toJSON(){
-        JSONObject obj = new JSONObject();
-        List<String> allItems = new ArrayList<>();
-        this.items.forEach(item -> allItems.add(item.toString()));
-        return obj;
-    }
+//    public JSONObject toJSON(){
+//        JSONObject obj = new JSONObject();
+//        List<String> allItems = new ArrayList<>();
+//        this.items.forEach(item -> allItems.add(item.toString()));
+//        return obj;
+//    }
 }

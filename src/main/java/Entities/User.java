@@ -1,4 +1,6 @@
 package Entities;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.simple.JSONObject;
 
 import java.sql.Timestamp;
@@ -49,19 +51,24 @@ public class User {
         return false;
     }
 
-    public JSONObject toJSON(){
-        JSONObject obj = new JSONObject();
-        obj.put("username", this.username);
-        obj.put("password", this.password);
-        List<String> groupStrings = new ArrayList<>();
-        this.groups.forEach(group -> groupStrings.add(group.toString()));
-        obj.put("groups", groupStrings);
-
-        return obj;
-    }
+//    public JSONObject toJSON(){
+//        JSONObject obj = new JSONObject();
+//        obj.put("username", this.username);
+//        obj.put("password", this.password);
+//        List<String> groupStrings = new ArrayList<>();
+//        this.groups.forEach(group -> groupStrings.add(group.toString()));
+//        obj.put("groups", groupStrings);
+//
+//        return obj;
+//    }
     @Override
     public String toString() {
-        return this.toJSON().toJSONString();
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            return mapper.writeValueAsString(this);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }

@@ -1,5 +1,7 @@
 package Entities;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.simple.JSONObject;
 
 import java.util.ArrayList;
@@ -21,6 +23,11 @@ public class PlanningList extends ItemList{
     }
     @Override
     public String toString() {
-        return this.toJSON().toJSONString();
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            return mapper.writeValueAsString(this);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

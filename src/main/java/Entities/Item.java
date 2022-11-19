@@ -1,5 +1,7 @@
 package Entities;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.simple.JSONObject;
 
 import java.sql.Timestamp;
@@ -59,20 +61,25 @@ public class Item {
         this.usersInvolved.add(user);
     }
 
-    public JSONObject toJSON(){
-        JSONObject obj = new JSONObject();
-        obj.put("itemId", this.itemId);
-        obj.put("itemName", this.itemName);
-        obj.put("userBuyer", this.buyer);
-        List<String> usersInvolved = new ArrayList<>();
-        this.usersInvolved.forEach(user -> usersInvolved.add(user.toString()));
-        obj.put("usersInvolved", usersInvolved);
-        obj.put("price", this.price);
-
-        return obj;
-    }
+//    public JSONObject toJSON(){
+//        JSONObject obj = new JSONObject();
+//        obj.put("itemId", this.itemId);
+//        obj.put("itemName", this.itemName);
+//        obj.put("userBuyer", this.buyer);
+//        List<String> usersInvolved = new ArrayList<>();
+//        this.usersInvolved.forEach(user -> usersInvolved.add(user.toString()));
+//        obj.put("usersInvolved", usersInvolved);
+//        obj.put("price", this.price);
+//
+//        return obj;
+//    }
     @Override
     public String toString() {
-        return this.toJSON().toJSONString();
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            return mapper.writeValueAsString(this);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
