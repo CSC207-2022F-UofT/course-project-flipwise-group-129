@@ -51,7 +51,7 @@ public class AddPurchase implements AddPurchaseBoundaryIn {
     private void writeData() {
         try {
             groupData.addorUpdateGroup(this.purchaseInfo.getPurchaseGroup(), this.purchaseGroup.toString());
-            userData
+            itemData.addorUpdateItem(this.purchaseInfo.getItem(), this.purchasedItem.toString());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
