@@ -7,12 +7,15 @@ import Entities.*;
 import InputBoundary.GroupCreateBoundaryIn;
 import OutputBoundary.GroupCreateBoundaryOut;
 
+import java.io.IOException;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.ArrayList;
 import java.util.List;
 
 import DataAccessInterface.*;
+import com.fasterxml.jackson.core.JsonProcessingException;
+
 public class GroupCreate implements GroupCreateBoundaryIn{
     final GroupDataInterface groupDsInterface;
     final UserDataInterface userDsInterface;
@@ -33,7 +36,12 @@ public class GroupCreate implements GroupCreateBoundaryIn{
 //        }
         String userString = this.userDsInterface.userAsString(reqGroupInfo.getUserId());
 
-        User createdUser = User.fromString(userString);
+        User createdUser = null;
+        try {
+            createdUser = User.fromString(userString);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
 
         Set<User> users = new TreeSet<>();
         users.add(createdUser);
@@ -43,7 +51,11 @@ public class GroupCreate implements GroupCreateBoundaryIn{
 
         //
         //pass new info to db
-        this.groupDsInterface.addorUpdateGroup(group.getGroupId(), group.toString());
+        try {
+            this.groupDsInterface.addorUpdateGroup(group.getGroupId(), group.toString());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         this.userDsInterface.addorUpdateUser(createdUser.getUsername(), createdUser.toString());
 
         List<Group> allGroups = new ArrayList<>(createdUser.getGroups());

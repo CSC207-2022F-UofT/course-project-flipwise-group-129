@@ -10,6 +10,7 @@ import OutputBoundary.GroupJoinBoundaryOut;
 import DataAccessInterface.*;
 
 
+import java.io.IOException;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -36,7 +37,12 @@ public class GroupJoin implements GroupJoinBoundaryIn{
         String userString = this.userDsInterface.userAsString(reqGroupInfo.getUserId());
 
         //repeated code that should ideally be packed into a method use case interface
-        User user = User.fromString(userString);
+        User user = null;
+        try {
+            user = User.fromString(userString);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
 
         //obtain the group info form the database
         String groupString = this.groupDsInterface.groupAsString(reqGroupInfo.getGroupId());
@@ -55,7 +61,11 @@ public class GroupJoin implements GroupJoinBoundaryIn{
         user.addGroup(group);
 
         //pass new info to db
-        this.groupDsInterface.addorUpdateGroup(group.getGroupId(), group.toString());
+        try {
+            this.groupDsInterface.addorUpdateGroup(group.getGroupId(), group.toString());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         this.userDsInterface.addorUpdateUser(user.getUsername(), user.toString());
 
         //to controller
