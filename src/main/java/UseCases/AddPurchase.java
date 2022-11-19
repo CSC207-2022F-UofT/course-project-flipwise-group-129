@@ -78,7 +78,7 @@ public class AddPurchase implements AddPurchaseBoundaryIn {
             throw new RuntimeException(e);
         }
         try {
-            this.buyer = User.fromString(purchaseInfo.getBuyer());
+            this.buyer = User.fromString(userData.userAsString(purchaseInfo.getBuyer()));
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
@@ -91,7 +91,11 @@ public class AddPurchase implements AddPurchaseBoundaryIn {
     private void extractUsers(PurchaseInfo purchaseInfo) {
         List<String> usernames = purchaseInfo.getUsers();
         for (String username : usernames) {
-            this.participatingUsers.add(getUserById(username));
+            try {
+                this.participatingUsers.add(User.fromString(userData.userAsString(username)));
+            } catch (JsonProcessingException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
