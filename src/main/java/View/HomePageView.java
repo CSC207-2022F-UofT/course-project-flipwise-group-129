@@ -3,11 +3,20 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 public class HomePageView extends JFrame implements ActionListener {
         JButton btn_create;
         JButton btn_join;
         JLabel homePage;
+        JPanel group_btns = new JPanel();
+
+        //DUMMY
+        String[] group_names = new String[]{};
+        //DUMMY
+
+        JButton[] button_array = createGroupButtons(group_names);
 
 
         public HomePageView() {
@@ -21,6 +30,13 @@ public class HomePageView extends JFrame implements ActionListener {
             JPanel homepageDetails = new JPanel();
             homepageDetails.add(homePage);
 
+
+            //Algorithm implementation
+            for (int i = 0; i < group_names.length; i++) {
+                group_btns.add(button_array[i]);
+            }
+
+            //DUMMY
             JLabel test = new JLabel("This is a group's area");
             JPanel new_test = new JPanel();
             new_test.add(test);
@@ -28,6 +44,7 @@ public class HomePageView extends JFrame implements ActionListener {
             JLabel test2 = new JLabel("This is another group's area");
             JPanel new_test_2 = new JPanel();
             new_test_2.add(test2);
+            //DUMMY
 
 
             btn_create = new JButton("Create Group");
@@ -41,8 +58,9 @@ public class HomePageView extends JFrame implements ActionListener {
             add(homePage);
             add(Box.createRigidArea(new Dimension(0, 5)));
             add(groupButtons);
-            add(new_test);
-            add(new_test_2);
+            add(group_btns);
+//            add(new_test);
+//            add(new_test_2);
 
 
 
@@ -76,5 +94,14 @@ public class HomePageView extends JFrame implements ActionListener {
 
 
 //        public void getNumberOfGroups(){ return }
+
+    public JButton[] createGroupButtons(String[] Current_Groups) {
+        JButton[] output = new JButton[Current_Groups.length];
+        for (int i = 0; i < Current_Groups.length; i++) {
+            JButton checkbox_member = new JButton(Current_Groups[i]);
+            output[i] = checkbox_member;
+        }
+        return output;
+    }
 
 }

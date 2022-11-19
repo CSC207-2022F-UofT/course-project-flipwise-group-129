@@ -6,13 +6,13 @@ import java.util.List;
 
 public class AddPurchaseView extends JPanel{
 
-    List<String> members = new ArrayList<String>(); //NEEDS TO BE REFINED
+    String[] members = new String[]{}; //NEEDS TO BE REFINED
     JButton confirm;
     JButton reject;
     JLabel item_request;
     JTextField item_price;
     JTextArea text_contributing_members;
-    List<JCheckBox> contributing_members = createCheckboxes(members);
+    JCheckBox[] contributing_members = createCheckboxes(members);
     JTextArea confirmation;
     JTextArea price_information;
     public AddPurchaseView() {
@@ -42,8 +42,8 @@ public class AddPurchaseView extends JPanel{
 
         //fetch contributing members
         JPanel check_box_contributing_members = new JPanel();
-        for (int i = 0; i < contributing_members.size(); i++) {
-            check_box_contributing_members.add(contributing_members.get(i));
+        for (int i = 0; i < contributing_members.length; i++) {
+            check_box_contributing_members.add(contributing_members[i]);
         }
         JCheckBox sample = new JCheckBox("Saleh");
         check_box_contributing_members.add(sample);
@@ -70,11 +70,11 @@ public class AddPurchaseView extends JPanel{
 
     }
 
-    public List<JCheckBox> createCheckboxes(List<String> Current_Members) {
-        List<JCheckBox> output = new ArrayList<JCheckBox>();
-        for (String member : Current_Members) {
-            JCheckBox checkbox_member = new JCheckBox(member);
-            output.add(checkbox_member);
+    public JCheckBox[] createCheckboxes(String[] Current_Members) {
+        JCheckBox[] output = new JCheckBox[Current_Members.length];
+        for (int i = 0; i < Current_Members.length; i++) {
+            JCheckBox checkbox_member = new JCheckBox(Current_Members[i]);
+            output[i] = checkbox_member;
         }
         return output;
     }
