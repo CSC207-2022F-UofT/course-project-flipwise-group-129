@@ -16,7 +16,7 @@ public class GroupSummaryView extends JFrame implements ActionListener {
     private JTextArea temp, RHS, group_members;
     JButton add_item = new JButton("Add Item");
     JButton clear_debt = new JButton("Clear Debt");
-    JButton return_to_homepage = new JButton("Return to Homepage");
+    JButton return_to_homepage = new JButton("Return to Groups");
 
 
     public GroupSummaryView() {
@@ -84,19 +84,35 @@ public class GroupSummaryView extends JFrame implements ActionListener {
         add(right_hand_side, BorderLayout.CENTER);
         add(bottoms_up, BorderLayout.SOUTH);
 
+        add_item.addActionListener(this);
+        clear_debt.addActionListener(this);
+        return_to_homepage.addActionListener(this);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getActionCommand().equals("")){
+        if (e.getActionCommand().equals("Add Item")){
+            JOptionPane.showInputDialog("Please enter in Item Name:");
+        }
 
+        if (e.getActionCommand().equals("Clear Debt")){
+            ClearDebtView clearDebtView = new ClearDebtView();
+
+        }
+
+        if (e.getActionCommand().equals("Return to Groups")){
+            this.dispose();
+            MainWindowView mainWindowView = new MainWindowView();
+            setHomepageView();
+            mainWindowView.setVisible(true);
         }
     }
 
-    public static void main(String[] args) {
-            GroupSummaryView group = new GroupSummaryView();
-        }
-
+    private void setHomepageView(){
+        HomePageView homePageView = new HomePageView();
+        this.setContentPane(homePageView);
     }
+
+}
 
 

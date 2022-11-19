@@ -51,8 +51,8 @@ public class UserLoginView extends JPanel implements ActionListener{
 
             // JPanel SetUp
             this.setLayout(null);
+            this.setSize(1000, 600);
             setVisible(true);
-            this.setSize(1000, 1000);
 
             loginButton.addActionListener(this);
             newButton.addActionListener(this);

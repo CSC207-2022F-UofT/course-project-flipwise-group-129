@@ -51,8 +51,9 @@ public class UserRegisterView extends JPanel implements ActionListener{
 
         // JPanel Setup
         setLayout(null);
+        setSize(1000, 600);
         setVisible(true);
-        setSize(450, 450);
+
 
         signupButton.addActionListener(this);
         exitButton.addActionListener(this);

@@ -11,7 +11,7 @@ public class HomePageView extends JPanel implements ActionListener {
 
 
         public HomePageView() {
-            setSize(600, 500);
+            setSize(1000, 600);
             setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
             homePage = new JLabel("HomePage");
@@ -46,21 +46,25 @@ public class HomePageView extends JPanel implements ActionListener {
             setVisible(true);
             btn_create.addActionListener(this);
             btn_join.addActionListener(this);
+
+            // create join items
         }
 
         public void actionPerformed(ActionEvent e){
             if (e.getActionCommand().equals("Create Group")){
                 JOptionPane.showInputDialog("Please enter in Group Name:");
-                //Create a Group Object and controller stuff
+                //controller stuff
+                // update homepage
             }
 
             if (e.getActionCommand().equals("Join Group")){
                 JOptionPane.showInputDialog("Please enter in Group ID:");
-                //Create a Group Object and controller stuff
-
-
+                //controller stuff
+                //update homepage
             }
         }
+
+
 
 //        public void getNumberOfGroups(){ return }
 

@@ -12,20 +12,16 @@ public class MainWindowView extends JFrame implements ActionListener {
 
         this.loginView = new UserLoginView();
 
-        setSize(1000, 1000);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setVisible(true);
+        setSize(1000,600);
         this.setContentPane(loginView);
+        setVisible(true);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
 
         this.pack();
 
         loginView.getLoginButton().addActionListener(this);
         loginView.getNewButton().addActionListener(this);
-        int R = this.getBackground().getRed();
-        int G = this.getBackground().getGreen();
-        int B = this.getBackground().getBlue();
-
-        System.out.println("cOLOUR IS " + R + " " + G + " " + B);
 
     }
 
@@ -44,6 +40,12 @@ public class MainWindowView extends JFrame implements ActionListener {
             this.setContentPane(loginView);
             this.pack();
         }
+
+//        if (e.getActionCommand().equals()){
+//            this.dispose();
+//            GroupSummaryView groupSummaryView = new GroupSummaryView();
+//            groupSummaryView.setVisible(true);
+//        }
     }
 
     private void setUserRegisterView(){
@@ -57,6 +59,7 @@ public class MainWindowView extends JFrame implements ActionListener {
     private void setHomepageView(){
         HomePageView homePageView = new HomePageView();
         this.setContentPane(homePageView);
+        //
     }
 
 //    private void setUserLoginView(){
@@ -65,7 +68,4 @@ public class MainWindowView extends JFrame implements ActionListener {
 //
 //    }
 
-    private void setGroupSummeryView(){
-        GroupSummaryView groupSummaryView = new GroupSummaryView();
-    }
 }
