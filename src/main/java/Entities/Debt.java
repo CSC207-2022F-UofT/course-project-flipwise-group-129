@@ -1,5 +1,4 @@
 package Entities;
-
 public class Debt {
 
     private User userOwed;
@@ -12,6 +11,10 @@ public class Debt {
         this.userOwing = user2;
         this.groupId = groupId;
         this.debtValue = 0.0;
+    }
+
+    private Debt(String jsonDebtString){
+
     }
 
     public User getUserOwed(){
