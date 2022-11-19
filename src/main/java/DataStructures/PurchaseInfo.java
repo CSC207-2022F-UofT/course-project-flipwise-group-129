@@ -1,4 +1,8 @@
 package DataStructures;
+import DataAccess.UserDataAccess;
+import DataAccessInterface.GroupDataInterface;
+import DataAccessInterface.ItemDataInterface;
+import DataAccessInterface.UserDataInterface;
 import OutputBoundary.AddPurchaseBoundaryOut;
 
 import java.util.List;
@@ -10,14 +14,18 @@ public class PurchaseInfo {
     private final float price;
     private final String purchaseGroupId;
     private final AddPurchaseBoundaryOut presenter;
+    private final GroupDataInterface groupData;
+    private final ItemDataInterface itemData;
 
-    public PurchaseInfo(String purchasedItemId, List<String> participatingUsernames, String buyerUsername, float itemPrice, String purchaseGroupId, AddPurchaseBoundaryOut presenter) {
+    public PurchaseInfo(String purchasedItemId, List<String> participatingUsernames, String buyerUsername, float itemPrice, String purchaseGroupId, AddPurchaseBoundaryOut presenter, GroupDataInterface groupData, ItemDataInterface itemData) {
         this.purchasedItemId = purchasedItemId;
         this.participatingUsernames = participatingUsernames;
         this.buyerUsername = buyerUsername;
         this.price = itemPrice;
         this.purchaseGroupId = purchaseGroupId;
         this.presenter = presenter;
+        this.groupData = groupData;
+        this.itemData = itemData;
     }
 
     public String getItem(){
@@ -35,4 +43,8 @@ public class PurchaseInfo {
     public String getBuyer() { return this.buyerUsername; }
 
     public AddPurchaseBoundaryOut getPresenter() { return this.presenter; }
+
+    public GroupDataInterface getGroupData() { return this.groupData; }
+
+    public ItemDataInterface getItemData() { return this.itemData; }
 }

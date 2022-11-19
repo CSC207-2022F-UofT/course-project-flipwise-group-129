@@ -1,12 +1,17 @@
 package UseCases;
 
+import DataAccessInterface.GroupDataInterface;
+import DataAccessInterface.ItemDataInterface;
+import DataAccessInterface.UserDataInterface;
 import DataStructures.PurchaseInfo;
 import DataStructures.UpdatedLists;
 import Entities.*;
 import InputBoundary.AddPurchaseBoundaryIn;
 import OutputBoundary.AddPurchaseBoundaryOut;
 import Presenters.AddPurchasePresenter;
+import com.fasterxml.jackson.core.JsonProcessingException;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +24,8 @@ public class AddPurchase implements AddPurchaseBoundaryIn {
     private UpdatedLists newLists;
     private User buyer;
     private AddPurchaseBoundaryOut presenter;
+    private GroupDataInterface groupData;
+    private ItemDataInterface itemData;
 
     @Override
     public void executeUseCase(PurchaseInfo purchaseInfo) {
@@ -35,7 +42,19 @@ public class AddPurchase implements AddPurchaseBoundaryIn {
         List<String> planningListItemIds = convertList(planningList);
         List<String> purchasedListItemIds = convertList(purchaseList);
         newLists = new UpdatedLists(planningListItemIds, purchasedListItemIds);
+
+        writeData();
+
         this.presenter.updateView(newLists);
+    }
+
+    private void writeData() {
+        try {
+            groupData.addorUpdateGroup(this.purchaseInfo.getPurchaseGroup(), this.purchaseGroup.toString());
+            userData
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void addToPurchase(PurchaseList purchaseList) {
@@ -45,12 +64,27 @@ public class AddPurchase implements AddPurchaseBoundaryIn {
     }
 
     private void extractInformation(PurchaseInfo purchaseInfo) {
-        this.purchasedItem = getItemById(purchaseInfo.getItem());
+        try {
+            this.purchasedItem = Item.fromString(purchaseInfo.getItem());
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
         extractUsers(purchaseInfo);
         this.price = purchaseInfo.getPrice();
-        this.purchaseGroup = getGroupById(purchaseInfo.getPurchaseGroup());
-        this.buyer = getUserByUsername(purchaseInfo.getBuyer());
+        try {
+            this.purchaseGroup = Group.fromString(groupData.groupAsString(purchaseInfo.getPurchaseGroup()));
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            this.buyer = User.fromString(purchaseInfo.getBuyer());
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
         this.presenter = purchaseInfo.getPresenter();
+        this.groupData = purchaseInfo.getGroupData();
+        this.itemData = purchaseInfo.getItemData();
+
     }
 
     private void extractUsers(PurchaseInfo purchaseInfo) {
