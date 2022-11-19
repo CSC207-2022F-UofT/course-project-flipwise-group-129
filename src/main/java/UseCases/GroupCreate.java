@@ -33,9 +33,7 @@ public class GroupCreate implements GroupCreateBoundaryIn{
 //        }
         String userString = this.userDsInterface.userAsString(reqGroupInfo.getUserId());
 
-        //repeated code that should ideally be packed into a method use case interface
-        ObjectMapper mapper = new ObjectMapper();
-        User createdUser = mapper.readValue(userString, User.class);
+        User createdUser = User.fromString(userString);
 
         Set<User> users = new TreeSet<>();
         users.add(createdUser);

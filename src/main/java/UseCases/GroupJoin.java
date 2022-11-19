@@ -35,12 +35,11 @@ public class GroupJoin implements GroupJoinBoundaryIn{
         String userString = this.userDsInterface.userAsString(reqGroupInfo.getUserId());
 
         //repeated code that should ideally be packed into a method use case interface
-        ObjectMapper mapper = new ObjectMapper();
-        User user = mapper.readValue(userString, User.class);
+        User user = User.fromString(userString);
 
         //obtain the group info form the database
         String groupString = this.groupDsInterface.groupAsString(reqGroupInfo.getGroupId());
-        Group group = mapper.readValue(groupString, Group.class);
+        Group group = Group.fromString(groupString);
 
         //check if user already in group?
         if (group.getUsers().contains(user)){
