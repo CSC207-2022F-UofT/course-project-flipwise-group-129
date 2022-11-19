@@ -71,8 +71,8 @@ public class Debt {
         }
     }
 
-    public static User fromString(String userString) throws JsonProcessingException {
+    public static Debt fromString(String debtString) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
-        return mapper.readValue(userString, User.class);
+        return mapper.readValue(debtString, Debt.class);
     }
 }
