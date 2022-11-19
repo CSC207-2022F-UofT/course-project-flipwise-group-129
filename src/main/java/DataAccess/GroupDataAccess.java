@@ -13,10 +13,8 @@ import java.io.*;
 public class GroupDataAccess implements GroupDataInterface {
     private final File jasonFile;
     private final Map<String, String> groups = new HashMap<>();
-    //gotta replace plannediteminfo with an abstract class or interface bc lots of datatypes need to fulfill
     public GroupDataAccess(String jasonPath) throws IOException, ParseException {
-        // this parses the json file that already exists into a hashmap of id and info strings
-//        this.jsonFile = new FileWriter(jasonPath);
+        // this parses the json file into a hashmap of id and info strings
         this.jasonFile = new File(jasonPath);
         FileReader reader = new FileReader(jasonFile);
         JSONParser jsonParser = new JSONParser();
@@ -24,12 +22,11 @@ public class GroupDataAccess implements GroupDataInterface {
         ((JSONArray) obj).forEach( grpObj -> parseGroupObject( (JSONObject) grpObj ) );
     }
     private void parseGroupObject(JSONObject groupObject){
-        //Get employee object within list
+        //Get group object within list
         JSONObject groupObjects = (JSONObject) groupObject.get("group");
-
-        //Get groupId first name
+        //Get groupId
         String groupId = (String) groupObjects.get("groupId");
-        //Get groupInfo last name
+        //Get groupInfo
         String groupInfo = (String) groupObjects.get("groupData");
         groups.put(groupId, groupInfo);
     }
@@ -51,7 +48,8 @@ public class GroupDataAccess implements GroupDataInterface {
 
     @Override
     public void addorUpdateGroup(String groupId, String groupInfo) throws IOException {
-        // needs inputted the new or updated group to string alongside the group's id
+        // takes groupId and groupInfo string and adds it to the group hashmap
+        // if the key already exists, this overrides the information automatically
         groups.put(groupId, groupInfo);
         save();
     }
@@ -60,13 +58,4 @@ public class GroupDataAccess implements GroupDataInterface {
     public String groupAsString(String groupId) {
         return groups.get(groupId);
     }
-
-//    public static void main(String[] args) throws IOException {
-//        File newFile = new File("groups.json");
-//
-//        FileWriter writer = new FileWriter(newFile);
-//        JSONObject groupDetails = new JSONObject();
-//        groupDetails.put("groupId", "groupkey");
-//        writer.write(groupDetails.toJSONString());
-//    }
 }
