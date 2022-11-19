@@ -13,6 +13,7 @@ import DataAccessInterface.*;
 import java.util.List;
 import java.util.ArrayList;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class GroupJoin implements GroupJoinBoundaryIn{
@@ -39,7 +40,12 @@ public class GroupJoin implements GroupJoinBoundaryIn{
 
         //obtain the group info form the database
         String groupString = this.groupDsInterface.groupAsString(reqGroupInfo.getGroupId());
-        Group group = Group.fromString(groupString);
+        Group group = null;
+        try {
+            group = Group.fromString(groupString);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
 
         //check if user already in group?
         if (group.getUsers().contains(user)){
