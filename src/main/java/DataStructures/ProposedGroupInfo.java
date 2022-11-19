@@ -1,17 +1,14 @@
 package DataStructures;
 public class ProposedGroupInfo {
 
-    private final String name;
+    private final String username;
 
-    private final String userId;
 
-    public ProposedGroupInfo(String name, String userId){
-        this.name = name;
-        this.userId = userId;
+    public ProposedGroupInfo(String name){
+        this.username = name;
     }
 
-    public String getName(){
-        return this.name;
+    public String getUsername(){
+        return this.username;
     }
-    public String getUserId() { return this.userId;}
 }

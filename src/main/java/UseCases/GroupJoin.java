@@ -5,30 +5,42 @@ import DataStructures.JoinedGroupInfo;
 import Entities.Group;
 import Entities.GroupFactory;
 import Entities.User;
-import OutputBoundary.GroupCreateBoundaryOut;
+import InputBoundary.GroupJoinBoundaryIn;
 import OutputBoundary.GroupJoinBoundaryOut;
+import DataAccessInterface.*;
 
-import javax.swing.*;
+
 import java.util.List;
 import java.util.ArrayList;
 
-public class GroupJoin {
+import com.fasterxml.jackson.databind.ObjectMapper;
 
-    final UserObtainDsGateway userDsGateway;
+public class GroupJoin implements GroupJoinBoundaryIn{
+
+    final GroupDataInterface groupDsInterface;
+    final UserDataInterface userDsInterface;
     final GroupJoinBoundaryOut groupJoinPresenter;
     final GroupFactory groupFactory;
 
-    public GroupJoin(GroupJoinBoundaryOut presenter, GroupFactory groupFactory){
+    public GroupJoin(GroupJoinBoundaryOut presenter, GroupFactory groupFactory, GroupDataInterface groupDsInterface, UserDataInterface userDsInterface){
         this.groupJoinPresenter = presenter;
         this.groupFactory = groupFactory;
+        this.userDsInterface = userDsInterface;
+        this.groupDsInterface = groupDsInterface;
     }
 
     @Override
     public JoinedGroupInfo joinGroup(JoinGroupRequest reqGroupInfo){
         //obtain the user from the database
-        User user = new User();
+        String userString = this.userDsInterface.userAsString(reqGroupInfo.getUserId());
+
+        //repeated code that should ideally be packed into a method use case interface
+        ObjectMapper mapper = new ObjectMapper();
+        User user = mapper.readValue(userString, User.class);
+
         //obtain the group info form the database
-        Group group = new Group();
+        String groupString = this.groupDsInterface.groupAsString(reqGroupInfo.getGroupId());
+        Group group = mapper.readValue(groupString, Group.class);
 
         //check if user already in group?
         if (group.getUsers().contains(user)){
@@ -38,6 +50,8 @@ public class GroupJoin {
         user.addGroup(group);
 
         //pass new info to db
+        this.groupDsInterface.addorUpdateGroup(group.getGroupId(), group.toString());
+        this.userDsInterface.addorUpdateUser(user.getUsername(), user.toString());
 
         //to controller
         List<String> usersInGroup = new ArrayList<>();
