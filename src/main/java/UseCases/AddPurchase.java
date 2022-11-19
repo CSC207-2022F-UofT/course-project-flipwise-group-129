@@ -39,8 +39,8 @@ public class AddPurchase implements AddPurchaseBoundaryIn {
         PurchaseList purchaseList = this.purchaseGroup.getPurchaseList();
         addToPurchase(purchaseList);
 
-        List<String> planningListItemIds = convertList(planningList);
-        List<String> purchasedListItemIds = convertList(purchaseList);
+        List<List<String>> planningListItemIds = convertList(planningList);
+        List<List<String>> purchasedListItemIds = convertList(purchaseList);
         newLists = new UpdatedLists(planningListItemIds, purchasedListItemIds);
 
         writeData();
@@ -95,12 +95,15 @@ public class AddPurchase implements AddPurchaseBoundaryIn {
         }
     }
 
-    public List<String> convertList(ItemList inputList) {
+    public List<List<String>> convertList(ItemList inputList) {
         List<Item> tempListItems = inputList.getItems();
-        List<String> tempListItemIds = new ArrayList<String>();
+        List<List<String>> tempListItemStrings = new ArrayList<List<String>>();
         for (Item item: tempListItems) {
-            tempListItemIds.add(item.getItemId());
+            List<String> tempList = new ArrayList<String>();
+            tempList.add(item.getItemId());
+            tempList.add(item.getItemName());
+            tempListItemStrings.add(tempList);
         }
-        return tempListItemIds;
+        return tempListItemStrings;
     }
 }
