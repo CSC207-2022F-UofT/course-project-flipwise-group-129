@@ -4,15 +4,17 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class HomePageView extends JPanel implements ActionListener {
+public class HomePageView extends JFrame implements ActionListener {
         JButton btn_create;
         JButton btn_join;
         JLabel homePage;
 
 
         public HomePageView() {
+
             setSize(1000, 600);
-            setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+            setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
+            setVisible(true);
 
             homePage = new JLabel("HomePage");
             homePage.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -43,7 +45,7 @@ public class HomePageView extends JPanel implements ActionListener {
             add(new_test_2);
 
 
-            setVisible(true);
+
             btn_create.addActionListener(this);
             btn_join.addActionListener(this);
 
@@ -52,16 +54,23 @@ public class HomePageView extends JPanel implements ActionListener {
 
         public void actionPerformed(ActionEvent e){
             if (e.getActionCommand().equals("Create Group")){
-                JOptionPane.showInputDialog("Please enter in Group Name:");
+                String groupName = JOptionPane.showInputDialog("Please enter in Group Name:");
+                JOptionPane.showMessageDialog(null, "Your name is  "
+                        + groupName + ".");
                 //controller stuff
                 // update homepage
             }
 
             if (e.getActionCommand().equals("Join Group")){
-                JOptionPane.showInputDialog("Please enter in Group ID:");
+                String groupID = JOptionPane.showInputDialog("Please enter in Group ID:");
+                JOptionPane.showMessageDialog(null, "Your name is  "
+                        + groupID + ".");
+
                 //controller stuff
                 //update homepage
             }
+
+            // group buttons
         }
 
 

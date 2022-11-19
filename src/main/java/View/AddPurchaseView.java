@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AddPurchaseView extends JPanel {
+public class AddPurchaseView extends JPanel{
 
     List<String> members = new ArrayList<String>(); //NEEDS TO BE REFINED
     JButton confirm;

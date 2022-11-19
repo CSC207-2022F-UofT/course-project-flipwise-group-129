@@ -9,7 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
-public class GroupSummaryView extends JFrame implements ActionListener {
+public class GroupSummaryView extends JPanel implements ActionListener {
 
     private JTabbedPane t;
     private JComponent p1, p2, p3;
@@ -92,7 +92,7 @@ public class GroupSummaryView extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand().equals("Add Item")){
-            JOptionPane.showInputDialog("Please enter in Item Name:");
+            String item = JOptionPane.showInputDialog("Please enter in Item Name:");
         }
 
         if (e.getActionCommand().equals("Clear Debt")){
@@ -101,17 +101,15 @@ public class GroupSummaryView extends JFrame implements ActionListener {
         }
 
         if (e.getActionCommand().equals("Return to Groups")){
-            this.dispose();
-            MainWindowView mainWindowView = new MainWindowView();
-            setHomepageView();
-            mainWindowView.setVisible(true);
+            HomePageView homePageView = new HomePageView();
+            homePageView.setVisible(true);
         }
     }
 
-    private void setHomepageView(){
-        HomePageView homePageView = new HomePageView();
-        this.setContentPane(homePageView);
-    }
+//    private void setHomepageView(){
+//        HomePageView homePageView = new HomePageView();
+////        this.setContentPane(homePageView);
+//    }
 
 }
 
