@@ -22,55 +22,80 @@ public class GroupCreate implements GroupCreateBoundaryIn{
     final GroupDataInterface groupDsInterface; //the database interface that enables us to add and obtain group info
     final UserDataInterface userDsInterface; // the database interface that enables us to add and obtain user infos
     final GroupCreateBoundaryOut groupCreatePresenter; // the presentor to provide the created group to
-    final GroupFactory groupFactory; //to delegate the creation of groups to
 
-    public GroupCreate(GroupCreateBoundaryOut presenter, GroupFactory groupFactory, GroupDataInterface groupDsInterface, UserDataInterface userDsInterface){
+    public GroupCreate(GroupCreateBoundaryOut presenter, GroupDataInterface groupDsInterface, UserDataInterface userDsInterface){
         this.groupCreatePresenter = presenter;
-        this.groupFactory = groupFactory;
         this.groupDsInterface = groupDsInterface;
         this.userDsInterface = userDsInterface;
     }
 
     @Override
     public CreatedGroupInfo createNewGroup(ProposedGroupInfo newGroupInfo){
+        //obtain the user from the database
+        User createdUser = null;
+        try{
+            createdUser = this.getUserFromDb(newGroupInfo.getUsername());
+        }catch (RuntimeException e) {
+            CreatedGroupInfo createdGroupInfo = new CreatedGroupInfo(e.toString());
+            return this.groupCreatePresenter.prepareFailView(createdGroupInfo);
+        }
+
+        //creating a new group
+        Group group = this.createGroup(createdUser, newGroupInfo.getGroupName());
+
+        //saving the data into the database
+        try{
+            this.saveData(createdUser, group);
+        } catch (RuntimeException e){
+            CreatedGroupInfo createdGroupInfo = new CreatedGroupInfo(e.toString());
+            return this.groupCreatePresenter.prepareFailView(createdGroupInfo);
+        }
+
+        CreatedGroupInfo createdGroupInfo = this.createOutputData(createdUser, group);
+
+        return this.groupCreatePresenter.prepareSuccessView(createdGroupInfo); //present it to the presenter
+    }
+
+    private User getUserFromDb(String username){
         // get the user from the database and create a User interface
         //check if the user exists
-        if (!this.userDsInterface.userIdExists(newGroupInfo.getUsername())){
-            CreatedGroupInfo createdGroupInfo = new CreatedGroupInfo("User Id does not exist");
-            return this.groupCreatePresenter.prepareFailView(createdGroupInfo);
+        if (!this.userDsInterface.userIdExists(username)){
+            throw new RuntimeException("User Id does not exist");
         }
-        String userString = this.userDsInterface.userAsString(newGroupInfo.getUsername());
+        String userString = this.userDsInterface.userAsString(username);
 
-        User createdUser = null;
         try {
-            createdUser = User.fromString(userString);
+            return User.fromString(userString);
         } catch (JsonProcessingException e) {
-            CreatedGroupInfo createdGroupInfo = new CreatedGroupInfo("unable to process database (user)");
-            return this.groupCreatePresenter.prepareFailView(createdGroupInfo);
+            throw new RuntimeException("Unable to process user from database");
         }
+    }
 
+    private Group createGroup(User createdUser, String groupName){
         //intialize a set of users in the group
         Set<User> users = new TreeSet<>();
         users.add(createdUser); //add the created user into the group
-        Group group = groupFactory.create(newGroupInfo.getUsername(), users); // create the required group
-        //saving it into the database
+        Group group = new Group(groupName, users);// create the required group
         createdUser.addGroup(group); // add the new group the list of groups the user is a part of
 
+        return group;
+    }
+
+    private void saveData(User user, Group group){
         //pass new info to db
         try {
             this.groupDsInterface.addorUpdateGroup(group.getGroupId(), group.toString());
         } catch (IOException e) {
-            CreatedGroupInfo createdGroupInfo = new CreatedGroupInfo("unable to update group into database");
-            return this.groupCreatePresenter.prepareFailView(createdGroupInfo);
+            throw new RuntimeException("unable to update group into database");
         }
         try {
-            this.userDsInterface.addorUpdateUser(createdUser.getUsername(), createdUser.toString());
+            this.userDsInterface.addorUpdateUser(user.getUsername(), user.toString());
         } catch (IOException e) {
-            CreatedGroupInfo createdGroupInfo = new CreatedGroupInfo("unable to update user data into database");
-            return this.groupCreatePresenter.prepareFailView(createdGroupInfo);
+            throw new RuntimeException("unable to update user data into database");
         }
+    }
 
-        // make a list of all the groups the user is in
+    private CreatedGroupInfo createOutputData(User createdUser, Group group){
         List<Group> allGroups = new ArrayList<>(createdUser.getGroups());
         List<String> allGroupIds = new ArrayList<>();
         List<String> allGroupNames = new ArrayList<>();
@@ -78,13 +103,14 @@ public class GroupCreate implements GroupCreateBoundaryIn{
             allGroupNames.add(group1.getGroupName());
             allGroupIds.add(group1.getGroupId());
         }
-        //create the output ds
-        CreatedGroupInfo createdGroupInfo = new CreatedGroupInfo(group.getGroupId(), group.getGroupName(), createdUser.getUsername(), allGroupIds, allGroupNames);
-
-        return this.groupCreatePresenter.prepareSuccessView(createdGroupInfo); //present it to the presenter
+        //return the output ds
+        return new CreatedGroupInfo(
+                group.getGroupId(),
+                group.getGroupName(),
+                createdUser.getUsername(),
+                allGroupIds,
+                allGroupNames
+        );
     }
-
-
-
 
 }
