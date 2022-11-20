@@ -14,4 +14,9 @@ public class GroupJoinPresenter implements GroupJoinBoundaryOut {
         //returns the group that has been joined that is provided from the interface
         return joinedGroupInfo;
     }
+
+    @Override
+    public JoinedGroupInfo prepareFailView(JoinedGroupInfo joinedGroupInfo){
+        return joinedGroupInfo;
+    }
 }

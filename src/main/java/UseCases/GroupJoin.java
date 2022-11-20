@@ -1,5 +1,6 @@
 package UseCases;
 
+import DataStructures.CreatedGroupInfo;
 import DataStructures.JoinGroupRequest;
 import DataStructures.JoinedGroupInfo;
 import Entities.*;
@@ -34,24 +35,37 @@ public class GroupJoin implements GroupJoinBoundaryIn{
 
     @Override
     public JoinedGroupInfo joinGroup(JoinGroupRequest reqGroupInfo){
+        //check if user exists
+        if (!this.userDsInterface.userIdExists(reqGroupInfo.getUsername())){
+            JoinedGroupInfo joinedGroupInfo = new JoinedGroupInfo("Invalid userId entered");
+            return this.groupJoinPresenter.prepareFailView(joinedGroupInfo);
+        }
+
         //obtain the user from the database
-        String userString = this.userDsInterface.userAsString(reqGroupInfo.getUserId());
+        String userString = this.userDsInterface.userAsString(reqGroupInfo.getUsername());
 
         //create a user object
         User user = null;
         try {
             user = User.fromString(userString);
         } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
+            JoinedGroupInfo joinedGroupInfo = new JoinedGroupInfo("unable to get user from database");
+            return this.groupJoinPresenter.prepareFailView(joinedGroupInfo);
         }
 
         //obtain the group info form the database
+        //check if the group exists
+        if (!this.groupDsInterface.groupIdExists(reqGroupInfo.getGroupId())){
+            JoinedGroupInfo joinedGroupInfo = new JoinedGroupInfo("Invalid Group Id provided");
+            return this.groupJoinPresenter.prepareFailView(joinedGroupInfo);
+        }
         String groupString = this.groupDsInterface.groupAsString(reqGroupInfo.getGroupId());
         Group group = null;
         try {
             group = Group.fromString(groupString);
         } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
+            JoinedGroupInfo joinedGroupInfo = new JoinedGroupInfo("Unable to obtain group info from database");
+            return this.groupJoinPresenter.prepareFailView(joinedGroupInfo);
         }
 
         //check if user already in group?
@@ -73,9 +87,15 @@ public class GroupJoin implements GroupJoinBoundaryIn{
         try {
             this.groupDsInterface.addorUpdateGroup(group.getGroupId(), group.toString());
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            JoinedGroupInfo joinedGroupInfo = new JoinedGroupInfo("Unable to modify group info from database");
+            return this.groupJoinPresenter.prepareFailView(joinedGroupInfo);
         }
-        this.userDsInterface.addorUpdateUser(user.getUsername(), user.toString());
+        try {
+            this.userDsInterface.addorUpdateUser(user.getUsername(), user.toString());
+        } catch (IOException e) {
+            JoinedGroupInfo joinedGroupInfo = new JoinedGroupInfo("Unable to obtain user info from database");
+            return this.groupJoinPresenter.prepareFailView(joinedGroupInfo);
+        }
 
         //to controller
         List<String> usersInGroup = new ArrayList<>();

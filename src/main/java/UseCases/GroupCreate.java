@@ -34,13 +34,19 @@ public class GroupCreate implements GroupCreateBoundaryIn{
     @Override
     public CreatedGroupInfo createNewGroup(ProposedGroupInfo newGroupInfo){
         // get the user from the database and create a User interface
-        String userString = this.userDsInterface.userAsString(reqGroupInfo.getUserId());
+        //check if the user exists
+        if (!this.userDsInterface.userIdExists(newGroupInfo.getUsername())){
+            CreatedGroupInfo createdGroupInfo = new CreatedGroupInfo("User Id does not exist");
+            return this.groupCreatePresenter.prepareFailView(createdGroupInfo);
+        }
+        String userString = this.userDsInterface.userAsString(newGroupInfo.getUsername());
 
         User createdUser = null;
         try {
             createdUser = User.fromString(userString);
         } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
+            CreatedGroupInfo createdGroupInfo = new CreatedGroupInfo("unable to process database (user)");
+            return this.groupCreatePresenter.prepareFailView(createdGroupInfo);
         }
 
         //intialize a set of users in the group
@@ -54,9 +60,15 @@ public class GroupCreate implements GroupCreateBoundaryIn{
         try {
             this.groupDsInterface.addorUpdateGroup(group.getGroupId(), group.toString());
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            CreatedGroupInfo createdGroupInfo = new CreatedGroupInfo("unable to update group into database");
+            return this.groupCreatePresenter.prepareFailView(createdGroupInfo);
         }
-        this.userDsInterface.addorUpdateUser(createdUser.getUsername(), createdUser.toString());
+        try {
+            this.userDsInterface.addorUpdateUser(createdUser.getUsername(), createdUser.toString());
+        } catch (IOException e) {
+            CreatedGroupInfo createdGroupInfo = new CreatedGroupInfo("unable to update user data into database");
+            return this.groupCreatePresenter.prepareFailView(createdGroupInfo);
+        }
 
         // make a list of all the groups the user is in
         List<Group> allGroups = new ArrayList<>(createdUser.getGroups());

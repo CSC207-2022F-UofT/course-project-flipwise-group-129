@@ -16,12 +16,24 @@ public class CreatedGroupInfo {
 
     private final List<String> groupNames; // return the names of the group the user is a part of
 
+    private final String error; //any error if arises will contain a description here
+
     public CreatedGroupInfo(String groupId, String groupName, String user, List<String> groupIds, List<String> groupNames){
         this.groupId = groupId;
         this.groupName = groupName;
         this.user = user;
         this.groupIds = groupIds;
         this.groupNames = groupNames;
+        this.error = null;
+    }
+
+    public CreatedGroupInfo(String error){
+        this.error = error;
+        this.user = null;
+        this.groupNames = null;
+        this.groupIds = null;
+        this.groupId = null;
+        this.groupName = null;
     }
 
     public String getId(){
@@ -49,6 +61,6 @@ public class CreatedGroupInfo {
         return this.groupNames;
     }
 
-
+    public String getError() { return this.error; }
 
 }

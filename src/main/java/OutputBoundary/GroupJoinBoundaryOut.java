@@ -5,4 +5,6 @@ import DataStructures.JoinedGroupInfo;
 public interface GroupJoinBoundaryOut {
 
     JoinedGroupInfo prepareSuccessView(JoinedGroupInfo joinedGroupInfo);
+
+    JoinedGroupInfo prepareFailView(JoinedGroupInfo joinedGroupInfo);
 }

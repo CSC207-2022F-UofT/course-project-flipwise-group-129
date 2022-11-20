@@ -11,4 +11,9 @@ public class GroupCreatePresenter implements GroupCreateBoundaryOut{
         //returns the group that has been created that is provided from the interface
         return createdGroupInfo;
     }
+
+    @Override
+    public CreatedGroupInfo prepareFailView(CreatedGroupInfo createdGroupInfo){
+        return createdGroupInfo;
+    }
 }
