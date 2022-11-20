@@ -1,4 +1,6 @@
 package View;
+import Controllers.GroupCreateController;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -32,6 +34,7 @@ public class HomePageView extends JFrame implements ActionListener {
         homepageDetails.add(homePage);
         // Algorithm implementation
         for (int i = 0; i < group_names.length; i++) {
+            button_array[i].addActionListener(this);
             group_btns.add(button_array[i]);
             TRUE_BUTTON_GROUP.add(button_array[i]);
         }
@@ -71,16 +74,22 @@ public class HomePageView extends JFrame implements ActionListener {
             JOptionPane.showMessageDialog(null, "Your Group Name is  "
                     + groupName + ".");
             //controller stuff
+            GroupCreateController createController = new GroupCreateController();
             // update homepage
         }
-
-        if (e.getActionCommand().equals("Join Group")){
+        else if (e.getActionCommand().equals("Join Group")){
             String groupID = JOptionPane.showInputDialog("Please enter in Group ID:");
             JOptionPane.showMessageDialog(null, "The Group ID is  "
                     + groupID + ".");
 
             //controller stuff
             //update homepage
+        }
+        else {
+            String groupSelected = e.getActionCommand();
+//            navigate to group
+            GroupSummaryView selectedGroupView = new GroupSummaryView(groupSelected, groupSelected);
+            this.setContentPane(selectedGroupView);
         }
 
         // group buttons

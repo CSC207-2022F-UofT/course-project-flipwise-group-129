@@ -4,40 +4,31 @@ import Entities.Group;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
 
 public class BalanceView extends JPanel{
 
-    private String[][] data;
-    private String[] header;
-    private JTable j;
-    private JScrollPane s;
+    private JTable table;
+    private JScrollPane scrollPane;
+    Object[][] rows = new Object[][]{{new JButton("button"), "Amit", " ", " "},
+            {"102", "Jai", " ", " "},
+            {"101", "Sachin", " ", " "},
+            {"1", "2", " ", " "}};
+    String[] columns = new String[]{"Member", "You Owe", "They Owe", "Debt"};
 
     public BalanceView() {
 
+        TableCellRenderer tableRenderer;
+        table = new JTable(new JTableButtonModel(rows, columns));
+        tableRenderer = table.getDefaultRenderer(JButton.class);
+        table.setDefaultRenderer(JButton.class, new JTableButtonRenderer(tableRenderer));
+        scrollPane = new JScrollPane(table);
+
+        add(scrollPane);
 
 
-        data = new String[][]{{"101", "Amit", "670000", "2"},
-                {"102", "Jai", "780000", "2"},
-                {"101", "Sachin", "700000", "3"},
-                {"1", "2", "3", "4"}};
-        header = new String[]{"NAME", "YOU OWE", "THEY OWE", "DEBT"};
-        j = new JTable(data, header);
-
-//        DefaultTableModel tableModel = new DefaultTableModel() {
-//            @Override
-//            public boolean isCellEditable(int row, int column) {
-//                //all cells false
-//                return false;
-//            }
-//        };
-//
-//        j.setModel(tableModel);
-        j.setSize(400, 400);
-        s = new JScrollPane(j);
-
+        setSize(1000, 600);
         setVisible(true);
-        setSize(400, 400);
-        this.add(s);
 
     }
 
