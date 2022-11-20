@@ -1,5 +1,11 @@
 package Entities;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.json.simple.JSONObject;
+
+import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Item {
@@ -11,6 +17,8 @@ public class Item {
     private List<User> usersInvolved;
 
     public Item(String itemName, User buyer, Float price, List<User> usersInvolved){
+        Timestamp ts = new Timestamp(System.currentTimeMillis());
+        this.itemId = "Item" + itemName + ts.toInstant().toString();
         this.itemName = itemName;
         this.buyer = buyer;
         this.price = price;
@@ -51,5 +59,32 @@ public class Item {
 
     public void addUsersInvolved(User user){
         this.usersInvolved.add(user);
+    }
+
+//    public JSONObject toJSON(){
+//        JSONObject obj = new JSONObject();
+//        obj.put("itemId", this.itemId);
+//        obj.put("itemName", this.itemName);
+//        obj.put("userBuyer", this.buyer);
+//        List<String> usersInvolved = new ArrayList<>();
+//        this.usersInvolved.forEach(user -> usersInvolved.add(user.toString()));
+//        obj.put("usersInvolved", usersInvolved);
+//        obj.put("price", this.price);
+//
+//        return obj;
+//    }
+    @Override
+    public String toString() {
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            return mapper.writeValueAsString(this);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static Item fromString(String itemString) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        return mapper.readValue(itemString, Item.class);
     }
 }
