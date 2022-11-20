@@ -51,7 +51,7 @@ public class AddPurchase implements AddPurchaseBoundaryIn {
         writeData();
 
         // Call the presenter through the output boundary with the updated lists data structure
-        this.presenter.updateView(newLists);
+        this.presenter.prepareViewInformation(newLists);
     }
 
     private void writeData() {
