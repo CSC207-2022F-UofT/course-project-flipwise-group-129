@@ -24,7 +24,7 @@ public class AddToPlanningList implements AddToPlanningBoundaryIn{
         this.itemAccess = itemAccess;
     }
     @Override
-    public UpdatedLists addPlanning(PlannedItemInfo item) throws IOException {
+    public void addPlanning(PlannedItemInfo item) {
         String groupId = item.getGroupId();
         // Get the Group and Item entities to manipulate
         Group currGroup = retreiveGroup(groupId);
@@ -34,7 +34,7 @@ public class AddToPlanningList implements AddToPlanningBoundaryIn{
         saveGroup(groupId, currGroup.toString());
         UpdatedLists updatedLists = new UpdatedLists(
                 getUpdatedPlanning(currGroup.getPlanningList()), getUpdatedPurchase(currGroup.getPurchaseList()));
-        return outputBoundary.displayLists(updatedLists);
+        outputBoundary.displayLists(updatedLists);
     }
     private List<List<String>> getUpdatedPlanning(PlanningList planningList){
         List<List<String>> stringPlanningList = new ArrayList<>();
@@ -59,18 +59,29 @@ public class AddToPlanningList implements AddToPlanningBoundaryIn{
         }
         return stringPurchasedList;
     }
-    private Item createItem(PlannedItemInfo item) throws IOException {
+    private Item createItem(PlannedItemInfo item) {
         Item newItem = new Item(item.getName(), null , item.getPrice(), new ArrayList<>());
-//        ItemDataInterface itemAccess = new ItemDataAccess(itemJasonPath);
-        itemAccess.addorUpdateItem(newItem.getItemId(), newItem.toString());
+        try {
+            itemAccess.addorUpdateItem(newItem.getItemId(), newItem.toString());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         return newItem;
     }
-    private Group retreiveGroup(String groupId) throws JsonProcessingException {
+    private Group retreiveGroup(String groupId) {
         String groupInfo = groupAccess.groupAsString(groupId);
-        return Group.fromString(groupInfo);
+        try {
+            return Group.fromString(groupInfo);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    private void saveGroup(String groupId, String groupData) throws IOException {
-        groupAccess.addorUpdateGroup(groupId, groupData);
+    private void saveGroup(String groupId, String groupData) {
+        try {
+            groupAccess.addorUpdateGroup(groupId, groupData);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

@@ -11,8 +11,8 @@ public class AddToPlanningController {
     public AddToPlanningController(AddToPlanningBoundaryIn inputBoundary) {
         this.inputBoundary = inputBoundary;
     }
-    public UpdatedLists performPlanningAdd(String name, Float price, String groupId) throws IOException {
+    public void performPlanningAdd(String name, Float price, String groupId) throws IOException {
         PlannedItemInfo itemInfo = new PlannedItemInfo(name, price, groupId);
-        return inputBoundary.addPlanning(itemInfo);
+        inputBoundary.addPlanning(itemInfo);
     }
 }

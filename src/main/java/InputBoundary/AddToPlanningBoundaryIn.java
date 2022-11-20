@@ -5,6 +5,6 @@ import DataStructures.UpdatedLists;
 import java.io.IOException;
 
 public interface AddToPlanningBoundaryIn {
-    UpdatedLists addPlanning(PlannedItemInfo item) throws IOException;
+    void addPlanning(PlannedItemInfo item);
 
 }
