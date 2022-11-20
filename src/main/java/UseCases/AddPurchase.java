@@ -27,6 +27,12 @@ public class AddPurchase implements AddPurchaseBoundaryIn {
     private ItemDataInterface itemData;
     private UserDataInterface userData;
 
+    /**
+     * Removes the item being purchased from the planning list and assigns the buyer, price, and users involved in the purchase
+     * to the item entity object then adds it to the purchased list of the group, saves the new group information to the database,
+     * then returns the new lists to be displayed to the view
+     * @param purchaseInfo the data structure containing all the information required to make a purchase and update the necessary data
+     */
     @Override
     public void executeUseCase(PurchaseInfo purchaseInfo) {
         this.purchaseInfo = purchaseInfo;
@@ -54,6 +60,9 @@ public class AddPurchase implements AddPurchaseBoundaryIn {
         this.presenter.prepareViewInformation(newLists);
     }
 
+    /**
+     * Write the new group and item data to the database
+     */
     private void writeData() {
         // Need to use a try catch in case of a IO exception
         try {
@@ -66,6 +75,10 @@ public class AddPurchase implements AddPurchaseBoundaryIn {
         }
     }
 
+    /**
+     * Update the information of the item with the purchase and add it to the purchase list of the group
+     * @param purchaseList the object of the purchase list of the group to add the item to
+     */
     private void addToPurchase(PurchaseList purchaseList) {
         // Set the new attributes for the item which only have values when the purchase is made, price, buyer, involved users
         this.purchasedItem.setPrice(this.price);
@@ -75,6 +88,10 @@ public class AddPurchase implements AddPurchaseBoundaryIn {
         purchaseList.addItems(this.purchasedItem);
     }
 
+    /**
+     * Extract the information from the purchase info data structure into the appropriate variables
+     * @param purchaseInfo the data structure package containing the required information
+     */
     private void extractInformation(PurchaseInfo purchaseInfo) {
         // grab and instantiate the data access boundaries because they are needed for the rest of the extraction process
         this.groupData = purchaseInfo.getGroupData();
@@ -109,6 +126,10 @@ public class AddPurchase implements AddPurchaseBoundaryIn {
 
     }
 
+    /**
+     * Helper function for extractInformation to grab the users from the database using the usernames
+     * @param purchaseInfo the data structure package containing the required information
+     */
     private void extractUsers(PurchaseInfo purchaseInfo) {
         // this function needs to iterate through the usernames passed in from the controller and boundary then use the data access boundary and User static functions to get a list of user entity objects from that
         List<String> usernames = purchaseInfo.getUsers();
@@ -123,6 +144,11 @@ public class AddPurchase implements AddPurchaseBoundaryIn {
         }
     }
 
+    /**
+     * Abstract method used to convert the planning and purchased lists from the group into the format of the lists that are returned to the view through the updatedLists data structure
+     * @param inputList the list to be converted into the format for returning
+     * @return the inputList in the format that needs to be returned, which is a 2 dimensional list
+     */
     public List<List<String>> convertList(ItemList inputList) {
         // this class is abstracted to convert the new planning and purchase lists from the group into the format of 2 dimensional lists with the required data to show the modification on the view
         List<Item> tempListItems = inputList.getItems();
