@@ -67,7 +67,6 @@ public class AddPurchaseView extends JPanel{
         add(check_box_contributing_members);
         add(confirm_text);
         add(buttons);
-
     }
 
     public JCheckBox[] createCheckboxes(String[] Current_Members) {

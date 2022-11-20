@@ -18,7 +18,7 @@ public class HomePageView extends JFrame implements ActionListener {
 
         JButton[] button_array = createGroupButtons(group_names);
 
-        ButtonGroup TRUE_BUTTON_GROUP;
+        ButtonGroup TRUE_BUTTON_GROUP = new ButtonGroup();
 
 
         public HomePageView() {

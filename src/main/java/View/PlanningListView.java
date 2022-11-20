@@ -13,11 +13,11 @@ public class PlanningListView extends JPanel {
     JScrollPane planning_table;
     private JTable table;
     private JScrollPane scrollPane;
-    Object[][] rows = new Object[][]{{new JButton("button"), "Amit", "670000", "2"},
-            {"102", "Jai", "780000", "2"},
-            {"101", "Sachin", "700000", "3"},
-            {"1", "2", "3", "4"}};
-    String[] columns = new String[]{"", "Item name", "Person who purchased", "Date/Time"};
+    Object[][] rows = new Object[][]{{new JButton("button"), "Amit", "670000"},
+            {"102", "Jai", "780000"},
+            {"101", "Sachin", "700000"},
+            {"1", "2", "3"}};
+    String[] columns = new String[]{"", "Item name"};
 
 
     public PlanningListView() {
