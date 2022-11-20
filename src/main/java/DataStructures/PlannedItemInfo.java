@@ -2,7 +2,6 @@ package DataStructures;
 
 public class PlannedItemInfo {
     final private String name;
-    final private Float price;
     final private String groupId;
 
     /**
@@ -12,9 +11,8 @@ public class PlannedItemInfo {
      * @param price the new item's price
      * @param groupId the groupId of the group storing this new item
      */
-    public PlannedItemInfo(String name, Float price, String groupId){
+    public PlannedItemInfo(String name, String groupId){
         this.name = name;
-        this.price = price;
         this.groupId = groupId;
     }
 
@@ -23,12 +21,6 @@ public class PlannedItemInfo {
      * @return This returns the name of the item in the package
      */
     public String getName(){    return name;    }
-
-    /**
-     * This function retrieves the price of the item in the package
-     * @return This returns the price of the item in the package
-     */
-    public Float getPrice(){    return price;   }
 
     /**
      * This function retrieves the groupId of the group of the item in the package

@@ -96,7 +96,7 @@ public class AddToPlanningList implements AddToPlanningBoundaryIn{
      * @return This returns the new item object created from the information or null if the item could not be saved
      */
     private Item createItem(PlannedItemInfo item) {
-        Item newItem = new Item(item.getName(), null , item.getPrice(), new ArrayList<>());
+        Item newItem = new Item(item.getName());
         try {
             itemAccess.addorUpdateItem(newItem.getItemId(), newItem.toString());
         } catch (IOException e) {

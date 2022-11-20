@@ -28,7 +28,7 @@ public class AddToPlanningController {
      * purchased list information, or if there is an error in the use case, a string that describes the error.
      */
     public UpdatedLists performPlanningAdd(String name, String groupId) {
-        PlannedItemInfo itemInfo = new PlannedItemInfo(name, 0.0F, groupId);
+        PlannedItemInfo itemInfo = new PlannedItemInfo(name, groupId);
         return inputBoundary.addPlanning(itemInfo);
     }
 }
