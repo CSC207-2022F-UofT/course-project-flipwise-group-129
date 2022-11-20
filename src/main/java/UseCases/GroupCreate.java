@@ -21,7 +21,7 @@ public class GroupCreate implements GroupCreateBoundaryIn{
      */
     final GroupDataInterface groupDsInterface; //the database interface that enables us to add and obtain group info
     final UserDataInterface userDsInterface; // the database interface that enables us to add and obtain user infos
-    final GroupCreateBoundaryOut groupCreatePresenter; // the presentor to provide the created group to
+    final GroupCreateBoundaryOut groupCreatePresenter; // the presenter to provide the created group to
 
     /**
      * Constructor to initiate the usecase interactor
