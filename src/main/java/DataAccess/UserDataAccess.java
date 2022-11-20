@@ -1,6 +1,5 @@
 package DataAccess;
 import DataAccessInterface.*;
-import org.json.simple.*;
 import org.json.simple.parser.ParseException;
 
 import java.io.*;
@@ -10,11 +9,11 @@ public class UserDataAccess extends DataAccess implements UserDataInterface {
     public final File userFile = new File("users.json");;
     private final Map<String, String> userMap = new HashMap<>();
     public UserDataAccess() throws IOException, ParseException {
-        super.readFile(userFile, userMap);
+        super.readFile(groupFile, userMap);
     }
     @Override
     public void addorUpdateUser(String username, String password) throws IOException {
-        super.addorUpdateEntity(userFile, userMap, username, password);
+        super.addorUpdateEntity(groupFile, userMap, username, password);
     }
 
     @Override
