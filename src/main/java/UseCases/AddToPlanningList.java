@@ -1,5 +1,4 @@
 package UseCases;
-import DataAccess.GroupDataAccess;
 import DataAccessInterface.*;
 import DataStructures.PlannedItemInfo;
 import Entities.*;
@@ -7,7 +6,6 @@ import InputBoundary.AddToPlanningBoundaryIn;
 import DataStructures.UpdatedLists;
 import OutputBoundary.AddToPlanningBoundaryOut;
 import com.fasterxml.jackson.core.JsonProcessingException;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +22,7 @@ public class AddToPlanningList implements AddToPlanningBoundaryIn{
         this.itemAccess = itemAccess;
     }
     @Override
-    public void addPlanning(PlannedItemInfo item) {
+    public UpdatedLists addPlanning(PlannedItemInfo item) {
         String groupId = item.getGroupId();
         // Get the Group and Item entities to manipulate
         Group currGroup = retreiveGroup(groupId);
@@ -34,7 +32,7 @@ public class AddToPlanningList implements AddToPlanningBoundaryIn{
         saveGroup(groupId, currGroup.toString());
         UpdatedLists updatedLists = new UpdatedLists(
                 getUpdatedPlanning(currGroup.getPlanningList()), getUpdatedPurchase(currGroup.getPurchaseList()));
-        outputBoundary.displayLists(updatedLists);
+        return outputBoundary.displayLists(updatedLists);
     }
     private List<List<String>> getUpdatedPlanning(PlanningList planningList){
         List<List<String>> stringPlanningList = new ArrayList<>();

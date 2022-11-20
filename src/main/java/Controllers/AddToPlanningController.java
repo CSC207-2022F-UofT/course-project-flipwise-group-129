@@ -1,18 +1,15 @@
 package Controllers;
-import DataAccessInterface.GroupDataInterface;
 import DataStructures.PlannedItemInfo;
-import DataStructures.UpdatedLists;
 import InputBoundary.AddToPlanningBoundaryIn;
-
-import java.io.IOException;
+import DataStructures.UpdatedLists;
 
 public class AddToPlanningController {
     public AddToPlanningBoundaryIn inputBoundary;
     public AddToPlanningController(AddToPlanningBoundaryIn inputBoundary) {
         this.inputBoundary = inputBoundary;
     }
-    public void performPlanningAdd(String name, Float price, String groupId) throws IOException {
+    public UpdatedLists performPlanningAdd(String name, Float price, String groupId) {
         PlannedItemInfo itemInfo = new PlannedItemInfo(name, price, groupId);
-        inputBoundary.addPlanning(itemInfo);
+        return inputBoundary.addPlanning(itemInfo);
     }
 }
