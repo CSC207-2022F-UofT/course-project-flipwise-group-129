@@ -15,6 +15,8 @@ public interface AddPurchaseBoundaryIn {
      * then returns the new lists to be displayed to the view
      * @param purchaseInfo the data structure containing all the information required to make a purchase and update
      *                     the necessary data
+     * @return the information sent back by the presenter through the use case to go to the view layer as an updated
+     * lists object
      */
     public UpdatedLists executeUseCase(PurchaseInfo purchaseInfo);
 }

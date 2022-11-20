@@ -12,7 +12,7 @@ public class AddPurchasePresenter implements AddPurchaseBoundaryOut {
      * Prepares and returns the information changed by the use case to the view
      *
      * @param updatedLists the data structure with the new planning and purchased lists
-     * @return a hashmap mapping the name of each list to the actual list
+     * @return a UpdatedLists object containing the updated information of the lists
      */
     @Override
     public UpdatedLists prepareViewInformation(UpdatedLists updatedLists) {

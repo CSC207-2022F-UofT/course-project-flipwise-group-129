@@ -35,6 +35,7 @@ public class AddPurchase implements AddPurchaseBoundaryIn {
      * then returns the new lists to be displayed to the view
      * @param purchaseInfo the data structure containing all the information required to make a purchase and
      *                     update the necessary data
+     * @return the information that is prepared by the presenter to the controller
      */
     @Override
     public UpdatedLists executeUseCase(PurchaseInfo purchaseInfo) {

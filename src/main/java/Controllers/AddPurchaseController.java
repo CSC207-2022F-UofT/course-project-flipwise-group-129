@@ -29,6 +29,8 @@ public class AddPurchaseController {
      * @param groupDataAccess interface for group data access
      * @param itemDataAccess interface for item data access
      * @param userDataAccess interface for user data access
+     * @return the information sent back by the presenter through the use case to go to the view layer as an updated
+     * lists object
      */
     public UpdatedLists controlAddPurchaseUseCase(AddPurchaseBoundaryIn addPurchaseUseCase, String purchasedItemId, List<String> participatingUsernames, String buyerUsername, float price, String purchaseGroupId, GroupDataInterface groupDataAccess, ItemDataInterface itemDataAccess, UserDataInterface userDataAccess) {
         //Implement the instantiation of the presenter to pass along the pipeline and assign the boundary attribute variable to the use case object

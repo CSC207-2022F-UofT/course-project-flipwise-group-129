@@ -20,9 +20,9 @@ public class UpdatedLists {
         this.newPurchasedList = updatedPurchase;
     }
 
-    public UpdatedLists(String errorMessage, List<List<String>> updatedPlanning, List<List<String>> updatedPurchase) {
-        this.newPlanningList = updatedPlanning;
-        this.newPurchasedList = updatedPurchase;
+    public UpdatedLists(String errorMessage) {
+        this.newPlanningList = null;
+        this.newPurchasedList = null;
         this.resultMessage = errorMessage;
     }
 
