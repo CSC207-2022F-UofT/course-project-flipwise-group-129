@@ -8,8 +8,10 @@ import OutputBoundary.GroupJoinBoundaryOut;
 import DataAccessInterface.*;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Map;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
@@ -182,12 +184,16 @@ public class GroupJoin implements GroupJoinBoundaryIn{
         List<String> usersInGroup = new ArrayList<>();
         List<String> groupIds = new ArrayList<>();
         List<String> groupNames = new ArrayList<>();
+        Map<String, String> planningList = new HashMap<>();
+        Map<String, String> purchasedList = new HashMap<>();
 
         group.getUsers().forEach(user1 -> usersInGroup.add(user1.getUsername()));
         user.getGroups().forEach(group1 -> groupIds.add(group1.getGroupId()));
         user.getGroups().forEach(group1 -> groupIds.add(group1.getGroupName()));
+        group.getPlanningList().getItems().forEach(item -> planningList.put(item.getItemId(), item.getItemName()));
+        group.getPurchaseList().getItems().forEach(item -> purchasedList.put(item.getItemId(), item.getItemName()));
 
-        return new JoinedGroupInfo(usersInGroup, groupIds, groupNames);
+        return new JoinedGroupInfo(usersInGroup, groupIds, groupNames, planningList, purchasedList);
     }
 
 }
