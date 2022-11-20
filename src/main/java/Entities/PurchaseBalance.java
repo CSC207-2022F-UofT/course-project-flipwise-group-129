@@ -5,6 +5,7 @@ import org.json.simple.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class PurchaseBalance {
 
@@ -14,45 +15,53 @@ public class PurchaseBalance {
 
     private List<Debt> allDebts;
 
-    /**
-     * Initialize to an empty list of debts
-     */
     public PurchaseBalance(){
         this.allDebts = new ArrayList<>();
     }
-
-    /**
-     * initialize a list of debts
-     * @param debts the list of debts to be set
-     */
     public PurchaseBalance(List<Debt> debts){
         this.allDebts = debts;
     }
 
-    /**
-     * get all the debts
-     * @return all the debts
-     */
     public List<Debt> getAllDebts() {
         // return a list of all the debts
         return allDebts;
     }
 
     /**
-     * add a user-user debt pair\
-     * appends ths debt pair into list of debts
-     * @param debt the debt pair to be added
+     * get the list of all debts where the user is owed money
+     * @param username the username of the user that is owed money
+     * @return list of all debts where the user is owed money
      */
+    public List<Debt> getUserOwed(String username){
+        List<Debt> debts = new ArrayList<>();
+        for (Debt debt : this.allDebts) {
+            if (Objects.equals(debt.getUserOwed().getUsername(), username)){
+                debts.add(debt);
+            }
+        }
+        return debts;
+    }
+
+    /**
+     * get the list of all debts where the user is owing money
+     * @param username the username of the user that is owing money
+     * @return list of all debts where the user is owing money
+     */
+    public List<Debt> getUserOwing(String username){
+        List<Debt> debts = new ArrayList<>();
+        for (Debt debt : this.allDebts) {
+            if (Objects.equals(debt.getUserOwing().getUsername(), username)){
+                debts.add(debt);
+            }
+        }
+        return debts;
+    }
+
     public void addDebtPair(Debt debt){
         // add a pair of debts between two users
         this.allDebts.add(debt);
     }
 
-    /**
-     * remove a user-user debt from the list
-     * @param debt the debt pair to be removed
-     * @return whether debt removal was successful
-     */
     public boolean removeDebtPair(Debt debt){
         //remove a debt between two users
         if (this.allDebts.contains(debt)){
@@ -70,11 +79,6 @@ public class PurchaseBalance {
 //
 //        return obj;
 //    }
-
-    /**
-     * method to return a JSONString representation of an instance of this class PurchaseBalance
-     * @return a JSONString representation of an instance of this class PurchaseBalance
-     */
     @Override
     public String toString() {
         ObjectMapper mapper = new ObjectMapper();
