@@ -18,7 +18,6 @@ public class GroupSummaryView extends JPanel implements ActionListener {
     JButton clear_debt = new JButton("Clear Debt");
     JButton return_to_homepage = new JButton("Return to Groups");
 
-
     public GroupSummaryView() {
 
         setSize(1000,600);
@@ -78,10 +77,11 @@ public class GroupSummaryView extends JPanel implements ActionListener {
                 //BorderFactory.createEtchedBorder(), "Purchases", TitledBorder.CENTER, TitledBorder.TOP));
         //p3.setBorder(BorderFactory.createTitledBorder(
                 //BorderFactory.createEtchedBorder(), "Balances", TitledBorder.CENTER, TitledBorder.TOP));
+
         p3.add(b);
-        add(t, BorderLayout.LINE_START);
+        add(t, BorderLayout.CENTER);
         add(temporary_panel, BorderLayout.NORTH);
-        add(right_hand_side, BorderLayout.CENTER);
+        add(right_hand_side, BorderLayout.LINE_START);
         add(bottoms_up, BorderLayout.SOUTH);
 
         add_item.addActionListener(this);
@@ -97,7 +97,6 @@ public class GroupSummaryView extends JPanel implements ActionListener {
 
         if (e.getActionCommand().equals("Clear Debt")){
             ClearDebtView clearDebtView = new ClearDebtView();
-
         }
 
         if (e.getActionCommand().equals("Return to Groups")){

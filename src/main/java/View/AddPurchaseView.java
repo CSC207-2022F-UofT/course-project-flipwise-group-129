@@ -26,7 +26,6 @@ public class AddPurchaseView extends JPanel{
         price_information.setEditable(false);
         JPanel price_request_text = new JPanel();
         price_request_text.add(price_information);
-
         //fetch item cost
         item_request = new JLabel("Item cost:");
         item_price = new JTextField(20);
@@ -67,6 +66,7 @@ public class AddPurchaseView extends JPanel{
         add(check_box_contributing_members);
         add(confirm_text);
         add(buttons);
+
     }
 
     public JCheckBox[] createCheckboxes(String[] Current_Members) {
