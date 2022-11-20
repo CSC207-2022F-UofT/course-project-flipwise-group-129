@@ -57,6 +57,21 @@ public class PurchaseBalance {
         return debts;
     }
 
+    /**
+     * return a debt pair between a user owing money and a user owed money if exist
+     * @param userOwed the username of the user owed money
+     * @param userOwing the username of the user owing money
+     * @return the debt pair if it exists, else null
+     */
+    public Debt getDebtPair(String userOwed, String userOwing){
+        for (Debt debt : this.allDebts) {
+            if (debt.getUserOwing().getUsername().equals(userOwing) && debt.getUserOwed().getUsername().equals(userOwing)){
+                return debt;
+            }
+        }
+        return null;
+    }
+
     public void addDebtPair(Debt debt){
         // add a pair of debts between two users
         this.allDebts.add(debt);
