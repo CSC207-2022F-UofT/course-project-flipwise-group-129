@@ -7,7 +7,7 @@ import java.io.*;
 import java.util.*;
 
 public class UserDataAccess extends DataAccess implements UserDataInterface {
-    public final File userFile = new File("users.json");;
+    public final File userFile = new File("users.json");
     private final Map<String, String> userMap = new HashMap<>();
     public UserDataAccess() throws IOException, ParseException {
         super.readFile(userFile, userMap);
