@@ -7,6 +7,7 @@ public class UpdatedLists {
     // item ids and the names
     private final List<List<String>> newPlanningList;
     private final List<List<String>> newPurchasedList;
+    private String resultMessage = "Success";
 
     /**
      * Assigns values from the parameters to the class attribute variables
@@ -17,6 +18,12 @@ public class UpdatedLists {
         // Instantiate the class attributes from the information returned from the use case
         this.newPlanningList = updatedPlanning;
         this.newPurchasedList = updatedPurchase;
+    }
+
+    public UpdatedLists(String errorMessage, List<List<String>> updatedPlanning, List<List<String>> updatedPurchase) {
+        this.newPlanningList = updatedPlanning;
+        this.newPurchasedList = updatedPurchase;
+        this.resultMessage = errorMessage;
     }
 
     // Implementing getter functions for the new planning and purchased lists so that the presenter can use them to
@@ -35,4 +42,9 @@ public class UpdatedLists {
     public List<List<String>> getNewPurchasedList(){
         return this.newPurchasedList;
     }
+
+    /**
+     * @return the result message of the update attempt
+     */
+    public String getResultMessage() { return this.resultMessage; }
 }
