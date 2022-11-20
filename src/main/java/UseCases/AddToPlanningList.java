@@ -25,11 +25,12 @@ public class AddToPlanningList implements AddToPlanningBoundaryIn{
     @Override
     public UpdatedLists addPlanning(PlannedItemInfo item) throws IOException {
         String groupId = item.getGroupId();
-//        GroupDataInterface groupAccess = new GroupDataAccess(groupJasonPath);
-        Group currGroup = retreiveGroupInfo(groupId, groupAccess);
+        // Get the Group and Item entities to manipulate
+        Group currGroup = retreiveGroup(groupId);
         Item newItem = createItem(item);
+        // Add the new item to the current group's planning list and save it back into the database.
         currGroup.getPlanningList().addItems(newItem);
-        saveGroup(groupId, currGroup.toString(), groupAccess);
+        saveGroup(groupId, currGroup.toString());
         UpdatedLists updatedLists = new UpdatedLists(
                 getUpdatedPlanning(currGroup.getPlanningList()), getUpdatedPurchase(currGroup.getPurchaseList()));
         return outputBoundary.displayLists(updatedLists);
@@ -63,12 +64,12 @@ public class AddToPlanningList implements AddToPlanningBoundaryIn{
         itemAccess.addorUpdateItem(newItem.getItemId(), newItem.toString());
         return newItem;
     }
-    private Group retreiveGroupInfo(String groupId, GroupDataInterface groupAccess) throws JsonProcessingException {
+    private Group retreiveGroup(String groupId) throws JsonProcessingException {
         String groupInfo = groupAccess.groupAsString(groupId);
         return Group.fromString(groupInfo);
     }
 
-    private void saveGroup(String groupId, String groupData, GroupDataInterface groupAccess) throws IOException {
+    private void saveGroup(String groupId, String groupData) throws IOException {
         groupAccess.addorUpdateGroup(groupId, groupData);
     }
 }
