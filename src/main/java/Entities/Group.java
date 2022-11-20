@@ -15,9 +15,9 @@ public class Group {
     private PlanningList planningList; // the list of all the things that are planned to purchase
     private PurchaseBalance purchaseBalance; // has all the debts in the group
 
-    private String groupName; // name of the group
+    private final String groupName; // name of the group
 
-    private String groupId; // id of the group, generated from the timestamp
+    private final String groupId; // id of the group, generated from the timestamp
 
     /**
      * Constructor to create a new group object
