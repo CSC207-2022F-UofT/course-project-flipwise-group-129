@@ -2,9 +2,7 @@ package UseCases;
 
 import DataStructures.JoinGroupRequest;
 import DataStructures.JoinedGroupInfo;
-import Entities.Group;
-import Entities.GroupFactory;
-import Entities.User;
+import Entities.*;
 import InputBoundary.GroupJoinBoundaryIn;
 import OutputBoundary.GroupJoinBoundaryOut;
 import DataAccessInterface.*;
@@ -60,6 +58,14 @@ public class GroupJoin implements GroupJoinBoundaryIn{
         if (group.getUsers().contains(user)){
             //brr fail
         }
+        //adding all needed new debt pairs:
+        PurchaseBalance grpPurchaseBalance = group.getPurchaseBalance();
+        for (User groupUser : group.getUsers()) {
+            grpPurchaseBalance.addDebtPair(new Debt(groupUser, user, group.getGroupId()));
+            grpPurchaseBalance.addDebtPair(new Debt(user, groupUser, group.getGroupId()));
+        }
+        //mutating method, so no need to reassign
+
         group.addUser(user); // add the user into the list of users in the group
         user.addGroup(group); // add the group into the list of groups the user is a part of
 
