@@ -1,15 +1,12 @@
 package DataAccess;
 
-//import org.*;
 import org.json.simple.parser.ParseException;
 import java.util.*;
 import java.io.*;
-
-package DataAccess;
-import DataAccessInterface.*;
+import DataAccessInterface.GroupDataInterface;
 
 public class GroupDataAccess extends DataAccess implements GroupDataInterface {
-    public final File groupFile = new File("users.json");;
+    public final File groupFile = new File("groups.json");
     private final Map<String, String> groupMap = new HashMap<>();
     public GroupDataAccess() throws IOException, ParseException {
         super.readFile(groupFile, groupMap);
