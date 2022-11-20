@@ -20,7 +20,7 @@ public class HomePageView extends JFrame implements ActionListener {
 
     JButton[] button_array = createGroupButtons(group_names);
 
-    ButtonGroup TRUE_BUTTON_GROUP = new ButtonGroup();
+//    ButtonGroup TRUE_BUTTON_GROUP = new ButtonGroup();
 
     public HomePageView() {
 
@@ -32,21 +32,22 @@ public class HomePageView extends JFrame implements ActionListener {
         homePage.setAlignmentX(Component.CENTER_ALIGNMENT);
         JPanel homepageDetails = new JPanel();
         homepageDetails.add(homePage);
+
         // Algorithm implementation
         for (int i = 0; i < group_names.length; i++) {
             button_array[i].addActionListener(this);
             group_btns.add(button_array[i]);
-            TRUE_BUTTON_GROUP.add(button_array[i]);
+//            TRUE_BUTTON_GROUP.add(button_array[i]);
         }
 
         //DUMMY
-        JLabel test = new JLabel("This is a group's area");
-        JPanel new_test = new JPanel();
-        new_test.add(test);
-
-        JLabel test2 = new JLabel("This is another group's area");
-        JPanel new_test_2 = new JPanel();
-        new_test_2.add(test2);
+//        JLabel test = new JLabel("This is a group's area");
+//        JPanel new_test = new JPanel();
+//        new_test.add(test);
+//
+//        JLabel test2 = new JLabel("This is another group's area");
+//        JPanel new_test_2 = new JPanel();
+//        new_test_2.add(test2);
         //DUMMY
 
         btn_create = new JButton("Create Group");
@@ -82,6 +83,7 @@ public class HomePageView extends JFrame implements ActionListener {
             JOptionPane.showMessageDialog(null, "The Group ID is  "
                     + groupID + ".");
 
+
             //controller stuff
             //update homepage
         }
@@ -95,8 +97,6 @@ public class HomePageView extends JFrame implements ActionListener {
         // group buttons
     }
 
-
-
 //        public void getNumberOfGroups(){ return }
 
     public JButton[] createGroupButtons(String[] Current_Groups) {
@@ -107,5 +107,7 @@ public class HomePageView extends JFrame implements ActionListener {
         }
         return output;
     }
+
+
 
 }

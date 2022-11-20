@@ -98,8 +98,7 @@ public class GroupSummaryView extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand().equals("Add Item")){
-//            String item = JOptionPane.showInputDialog("Please enter in Item Name:");
-            AddPurchaseView addPurchaseView = new AddPurchaseView();
+            String item = JOptionPane.showInputDialog("Please enter in Item Name:");
         }
 
         if (e.getActionCommand().equals("Clear Debt")){

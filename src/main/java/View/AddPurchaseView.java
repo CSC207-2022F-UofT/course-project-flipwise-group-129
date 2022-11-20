@@ -15,6 +15,7 @@ public class AddPurchaseView extends JOptionPane{
     JCheckBox[] contributing_members = createCheckboxes(members);
     JTextArea confirmation;
     JTextArea price_information;
+    int reply;
     public AddPurchaseView() {
         //set window
 //        setSize(500, 250);
@@ -74,11 +75,11 @@ public class AddPurchaseView extends JOptionPane{
         p.add(check_box_contributing_members);
 //        add(confirm_text);
 //        add(buttons);
-        this.showOptionDialog(null, p,
+        reply = this.showOptionDialog(null, p,
                 "Purchase Item", JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE, null, null, null);
-    }
 
+    }
     public JCheckBox[] createCheckboxes(String[] Current_Members) {
         JCheckBox[] output = new JCheckBox[Current_Members.length];
         for (int i = 0; i < Current_Members.length; i++) {
@@ -86,6 +87,10 @@ public class AddPurchaseView extends JOptionPane{
             output[i] = checkbox_member;
         }
         return output;
+    }
+
+    public int getOption(){
+        return this.reply;
     }
 
 }

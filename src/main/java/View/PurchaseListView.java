@@ -31,5 +31,7 @@ public class PurchaseListView extends JPanel {
 
     }
 
+
+
 }
 
