@@ -1,4 +1,5 @@
 package UseCases;
+import DataAccess.GroupDataAccess;
 import DataAccessInterface.*;
 import DataStructures.PlannedItemInfo;
 import Entities.*;
