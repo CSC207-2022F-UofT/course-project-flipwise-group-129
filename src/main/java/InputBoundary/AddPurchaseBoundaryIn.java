@@ -1,6 +1,7 @@
 package InputBoundary;
 
 import DataStructures.PurchaseInfo;
+import DataStructures.UpdatedLists;
 
 public interface AddPurchaseBoundaryIn {
     // Defining the functions that will be implemented by the AddPurchase use case through the boundary to
@@ -15,5 +16,5 @@ public interface AddPurchaseBoundaryIn {
      * @param purchaseInfo the data structure containing all the information required to make a purchase and update
      *                     the necessary data
      */
-    public void executeUseCase(PurchaseInfo purchaseInfo);
+    public UpdatedLists executeUseCase(PurchaseInfo purchaseInfo);
 }

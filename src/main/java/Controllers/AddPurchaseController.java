@@ -4,6 +4,7 @@ import DataAccessInterface.GroupDataInterface;
 import DataAccessInterface.ItemDataInterface;
 import DataAccessInterface.UserDataInterface;
 import DataStructures.PurchaseInfo;
+import DataStructures.UpdatedLists;
 import InputBoundary.AddPurchaseBoundaryIn;
 import OutputBoundary.AddPurchaseBoundaryOut;
 import Presenters.AddPurchasePresenter;
@@ -29,7 +30,7 @@ public class AddPurchaseController {
      * @param itemDataAccess interface for item data access
      * @param userDataAccess interface for user data access
      */
-    public void controlAddPurchaseUseCase(AddPurchaseBoundaryIn addPurchaseUseCase, String purchasedItemId, List<String> participatingUsernames, String buyerUsername, float price, String purchaseGroupId, GroupDataInterface groupDataAccess, ItemDataInterface itemDataAccess, UserDataInterface userDataAccess) {
+    public UpdatedLists controlAddPurchaseUseCase(AddPurchaseBoundaryIn addPurchaseUseCase, String purchasedItemId, List<String> participatingUsernames, String buyerUsername, float price, String purchaseGroupId, GroupDataInterface groupDataAccess, ItemDataInterface itemDataAccess, UserDataInterface userDataAccess) {
         //Implement the instantiation of the presenter to pass along the pipeline and assign the boundary attribute variable to the use case object
         this.addPurchaseUseCaseBoundaryIn = addPurchaseUseCase;
         AddPurchaseBoundaryOut presenter = new AddPurchasePresenter();
@@ -38,6 +39,6 @@ public class AddPurchaseController {
         PurchaseInfo purchaseInfo = new PurchaseInfo(purchasedItemId, participatingUsernames, buyerUsername, price, purchaseGroupId, presenter, groupDataAccess, itemDataAccess, userDataAccess);
 
         // Call the use case
-        this.addPurchaseUseCaseBoundaryIn.executeUseCase(purchaseInfo);
+        return this.addPurchaseUseCaseBoundaryIn.executeUseCase(purchaseInfo);
     }
 }

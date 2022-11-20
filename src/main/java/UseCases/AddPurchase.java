@@ -37,7 +37,7 @@ public class AddPurchase implements AddPurchaseBoundaryIn {
      *                     update the necessary data
      */
     @Override
-    public void executeUseCase(PurchaseInfo purchaseInfo) {
+    public UpdatedLists executeUseCase(PurchaseInfo purchaseInfo) {
         this.purchaseInfo = purchaseInfo;
         // Calling the helper method which instantiates values for the attribute variables which is extracted
         // from the purchaseInfo data structure
@@ -64,7 +64,7 @@ public class AddPurchase implements AddPurchaseBoundaryIn {
         writeData();
 
         // Call the presenter through the output boundary with the updated lists data structure
-        this.presenter.prepareViewInformation(newLists);
+        return this.presenter.prepareViewInformation(newLists);
     }
 
     /**
