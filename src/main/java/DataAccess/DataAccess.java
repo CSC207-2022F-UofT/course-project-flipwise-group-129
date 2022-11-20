@@ -5,7 +5,6 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import org.w3c.dom.Entity;
 
 import java.io.File;
 import java.io.FileReader;
@@ -15,7 +14,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class DataAccess implements EntityDataInterface {
-
+    /**
+     * Users, Groups, and Items are stored and modified.
+     */
     public final File jasonFile;
     public final Map<String, String> entityMap = new HashMap<>();
 
@@ -51,7 +52,6 @@ public class DataAccess implements EntityDataInterface {
 
     @Override
     public void addorUpdateEntity(String groupId, String groupInfo) throws IOException {
-        // needs inputted the new or updated group to string alongside the group's id
         entityMap.put(groupId, groupInfo);
         save();
     }
