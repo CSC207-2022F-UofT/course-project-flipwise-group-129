@@ -16,19 +16,30 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 
 public class GroupCreate implements GroupCreateBoundaryIn{
 
-    /*
-    Handles the creation of a new group
+    /**
+     * Usecase interactor that handles the creation of a group
      */
     final GroupDataInterface groupDsInterface; //the database interface that enables us to add and obtain group info
     final UserDataInterface userDsInterface; // the database interface that enables us to add and obtain user infos
     final GroupCreateBoundaryOut groupCreatePresenter; // the presentor to provide the created group to
 
+    /**
+     * Constructor to initiate the usecase interactor
+     * @param presenter an interface that is implemented by the presentor to access the output from use case interactor
+     * @param groupDsInterface interface to access group related database queries
+     * @param userDsInterface interface to access user related dataase queries
+     */
     public GroupCreate(GroupCreateBoundaryOut presenter, GroupDataInterface groupDsInterface, UserDataInterface userDsInterface){
         this.groupCreatePresenter = presenter;
         this.groupDsInterface = groupDsInterface;
         this.userDsInterface = userDsInterface;
     }
 
+    /**
+     * Allows the user to create a group
+     * adds the user in as the sole member of group
+     * @param newGroupInfo the data structure containing all the information required to create a new group
+     */
     @Override
     public CreatedGroupInfo createNewGroup(ProposedGroupInfo newGroupInfo){
         //obtain the user from the database
@@ -56,6 +67,12 @@ public class GroupCreate implements GroupCreateBoundaryIn{
         return this.groupCreatePresenter.prepareSuccessView(createdGroupInfo); //present it to the presenter
     }
 
+    /**
+     * gets the specified user by username from the database if exists
+     * otherwise throws a Runtime exception
+     * @param username contains the unique username that can be used to identify user data from database
+     * @return returns the user object obtained from db
+     */
     private User getUserFromDb(String username){
         // get the user from the database and create a User interface
         //check if the user exists
@@ -71,6 +88,13 @@ public class GroupCreate implements GroupCreateBoundaryIn{
         }
     }
 
+    /**
+     * creates the group
+     * adds the user to the group
+     * adds the group to the list of groups the user is a part of
+     * @param createdUser the user that requested group creation
+     * @param groupName the requested group's name
+     */
     private Group createGroup(User createdUser, String groupName){
         //intialize a set of users in the group
         Set<User> users = new TreeSet<>();
@@ -81,6 +105,11 @@ public class GroupCreate implements GroupCreateBoundaryIn{
         return group;
     }
 
+    /**
+     * Saves the modified user and new group data into the database
+     * @param user the user object after modifications
+     * @param group the new group object with all the required new information about the list of users
+     */
     private void saveData(User user, Group group){
         //pass new info to db
         try {
@@ -95,6 +124,13 @@ public class GroupCreate implements GroupCreateBoundaryIn{
         }
     }
 
+    /**
+     * Creates the data to be handled by presenter that will have the group names the person is part of
+     * its ids
+     * @param createdUser the user object that has been modified
+     * @param group the group object that has been created
+     * @return the datastructure that will be handled by the presenter
+     */
     private CreatedGroupInfo createOutputData(User createdUser, Group group){
         List<Group> allGroups = new ArrayList<>(createdUser.getGroups());
         List<String> allGroupIds = new ArrayList<>();
