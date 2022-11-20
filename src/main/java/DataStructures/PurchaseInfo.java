@@ -29,8 +29,11 @@ public class PurchaseInfo {
      * @param itemData
      * @param userData
      */
-    public PurchaseInfo(String purchasedItemId, List<String> participatingUsernames, String buyerUsername, float itemPrice, String purchaseGroupId, AddPurchaseBoundaryOut presenter, GroupDataInterface groupData, ItemDataInterface itemData, UserDataInterface userData) {
-        // Instantiate the private attributes of all the different pieces of data packaged into this data structure for the use cases use
+    public PurchaseInfo(String purchasedItemId, List<String> participatingUsernames, String buyerUsername,
+                        float itemPrice, String purchaseGroupId, AddPurchaseBoundaryOut presenter,
+                        GroupDataInterface groupData, ItemDataInterface itemData, UserDataInterface userData) {
+        // Instantiate the private attributes of all the different pieces of data packaged into this data structure
+        // for the use cases use
         this.purchasedItemId = purchasedItemId;
         this.participatingUsernames = participatingUsernames;
         this.buyerUsername = buyerUsername;
