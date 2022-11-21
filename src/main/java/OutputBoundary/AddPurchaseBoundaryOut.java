@@ -12,7 +12,7 @@ public interface AddPurchaseBoundaryOut {
      * @param updatedLists the data structure with the new planning and purchased lists
      * @return a UpdatedLists object containing the updated information of the lists
      */
-    public UpdatedLists prepareViewInformation(UpdatedLists updatedLists);
+    UpdatedLists prepareViewInformation(UpdatedLists updatedLists);
     // This function uses the updated list data structure as a parameter as the new planning and purchase list are
     // what will be updated on the view after add purchase is called
 }

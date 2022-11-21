@@ -3,8 +3,6 @@ package Presenters;
 import DataStructures.UpdatedLists;
 import OutputBoundary.AddPurchaseBoundaryOut;
 
-import java.util.HashMap;
-import java.util.List;
 
 public class AddPurchasePresenter implements AddPurchaseBoundaryOut {
 

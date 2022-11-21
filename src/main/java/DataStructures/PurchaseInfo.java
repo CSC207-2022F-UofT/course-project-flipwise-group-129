@@ -19,15 +19,15 @@ public class PurchaseInfo {
 
     /**
      * Assigns values from the parameters to the class attribute variables
-     * @param purchasedItemId
-     * @param participatingUsernames
-     * @param buyerUsername
-     * @param itemPrice
-     * @param purchaseGroupId
-     * @param presenter
-     * @param groupData
-     * @param itemData
-     * @param userData
+     * @param purchasedItemId the id of the item that's being purchased
+     * @param participatingUsernames the usernames of the users involved in the purchase
+     * @param buyerUsername the username of the user who purchased the item
+     * @param itemPrice the price of the item that was purchased
+     * @param purchaseGroupId the id of the group that this purchase was made in
+     * @param presenter the presenter output boundary object for the use case to reflect ui changes
+     * @param groupData the data access boundary for groups
+     * @param itemData the data access boundary for items
+     * @param userData the data access boundary for users
      */
     public PurchaseInfo(String purchasedItemId, List<String> participatingUsernames, String buyerUsername,
                         float itemPrice, String purchaseGroupId, AddPurchaseBoundaryOut presenter,
@@ -48,8 +48,7 @@ public class PurchaseInfo {
     // Since this data structure will only be read from, define and implement getters for each of the attributes
 
     /**
-     * Returns the item id of the item being purchased
-     * @return
+     * @return the item id of the item being purchased
      */
     public String getItemId(){
         return this.purchasedItemId;

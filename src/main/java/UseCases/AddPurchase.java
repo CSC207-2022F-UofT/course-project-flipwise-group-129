@@ -20,7 +20,6 @@ public class AddPurchase implements AddPurchaseBoundaryIn {
     private List<User> participatingUsers;
     private float price;
     private Group purchaseGroup;
-    private UpdatedLists newLists;
     private User buyer;
     private AddPurchaseBoundaryOut presenter;
     private GroupDataInterface groupData;
@@ -44,7 +43,7 @@ public class AddPurchase implements AddPurchaseBoundaryIn {
         // from the purchaseInfo data structure
         extractInformation(purchaseInfo);
 
-        // Obtain the planninglist from the group and then remove the item that's being purchased from it to
+        // Obtain the planning list from the group and then remove the item that's being purchased from it to
         // move it to the purchased list
         PlanningList planningList = this.purchaseGroup.getPlanningList();
         boolean removeCheck = planningList.removeFromList(this.purchasedItem);
@@ -59,7 +58,7 @@ public class AddPurchase implements AddPurchaseBoundaryIn {
         // These functions call the convertList helper method as they share a lot of functionality
         List<List<String>> planningListItemIds = convertList(planningList);
         List<List<String>> purchasedListItemIds = convertList(purchaseList);
-        newLists = new UpdatedLists(planningListItemIds, purchasedListItemIds);
+        UpdatedLists newLists = new UpdatedLists(planningListItemIds, purchasedListItemIds);
 
         // Call a helper function to write the updated data in to the database using the interfaces
         writeData();
@@ -107,6 +106,8 @@ public class AddPurchase implements AddPurchaseBoundaryIn {
         this.groupData = purchaseInfo.getGroupData();
         this.itemData = purchaseInfo.getItemData();
         this.userData = purchaseInfo.getUserData();
+
+        this.participatingUsers = new ArrayList<>();
 
         // remember need try catches for all the IO or json exceptions
         //use data boundaries to parse the information and grab the class attribute variables as objects of the entities
@@ -165,9 +166,9 @@ public class AddPurchase implements AddPurchaseBoundaryIn {
         // this class is abstracted to convert the new planning and purchase lists from the group
         // into the format of 2 dimensional lists with the required data to show the modification on the view
         List<Item> tempListItems = inputList.getItems();
-        List<List<String>> tempListItemStrings = new ArrayList<List<String>>();
+        List<List<String>> tempListItemStrings = new ArrayList<>();
         for (Item item: tempListItems) {
-            List<String> tempList = new ArrayList<String>();
+            List<String> tempList = new ArrayList<>();
             tempList.add(item.getItemId());
             tempList.add(item.getItemName());
             // since only purchased items have a price and buyer, need to check the

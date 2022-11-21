@@ -18,5 +18,5 @@ public interface AddPurchaseBoundaryIn {
      * @return the information sent back by the presenter through the use case to go to the view layer as an updated
      * lists object
      */
-    public UpdatedLists executeUseCase(PurchaseInfo purchaseInfo);
+    UpdatedLists executeUseCase(PurchaseInfo purchaseInfo);
 }
