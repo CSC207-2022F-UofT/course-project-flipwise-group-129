@@ -1,6 +1,7 @@
 package OutputBoundary;
 import DataStructures.UpdatedLists;
 public interface AddToPlanningBoundaryOut {
+
     /**
      * This function is called in the AddtoPlanning use case to pass the successful results as updated lists
      * so that the view can update accordingly.
@@ -9,6 +10,7 @@ public interface AddToPlanningBoundaryOut {
      * planning and purchased lists to that it is usable for the view.
      */
     UpdatedLists displayLists(UpdatedLists lists);
+
     /**
      * This function is called in the AddtoPlanning use case to pass the failed results as a message
      * so that the view can update accordingly.
