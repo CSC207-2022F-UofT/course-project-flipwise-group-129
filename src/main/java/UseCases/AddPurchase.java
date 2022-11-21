@@ -13,6 +13,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class AddPurchase implements AddPurchaseBoundaryIn {
     private PurchaseInfo purchaseInfo;
@@ -69,7 +70,20 @@ public class AddPurchase implements AddPurchaseBoundaryIn {
         writeData();
 
         // Call the presenter through the output boundary with the updated lists data structure
-        return this.presenter.prepareSuccessViewInformation(this.newLists);
+        return this.presentInformation();
+    }
+
+    /**
+     * Call the presenter to return information to the view
+     * @return the correct view based on if the use case failed or succeeded
+     */
+    private UpdatedLists presentInformation() {
+        if (Objects.equals(this.newLists.getResultMessage(), "Success")) {
+            return this.presenter.prepareSuccessViewInformation(this.newLists);
+        }
+        else {
+            return this.presenter.prepareFailViewInformation(this.newLists);
+        }
     }
 
     /**
@@ -164,7 +178,7 @@ public class AddPurchase implements AddPurchaseBoundaryIn {
             try {
                 this.participatingUsers.add(User.fromString(this.userData.userAsString(username)));
             } catch (JsonProcessingException e) {
-                throw new RuntimeException(e);
+                raiseError(e.toString());
             }
             // yay O(n) time
         }
