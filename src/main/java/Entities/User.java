@@ -1,12 +1,8 @@
 package Entities;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sun.tools.javac.Main;
-import org.json.simple.JSONObject;
 
-import java.sql.Timestamp;
 import java.util.List;
-import java.util.ArrayList;
 
 public class User {
 
