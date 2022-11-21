@@ -3,19 +3,48 @@ package DataStructures;
 import java.util.List;
 
 public class UpdatedLists {
-    private final List<String> newPlanningList;
-    private final List<String> newPurchasedList;
+    // Define the class attributes to store a 2D list for both the new planning and purchase list to store the
+    // item ids and the names
+    private final List<List<String>> newPlanningList;
+    private final List<List<String>> newPurchasedList;
+    private String resultMessage = "Success";
 
-    public UpdatedLists(List<String> updatedPlanning, List<String> updatedPurchase) {
+    /**
+     * Assigns values from the parameters to the class attribute variables
+     * @param updatedPlanning the new 2 dimensional list of the planning list of the group
+     * @param updatedPurchase the new 2 dimensional list of the purchased list of the group
+     */
+    public UpdatedLists(List<List<String>> updatedPlanning, List<List<String>> updatedPurchase) {
+        // Instantiate the class attributes from the information returned from the use case
         this.newPlanningList = updatedPlanning;
         this.newPurchasedList = updatedPurchase;
     }
 
-    public List<String> getNewPlanningList(){
+    public UpdatedLists(String errorMessage) {
+        this.newPlanningList = null;
+        this.newPurchasedList = null;
+        this.resultMessage = errorMessage;
+    }
+
+    // Implementing getter functions for the new planning and purchased lists so that the presenter can use them to
+    // update the view
+
+    /**
+     * @return the private new planning list attribute
+     */
+    public List<List<String>> getNewPlanningList(){
         return this.newPlanningList;
     }
 
-    public List<String> getNewPurchasedList(){
+    /**
+     * @return the private new purchased list attribute
+     */
+    public List<List<String>> getNewPurchasedList(){
         return this.newPurchasedList;
     }
+
+    /**
+     * @return the result message of the update attempt
+     */
+    public String getResultMessage() { return this.resultMessage; }
 }
