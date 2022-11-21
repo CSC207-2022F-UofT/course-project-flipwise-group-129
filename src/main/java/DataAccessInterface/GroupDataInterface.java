@@ -2,6 +2,10 @@ package DataAccessInterface;
 import java.io.IOException;
 
 public interface GroupDataInterface {
+    /**
+     * This represents a GroupDataInterface defines methods needed to
+     * facilitate data reading and writing from groups.json
+     */
 
     /**
      * This function will be called to add or update any group entity to the map and saving the updated information

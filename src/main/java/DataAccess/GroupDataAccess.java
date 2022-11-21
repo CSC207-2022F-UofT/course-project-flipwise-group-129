@@ -6,6 +6,10 @@ import java.io.*;
 import DataAccessInterface.GroupDataInterface;
 
 public class GroupDataAccess extends DataAccess implements GroupDataInterface {
+    /**
+     * Implements GroupDataInterface
+     * This represents an GroupDataAccess which facilitates data reading and writing from groups.json to update
+     */
     public final File groupFile = new File("groups.json");
     private final Map<String, String> groupMap = new HashMap<>();
     /**
