@@ -1,9 +1,3 @@
-# Project Template
-
-This is a template repository for CSC 207 projects. 
-This repository contains starter code for a gradle project.
-It also contains workflow documents that give instructions on how to manage your Github repository and how to use Github Projects for efficient collaboration.
-
 # How to start and run your program
 - [ ] Clone the Project Flipwise repository and open the folder in your Intellij (preferred to easily make JavaDoc)
 - [ ] Go to file main.java and run main() function by clicking the green play button on the left of the method or right-clicking on the file and selecting the run main.main option. 
@@ -11,22 +5,6 @@ It also contains workflow documents that give instructions on how to manage your
 # How to run the testing program and generate the test coverage report
 - [ ] Clone the Project Flipwise repository and open the folder in your Intellij (preferred to easily make JavaDoc)
 - [ ] Go to file main.java and run main() function by clicking the green play button on the left of the method or right-clicking on the file and selecting the run main.main option. 
-
-## Checklist For Your Project
-- [ ] Verify the correct settings for your project repository
-- [ ] Set up Github Projects
-- [ ] Create the implementation plan using issues and Github Projects
-- [ ] Create deveopment branches for your features
-- [ ] Use pull requests to merge finished features into main branch
-- [ ] Conduct code reviews
-
-**If your team has trouble with any of these steps, please ask on Piazza. For example, with how GitHub Classroom works, your team *may* not have permissions to do some of the first few steps, in which case we'll post alternative instructions as needed.**
-
-## Workflow Documents
-
-* Github Workflow: Please refer to the workflow that was introduced in the first lab. You should follow this when working on your code. The following document provides additional details too.
-
-* [Project Planning and Development Guide](project_plan_dev.md): This document helps you to understand how to create and maintain a project plan for your class project. **This document helps you to complete the Implementation Plan Milestone.**
 
 ## Gradle Project
 Import this project into your Intellij editor. It should automatically recognise this as a gradle repository.
