@@ -2,7 +2,7 @@ package DataAccessInterface;
 import java.io.IOException;
 
 public interface GroupDataInterface {
-    /**
+    /*
      * This represents a GroupDataInterface defines methods needed to
      * facilitate data reading and writing from groups.json
      */
