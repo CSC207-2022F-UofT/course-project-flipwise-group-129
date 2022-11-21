@@ -24,10 +24,16 @@ public class UserRegister implements UserRegisterBoundaryIn {
 
     @Override
     public boolean executeUserRegister(RegisterCredentials credentials) throws IOException {
+        /**
+         * Creates a new user if the username is available and the passwords match.
+         *
+         * @param credentials a data structure containing the username, password, and repeat password
+         * @return boolean if the user is registered successful
+         */
         String username = credentials.getUsername();
         String pw1 = credentials.getPassword1();
         String pw2 = credentials.getPassword2();
-        if (usernameAvailable(credentials.getUsername()) & passwordsMatch(credentials.getPassword1(), credentials.getPassword2())) {
+        if (usernameAvailable(credentials.getUsername()) & passwordsMatch(pw1, pw2)) {
             createUser(username, pw1);
             outputBoundary.success(true);
             return true;
