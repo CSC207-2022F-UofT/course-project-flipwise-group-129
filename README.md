@@ -2,9 +2,11 @@
 - [ ] Clone the Project Flipwise repository and open the folder in your Intellij (preferred to easily make JavaDoc)
 - [ ] Go to file main.java and run main() function by clicking the green play button on the left of the method or right-clicking on the file and selecting the run main.main option. 
 
-# How to run the testing program and generate the test coverage report
+# Testing
+## How to run the testing program 
 - [ ] Clone the Project Flipwise repository and open the folder in your Intellij (preferred to easily make JavaDoc)
-- [ ] Go to file main.java and run main() function by clicking the green play button on the left of the method or right-clicking on the file and selecting the run main.main option. 
+- [ ] Go to file main.java and run main() function by clicking the green play button on the left of the method or right-clicking on the file and selecting the run 
+## How to generate the test coverage report
 
 ## Gradle Project
 Import this project into your Intellij editor. It should automatically recognise this as a gradle repository.
