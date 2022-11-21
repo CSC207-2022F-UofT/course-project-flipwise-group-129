@@ -1,8 +1,13 @@
 package OutputBoundary;
 
-public interface UserLoginBoundaryOut {
-    boolean success(boolean success);
+import DataStructures.LoggedInInfo;
 
-    public void
+public interface UserLoginBoundaryOut {
+
+    public LoggedInInfo UserLoginBoundaryOut(LoggedInInfo info);
+
+
+    public boolean UserLoginBoundaryOut(boolean fail);
+
     // Write one case for fail and one case for success
 }

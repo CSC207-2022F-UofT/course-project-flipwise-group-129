@@ -14,6 +14,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 public class UserLogin implements UserLoginBoundaryIn {
 
@@ -29,7 +30,7 @@ public class UserLogin implements UserLoginBoundaryIn {
     public UserLogin(UserLoginBoundaryOut outputBoundary, UserDataInterface userDataAccess, GroupDataInterface groupDataAccess) {
         this.outputBoundary = outputBoundary;
         this.userDataInterface = userDataAccess;
-        this.group
+        this.groupDataInterface = groupDataAccess;
     }
 
     /**
@@ -39,10 +40,14 @@ public class UserLogin implements UserLoginBoundaryIn {
      * @throws JsonProcessingException if there is an error parsing the JSON
      */
     @Override
-    public void executeUserLogin(LoginCredentials credentials) throws JsonProcessingException {
-        String username = credentials.getUsername();
-        String password = credentials.getPassword();
-        outputBoundary.success(usernamePasswordMatch(username, password));
+    public void executeUserLogin(LoginCredentials credentials) {
+        try {
+            String username = credentials.getUsername();
+            String password = credentials.getPassword();
+            outputBoundary.UserLoginBoundaryOut(usernamePasswordMatch(username, password));
+        } catch (JsonProcessingException e) {
+            outputBoundary.UserLoginBoundaryOut(false);
+        }
     }
 
     /**
@@ -62,7 +67,7 @@ public class UserLogin implements UserLoginBoundaryIn {
                 // TODO: figure out how to pass the data up into output boundary
             }
         }
-        return new LoggedInInfo("false");
+        return new LoggedInInfo(false);
     }
 
     /**
@@ -73,14 +78,58 @@ public class UserLogin implements UserLoginBoundaryIn {
      */
     private LoggedInInfo successDetails(User user) {
         // TODO: get the required data for LoggedInInfo
-        // Get each group
         // Second layer: groupID, group name, purchase list, planning list
-        //
-        for (group : in )
-            Group obj <- group.fromstring
+        // List(GroupId(GroupName, UsersInGroup(users), PurchaseList(item), planningList(items)))
+        List<List<List<String>>> allGroups = new List<List<List<String>>>;
+        List<Group> groups = user.getGroups();
+        for (Group group : groups) {
+            List<List<List<String>>> eachGroup = new List<List<List<String>>>;
+            // Issue here is that groupid and name are not the same data type as the planning list,
+            // thus I'm not sure how I can store this in a 3d list format
+            eachGroup.add(group.getGroupId());
+            eachGroup.add(group.getGroupName());
+
+            List<List<String>> planningList = getPlanning(group.getPlanningList());
+            eachGroup.add(planningList);
+
+            List<List<String>> purchaseList = getPurchase(group.getPurchaseList());
+            eachGroup.add(purchaseList);
+
+            // Same issue here, the users in a list if a different data structure than groupid or planning lists
+            eachGroup.add(getUsersAsString(group));
+
+            // IDK how to get debts, because they are stored in such a day it is hard to extract the debts of everyone
+            // in a group
+            eachGroup.add(group.getPurchaseBalance().getAllDebts());
+
+            allGroups.add(eachGroup);
         }
+        return new LoggedInInfo(user.getPassword(), allGroups);
     }
 
+    /**
+     * Returns a string of all the usernames in a group as a list of strings.
+     * Helper method for successDetails.
+     *
+     * @param group the group to get all users fomr
+     * @return a list of string of usernames
+     */
+    private List<String> getUsersAsString(Group group) {
+        ArrayList<String> usersInGroupList = new ArrayList<String>;
+        Set<User> usersInGroup = group.getUsers();
+        for (User u : usersInGroup) {
+            usersInGroupList.add(u.getUsername());
+        }
+        return(usersInGroupList);
+    }
+
+    /**
+     * Returns a nested list representation of the planning list of a group.
+     * Helper method for successDetails.
+     *
+     * @param planningList a group's planning list
+     * @return a list representation of a planning list
+     */
     private List<List<String>> getPlanning(PlanningList planningList){
         List<List<String>> stringPlanningList = new ArrayList<>();
         for(Item curItem: planningList.getItems()){
@@ -92,7 +141,14 @@ public class UserLogin implements UserLoginBoundaryIn {
         return stringPlanningList;
     }
 
-    private List<List<String>> getUpdatedPurchase(PurchaseList purchaseList){
+    /**
+     * Returns a nested list representation of the purchase list of a group.
+     * Helper method for successDetails.
+     *
+     * @param purchaseList
+     * @return
+     */
+    private List<List<String>> getPurchase(PurchaseList purchaseList){
         List<List<String>> stringPurchasedList = new ArrayList<>();
         for(Item curItem: purchaseList.getItems()){
             List<String> currentItem = new ArrayList<>();

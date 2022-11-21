@@ -1,17 +1,29 @@
 package Presenters;
 
+import DataStructures.LoggedInInfo;
 import OutputBoundary.UserLoginBoundaryOut;
 
 public class UserLoginPresenter implements UserLoginBoundaryOut {
 
     /**
-     * @param success if the login was successful
-     * @return if the login was successful
+     * Constructor called when the login succeeds
+     *
+     * @param info if the login was successful
+     * @return the user details
      */
     @Override
-    public boolean success(boolean success) {
-        return success;
+    public LoggedInInfo UserLoginBoundaryOut(LoggedInInfo info) {
+        return info;
     }
 
-    // Write one case for success and other for fail
+    /**
+     * Constructor called when the login fails
+     *
+     * @param fail to indicate the failure
+     * @return false to the view
+     */
+    @Override
+    public boolean UserLoginBoundaryOut(boolean fail) {
+        return false;
+    }
 }
