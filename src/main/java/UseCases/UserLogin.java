@@ -37,7 +37,6 @@ public class UserLogin implements UserLoginBoundaryIn {
      * Updates the outputBoundary as to the success for failure of a login attempt.
      *
      * @param credentials the login credentials that the user entered
-     * @throws JsonProcessingException if there is an error parsing the JSON
      */
     @Override
     public void executeUserLogin(LoginCredentials credentials) {
@@ -79,11 +78,11 @@ public class UserLogin implements UserLoginBoundaryIn {
     private LoggedInInfo successDetails(User user) {
         // TODO: get the required data for LoggedInInfo
         // Second layer: groupID, group name, purchase list, planning list
-        // List(GroupId(GroupName, UsersInGroup(users), PurchaseList(item), planningList(items)))
-        List<List<List<String>>> allGroups = new List<List<List<String>>>;
+        // List((GroupId, GroupName, UsersInGroup(users), PurchaseList(item), planningList(items)), (GroupID,...))
+        List<List<Object>> allGroups = new ArrayList<>();
         List<Group> groups = user.getGroups();
         for (Group group : groups) {
-            List<List<List<String>>> eachGroup = new List<List<List<String>>>;
+            List<Object> eachGroup = new ArrayList<>();
             // Issue here is that groupid and name are not the same data type as the planning list,
             // thus I'm not sure how I can store this in a 3d list format
             eachGroup.add(group.getGroupId());
@@ -115,7 +114,7 @@ public class UserLogin implements UserLoginBoundaryIn {
      * @return a list of string of usernames
      */
     private List<String> getUsersAsString(Group group) {
-        ArrayList<String> usersInGroupList = new ArrayList<String>;
+        ArrayList<String> usersInGroupList = new ArrayList<>();
         Set<User> usersInGroup = group.getUsers();
         for (User u : usersInGroup) {
             usersInGroupList.add(u.getUsername());
@@ -145,8 +144,8 @@ public class UserLogin implements UserLoginBoundaryIn {
      * Returns a nested list representation of the purchase list of a group.
      * Helper method for successDetails.
      *
-     * @param purchaseList
-     * @return
+     * @param purchaseList purchase list for the group
+     * @return a nested list representation of the purchase list
      */
     private List<List<String>> getPurchase(PurchaseList purchaseList){
         List<List<String>> stringPurchasedList = new ArrayList<>();

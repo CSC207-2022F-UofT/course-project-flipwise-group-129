@@ -9,7 +9,7 @@ public class LoggedInInfo {
     private boolean statusBool = true;
     private String username;
 
-    private List<List<List<String>>> userAllGroups;
+    private List<List<Object>> userAllGroups;
 
     /**
      * Constructor called when the login was successful. User data is passed through this data structure.
@@ -17,7 +17,7 @@ public class LoggedInInfo {
      * @param username      username
      * @param allGroups the groups a user is in and the groups associated details
      */
-    public LoggedInInfo(String username, List<List<List<String>>> allGroups) {
+    public LoggedInInfo(String username, List<List<Object>> allGroups) {
         this.username = username;
         this.userAllGroups = allGroups;
     }
@@ -34,7 +34,7 @@ public class LoggedInInfo {
         return this.username;
     }
 
-    public List<List<List<String>>> getUserAllGroups() {
+    public List<List<Object>> getUserAllGroups() {
         return this.userAllGroups;
     }
 
