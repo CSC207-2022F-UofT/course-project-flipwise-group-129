@@ -11,13 +11,10 @@ public class PurchaseListView extends JPanel {
 
     private JTable table;
     private JScrollPane scrollPane;
-    Object[][] rows = new Object[][]{{new JButton("button"), "Amit", "670000"},
-            {"102", "Jai", "780000"},
-            {"101", "Sachin", "700000"},
-            {"1", "2", "3"}};
+    Object[][] rows;
     String[] columns = new String[]{"Item Name", "Cost", "Who brought it"};
     public PurchaseListView() {
-
+        setPurchaseList();
         DefaultTableModel model = new DefaultTableModel(rows, columns);
         table = new JTable(model);
         table.setEnabled(false);
@@ -28,6 +25,13 @@ public class PurchaseListView extends JPanel {
         setVisible(true);
         setSize(1000, 600);
 
+    }
+
+    public void setPurchaseList(){
+        rows = new Object[][]{{new JButton("button"), "Amit", "670000"},
+                {"102", "Jai", "780000"},
+                {"101", "Sachin", "700000"},
+                {"1", "2", "3"}};
     }
 
 }

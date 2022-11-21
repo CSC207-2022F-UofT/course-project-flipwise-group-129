@@ -50,7 +50,7 @@ public class HomePageView extends JFrame implements ActionListener {
                     + groupID + ".");
 
             if (!(groupID.equals("null"))){
-                //
+                // Filter through mishs code and change group namess
 //                this.group_names.add("Saleh");
 //                this.repaint();
             }
