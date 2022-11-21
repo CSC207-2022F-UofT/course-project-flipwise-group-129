@@ -1,19 +1,20 @@
 package UseCases;
-import Entities.Group;
-import Entities.User;
-
+import Entities.*;
+import DataAccessInterface.UserDataInterface;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class UserRegister {
+public class UserRegister implements UserDataInterface{
+    /**
+     * Registers a new user. Preforms two checks:
+     * 1) Username is not taken,
+     * 2) Passwords match.
+     * When both conditions are satisfied, a new user object is created and
+     * the database is updated.
+     */
 
-    public ArrayList intializeGroup() {
+    public ArrayList<Group> initializeGroup() {
         return new ArrayList<Group>();
-    }
-
-    public boolean checkUsernameAvaliable(String username) {
-        return groups.contains();
-        // how to find a the usernames that exist.
     }
 
     public boolean checkPasswordsMatch(String password1, String password2) {
@@ -21,8 +22,19 @@ public class UserRegister {
     }
 
     public void createNewUser(String username, String password1, String password2) {
-        if (this.checkUsernameAvaliable(username) & this.checkPasswordsMatch(password1, password2)) {
-            User user = new User(username, password, intializeGroup());
+        if (this.existsByUsername(username) & this.checkPasswordsMatch(password1, password2)) {
+            User user = new User(username, password1, initializeGroup());
+            this.addUser(username, password1);
         }
+    }
+
+    @Override
+    public void addUser(String username, String password) {
+
+    }
+
+    @Override
+    public boolean existsByUsername(String username) {
+        return false;
     }
 }

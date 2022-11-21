@@ -8,6 +8,9 @@ repositories {
 
 dependencies {
     implementation 'junit:junit:4.13.1'
+    implementation 'com.googlecode.json-simple:json-simple:1.1.1'
+    implementation 'com.fasterxml.jackson.core:jackson-core:2.14.0'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.14.0'
     testImplementation('org.junit.jupiter:junit-jupiter:5.6.0')
 }
 

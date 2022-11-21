@@ -1,14 +1,21 @@
 package Entities;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.json.simple.JSONObject;
+
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.ArrayList;
 
 public class User {
 
+    /*
+    Represents a User in this applications
+     */
+
     private String username;
     private String password;
     private List<Group> groups;
-
-//    private static List<User> allUsers = new ArrayList<>();
 
     public User(String username, String password, List<Group> groups){
         this.username = username;
@@ -17,14 +24,17 @@ public class User {
     }
 
     public String getPassword() {
+        // return this users password
         return password;
     }
 
     public String getUsername(){
+        //return the username of this user
         return username;
     }
 
     public List<Group> getGroups() {
+        //return all the groups that the users is in
         return groups;
     }
 
@@ -37,14 +47,44 @@ public class User {
 //    }
 
     public void addGroup(Group group){
+        // add a group for this user to the  list of groups they're in
         this.groups.add(group);
     }
 
     public boolean removeFromGroup(Group group){
+        // remove group from the list of groups the user is part of
         if (this.groups.contains(group)){
             this.groups.remove(group);
             return true;
         }
         return false;
     }
+
+//    public JSONObject toJSON(){
+//        JSONObject obj = new JSONObject();
+//        obj.put("username", this.username);
+//        obj.put("password", this.password);
+//        List<String> groupStrings = new ArrayList<>();
+//        this.groups.forEach(group -> groupStrings.add(group.toString()));
+//        obj.put("groups", groupStrings);
+//
+//        return obj;
+//    }
+    @Override
+    public String toString() {
+        //convert an instance of this object into a JSONString
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            return mapper.writeValueAsString(this);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static User fromString(String userString) throws JsonProcessingException {
+        //convert JSONString into an instance of this object.
+        ObjectMapper mapper = new ObjectMapper();
+        return mapper.readValue(userString, User.class);
+    }
+
 }
