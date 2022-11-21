@@ -31,6 +31,7 @@ public class Group {
         this.users = users;
         this.purchaseList = new PurchaseList();
         this.planningList = new PlanningList();
+        this.purchaseBalance = new PurchaseBalance();
     }
 
 //    public Group(String jsonString){
