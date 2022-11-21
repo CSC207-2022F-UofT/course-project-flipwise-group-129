@@ -25,6 +25,7 @@ public class AddPurchase implements AddPurchaseBoundaryIn {
     private GroupDataInterface groupData;
     private ItemDataInterface itemData;
     private UserDataInterface userData;
+    private UpdatedLists newLists;
 
     /**
      * Removes the item being purchased from the planning list and assigns the buyer, price, and users involved
@@ -47,6 +48,10 @@ public class AddPurchase implements AddPurchaseBoundaryIn {
         // move it to the purchased list
         PlanningList planningList = this.purchaseGroup.getPlanningList();
         boolean removeCheck = planningList.removeFromList(this.purchasedItem);
+        if (!removeCheck) {
+            raiseError("Item could not be removed from planning list, either the information " +
+                    "was incorrect or the item did not exist in the list");
+        }
 
         // Obtain the purchase list from the group and then update it using the addToPurchase helper function,
         // which adds the new item to the groups purchase list
@@ -58,13 +63,13 @@ public class AddPurchase implements AddPurchaseBoundaryIn {
         // These functions call the convertList helper method as they share a lot of functionality
         List<List<String>> planningListItemIds = convertList(planningList);
         List<List<String>> purchasedListItemIds = convertList(purchaseList);
-        UpdatedLists newLists = new UpdatedLists(planningListItemIds, purchasedListItemIds);
+        newLists = new UpdatedLists(planningListItemIds, purchasedListItemIds);
 
         // Call a helper function to write the updated data in to the database using the interfaces
         writeData();
 
         // Call the presenter through the output boundary with the updated lists data structure
-        return this.presenter.prepareViewInformation(newLists);
+        return this.presenter.prepareSuccessViewInformation(this.newLists);
     }
 
     /**
@@ -79,7 +84,7 @@ public class AddPurchase implements AddPurchaseBoundaryIn {
             this.itemData.addorUpdateItem(this.purchaseInfo.getItemId(), this.purchasedItem.toString());
         } catch (IOException e) {
             // in the case of the io exception, we return a runtime exception
-            throw new RuntimeException(e);
+            raiseError("IO Exception");
         }
     }
 
@@ -115,7 +120,7 @@ public class AddPurchase implements AddPurchaseBoundaryIn {
         try {
             this.purchasedItem = Item.fromString(this.itemData.itemAsString(this.purchaseInfo.getItemId()));
         } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
+            raiseError("JSON Processing Exception");
         }
 
         // need another helper function to extract the users lol, helper for a helper
@@ -124,17 +129,26 @@ public class AddPurchase implements AddPurchaseBoundaryIn {
         try {
             this.purchaseGroup = Group.fromString(this.groupData.groupAsString(purchaseInfo.getPurchaseGroup()));
         } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
+            raiseError("JSON Processing Exception");
         }
         try {
             this.buyer = User.fromString(this.userData.userAsString(purchaseInfo.getBuyer()));
         } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
+            raiseError("JSON Processing Exception");
         }
 
         // grab the presenter from the input data structure
         this.presenter = purchaseInfo.getPresenter();
 
+    }
+
+    /**
+     * Returns an error message to the presenter to inform the user through the view that the use case failed
+     * @param errorMessage the message to pass back to the user through the view
+     */
+    private void raiseError(String errorMessage) {
+        this.newLists = new UpdatedLists(errorMessage);
+        this.presenter.prepareFailViewInformation(newLists);
     }
 
     /**

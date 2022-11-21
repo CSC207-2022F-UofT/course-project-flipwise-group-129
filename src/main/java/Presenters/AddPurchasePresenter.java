@@ -13,10 +13,21 @@ public class AddPurchasePresenter implements AddPurchaseBoundaryOut {
      * @return a UpdatedLists object containing the updated information of the lists
      */
     @Override
-    public UpdatedLists prepareViewInformation(UpdatedLists updatedLists) {
+    public UpdatedLists prepareSuccessViewInformation(UpdatedLists updatedLists) {
         // Provide the information to the view for updating
         return updatedLists;
     }
 
-//    speak to the view
+    /**
+     * Returns the information from an error in the form of an error message to the view
+     *
+     * @param errorInformation contains the error message raised
+     * @return the data structure containing the error information
+     */
+    @Override
+    public UpdatedLists prepareFailViewInformation(UpdatedLists errorInformation) {
+        return errorInformation;
+    }
+
+    //    speak to the view
 }
