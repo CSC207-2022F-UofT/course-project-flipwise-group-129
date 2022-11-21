@@ -14,11 +14,9 @@ public class JoinedGroupInfo {
     private final List<String> groupIds; // the ids of all the groups the current user is a part of
     private final List<String> groupNames; // the names of all the groups that the current user is a part of
 
-    private final Map<String, String> planningList; //all the itemids: itemnames in the planninng list of this group
+    private final List<List<String>> planningList; //all the [itemids,itemnames] in the planninng list of this group
 
-    private final Map<String, String> purchasedList; // all the itemids: itemnames in the purchase list of this group
-
-    private final Map<String, String> purchasedBuyerList; // all the itemids: buyer in the purchase list of this group
+    private final List<List<String>> purchasedList; // all the [itemids, itemnames,  buyer username] in the purchase list of this group
 
     private final String error; //any error if arises will contain a description here
 
@@ -28,13 +26,12 @@ public class JoinedGroupInfo {
      * @param groupIds all the ids of all the groups the newly joined user is in
      * @param groupNames all the names of all the groups the newly joined user is in
      */
-    public JoinedGroupInfo(List<String> usersInGroup, List<String> groupIds, List<String> groupNames, Map<String, String> planningList, Map<String, String> purchasedList, Map<String, String> purchasedBuyerList){
+    public JoinedGroupInfo(List<String> usersInGroup, List<String> groupIds, List<String> groupNames, List<List<String>> planningList, List<List<String>> purchasedList){
         this.groupIds = groupIds;
         this.groupNames = groupNames;
         this.usersInGroup = usersInGroup;
         this.planningList = planningList;
         this.purchasedList = purchasedList;
-        this.purchasedBuyerList = purchasedBuyerList;
         this.error = null;
     }
 
@@ -49,7 +46,6 @@ public class JoinedGroupInfo {
         this.groupNames = null;
         this.purchasedList = null;
         this.planningList = null;
-        this.purchasedBuyerList = null;
     }
 
     /**
@@ -74,15 +70,13 @@ public class JoinedGroupInfo {
      * get the list of all items planned to be purchased in this group
      * @return mapping of item ids to item names of items planned in this group
      */
-    public Map<String, String> getPlanningList() { return this.planningList;}
+    public List<List<String>> getPlanningList() { return this.planningList;}
 
     /**
      * get the list of all items purchased in this group
      * @return a mapping of item ids to item names of items purchased in this group
      */
-    public Map<String, String> getPurchasedList() { return this.purchasedList;}
-
-    public Map<String, String> getPurchasedBuyerList() { return this.purchasedBuyerList; }
+    public List<List<String>> getPurchasedList() { return this.purchasedList;}
 
     /**
      * get the error on why group creation failed

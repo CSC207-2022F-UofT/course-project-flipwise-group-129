@@ -8,6 +8,7 @@ import OutputBoundary.GroupJoinBoundaryOut;
 import DataAccessInterface.*;
 
 import java.io.IOException;
+import java.sql.Array;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
@@ -184,18 +185,31 @@ public class GroupJoin implements GroupJoinBoundaryIn{
         List<String> usersInGroup = new ArrayList<>();
         List<String> groupIds = new ArrayList<>();
         List<String> groupNames = new ArrayList<>();
-        Map<String, String> planningList = new HashMap<>();
-        Map<String, String> purchasedList = new HashMap<>();
-        Map<String, String> purchasedBuyerList = new HashMap<>();
+        List<List<String>> planningList = new ArrayList<>();
+        List<List<String>> purchasedList = new ArrayList<>();
 
         group.getUsers().forEach(user1 -> usersInGroup.add(user1.getUsername()));
         user.getGroups().forEach(group1 -> groupIds.add(group1.getGroupId()));
         user.getGroups().forEach(group1 -> groupIds.add(group1.getGroupName()));
-        group.getPlanningList().getItems().forEach(item -> planningList.put(item.getItemId(), item.getItemName()));
-        group.getPurchaseList().getItems().forEach(item -> purchasedList.put(item.getItemId(), item.getItemName()));
-        group.getPurchaseList().getItems().forEach(item -> purchasedBuyerList.put(item.getItemId(), item.getBuyer().getUsername()));
 
-        return new JoinedGroupInfo(usersInGroup, groupIds, groupNames, planningList, purchasedList, purchasedBuyerList);
+        //make a sublist  of the purchased and planning list
+        planningList = this.getListItemList(group.getPlanningList());
+        purchasedList = this.getListItemList(group.getPurchaseList());
+
+        return new JoinedGroupInfo(usersInGroup, groupIds, groupNames, planningList, purchasedList);
+    }
+
+    private List<List<String>> getListItemList(ItemList itemList){
+        List<List<String>> newList = new ArrayList<>();
+
+        for (Item item : itemList.getItems()) {
+            List<String> subList = new ArrayList<>();
+            subList.add(item.getItemId());
+            subList.add(item.getItemName());
+            subList.add(item.getBuyer().getUsername());
+        }
+
+        return newList;
     }
 
 }
