@@ -186,14 +186,16 @@ public class GroupJoin implements GroupJoinBoundaryIn{
         List<String> groupNames = new ArrayList<>();
         Map<String, String> planningList = new HashMap<>();
         Map<String, String> purchasedList = new HashMap<>();
+        Map<String, String> purchasedBuyerList = new HashMap<>();
 
         group.getUsers().forEach(user1 -> usersInGroup.add(user1.getUsername()));
         user.getGroups().forEach(group1 -> groupIds.add(group1.getGroupId()));
         user.getGroups().forEach(group1 -> groupIds.add(group1.getGroupName()));
         group.getPlanningList().getItems().forEach(item -> planningList.put(item.getItemId(), item.getItemName()));
         group.getPurchaseList().getItems().forEach(item -> purchasedList.put(item.getItemId(), item.getItemName()));
+        group.getPurchaseList().getItems().forEach(item -> purchasedBuyerList.put(item.getItemId(), item.getBuyer().getUsername()));
 
-        return new JoinedGroupInfo(usersInGroup, groupIds, groupNames, planningList, purchasedList);
+        return new JoinedGroupInfo(usersInGroup, groupIds, groupNames, planningList, purchasedList, purchasedBuyerList);
     }
 
 }
