@@ -43,8 +43,7 @@ public class UserLogin implements UserLoginBoundaryIn {
         try {
             String username = credentials.getUsername();
             String password = credentials.getPassword();
-            LoggedInInfo result = usernamePasswordMatch(username, password);
-            outputBoundary.UserLoginBoundaryOut(result);
+            outputBoundary.UserLoginBoundaryOut(usernamePasswordMatch(username, password));
         } catch (JsonProcessingException e) {
             outputBoundary.UserLoginBoundaryOut(false);
         }
@@ -63,12 +62,12 @@ public class UserLogin implements UserLoginBoundaryIn {
             String userDetails = userDataInterface.userAsString(username);
             User user = User.fromString(userDetails);
             if (Objects.equals(user.getPassword(), password)) {
-                return(successDetails(user));
+                LoggedInInfo info = successDetails(user);
+                // TODO: figure out how to pass the data up into output boundary
             }
         }
         return new LoggedInInfo(false);
     }
-
 
     /**
      * Creates the data structure that reports to outcome of a login
@@ -77,6 +76,9 @@ public class UserLogin implements UserLoginBoundaryIn {
      * @return A LoggedInInfo data structure
      */
     private LoggedInInfo successDetails(User user) {
+        // TODO: get the required data for LoggedInInfo
+        // Second layer: groupID, group name, purchase list, planning list
+        // List((GroupId, GroupName, UsersInGroup(users), PurchaseList(item), planningList(items)), (GroupID,...))
         List<List<Object>> allGroups = new ArrayList<>();
         List<Group> groups = user.getGroups();
         for (Group group : groups) {
