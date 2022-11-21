@@ -2,16 +2,17 @@ package Entities;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.util.Comparator;
 import java.util.List;
 
-public class User {
+public class User implements Comparable<User> {
 
     /*
     Represents a User in this applications
      */
 
-    private final String username;
-    private final String password;
+    private String username;
+    private String password;
     private List<Group> groups;
 
     /**
@@ -25,6 +26,13 @@ public class User {
         this.username = username;
         this.password = password;
         this.groups = groups;
+    }
+
+    /**
+     * empty constructor for JSON parsing
+     */
+    public User(){
+        super();
     }
 
     /**
@@ -123,4 +131,17 @@ public class User {
         return mapper.readValue(userString, User.class);
     }
 
+    /**
+     * compare two User objects
+     * if their usernames match, they're the same user
+     * @param o the object to be compared.
+     * @return
+     */
+    @Override
+    public int compareTo(User o) {
+        if (this.username.equals(o.getUsername())){
+            return 0;
+        }
+        return 1;
+    }
 }

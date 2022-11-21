@@ -17,7 +17,7 @@ public class Item {
     private User buyer; // the person who bought the item
     private double price; // the price of the item
 
-    private final String itemId; //id for unique identification purposes
+    private String itemId; //id for unique identification purposes
     private List<User> usersInvolved; // the list of all the users involved in the purchase
 
     /**
@@ -33,6 +33,12 @@ public class Item {
         this.usersInvolved = new ArrayList<>();
     }
 
+    /**
+     * constructor empty for JSON parsing
+     */
+    public Item(){
+        super();
+    }
 
     /**
      * get the name of the item

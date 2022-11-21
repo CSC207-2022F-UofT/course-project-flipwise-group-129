@@ -20,6 +20,8 @@ public class Debt {
     private String groupId; // the id of the group this debt belongs to
     private Double debtValue; //the value userOwed is owed by userOwing
 
+    private List<User> users;
+
     /**
      * Constructor to create a new Debt object
      * Debt is initialized to 0
@@ -32,6 +34,13 @@ public class Debt {
         this.userOwing = user2;
         this.groupId = groupId;
         this.debtValue = 0.0;
+    }
+
+    /**
+     * Empty constructor for JSON parsing
+     */
+    public Debt(){
+        super();
     }
 
     /**
@@ -57,12 +66,9 @@ public class Debt {
      * get both the users
      * @return both the users
      */
-    public User[] getUsers(){
+    public List<User> getUsers(){
         // return a list of both the users
-        User[] users = new User[2];
-        users[0] = this.userOwed;
-        users[1] = this.userOwing;
-        return users;
+        return this.users;
     }
 
     /**
