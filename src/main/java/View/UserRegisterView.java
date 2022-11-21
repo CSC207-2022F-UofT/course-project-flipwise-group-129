@@ -63,6 +63,7 @@ public class UserRegisterView extends JPanel implements ActionListener{
 
     public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand().equals("Continue")){
+//            if ()
 //            controller.callUserLoginInteractor(email.getText(), String.valueOf(password.getPassword()));
 //            try {
 ////                userRegisterController.create(email.getText(),

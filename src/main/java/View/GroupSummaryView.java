@@ -14,12 +14,17 @@ public class GroupSummaryView extends JPanel implements ActionListener {
     private JTabbedPane t;
     private JComponent p1, p2, p3;
     private JTextArea temp, RHS, group_members;
+
+    private String groupname;
+    private String groupid;
     JButton add_item = new JButton("Add Item");
     JButton clear_debt = new JButton("Clear Debt");
     JButton return_to_homepage = new JButton("Return to Groups");
 
+    public GroupSummaryView(String groupname, String groupid) {
 
-    public GroupSummaryView() {
+        this.groupid = groupid;
+        this.groupname = groupname;
 
         setSize(1000,600);
         setVisible(true);
@@ -37,8 +42,8 @@ public class GroupSummaryView extends JPanel implements ActionListener {
         temporary_panel.add(temp);
 
         RHS = new JTextArea("This is the group information. \n" +
-                "Group Name: " + "\n" +
-                "Group Code: " + "\n");
+                "Group Name: " + this.groupname + "\n" +
+                "Group Code: " + this.groupid + "\n");
         RHS.setEditable(false);
 
         JPanel btn_group = new JPanel();
@@ -78,10 +83,11 @@ public class GroupSummaryView extends JPanel implements ActionListener {
                 //BorderFactory.createEtchedBorder(), "Purchases", TitledBorder.CENTER, TitledBorder.TOP));
         //p3.setBorder(BorderFactory.createTitledBorder(
                 //BorderFactory.createEtchedBorder(), "Balances", TitledBorder.CENTER, TitledBorder.TOP));
+
         p3.add(b);
-        add(t, BorderLayout.LINE_START);
+        add(t, BorderLayout.CENTER);
         add(temporary_panel, BorderLayout.NORTH);
-        add(right_hand_side, BorderLayout.CENTER);
+        add(right_hand_side, BorderLayout.LINE_START);
         add(bottoms_up, BorderLayout.SOUTH);
 
         add_item.addActionListener(this);
@@ -97,7 +103,6 @@ public class GroupSummaryView extends JPanel implements ActionListener {
 
         if (e.getActionCommand().equals("Clear Debt")){
             ClearDebtView clearDebtView = new ClearDebtView();
-
         }
 
         if (e.getActionCommand().equals("Return to Groups")){
@@ -105,6 +110,7 @@ public class GroupSummaryView extends JPanel implements ActionListener {
             homePageView.setVisible(true);
         }
     }
+
 
 //    private void setHomepageView(){
 //        HomePageView homePageView = new HomePageView();

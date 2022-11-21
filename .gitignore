@@ -33,6 +33,9 @@
 # auto-import.
 .idea/artifacts
 .idea/compiler.xml
+.idea/misc.xml
+.idea/**
+*.xml
 .idea/jarRepositories.xml
 .idea/modules.xml
 .idea/*.iml

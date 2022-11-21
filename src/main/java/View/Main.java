@@ -7,7 +7,7 @@ public class Main {
             public void run() {
                 new HomePageView();
 //                JFrame frame = new JFrame();
-//                frame.add(new HomePageView());
+//                frame.add(new GroupSummaryView());
 //                frame.setVisible(true);
 //                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             }
