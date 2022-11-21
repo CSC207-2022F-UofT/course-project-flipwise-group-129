@@ -12,16 +12,28 @@ abstract public class ItemList {
      */
     private List<Item> items; //list of items
 
+    /**
+     * get all the items in the list
+     * @return the list of all items in the list
+     */
     public List<Item> getItems(){
         // return the list of al items in this list
         return this.items;
     }
 
+    /**
+     * set the items in the list
+     * @param items in the list
+     */
     public void setItems(List<Item> items){
         // set the list of all items in this list
         this.items = items;
     }
 
+    /**
+     * add an item into the list
+     * @param item the item to be added into the list
+     */
     public void addItems(Item item){
         // add an item into the list
         this.items.add(item);
