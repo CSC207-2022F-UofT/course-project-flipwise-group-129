@@ -85,6 +85,8 @@ public class UserLoginView extends JPanel implements ActionListener{
     }
 
     public String[] getGroups(){
+        // Filter through alexs code here
+        // testing
         String[] s = new String[]{"Saleh"};
         return s;
     }
