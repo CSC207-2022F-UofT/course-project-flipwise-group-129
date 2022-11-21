@@ -54,7 +54,7 @@ public class AddToPlanningList implements AddToPlanningBoundaryIn{
             return outputBoundary.failErrorMessage(new UpdatedLists("PlanningList could not be updated"));
         }
         UpdatedLists updatedLists = new UpdatedLists(
-                getUpdatedPlanning(currGroup.getPlanningList()), getUpdatedPurchase(currGroup.getPurchaseList()));
+                getUpdatedPlanning(currGroup.getPlanningList()), null);
         return outputBoundary.displayLists(updatedLists);
     }
 
