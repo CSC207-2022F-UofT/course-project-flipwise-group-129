@@ -11,7 +11,7 @@ import java.io.*;
 public class ItemDataAccess extends DataAccess implements ItemDataInterface {
     /**
      * Implements ItemDataInterface-
-     * This is an ItemDataAccess which facilitates data reading and writing from groups.json to update
+     * This is an ItemDataAccess which facilitates data reading and writing from items.json to update
      */
     public final File itemFile = new File("items.json");
     private final Map<String, String> itemMap = new HashMap<>();

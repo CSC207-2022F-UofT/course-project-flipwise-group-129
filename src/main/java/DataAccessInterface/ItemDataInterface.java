@@ -3,6 +3,10 @@ package DataAccessInterface;
 import java.io.IOException;
 
 public interface ItemDataInterface {
+    /*
+     * This represents a ItemDataInterface defines methods needed to
+     * facilitate data reading and writing from items.json
+     */
 
     /**
      * This function will be called to add or update any item entity to the map and saving the updated information
