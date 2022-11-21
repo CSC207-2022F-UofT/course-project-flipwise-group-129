@@ -2,5 +2,7 @@ package OutputBoundary;
 import DataStructures.UpdatedDebts;
 
 public interface UpdatePaymentBalanceBoundaryOut {
-    UpdatedDebts prepareUpdatedDebtList(UpdatedDebts updatedDebts);
+    UpdatedDebts prepareSuccessView(UpdatedDebts updatedDebts);
+
+    UpdatedDebts prepareFailView(UpdatedDebts updatedDebts);
 }

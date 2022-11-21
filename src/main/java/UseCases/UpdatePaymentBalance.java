@@ -8,6 +8,7 @@ import OutputBoundary.UpdatePaymentBalanceBoundaryOut;
 import DataAccessInterface.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
+import java.io.IOException;
 import java.util.*;
 
 public class UpdatePaymentBalance implements UpdatePaymentBalanceBoundaryIn {
@@ -24,6 +25,11 @@ public class UpdatePaymentBalance implements UpdatePaymentBalanceBoundaryIn {
         this.paymentDetails = pd;
     }
 
+    /**
+     *
+     * @param paymentDetails
+     * @return
+     */
     @Override
     public UpdatedDebts updatePaymentBalance(PaymentDetails paymentDetails) {
         String groupID = paymentDetails.getGroupID();
@@ -57,15 +63,28 @@ public class UpdatePaymentBalance implements UpdatePaymentBalanceBoundaryIn {
          We first use the itemID to get this item from the Database. We can also assume that class Item contains a
          list of Users involved in the purchase of said item.
          */
-        Item purchasedItem = getItemFromDb(itemID);
+        Item purchasedItem;
+        try {
+            purchasedItem = getItemFromDb(itemID);
+        }
+        catch (RuntimeException e) {
+            return raiseError(e);
+        }
 
         /*
          We now use the groupID to get the group of people in which the purchase has been made, and then we call
          the getUsers() method to get the Set of Users in the group (not all of them are necessarily involved in
          the purchase).
          */
-        Group groupInvolvedInPurchase = getGroupFromDb(groupID);
+        Group groupInvolvedInPurchase;
+        try {
+            groupInvolvedInPurchase = getGroupFromDb(groupID);
+        }
+        catch (RuntimeException e) {
+            return raiseError(e);
+        }
         Set<User> usersInGroup = groupInvolvedInPurchase.getUsers();
+        int amountOfUsersInvolvedInPurchase = purchasedItem.getUsersInvolved().size();
         List<String> groupUsernames = new ArrayList<>();
         for(User user : usersInGroup) {
             groupUsernames.add(user.getUsername());
@@ -86,10 +105,15 @@ public class UpdatePaymentBalance implements UpdatePaymentBalanceBoundaryIn {
             String currentUserOwed = d.getUserOwed().getUsername();
             if(userPurchasedItem.equals(currentUserOwed)) {
                 double currentDebt = d.getDebtValue();
-                double updatedDebt = currentDebt + itemPrice;
+                double updatedDebt = currentDebt + itemPrice/amountOfUsersInvolvedInPurchase;
                 d.setDebtValue(updatedDebt);
             }
         }
+
+        /*
+        Now we will need to save the data into the database. We need to save the user and group into the database.
+         */
+        saveData(groupInvolvedInPurchase);
 
         /*
         We now need to construct a Map<String, List<Object>>, where the String is the name of a user in the group who is
@@ -99,7 +123,7 @@ public class UpdatePaymentBalance implements UpdatePaymentBalanceBoundaryIn {
         Map<String, List<Object>> updatedDebtsList = new HashMap<>();
         for(Debt d : currentDebtList) {
             List<Object> userOwingAndDebtValue = new ArrayList<>();
-            userOwingAndDebtValue.add(d.getUserOwing());
+            userOwingAndDebtValue.add(d.getUserOwing().getUsername());
             userOwingAndDebtValue.add(d.getDebtValue());
             updatedDebtsList.put(d.getUserOwed().getUsername(), userOwingAndDebtValue);
         }
@@ -108,6 +132,10 @@ public class UpdatePaymentBalance implements UpdatePaymentBalanceBoundaryIn {
         Now we can take the Map use it in the constructor for UpdatedDebts to create our final returned value.
          */
         return new UpdatedDebts(updatedDebtsList);
+    }
+
+    private UpdatedDebts raiseError(RuntimeException e) {
+        return this.updatePaymentBalancePresenter.prepareFailView(new UpdatedDebts(e.toString()));
     }
 
     private Item getItemFromDb(String itemID){
@@ -137,6 +165,15 @@ public class UpdatePaymentBalance implements UpdatePaymentBalanceBoundaryIn {
             return Group.fromString(groupID);
         } catch (JsonProcessingException e) {
             throw new RuntimeException("Unable to process group from database");
+        }
+    }
+
+    private void saveData(Group group){
+        //pass new info to db
+        try {
+            this.groupDataInterface.addorUpdateGroup(group.getGroupId(), group.toString());
+        } catch (IOException e) {
+            throw new RuntimeException("Unable to modify group info to database");
         }
     }
 }
