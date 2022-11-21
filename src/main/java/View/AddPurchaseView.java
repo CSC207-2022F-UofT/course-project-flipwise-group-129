@@ -85,6 +85,7 @@ public class AddPurchaseView extends JOptionPane{
         for (int i = 0; i < Current_Members.length; i++) {
             JCheckBox checkbox_member = new JCheckBox(Current_Members[i]);
             output[i] = checkbox_member;
+            // update planning and purchase lists
         }
         return output;
     }

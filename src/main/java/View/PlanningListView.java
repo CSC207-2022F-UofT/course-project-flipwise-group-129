@@ -9,10 +9,7 @@ import java.awt.event.KeyEvent;
 public class PlanningListView extends JPanel {
     private JTable table;
     private JScrollPane scrollPane;
-    Object[][] rows = new Object[][]{{"Purchase", "Amit"},
-            {"Purchase", "Jai"},
-            {"Purchase", "Sachin"},
-            {"Purchase", "2"}};
+    Object[][] rows;
     String[] columns = new String[]{"", "Item name"};
 
     public PlanningListView() {
@@ -21,6 +18,7 @@ public class PlanningListView extends JPanel {
 //        table = new JTable(new JTableButtonModel(rows, columns));
 //        tableRenderer = table.getDefaultRenderer(JButton.class);
 //        table.setDefaultRenderer(JButton.class, new JTableButtonRenderer(tableRenderer));
+        setPlanningList();
         DefaultTableModel model = new DefaultTableModel(rows, columns);
         table = new JTable(model);
 
@@ -52,6 +50,19 @@ public class PlanningListView extends JPanel {
 
         setVisible(true);
         setSize(1000, 600);
+
+    }
+
+    public void setPlanningList(){
+        // filter through codis data (codis data in parameter)
+        // get updated planning list and reload page
+        // testing
+        rows = new Object[][]{{"Purchase", "the"},
+                {"Purchase", "the"},
+                {"Purchase", "Sandwich"},
+                {"Purchase", "8"}};
+
+
 
     }
 }

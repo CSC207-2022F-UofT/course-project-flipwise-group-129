@@ -9,14 +9,11 @@ public class BalanceView extends JPanel{
 
     private JTable table;
     private JScrollPane scrollPane;
-    Object[][] rows = new Object[][]{{new JButton("button"), "Amit", " ", " "},
-            {"102", "Jai", " ", " "},
-            {"101", "Sachin", " ", " "},
-            {"1", "2", " ", " "}};
+    Object[][] rows;
     String[] columns = new String[]{"Member", "You Owe", "They Owe", "Debt"};
 
     public BalanceView() {
-
+        setBalances();
         DefaultTableModel model = new DefaultTableModel(rows, columns);
         table = new JTable(model);
         table.setEnabled(false);
@@ -28,6 +25,13 @@ public class BalanceView extends JPanel{
         setSize(1000, 600);
         setVisible(true);
 
+    }
+
+    public void setBalances(){
+        rows =  new Object[][]{{new JButton("button"), "Amit", " ", " "},
+                {"102", "Jai", " ", " "},
+                {"101", "Sachin", " ", " "},
+                {"1", "2", " ", " "}};
     }
 
 }
