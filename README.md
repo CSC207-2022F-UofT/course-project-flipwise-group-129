@@ -4,6 +4,14 @@ This is a template repository for CSC 207 projects.
 This repository contains starter code for a gradle project.
 It also contains workflow documents that give instructions on how to manage your Github repository and how to use Github Projects for efficient collaboration.
 
+# How to start and run your program
+- [ ] Clone the Project Flipwise repository and open the folder in your Intellij (preferred to easily make JavaDoc)
+- [ ] Go to file main.java and run main() function by clicking the green play button on the left of the method or right-clicking on the file and selecting the run main.main option. 
+
+# How to run the testing program and generate the test coverage report
+- [ ] Clone the Project Flipwise repository and open the folder in your Intellij (preferred to easily make JavaDoc)
+- [ ] Go to file main.java and run main() function by clicking the green play button on the left of the method or right-clicking on the file and selecting the run main.main option. 
+
 ## Checklist For Your Project
 - [ ] Verify the correct settings for your project repository
 - [ ] Set up Github Projects
