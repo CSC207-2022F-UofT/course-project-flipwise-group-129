@@ -9,6 +9,10 @@ import java.util.ArrayList;
 
 public class User {
 
+    /*
+    Represents a User in this applications
+     */
+
     private String username;
     private String password;
     private List<Group> groups;
@@ -20,14 +24,17 @@ public class User {
     }
 
     public String getPassword() {
+        // return this users password
         return password;
     }
 
     public String getUsername(){
+        //return the username of this user
         return username;
     }
 
     public List<Group> getGroups() {
+        //return all the groups that the users is in
         return groups;
     }
 
@@ -40,10 +47,12 @@ public class User {
 //    }
 
     public void addGroup(Group group){
+        // add a group for this user to the  list of groups they're in
         this.groups.add(group);
     }
 
     public boolean removeFromGroup(Group group){
+        // remove group from the list of groups the user is part of
         if (this.groups.contains(group)){
             this.groups.remove(group);
             return true;
@@ -63,6 +72,7 @@ public class User {
 //    }
     @Override
     public String toString() {
+        //convert an instance of this object into a JSONString
         ObjectMapper mapper = new ObjectMapper();
         try {
             return mapper.writeValueAsString(this);
@@ -72,6 +82,7 @@ public class User {
     }
 
     public static User fromString(String userString) throws JsonProcessingException {
+        //convert JSONString into an instance of this object.
         ObjectMapper mapper = new ObjectMapper();
         return mapper.readValue(userString, User.class);
     }
