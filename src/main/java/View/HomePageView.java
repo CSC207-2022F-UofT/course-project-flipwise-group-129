@@ -18,7 +18,7 @@ public class HomePageView extends JFrame implements ActionListener {
     String[] group_names = new String[]{"Hello"};
     //DUMMY
 
-    JButton[] button_array = createGroupButtons(group_names);
+    JButton[] button_array;
 
 //    ButtonGroup TRUE_BUTTON_GROUP = new ButtonGroup();
 
@@ -34,6 +34,7 @@ public class HomePageView extends JFrame implements ActionListener {
         homepageDetails.add(homePage);
 
         // Algorithm implementation
+        button_array = createGroupButtons(group_names);
         for (int i = 0; i < group_names.length; i++) {
             button_array[i].addActionListener(this);
             group_btns.add(button_array[i]);
@@ -72,8 +73,15 @@ public class HomePageView extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e){
         if (e.getActionCommand().equals("Create Group")){
             String groupName = JOptionPane.showInputDialog("Please enter in Group Name:");
-            JOptionPane.showMessageDialog(null, "Your Group Name is  "
+            JOptionPane.showMessageDialog(null, "The new Group Name is  "
                     + groupName + ".");
+
+            if (!(groupName.equals("null"))) {
+                JButton new_button = new JButton(groupName);
+                //filter out Mishi's code for all the GroupNames
+                //this.group_names = / mishi's string of group names
+                //this.repaint();
+            }
             //controller stuff
             GroupCreateController createController = new GroupCreateController();
             // update homepage
@@ -82,6 +90,13 @@ public class HomePageView extends JFrame implements ActionListener {
             String groupID = JOptionPane.showInputDialog("Please enter in Group ID:");
             JOptionPane.showMessageDialog(null, "The Group ID is  "
                     + groupID + ".");
+
+            if (!(groupID.equals("null"))) {
+                group_names = new String[]{"Hello", "Avi"};
+                //this.group_names.add;
+
+                this.repaint();
+            }
 
 
             //controller stuff
@@ -107,7 +122,4 @@ public class HomePageView extends JFrame implements ActionListener {
         }
         return output;
     }
-
-
-
 }
