@@ -3,20 +3,20 @@ import DataStructures.UpdatedDebts;
 import OutputBoundary.SettlementBoundaryOut;
 public class SettlementPresenter implements SettlementBoundaryOut{
     /**
-     * This function is called in the AddtoPlanning use case to pass the successful results as updated lists
+     * This function is called in the SettlementPayment use case to pass the successful results as updated lists
      * so that the view can update accordingly.
-     * @param lists a list that contains the updated planning list and the purchased list to pass to the view
+     * @param debtList a list that contains the updated debts in the group to pass to the view
      * @return This returns an instance of the UpdatedLists data structure that packages information on a group's current
-     * planning and purchased lists to that it is usable for the view.
+     * debts so that it is usable for the view.
      */
     @Override
     public UpdatedDebts displayDebts(UpdatedDebts debtList){
         return debtList;
     }
     /**
-     * This function is called in the AddtoPlanning use case to pass the failed results as a message
+     * This function is called in the SettlementPayment use case to pass the failed results as a message
      * so that the view can update accordingly.
-     * @param errorString a string that describes the failure that occurred in the AddtoPlanning use case.
+     * @param errorString a string that describes the failure that occurred in the SettlementPayment use case.
      * @return This returns an instance of the UpdatedLists data structure that contains a failure description string.
      */
     @Override
