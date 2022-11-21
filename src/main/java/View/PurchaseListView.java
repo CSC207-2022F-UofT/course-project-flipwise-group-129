@@ -3,7 +3,7 @@ package View;
 // should this inherit from ItemListView
 
 import javax.swing.*;
-import javax.swing.table.TableCellRenderer;
+import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -18,10 +18,9 @@ public class PurchaseListView extends JPanel {
     String[] columns = new String[]{"Item Name", "Cost", "Who brought it"};
     public PurchaseListView() {
 
-        TableCellRenderer tableRenderer;
-        table = new JTable(new JTableButtonModel(rows, columns));
-        tableRenderer = table.getDefaultRenderer(JButton.class);
-        table.setDefaultRenderer(JButton.class, new JTableButtonRenderer(tableRenderer));
+        DefaultTableModel model = new DefaultTableModel(rows, columns);
+        table = new JTable(model);
+        table.setEnabled(false);
         scrollPane = new JScrollPane(table);
 
         add(scrollPane);
@@ -30,8 +29,6 @@ public class PurchaseListView extends JPanel {
         setSize(1000, 600);
 
     }
-
-
 
 }
 

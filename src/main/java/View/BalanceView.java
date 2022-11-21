@@ -4,7 +4,6 @@ import Entities.Group;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
 
 public class BalanceView extends JPanel{
 
@@ -18,10 +17,9 @@ public class BalanceView extends JPanel{
 
     public BalanceView() {
 
-        TableCellRenderer tableRenderer;
-        table = new JTable(new JTableButtonModel(rows, columns));
-        tableRenderer = table.getDefaultRenderer(JButton.class);
-        table.setDefaultRenderer(JButton.class, new JTableButtonRenderer(tableRenderer));
+        DefaultTableModel model = new DefaultTableModel(rows, columns);
+        table = new JTable(model);
+        table.setEnabled(false);
         scrollPane = new JScrollPane(table);
 
         add(scrollPane);

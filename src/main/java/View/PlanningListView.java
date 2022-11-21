@@ -2,14 +2,11 @@ package View;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
-public class PlanningListView extends JPanel implements ActionListener {
-
-    JButton purchase = new JButton("Purchase");
+public class PlanningListView extends JPanel {
     private JTable table;
     private JScrollPane scrollPane;
     Object[][] rows = new Object[][]{{"Purchase", "Amit"},
@@ -26,7 +23,7 @@ public class PlanningListView extends JPanel implements ActionListener {
 //        table.setDefaultRenderer(JButton.class, new JTableButtonRenderer(tableRenderer));
         DefaultTableModel model = new DefaultTableModel(rows, columns);
         table = new JTable(model);
-        table.setEnabled(false);
+
         Action delete = new AbstractAction()
         {
             public void actionPerformed(ActionEvent e)
@@ -55,10 +52,6 @@ public class PlanningListView extends JPanel implements ActionListener {
 
         setVisible(true);
         setSize(1000, 600);
-        purchase.addActionListener(this);
 
-    }
-
-    public void actionPerformed(ActionEvent e) {
     }
 }
