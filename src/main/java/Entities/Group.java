@@ -15,7 +15,6 @@ public class Group {
     private PurchaseList purchaseList;
     private PlanningList planningList;
     private PurchaseBalance purchaseBalance;
-
     private String groupName;
 
     private String groupId;

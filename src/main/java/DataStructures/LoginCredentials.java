@@ -1,9 +1,9 @@
+/**
+ * Data structure modeling an existing user attempting to login
+ */
 package DataStructures;
 
 public class LoginCredentials {
-    /**
-     * Data structure modeling an existing user attempting to login
-     */
     private final String username;
     private final String password;
 

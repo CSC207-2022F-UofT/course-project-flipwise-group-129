@@ -10,7 +10,8 @@ public class UserLoginPresenter implements UserLoginBoundaryOut {
      */
     @Override
     public boolean success(boolean success) {
-
         return success;
     }
+
+    // Write one case for success and other for fail
 }
