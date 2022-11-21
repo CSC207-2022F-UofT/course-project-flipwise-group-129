@@ -13,7 +13,7 @@ public class GroupDataAccess extends DataAccess implements GroupDataInterface {
     public final File groupFile = new File("groups.json");
     private final Map<String, String> groupMap = new HashMap<>();
     /**
-     * Creates a group data access instance by first reading the group.json file and storing all information locally
+     * Creates a group data access instance by first reading the groups.json file and storing all information locally
      */
     public GroupDataAccess() throws IOException, ParseException {
         super.readFile(groupFile, groupMap);
