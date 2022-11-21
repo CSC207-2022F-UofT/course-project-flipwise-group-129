@@ -8,4 +8,9 @@ public class AddToPlanningPresenter implements AddToPlanningBoundaryOut {
     public UpdatedLists displayLists(UpdatedLists lists) {
         return lists;
     }
+
+    @Override
+    public UpdatedLists failErrorMessage(UpdatedLists errorString) {
+        return errorString;
+    }
 }

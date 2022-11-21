@@ -74,23 +74,6 @@ public class AddToPlanningList implements AddToPlanningBoundaryIn{
         return stringPlanningList;
     }
     /**
-     * This function converts the current group's purchased list object into a list that is readable in the view
-     * @param purchaseList the current group's purchasedList object
-     * @return This returns a list of relevant information from the items in the current group's purchased list
-     */
-    private List<List<String>> getUpdatedPurchase(PurchaseList purchaseList){
-        List<List<String>> stringPurchasedList = new ArrayList<>();
-        for(Item curItem: purchaseList.getItems()){
-            List<String> currentItem = new ArrayList<>();
-            currentItem.add(curItem.getItemId());
-            currentItem.add(curItem.getItemName());
-            currentItem.add(curItem.getBuyer().getUsername());
-            currentItem.add(curItem.getPrice().toString());
-            stringPurchasedList.add(currentItem);
-        }
-        return stringPurchasedList;
-    }
-    /**
      * This function creates an item and saves the new item into the database
      * @param item packaged information from the controller containing relevant data on the new item
      * @return This returns the new item object created from the information or null if the item could not be saved
