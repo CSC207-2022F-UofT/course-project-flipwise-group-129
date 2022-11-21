@@ -6,15 +6,20 @@ import Entities.*;
 import InputBoundary.UpdatePaymentBalanceBoundaryIn;
 import OutputBoundary.UpdatePaymentBalanceBoundaryOut;
 import DataAccessInterface.*;
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 import java.util.*;
 
 public class UpdatePaymentBalance implements UpdatePaymentBalanceBoundaryIn {
 
+    final GroupDataInterface groupDataInterface;
+    final ItemDataInterface itemDataInterface;
     final UpdatePaymentBalanceBoundaryOut updatePaymentBalancePresenter;
     final PaymentDetails paymentDetails;
 
-    public UpdatePaymentBalance(UpdatePaymentBalanceBoundaryOut upbp, PaymentDetails pd) {
+    public UpdatePaymentBalance(GroupDataInterface gdi, ItemDataInterface idi, UpdatePaymentBalanceBoundaryOut upbp, PaymentDetails pd) {
+        this.groupDataInterface = gdi;
+        this.itemDataInterface = idi;
         this.updatePaymentBalancePresenter = upbp;
         this.paymentDetails = pd;
     }
@@ -48,17 +53,18 @@ public class UpdatePaymentBalance implements UpdatePaymentBalanceBoundaryIn {
          */
 
         /*
+
          We first use the itemID to get this item from the Database. We can also assume that class Item contains a
          list of Users involved in the purchase of said item.
          */
-        Item purchasedItem = ;
+        Item purchasedItem = getItemFromDb(itemID);
 
         /*
          We now use the groupID to get the group of people in which the purchase has been made, and then we call
          the getUsers() method to get the Set of Users in the group (not all of them are necessarily involved in
          the purchase).
          */
-        Group groupInvolvedInPurchase = ;
+        Group groupInvolvedInPurchase = getGroupFromDb(groupID);
         Set<User> usersInGroup = groupInvolvedInPurchase.getUsers();
         List<String> groupUsernames = new ArrayList<>();
         for(User user : usersInGroup) {
@@ -92,12 +98,45 @@ public class UpdatePaymentBalance implements UpdatePaymentBalanceBoundaryIn {
          */
         Map<String, List<Object>> updatedDebtsList = new HashMap<>();
         for(Debt d : currentDebtList) {
-            updatedDebtsList.put(d.getUserOwed(), [d.getUserOwing(), d.getDebtValue()]);
+            List<Object> userOwingAndDebtValue = new ArrayList<>();
+            userOwingAndDebtValue.add(d.getUserOwing());
+            userOwingAndDebtValue.add(d.getDebtValue());
+            updatedDebtsList.put(d.getUserOwed().getUsername(), userOwingAndDebtValue);
         }
 
         /*
         Now we can take the Map use it in the constructor for UpdatedDebts to create our final returned value.
          */
         return new UpdatedDebts(updatedDebtsList);
+    }
+
+    private Item getItemFromDb(String itemID){
+        // get the user from the database and create a User interface
+        //check if the user exists
+        if (!this.itemDataInterface.itemIdExists(itemID)){
+            throw new RuntimeException("Item Id does not exist");
+        }
+        String userString = this.itemDataInterface.itemAsString(itemID);
+
+        try {
+            return Item.fromString(itemID);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException("Unable to process item from database");
+        }
+    }
+
+    private Group getGroupFromDb(String groupID){
+        // get the user from the database and create a User interface
+        //check if the user exists
+        if (!this.groupDataInterface.groupIdExists(groupID)){
+            throw new RuntimeException("Group Id does not exist");
+        }
+        String userString = this.groupDataInterface.groupAsString(groupID);
+
+        try {
+            return Group.fromString(groupID);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException("Unable to process group from database");
+        }
     }
 }
