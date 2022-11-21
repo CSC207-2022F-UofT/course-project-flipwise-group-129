@@ -26,6 +26,7 @@ public class AddPurchasePresenter implements AddPurchaseBoundaryOut {
      */
     @Override
     public UpdatedLists prepareFailViewInformation(UpdatedLists errorInformation) {
+        // Provide the error message to the ui for updating
         return errorInformation;
     }
 

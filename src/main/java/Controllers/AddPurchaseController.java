@@ -12,8 +12,6 @@ import Presenters.AddPurchasePresenter;
 import java.util.List;
 
 public class AddPurchaseController {
-    // Defining the class attribute variable which will store the use case object as one of the boundary interface
-    private AddPurchaseBoundaryIn addPurchaseUseCaseBoundaryIn;
 
     /**
      * This function will be called from the main/view in order to control the use case AddPurchase which occurs whenever a user
@@ -34,13 +32,13 @@ public class AddPurchaseController {
      */
     public UpdatedLists controlAddPurchaseUseCase(AddPurchaseBoundaryIn addPurchaseUseCase, String purchasedItemId, List<String> participatingUsernames, String buyerUsername, float price, String purchaseGroupId, GroupDataInterface groupDataAccess, ItemDataInterface itemDataAccess, UserDataInterface userDataAccess) {
         //Implement the instantiation of the presenter to pass along the pipeline and assign the boundary attribute variable to the use case object
-        this.addPurchaseUseCaseBoundaryIn = addPurchaseUseCase;
+        // Defining the class attribute variable which will store the use case object as one of the boundary interface
         AddPurchaseBoundaryOut presenter = new AddPurchasePresenter();
 
         //Package the information into the data structure to pass to the use case through the boundary
         PurchaseInfo purchaseInfo = new PurchaseInfo(purchasedItemId, participatingUsernames, buyerUsername, price, purchaseGroupId, presenter, groupDataAccess, itemDataAccess, userDataAccess);
 
         // Call the use case
-        return this.addPurchaseUseCaseBoundaryIn.executeUseCase(purchaseInfo);
+        return addPurchaseUseCase.executeUseCase(purchaseInfo);
     }
 }
