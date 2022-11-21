@@ -14,11 +14,12 @@ public class HomePageView extends JFrame implements ActionListener {
     JLabel homePage;
     JPanel group_btns = new JPanel();
 
+    UserLoginView userLoginView = new UserLoginView();
     //DUMMY
-    String[] group_names = new String[]{"Hello"};
+    String[] group_names = new String[]{};
     //DUMMY
 
-    JButton[] button_array = createGroupButtons(group_names);
+    JButton[] button_array;
 
 //    ButtonGroup TRUE_BUTTON_GROUP = new ButtonGroup();
 
@@ -28,6 +29,8 @@ public class HomePageView extends JFrame implements ActionListener {
         setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
         setVisible(true);
 
+        this.setGroupNames(userLoginView.getGroups());
+        button_array = createGroupButtons(group_names);
         homePage = new JLabel("HomePage");
         homePage.setAlignmentX(Component.CENTER_ALIGNMENT);
         JPanel homepageDetails = new JPanel();
@@ -72,17 +75,25 @@ public class HomePageView extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e){
         if (e.getActionCommand().equals("Create Group")){
             String groupName = JOptionPane.showInputDialog("Please enter in Group Name:");
-            JOptionPane.showMessageDialog(null, "Your Group Name is  "
+            JOptionPane.showMessageDialog(null, "Your Group Name is "
                     + groupName + ".");
+            if (!(groupName.equals("null"))){
+                setGroupNames(new String[]{"Hello", "Avi", "Saleh"});
+                this.repaint();
+            }
             //controller stuff
             GroupCreateController createController = new GroupCreateController();
             // update homepage
         }
         else if (e.getActionCommand().equals("Join Group")){
             String groupID = JOptionPane.showInputDialog("Please enter in Group ID:");
-            JOptionPane.showMessageDialog(null, "The Group ID is  "
+            JOptionPane.showMessageDialog(null, "The Group ID is "
                     + groupID + ".");
 
+            if (!(groupID.equals("null"))){
+//                this.group_names.add("Saleh");
+//                this.repaint();
+            }
 
             //controller stuff
             //update homepage
@@ -107,6 +118,12 @@ public class HomePageView extends JFrame implements ActionListener {
         }
         return output;
     }
+
+    public void setGroupNames(String[] group_names){
+        this.group_names = group_names;
+    }
+
+
 
 
 

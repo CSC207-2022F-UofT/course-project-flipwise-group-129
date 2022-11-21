@@ -63,6 +63,9 @@ public class UserLoginView extends JPanel implements ActionListener{
     public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand().equals("Continue")) {
 //            controller.callUserLoginInteractor(email.getText(), String.valueOf(password.getPassword()));
+            // give username.getText() and password.getText()
+            // String.valueOf(password.getPassword())
+
         }
     }
 
@@ -79,6 +82,11 @@ public class UserLoginView extends JPanel implements ActionListener{
 
     public JButton getNewButton(){
         return newButton;
+    }
+
+    public String[] getGroups(){
+        String[] s = new String[]{"Saleh"};
+        return s;
     }
 
 }
