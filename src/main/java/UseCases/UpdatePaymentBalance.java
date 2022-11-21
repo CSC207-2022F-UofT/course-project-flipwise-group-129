@@ -26,9 +26,10 @@ public class UpdatePaymentBalance implements UpdatePaymentBalanceBoundaryIn {
     }
 
     /**
-     *
-     * @param paymentDetails
-     * @return
+     * Updates the list of debts for a group after the purchase of an item has been made.
+     * @param paymentDetails the data structure containing all of the information required to update the debts in the
+     *                       group.
+     * @return the information that is prepared by the presenter to the controller.
      */
     @Override
     public UpdatedDebts updatePaymentBalance(PaymentDetails paymentDetails) {
@@ -134,10 +135,22 @@ public class UpdatePaymentBalance implements UpdatePaymentBalanceBoundaryIn {
         return new UpdatedDebts(updatedDebtsList);
     }
 
+    /**
+     * Helper method for updatePaymentBalance which returns a failed instance of UpdatedDebts.
+     * @param e the runtime error given by the try catch in updatePaymentBalance when checking if itemID or groupID
+     *          exist.
+     * @return the failed view of the updatePaymentBalance presenter.
+     */
     private UpdatedDebts raiseError(RuntimeException e) {
         return this.updatePaymentBalancePresenter.prepareFailView(new UpdatedDebts(e.toString()));
     }
 
+    /**
+     * Helper method for updatePaymentBalance to check if the itemID exists in the given database.
+     * @param itemID the String which is the ID of the item which was purchased.
+     * @return an instance of the actual Item which has been purchased if it exists in the database, otherwise,
+     * returns a RuntimeException.
+     */
     private Item getItemFromDb(String itemID){
         // get the user from the database and create a User interface
         //check if the user exists
@@ -153,6 +166,12 @@ public class UpdatePaymentBalance implements UpdatePaymentBalanceBoundaryIn {
         }
     }
 
+    /**
+     * Helper method for updatePaymentBalance to check if the groupID exists in the given database.
+     * @param groupID the String which is the ID of the group in which the item was purchased.
+     * @return an instance of the actual group in which the item has been purchased if it exists in the database,
+     * otherwise, returns a RuntimeException.
+     */
     private Group getGroupFromDb(String groupID){
         // get the user from the database and create a User interface
         //check if the user exists
@@ -168,6 +187,10 @@ public class UpdatePaymentBalance implements UpdatePaymentBalanceBoundaryIn {
         }
     }
 
+    /**
+     * A helper method for updatePaymentBalance which just saves the updated data to the database.
+     * @param group the Group in which the item has been purchased and in which the debts have been updated.
+     */
     private void saveData(Group group){
         //pass new info to db
         try {
