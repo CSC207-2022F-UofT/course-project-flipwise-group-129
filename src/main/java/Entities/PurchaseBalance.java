@@ -5,6 +5,7 @@ import org.json.simple.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class PurchaseBalance {
 
@@ -24,6 +25,51 @@ public class PurchaseBalance {
     public List<Debt> getAllDebts() {
         // return a list of all the debts
         return allDebts;
+    }
+
+    /**
+     * get the list of all debts where the user is owed money
+     * @param username the username of the user that is owed money
+     * @return list of all debts where the user is owed money
+     */
+    public List<Debt> getUserOwed(String username){
+        List<Debt> debts = new ArrayList<>();
+        for (Debt debt : this.allDebts) {
+            if (Objects.equals(debt.getUserOwed().getUsername(), username)){
+                debts.add(debt);
+            }
+        }
+        return debts;
+    }
+
+    /**
+     * get the list of all debts where the user is owing money
+     * @param username the username of the user that is owing money
+     * @return list of all debts where the user is owing money
+     */
+    public List<Debt> getUserOwing(String username){
+        List<Debt> debts = new ArrayList<>();
+        for (Debt debt : this.allDebts) {
+            if (Objects.equals(debt.getUserOwing().getUsername(), username)){
+                debts.add(debt);
+            }
+        }
+        return debts;
+    }
+
+    /**
+     * return a debt pair between a user owing money and a user owed money if exist
+     * @param userOwed the username of the user owed money
+     * @param userOwing the username of the user owing money
+     * @return the debt pair if it exists, else null
+     */
+    public Debt getDebtPair(String userOwed, String userOwing){
+        for (Debt debt : this.allDebts) {
+            if (debt.getUserOwing().getUsername().equals(userOwing) && debt.getUserOwed().getUsername().equals(userOwing)){
+                return debt;
+            }
+        }
+        return null;
     }
 
     public void addDebtPair(Debt debt){
