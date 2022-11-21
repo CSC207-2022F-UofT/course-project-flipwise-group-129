@@ -9,12 +9,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Item {
-    private String itemName;
-    private User buyer;
-    private Float price;
 
-    private String itemId;
-    private List<User> usersInvolved;
+    /*
+    This class represents an item that has been bought in a purchase
+     */
+    private String itemName; //the name of the item
+    private User buyer; // the person who bought the item
+    private Float price; // the price of the item
+
+    private String itemId; //id for unique identification purposes
+    private List<User> usersInvolved; // the list of all the users invovled in the purchase
 
     public Item(String itemName, User buyer, Float price, List<User> usersInvolved){
         Timestamp ts = new Timestamp(System.currentTimeMillis());
@@ -26,38 +30,52 @@ public class Item {
     }
 
     public String getItemName(){
+        // return the name of the item
         return itemName;
     }
 
     public User getBuyer(){
+        // return the buyer of this item
         return buyer;
     }
 
     public Float getPrice(){
+        // reutn the price of the item
         return price;
     }
 
-    public String getItemId(){ return this.itemId; }
+    public String getItemId(){
+        //return the item id
+        return this.itemId;
+    }
 
-    public List<User> getUsersInvolved() { return this.usersInvolved; }
+    public List<User> getUsersInvolved() {
+        //return the list of all the users involved in the purchase.
+        return this.usersInvolved;
+    }
 
     public void setPrice(Float price){
+        //set the price of the item, useful for editing the value after construction
         this.price = price;
     }
 
     public void setItemName(String name){
+        //set the name of the item
         this.itemName = name;
     }
 
     public void setBuyer(User buyer){
+        //set the buyer who bought the product
         this.buyer = buyer;
     }
 
     public void setUsersInvolved(List<User> users){
+        //enter all the users involved
         this.usersInvolved = users;
     }
 
     public void addUsersInvolved(User user){
+        // add all the users invovled in this item purchase
         this.usersInvolved.add(user);
     }
 
