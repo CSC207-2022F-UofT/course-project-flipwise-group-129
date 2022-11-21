@@ -2,7 +2,6 @@ package Controllers;
 
 import DataAccessInterface.UserDataInterface;
 import DataStructures.RegisterCredentials;
-import Entities.User;
 import InputBoundary.UserRegisterBoundaryIn;
 import OutputBoundary.UserRegisterBoundaryOut;
 import Presenters.UserRegisterPresenter;
