@@ -1,15 +1,14 @@
 package Presenters;
 
-import DataStructures.RegisterCredentials;
 import OutputBoundary.UserRegisterBoundaryOut;
 
 public class UserRegisterPresenter implements UserRegisterBoundaryOut {
+
+    /**
+     * @param success if the register was successful
+     * @return if the register was successful
+     */
     public boolean success(boolean success) {
-        /**
-         * Presents a success or failed login to the view.
-         * @param boolean success of login
-         * @return success of login
-         */
         return success;
     }
 }
