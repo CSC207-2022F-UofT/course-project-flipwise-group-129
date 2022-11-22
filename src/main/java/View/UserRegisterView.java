@@ -1,11 +1,13 @@
 package View;
 
+import Controllers.UserRegisterController;
+import Presenters.UserRegisterPresenter;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-public class UserRegisterView extends JPanel implements ActionListener{
+public class UserRegisterView extends JPanel{
     private final JButton signupButton;
     private final JTextField username;
     private final JPasswordField p1, p2;
@@ -24,7 +26,7 @@ public class UserRegisterView extends JPanel implements ActionListener{
         p1 = new JPasswordField();
         t4 = new JLabel("Re-enter Password");
         p2 = new JPasswordField();
-        signupButton = new JButton("Continue");
+        signupButton = new JButton("Sign Up");
         exitButton = new JButton("Exit");
 
         // Setting positions of JComponents
@@ -54,31 +56,23 @@ public class UserRegisterView extends JPanel implements ActionListener{
         setSize(1000, 600);
         setVisible(true);
 
-
-        signupButton.addActionListener(this);
-        exitButton.addActionListener(this);
-
-
     }
 
-    public void actionPerformed(ActionEvent e) {
-        if (e.getActionCommand().equals("Continue")){
-//            if ()
-//            controller.callUserLoginInteractor(email.getText(), String.valueOf(password.getPassword()));
-//            try {
-////                userRegisterController.create(email.getText(),
-////                        String.valueOf(password.getPassword()),
-////                        String.valueOf(repeatPassword.getPassword()),
-////                        String.valueOf(name.getText()));
-////                String output = String.format("%s Individual created.", name.getText());
-////                JOptionPane.showMessageDialog(this, output);
-//            } catch (Exception e) {
-//                JOptionPane.showMessageDialog(this, e.getMessage());
-//            }
-        }
-  }
     public JButton getSignUpButton() { return signupButton; }
     public JButton getExitButton() { return exitButton; }
+
+    public String getUsername() {
+        return username.getText();
+    }
+
+    public String getPassword1() {
+        return new String(p1.getPassword());
+    }
+
+    public String getPassword2() {
+        return new String(p2.getPassword());
+    }
+
 
 }
 

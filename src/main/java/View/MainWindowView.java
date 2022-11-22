@@ -2,16 +2,22 @@ package View;
 
 //import UseCases.UserLogin;
 
+import Controllers.UserRegisterController;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class MainWindowView extends JFrame implements ActionListener {
     private final UserLoginView loginView;
-    public MainWindowView() {
+    private final UserRegisterView registerView;
+    private final UserRegisterController userRegisterController;
+
+    public MainWindowView(UserRegisterController controller) {
+        this.userRegisterController = controller;
 
         this.loginView = new UserLoginView();
-
+        this.registerView = new UserRegisterView();
         setSize(1000,600);
         this.setContentPane(loginView);
         setVisible(true);
@@ -43,20 +49,37 @@ public class MainWindowView extends JFrame implements ActionListener {
             this.pack();
         }
 
+        //EXCLUSIVE TO REGISTER
+        if (e.getActionCommand().equals("Sign up")){
+            boolean registration = this.userRegisterController.controlUseCase(registerView.getUsername(),
+                    registerView.getPassword1(), registerView.getPassword2());
+
+
+            if (registration) {
+                JOptionPane.showMessageDialog(this, "Registration successful", "", JOptionPane.PLAIN_MESSAGE);
+                this.dispose();
+                HomePageView homePageView = new HomePageView();
+                homePageView.setVisible(true);
+            }
+        }
+        //EXCLUSIVE
+
 //        if (e.getActionCommand().equals()){
 //            this.dispose();
 //            GroupSummaryView groupSummaryView = new GroupSummaryView();
 //            groupSummaryView.setVisible(true);
 //        }
+
     }
 
     private void setUserRegisterView(){
-        UserRegisterView registerView = new UserRegisterView();
         this.setContentPane(registerView);
         registerView.getSignUpButton().addActionListener(this);
         registerView.getExitButton().addActionListener(this);
         this.pack();
     }
+
+
 
 //    private void setHomepageView(){
 //        HomePageView homePageView = new HomePageView();
