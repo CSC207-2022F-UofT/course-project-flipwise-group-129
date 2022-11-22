@@ -101,7 +101,15 @@ public class UserLogin implements UserLoginBoundaryIn {
             // IDK how to get debts, because they are stored in such a day it is hard to extract the debts of everyone
             // in a group
             List<Debt> debtAsDebts = group.getPurchaseBalance().getAllDebts();
-
+            List<List<String>> debtAsString = new ArrayList<>();
+            for (Debt debt : debtAsDebts) {
+                ArrayList<String> debtInfo = new ArrayList<>();
+                debtInfo.add(debt.getUserOwed().getUsername());
+                debtInfo.add(debt.getUserOwing().getUsername());
+                debtInfo.add(debt.getDebtValue().toString());
+                debtAsString.add(debtInfo);
+            }
+            eachGroup.add(debtAsString);
 
             allGroups.add(eachGroup);
         }
