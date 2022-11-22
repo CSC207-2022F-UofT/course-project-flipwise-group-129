@@ -8,8 +8,8 @@ public class PaymentDetails {
     /**
      * Creates a new package of information needed to execute the AddtoPlanning use case which consists of
      * information on the new item to add and its group
-     * @param name the new item's name
-     * @param price the new item's price
+     * @param owedUser the user owed money
+     * @param owingUser the user owing money
      * @param groupId the groupId of the group storing this new item
      */
     public PaymentDetails(String owedUser, String owingUser, String groupId){
