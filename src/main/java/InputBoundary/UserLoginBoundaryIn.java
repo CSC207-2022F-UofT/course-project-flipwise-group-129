@@ -5,7 +5,6 @@ package InputBoundary;
 
 import DataStructures.LoggedInInfo;
 import DataStructures.LoginCredentials;
-import DataStructures.RegisterCredentials;
 
 public interface UserLoginBoundaryIn {
 

@@ -166,7 +166,7 @@ public class UserLogin implements UserLoginBoundaryIn {
             List<String> currentItem = new ArrayList<>();
             currentItem.add(curItem.getItemId());
             currentItem.add(curItem.getItemName());
-            currentItem.add(String.valueOf(curItem.getPrice()));
+            currentItem.add(curItem.getPrice().toString());
             currentItem.add(curItem.getBuyer().getUsername());
             stringPurchasedList.add(currentItem);
         }

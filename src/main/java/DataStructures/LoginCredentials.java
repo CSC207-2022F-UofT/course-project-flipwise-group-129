@@ -1,5 +1,5 @@
 /**
- * Data structure modeling an existing user attempting to login
+ * Data structure modeling an existing user attempting to log in
  */
 package DataStructures;
 
