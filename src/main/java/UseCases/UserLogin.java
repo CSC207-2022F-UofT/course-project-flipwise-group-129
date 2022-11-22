@@ -62,8 +62,7 @@ public class UserLogin implements UserLoginBoundaryIn {
             String userDetails = userDataInterface.userAsString(username);
             User user = User.fromString(userDetails);
             if (Objects.equals(user.getPassword(), password)) {
-                LoggedInInfo info = successDetails(user);
-                // TODO: figure out how to pass the data up into output boundary
+                return(successDetails(user));
             }
         }
         return new LoggedInInfo(false);
@@ -101,7 +100,7 @@ public class UserLogin implements UserLoginBoundaryIn {
     }
 
     /**
-     * Converts debt from a debt objects to a List of List of String, which is displayable by the view.
+     * Converts debt from a debt objects to a nested list String, which is displayable by the view.
      * Helper method for successDetails.
      *
      * @param debtAsDebts list of all debts in a group
@@ -123,7 +122,7 @@ public class UserLogin implements UserLoginBoundaryIn {
      * Returns a string of all the usernames in a group as a list of strings.
      * Helper method for successDetails.
      *
-     * @param group the group to get all users fomr
+     * @param group the group to get all users from
      * @return a list of string of usernames
      */
     private List<String> getUsersAsString(Group group) {
@@ -142,6 +141,7 @@ public class UserLogin implements UserLoginBoundaryIn {
      * @param planningList a group's planning list
      * @return a list representation of a planning list
      */
+
     private List<List<String>> getPlanning(PlanningList planningList){
         List<List<String>> stringPlanningList = new ArrayList<>();
         for(Item curItem: planningList.getItems()){
@@ -166,7 +166,7 @@ public class UserLogin implements UserLoginBoundaryIn {
             List<String> currentItem = new ArrayList<>();
             currentItem.add(curItem.getItemId());
             currentItem.add(curItem.getItemName());
-            currentItem.add(curItem.getPrice().toString());
+            currentItem.add(Double.toString(curItem.getPrice()));
             currentItem.add(curItem.getBuyer().getUsername());
             stringPurchasedList.add(currentItem);
         }

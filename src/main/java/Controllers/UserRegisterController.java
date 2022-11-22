@@ -12,7 +12,7 @@ public class UserRegisterController {
     /**
      * Controller for UserRegisterController
      *
-     * @param inputBoundary
+     * @param inputBoundary the input boundary layer
      */
     public UserRegisterController(UserRegisterBoundaryIn inputBoundary) {
         this.inputBoundary = inputBoundary;

@@ -11,13 +11,14 @@ public class UserLoginController {
     private final UserLoginBoundaryIn inputBoundary;
 
     /**
-     * Constructor for UserLoginContoller.
+     * Constructor for UserLoginController.
      *
      * @param inputBoundary input boundary layer
      */
     public UserLoginController(UserLoginBoundaryIn inputBoundary) {
         this.inputBoundary = inputBoundary;
     }
+
     /**
      * Controller that converts data to the type required by the request model when an existing user login.
      *
