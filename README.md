@@ -38,3 +38,6 @@
 ## 6. User Stories Code Walkthrough
  - [] ![UserRegister Use Case] (https://github.com/CSC207-2022F-UofT/course-project-flipwise-group-129/blob/main/UserRegisterUseCase.jpeg)
  - [] ![SettlementPayment Use Case] (https://github.com/CSC207-2022F-UofT/course-project-flipwise-group-129/blob/main/SettlementPaymentUseCase.jpeg)
+
+## 7. Pull Requests Document
+ - [] https://docs.google.com/document/d/1B5JUseiYhwcYRWCrykhv1qstKCXgi4C8lS-M4P5Y0x8/edit
