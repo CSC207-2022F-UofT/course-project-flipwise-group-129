@@ -33,26 +33,20 @@ public class ButtonColumn extends AbstractCellEditor
     private Object editorValue;
     private boolean isButtonColumnEditor;
 
-    /**
-     *  Create the ButtonColumn to be used as a renderer and editor. The
-     *  renderer and editor will automatically be installed on the TableColumn
-     *  of the specified column.
-     *
-     *  @param table the table containing the button renderer/editor
-     *  @param action the Action to be invoked when the button is invoked
-     *  @param column the column to which the button renderer/editor is added
-     */
-    public ButtonColumn(JTable table, Action action, int column)
+public class ButtonColumn extends AbstractCellEditor implements ActionListener, TableCellRenderer, TableCellEditor {
+    JTable table;
+    JButton r;
+    JButton e;
+    String text;
+
+    public ButtonColumn(JTable table, int column)
     {
         this.table = table;
-        this.action = action;
+        r = new JButton();
 
-        renderButton = new JButton();
-        editButton = new JButton();
-        editButton.setFocusPainted( false );
-        editButton.addActionListener( this );
-        originalBorder = editButton.getBorder();
-        setFocusBorder( new LineBorder(Color.BLUE) );
+        e = new JButton();
+        e.setFocusPainted( false );
+        e.addActionListener( this );
 
         TableColumnModel columnModel = table.getColumnModel();
         columnModel.getColumn(column).setCellRenderer( this );
@@ -148,29 +142,34 @@ public class ButtonColumn extends AbstractCellEditor
 
         if (hasFocus)
         {
-            renderButton.setBorder( focusBorder );
+            r.setForeground(table.getForeground());
+        }
+        else if (isSelected)
+        {
+            r.setForeground(table.getSelectionForeground());
+            r.setBackground(table.getSelectionBackground());
         }
         else
         {
-            renderButton.setBorder( originalBorder );
+            r.setForeground(table.getForeground());
         }
 
-//		renderButton.setText( (value == null) ? "" : value.toString() );
-        if (value == null)
-        {
-            renderButton.setText( "" );
-            renderButton.setIcon( null );
-        }
-        else if (value instanceof Icon)
-        {
-            renderButton.setText( "" );
-            renderButton.setIcon( (Icon)value );
-        }
-        else
-        {
-            renderButton.setText( value.toString() );
-            renderButton.setIcon( null );
-        }
+        r.setText( (value == null) ? "" : value.toString() );
+        return r;
+    }
+
+    public Component getTableCellEditorComponent(
+            JTable table, Object value, boolean isSelected, int row, int column)
+    {
+        text = (value == null) ? "" : value.toString();
+        e.setText( text );
+        return e;
+    }
+
+    public Object getCellEditorValue()
+    {
+        return text;
+    }
 
         return renderButton;
     }
@@ -199,7 +198,7 @@ public class ButtonColumn extends AbstractCellEditor
 //  Implement MouseListener interface
 //
     /*
-     *  When the mouse is pressed the editor is invoked. If you then drag
+     *  When the mouse is pressed the editor is invoked. If you then then drag
      *  the mouse to another cell before releasing it, the editor is still
      *  active. Make sure editing is stopped when the mouse is released.
      */
@@ -209,15 +208,7 @@ public class ButtonColumn extends AbstractCellEditor
                 &&  table.getCellEditor() == this)
             isButtonColumnEditor = true;
     }
-
-    public void mouseReleased(MouseEvent e)
-    {
-        if (isButtonColumnEditor
-                &&  table.isEditing())
-            table.getCellEditor().stopCellEditing();
-
-        isButtonColumnEditor = false;
-    }
+}
 
     public void mouseClicked(MouseEvent e) {}
     public void mouseEntered(MouseEvent e) {}
