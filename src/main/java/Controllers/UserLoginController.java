@@ -1,23 +1,28 @@
 package Controllers;
 
-import DataAccessInterface.GroupDataInterface;
-import DataAccessInterface.UserDataInterface;
 import DataStructures.LoggedInInfo;
 import DataStructures.LoginCredentials;
 import InputBoundary.UserLoginBoundaryIn;
-import OutputBoundary.UserLoginBoundaryOut;
-import Presenters.UserLoginPresenter;
-import UseCases.UserLogin;
 
 public class UserLoginController {
+    private final UserLoginBoundaryIn inputBoundary;
+
     /**
-     * Controller that converts data to the type required by the request model.
+     * Constructor for UserLoginContoller.
      *
-     * @param username
-     * @param password
-     * @return
+     * @param inputBoundary input boundary layer
      */
-    public LoggedInInfo controlUseCase(String username, String password, UserLoginBoundaryIn inputBoundary) {
+    public UserLoginController(UserLoginBoundaryIn inputBoundary) {
+        this.inputBoundary = inputBoundary;
+    }
+    /**
+     * Controller that converts data to the type required by the request model when an existing user login.
+     *
+     * @param username the username
+     * @param password the password
+     * @return the outcome of the login (success or fail)
+     */
+    public LoggedInInfo controlUseCase(String username, String password) {
         LoginCredentials credentials = new LoginCredentials(username, password);
         return(inputBoundary.executeUserLogin(credentials));
     }

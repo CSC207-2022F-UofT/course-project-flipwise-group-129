@@ -1,17 +1,20 @@
 package Controllers;
 
-import DataAccessInterface.UserDataInterface;
 import DataStructures.RegisterCredentials;
-import Entities.User;
-import InputBoundary.UserLoginBoundaryIn;
 import InputBoundary.UserRegisterBoundaryIn;
-import OutputBoundary.UserRegisterBoundaryOut;
-import Presenters.UserRegisterPresenter;
-import UseCases.UserRegister;
-
-import java.io.IOException;
 
 public class UserRegisterController {
+    private final UserRegisterBoundaryIn inputBoundary;
+
+    /**
+     * Controller for UserRegisterController
+     *
+     * @param inputBoundary
+     */
+    public UserRegisterController(UserRegisterBoundaryIn inputBoundary) {
+        this.inputBoundary = inputBoundary;
+    }
+
     /**
      * Controller that converts data to the type required by the request model.
      *
@@ -19,7 +22,7 @@ public class UserRegisterController {
      * @param password1 password
      * @param password2 repeat password
      */
-    public boolean controlUseCase(String username, String password1, String password2, UserRegisterBoundaryIn inputBoundary) {
+    public boolean controlUseCase(String username, String password1, String password2) {
         RegisterCredentials credentials = new RegisterCredentials(username, password1, password2);
         return (inputBoundary.executeUserRegister(credentials));
     }
