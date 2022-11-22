@@ -10,6 +10,7 @@ import DataAccessInterface.ItemDataInterface;
 import DataAccessInterface.UserDataInterface;
 import InputBoundary.AddPurchaseBoundaryIn;
 import InputBoundary.AddToPlanningBoundaryIn;
+import OutputBoundary.AddPurchaseBoundaryOut;
 import Presenters.AddPurchasePresenter;
 import Presenters.AddToPlanningPresenter;
 import UseCases.AddPurchase;
@@ -47,6 +48,8 @@ public class PlanningListView extends JPanel {
 
                 AddPurchaseView addPurchaseView = new AddPurchaseView();
                 if (addPurchaseView.getReply() == JOptionPane.YES_OPTION) {
+
+
                     ((DefaultTableModel)table.getModel()).removeRow(modelRow);
                     JOptionPane.showMessageDialog(null, "Purchased item.");
 
@@ -61,14 +64,16 @@ public class PlanningListView extends JPanel {
                         throw new RuntimeException(e); // Display popup
                     }
 
-                    AddPurchasePresenter presenter = new AddPurchasePresenter();
+                    AddPurchaseBoundaryOut presenter = new AddPurchasePresenter();
+
 
                     AddPurchaseBoundaryIn useCase = new AddPurchase();
 
-                    this.controllerAddPurchase = new AddPurchaseController();
+                    this.controllerAddPurchase = new AddPurchaseController(presenter, useCase, groupData, itemData, userData);
 
-                    this.controllerAddPurchase.controlAddPurchaseUseCase(useCase, "Avi", addPurchaseView.contributing_members,
-                            "Saleh", addPurchaseView.item_price, "Hello", groupData, itemData, userData);
+                    this.controllerAddPurchase.controlAddPurchaseUseCase("Item#23", addPurchaseView.getSelectedMembers(),
+                            "Saleh", Float.parseFloat(addPurchaseView.item_price.getText().toString()),
+                            "Group#24");
                 }
 
                 else {
@@ -78,7 +83,7 @@ public class PlanningListView extends JPanel {
             }
         };
 
-        ButtonColumn buttonColumn = new ButtonColumn(table, 0);
+        ButtonColumn buttonColumn = new ButtonColumn(table, delete, 0);
 
 
         scrollPane = new JScrollPane(table);

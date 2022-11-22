@@ -11,6 +11,7 @@ public class AddPurchaseView extends JOptionPane{
     JTextField item_price;
     JTextArea text_contributing_members;
     JCheckBox[] contributing_members;
+    List<String> checked_members;
 
     int reply;
     public AddPurchaseView() {
@@ -49,6 +50,7 @@ public class AddPurchaseView extends JOptionPane{
                 "Purchase Item", JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE, null, null, null);
 
+
     }
     public JCheckBox[] createCheckboxes(String[] Current_Members) {
         JCheckBox[] output = new JCheckBox[Current_Members.length];
@@ -67,9 +69,18 @@ public class AddPurchaseView extends JOptionPane{
     }
     public String getItemPrice(){ return this.item_price.getText(); }
 
-//    public List<String> get
     public void setMembers(String[] members){
         this.members = members;
+    }
+
+    public List<String> getSelectedMembers(){
+        List<String> selectedMembers = new ArrayList<String>();
+        for (int i = 0; i < contributing_members.length; i++) {
+            if (contributing_members[i].isSelected()) {
+                selectedMembers.add(contributing_members[i].getName());
+            }
+        }
+        return selectedMembers;
     }
 
 }

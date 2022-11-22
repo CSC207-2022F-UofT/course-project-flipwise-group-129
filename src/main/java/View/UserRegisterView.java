@@ -16,7 +16,8 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 
 public class UserRegisterView extends JPanel implements ActionListener{
-    private final JButton signupButton;
+    private final JButton signupButton
+            ;
     private final JTextField username;
     private final JPasswordField p1, p2;
     private final JLabel t1, t2, t3, t4;
