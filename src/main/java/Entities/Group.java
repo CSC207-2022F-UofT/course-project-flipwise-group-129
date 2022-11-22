@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.sql.Timestamp;
 import java.util.Set;
 public class Group {
-
     /**
     This class represents a Group of users that have decided to conduct purchases together
      */
