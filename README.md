@@ -8,6 +8,11 @@
 - [ ] Go to file main.java and run main() function by clicking the green play button on the left of the method or right-clicking on the file and selecting the run 
 ## How to generate the test coverage report
 
+
+# Generating the Javadoc and a report on Javadoc coverage
+If you could not provide this, a Javadoc in HTML files and a report on Javadoc coverage are also fine. I can evaluate the Code Style & Documentation more conveniently through Javadoc!
+
+Check this website to see how to generate HTML files for Javadoc: https://www.jetbrains.com/help/idea/working-with-code-documentation.html#generate-javadoc
 ## Gradle Project
 Import this project into your Intellij editor. It should automatically recognise this as a gradle repository.
 The starter code was built using SDK version 11.0.1. Ensure that you are using this version for this project. (You can, of course, change the SDK version as per your requirement if your team has all agreed to use a different version)
