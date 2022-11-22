@@ -1,93 +1,48 @@
 package View;
 
-import Controllers.AddPurchaseController;
-import Controllers.AddToPlanningController;
-import DataAccess.GroupDataAccess;
-import DataAccess.ItemDataAccess;
-import DataAccess.UserDataAccess;
-import DataAccessInterface.GroupDataInterface;
-import DataAccessInterface.ItemDataInterface;
-import DataAccessInterface.UserDataInterface;
-import InputBoundary.AddPurchaseBoundaryIn;
-import InputBoundary.AddToPlanningBoundaryIn;
-import OutputBoundary.AddPurchaseBoundaryOut;
-import Presenters.AddPurchasePresenter;
-import Presenters.AddToPlanningPresenter;
-import UseCases.AddPurchase;
-import UseCases.AddToPlanningList;
-import org.json.simple.parser.ParseException;
-
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.io.IOException;
 
 public class PlanningListView extends JPanel {
     private JTable table;
     private JScrollPane scrollPane;
     Object[][] rows;
     String[] columns = new String[]{"", "Item name"};
-    GroupSummaryView groupSummaryView;
 
-    /**
-     * Builds the gui for the table that displays planning list.
-     */
     public PlanningListView() {
 
+//        TableCellRenderer tableRenderer;
+//        table = new JTable(new JTableButtonModel(rows, columns));
+//        tableRenderer = table.getDefaultRenderer(JButton.class);
+//        table.setDefaultRenderer(JButton.class, new JTableButtonRenderer(tableRenderer));
         setPlanningList();
         DefaultTableModel model = new DefaultTableModel(rows, columns);
         table = new JTable(model);
 
         Action delete = new AbstractAction()
         {
-            private AddPurchaseController controllerAddPurchase;
-
-            public void actionPerformed(ActionEvent evt)
+            public void actionPerformed(ActionEvent e)
             {
-                JTable table = (JTable)evt.getSource();
-                int modelRow = Integer.valueOf( evt.getActionCommand() );
+                JTable table = (JTable)e.getSource();
+                int modelRow = Integer.valueOf( e.getActionCommand() );
 
                 AddPurchaseView addPurchaseView = new AddPurchaseView();
-                if (addPurchaseView.getReply() == JOptionPane.YES_OPTION) {
-
-
+                if (addPurchaseView.getOption() == JOptionPane.YES_OPTION) {
                     ((DefaultTableModel)table.getModel()).removeRow(modelRow);
-                    JOptionPane.showMessageDialog(null, "Purchased item.");
-
-                    ItemDataInterface itemData;
-                    GroupDataInterface groupData;
-                    UserDataInterface userData;
-                    try {
-                        itemData = new ItemDataAccess();
-                        groupData = new GroupDataAccess();
-                        userData = new UserDataAccess();
-                    } catch (IOException | ParseException e) {
-                        throw new RuntimeException(e); // Display popup
-                    }
-
-                    AddPurchaseBoundaryOut presenter = new AddPurchasePresenter();
-
-
-                    AddPurchaseBoundaryIn useCase = new AddPurchase();
-
-                    this.controllerAddPurchase = new AddPurchaseController(presenter, useCase, groupData, itemData, userData);
-
-                    this.controllerAddPurchase.controlAddPurchaseUseCase("Item#23", addPurchaseView.getSelectedMembers(),
-                            "Saleh", Float.parseFloat(addPurchaseView.item_price.getText().toString()),
-                            "Group#24");
+                    JOptionPane.showMessageDialog(null, "HELLO");
                 }
 
                 else {
-                    JOptionPane.showMessageDialog(null, "Did not purchase item.");
+                    JOptionPane.showMessageDialog(null, "GOODBYE");
                 }
 
             }
         };
 
 //        ButtonColumn buttonColumn = new ButtonColumn(table, delete, 0);
-
 
         scrollPane = new JScrollPane(table);
 
@@ -98,9 +53,6 @@ public class PlanningListView extends JPanel {
 
     }
 
-    /**
-     * Inputs data of the group's planning list within the rows of the table.
-     */
     public void setPlanningList(){
         // filter through codis data (codis data in parameter)
         // get updated planning list and reload page
@@ -109,5 +61,8 @@ public class PlanningListView extends JPanel {
                 {"Purchase", "the"},
                 {"Purchase", "Sandwich"},
                 {"Purchase", "8"}};
+
+
+
     }
 }
