@@ -6,27 +6,14 @@ import java.util.List;
 
 public class AddPurchaseView extends JOptionPane{
 
-    String[] members = new String[]{}; //NEEDS TO BE REFINED
-    JButton confirm;
-    JButton reject;
+    String[] members;
     JLabel item_request;
     JTextField item_price;
     JTextArea text_contributing_members;
-    JCheckBox[] contributing_members = createCheckboxes(members);
-    JTextArea confirmation;
-    JTextArea price_information;
+    JCheckBox[] contributing_members;
+
     int reply;
     public AddPurchaseView() {
-        //set window
-//        setSize(500, 250);
-//        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-//        setVisible(true);
-
-        //set text asking for cost
-//        price_information = new JTextArea("Add the cost of the <item>");
-//        price_information.setEditable(false);
-//        JPanel price_request_text = new JPanel();
-//        price_request_text.add(price_information);
 
         JPanel p = new JPanel();
         p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));
@@ -45,36 +32,19 @@ public class AddPurchaseView extends JOptionPane{
         JPanel contributing_members_text = new JPanel();
         contributing_members_text.add(text_contributing_members);
 
+        setMembers(new String[]{"Saleh"});
+        contributing_members = createCheckboxes(members);
+
         //fetch contributing members
         JPanel check_box_contributing_members = new JPanel();
         for (int i = 0; i < contributing_members.length; i++) {
             check_box_contributing_members.add(contributing_members[i]);
         }
 
-        //DUMMYY
-        JCheckBox sample = new JCheckBox("Saleh");
-        check_box_contributing_members.add(sample);
-        //DUMMYY
-
-        //set text asking for confirmation
-//        confirmation = new JTextArea("Are you sure you want to purchase this item");
-//        confirmation.setEditable(false);
-//        JPanel confirm_text = new JPanel();
-//        confirm_text.add(confirmation);
-
-        //fetch confirmation
-//        confirm = new JButton("Yes");
-//        reject = new JButton("No");
-//        JPanel buttons = new JPanel();
-//        buttons.add(confirm);
-//        buttons.add(reject);
-
-//        add(price_request_text);
         p.add(pricing);
         p.add(contributing_members_text);
         p.add(check_box_contributing_members);
-//        add(confirm_text);
-//        add(buttons);
+
         reply = this.showOptionDialog(null, p,
                 "Purchase Item", JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE, null, null, null);
@@ -90,8 +60,16 @@ public class AddPurchaseView extends JOptionPane{
         return output;
     }
 
-    public int getOption(){
+//    public void setMembers(){}
+
+    public int getReply(){
         return this.reply;
+    }
+    public String getItemPrice(){ return this.item_price.getText(); }
+
+//    public List<String> get
+    public void setMembers(String[] members){
+        this.members = members;
     }
 
 }

@@ -24,7 +24,6 @@ public class PurchaseListView extends JPanel {
 
         setVisible(true);
         setSize(1000, 600);
-
     }
 
     public void setPurchaseList(){

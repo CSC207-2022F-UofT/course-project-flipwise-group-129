@@ -3,7 +3,20 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+
+import Controllers.UserLoginController;
+import Controllers.UserRegisterController;
+import DataAccess.GroupDataAccess;
+import DataAccess.UserDataAccess;
+import DataAccessInterface.GroupDataInterface;
+import DataAccessInterface.UserDataInterface;
+import DataStructures.LoggedInInfo;
+import InputBoundary.UserLoginBoundaryIn;
+import Presenters.UserLoginPresenter;
+import UseCases.UserLogin;
 import View.ViewInterface;
+import org.json.simple.parser.ParseException;
 
 
 public class UserLoginView extends JPanel implements ActionListener{
@@ -15,9 +28,10 @@ public class UserLoginView extends JPanel implements ActionListener{
     private final JButton loginButton;
     private JButton newButton;
     private final JLabel t1, t2, t3;
+    private UserLoginController controller;
 
 
-        public UserLoginView(){
+    public UserLoginView(){
 
             // Defining JComponents
             t1 = new JLabel("Login");
@@ -62,9 +76,21 @@ public class UserLoginView extends JPanel implements ActionListener{
 //    @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand().equals("Continue")) {
-//            controller.callUserLoginInteractor(email.getText(), String.valueOf(password.getPassword()));
-            // give username.getText() and password.getText()
-            // String.valueOf(password.getPassword())
+            UserDataInterface userData;
+            GroupDataInterface groupData;
+            try {
+                userData = new UserDataAccess();
+                groupData = new GroupDataAccess();
+            } catch (IOException | ParseException e2) {
+                throw new RuntimeException(e2); // Display popup
+            }
+
+            UserLoginPresenter presenter = new UserLoginPresenter();
+            UserLoginBoundaryIn useCase = new UserLogin(presenter, userData, groupData);
+
+            this.controller = new UserLoginController(useCase);
+
+            LoggedInInfo userInfo = this.controller.controlUseCase(getUsername(), String.valueOf(password.getPassword()));
 
         }
     }
@@ -89,6 +115,10 @@ public class UserLoginView extends JPanel implements ActionListener{
         // testing
         String[] s = new String[]{"Saleh"};
         return s;
+    }
+
+    public String getUsername(){
+        return this.username.getText();
     }
 
 }

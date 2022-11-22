@@ -1,5 +1,14 @@
 package View;
 import Controllers.GroupCreateController;
+import Controllers.GroupJoinController;
+import DataAccess.GroupDataAccess;
+import DataAccessInterface.UserDataInterface;
+import DataStructures.JoinGroupRequest;
+import DataStructures.JoinedGroupInfo;
+import InputBoundary.GroupJoinBoundaryIn;
+import Presenters.GroupCreatePresenter;
+import Presenters.GroupJoinPresenter;
+import UseCases.GroupJoin;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,74 +24,22 @@ public class HomePageView extends JFrame implements ActionListener {
     JPanel group_btns = new JPanel();
 
     UserLoginView userLoginView = new UserLoginView();
-    String[] group_names = new String[]{};
-
+    String[] group_names;
     JButton[] button_array;
+    GroupJoinController groupJoinController;
 
-    public HomePageView() {
+   GroupCreateController groupCreateController;
+
+    public HomePageView(String[] group_names) {
+
+        this.groupCreateController = groupCreateController;
+        this.groupJoinController = groupJoinController;
 
         setSize(1000, 600);
         setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
         setVisible(true);
-        this.setGroupNames(userLoginView.getGroups());
-        setHomePageGUI();
 
-    }
-
-    public void actionPerformed(ActionEvent e){
-        if (e.getActionCommand().equals("Create Group")){
-            String groupName = JOptionPane.showInputDialog("Please enter in Group Name:");
-            JOptionPane.showMessageDialog(null, "Your Group Name is "
-                    + groupName + ".");
-
-            if (!(groupName.equals("null"))){
-                System.out.println("running");
-                this.setGroupNames(new String[]{"Hello", "Avi"});
-                setHomePageGUI();
-            }
-            //controller stuff
-            GroupCreateController createController = new GroupCreateController();
-            // update homepage
-        }
-        else if (e.getActionCommand().equals("Join Group")){
-            String groupID = JOptionPane.showInputDialog("Please enter in Group ID:");
-            JOptionPane.showMessageDialog(null, "The Group ID is "
-                    + groupID + ".");
-
-            if (!(groupID.equals("null"))){
-                // Filter through mishs code and change group namess
-//                this.group_names.add("Saleh");
-//                this.repaint();
-            }
-
-        }
-        else {
-            String groupSelected = e.getActionCommand();
-//            navigate to group
-            GroupSummaryView selectedGroupView = new GroupSummaryView(groupSelected, groupSelected);
-            this.setContentPane(selectedGroupView);
-        }
-
-        // group buttons
-    }
-
-//        public void getNumberOfGroups(){ return }
-
-    public JButton[] createGroupButtons(String[] Current_Groups) {
-        JButton[] output = new JButton[Current_Groups.length];
-        for (int i = 0; i < Current_Groups.length; i++) {
-            JButton checkbox_member = new JButton(Current_Groups[i]);
-            output[i] = checkbox_member;
-        }
-        return output;
-    }
-
-    public void setGroupNames(String[] group_names){
-        this.group_names = group_names;
-    }
-
-    public void setHomePageGUI(){
-
+        setGroupNames(userLoginView.getGroups());
         button_array = createGroupButtons(group_names);
         homePage = new JLabel("HomePage");
         homePage.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -109,7 +66,62 @@ public class HomePageView extends JFrame implements ActionListener {
 
         btn_create.addActionListener(this);
         btn_join.addActionListener(this);
+
     }
+
+    public void actionPerformed(ActionEvent e){
+        if (e.getActionCommand().equals("Create Group")){
+            String groupName = JOptionPane.showInputDialog("Please enter in Group Name:");
+            JOptionPane.showMessageDialog(null, "Your Group Name is "
+                    + groupName + ".");
+
+            if (!(groupName.equals("null"))){
+
+
+                this.setGroupNames(new String[]{"Hello", "Avi"});
+
+            }
+        }
+        else if (e.getActionCommand().equals("Join Group")){
+            String groupID = JOptionPane.showInputDialog("Please enter in Group ID:");
+            JOptionPane.showMessageDialog(null, "The Group ID is "
+                    + groupID + ".");
+
+
+
+            if (!(groupID.equals("null"))){
+                // Filter through mishs code and change group namess
+//                this.group_names.add("Saleh");
+//                this.repaint();
+            }
+
+        }
+        else {
+            String groupSelected = e.getActionCommand();
+//            navigate to group
+            GroupSummaryView selectedGroupView = new GroupSummaryView(groupSelected, groupSelected);
+            this.setContentPane(selectedGroupView);
+        }
+
+    }
+
+//        public void getNumberOfGroups(){ return }
+
+    public JButton[] createGroupButtons(String[] Current_Groups) {
+        JButton[] output = new JButton[Current_Groups.length];
+        for (int i = 0; i < Current_Groups.length; i++) {
+            JButton checkbox_member = new JButton(Current_Groups[i]);
+            output[i] = checkbox_member;
+        }
+        return output;
+    }
+
+    public void setGroupNames(String[] group_names){
+        this.group_names = group_names;
+
+    }
+
+
 
 
 

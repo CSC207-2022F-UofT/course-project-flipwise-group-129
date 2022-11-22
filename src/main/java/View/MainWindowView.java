@@ -32,17 +32,17 @@ public class MainWindowView extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         System.out.println("Click " + e.getActionCommand());
 
-        if (e.getActionCommand().equals("Continue")){
+        if (e.getActionCommand().equals("Continue")) {
             this.dispose();
-            HomePageView homePageView = new HomePageView();
+            HomePageView homePageView = new HomePageView(new String[]{"Hello"});
             homePageView.setVisible(true);
         }
 
-        if (e.getActionCommand().equals("New to Flipwise?")){
+        if (e.getActionCommand().equals("New to Flipwise?")) {
             setUserRegisterView();
         }
 
-        if (e.getActionCommand().equals("Exit")){
+        if (e.getActionCommand().equals("Exit")) {
             this.setContentPane(loginView);
             this.pack();
         }
@@ -59,11 +59,7 @@ public class MainWindowView extends JFrame implements ActionListener {
         }
         //EXCLUSIVE
 
-//        if (e.getActionCommand().equals()){
-//            this.dispose();
-//            GroupSummaryView groupSummaryView = new GroupSummaryView();
-//            groupSummaryView.setVisible(true);
-//        }
+
 
     }
 
@@ -75,17 +71,5 @@ public class MainWindowView extends JFrame implements ActionListener {
     }
 
 
-
-//    private void setHomepageView(){
-//        HomePageView homePageView = new HomePageView();
-//        this.setContentPane(homePageView);
-//        //
-//    }
-
-//    private void setUserLoginView(){
-//        UserLoginView userLoginView = new UserLoginView();
-//        this.getContentPane(userLoginView);
-//
-//    }
 
 }

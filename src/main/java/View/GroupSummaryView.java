@@ -1,13 +1,24 @@
 package View;
 
+import Controllers.AddToPlanningController;
+import DataAccess.GroupDataAccess;
+import DataAccess.ItemDataAccess;
+import DataAccessInterface.GroupDataInterface;
+import DataAccessInterface.ItemDataInterface;
 import Entities.PurchaseList;
+import InputBoundary.AddToPlanningBoundaryIn;
+import Presenters.AddToPlanningPresenter;
+import UseCases.AddToPlanningList;
 import View.BalanceView;
+import org.json.simple.parser.ParseException;
+
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
 
 public class GroupSummaryView extends JPanel implements ActionListener {
 
@@ -20,6 +31,7 @@ public class GroupSummaryView extends JPanel implements ActionListener {
     JButton add_item = new JButton("Add Item");
     JButton clear_debt = new JButton("Clear Debt");
     JButton return_to_homepage = new JButton("Return to Groups");
+    private AddToPlanningController controllerAddPlanning;
 
     public GroupSummaryView(String groupname, String groupid) {
 
@@ -79,11 +91,6 @@ public class GroupSummaryView extends JPanel implements ActionListener {
         t.addTab("Balances", p3);
         t.setMnemonicAt(2, KeyEvent.VK_3);
 
-        //p2.setBorder(BorderFactory.createTitledBorder(
-                //BorderFactory.createEtchedBorder(), "Purchases", TitledBorder.CENTER, TitledBorder.TOP));
-        //p3.setBorder(BorderFactory.createTitledBorder(
-                //BorderFactory.createEtchedBorder(), "Balances", TitledBorder.CENTER, TitledBorder.TOP));
-
         p3.add(b);
         add(t, BorderLayout.CENTER);
         add(temporary_panel, BorderLayout.NORTH);
@@ -99,6 +106,23 @@ public class GroupSummaryView extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand().equals("Add Item")){
             String item = JOptionPane.showInputDialog("Please enter in Item Name:");
+
+            ItemDataInterface itemData;
+            GroupDataInterface groupData;
+            try {
+                itemData = new ItemDataAccess();
+                groupData = new GroupDataAccess();
+            } catch (IOException | ParseException e1) {
+                throw new RuntimeException(e1); // Display popup
+            }
+
+            AddToPlanningPresenter presenter = new AddToPlanningPresenter();
+
+            AddToPlanningBoundaryIn useCase = new AddToPlanningList(presenter, groupData, itemData);
+
+            this.controllerAddPlanning = new AddToPlanningController(useCase);
+
+            this.controllerAddPlanning.performPlanningAdd(item, this.groupid);
         }
 
         if (e.getActionCommand().equals("Clear Debt")){
