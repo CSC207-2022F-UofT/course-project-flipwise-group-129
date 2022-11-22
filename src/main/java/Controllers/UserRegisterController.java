@@ -1,3 +1,6 @@
+/**
+ * Controller for user register
+ */
 package Controllers;
 
 import DataStructures.RegisterCredentials;

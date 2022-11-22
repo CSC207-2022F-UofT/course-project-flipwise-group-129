@@ -1,5 +1,5 @@
 /**
- * Use case for login a user who already has an account
+ * Use case for login a user who already has an account.
  */
 package UseCases;
 import DataAccessInterface.GroupDataInterface;
@@ -17,7 +17,6 @@ import java.util.Objects;
 import java.util.Set;
 
 public class UserLogin implements UserLoginBoundaryIn {
-
     UserLoginBoundaryOut outputBoundary;
     UserDataInterface userDataInterface;
     GroupDataInterface groupDataInterface;
@@ -37,7 +36,7 @@ public class UserLogin implements UserLoginBoundaryIn {
      * Updates the outputBoundary as to the success for failure of a login attempt.
      *
      * @param credentials the login credentials that the user entered
-     * @return
+     * @return the info to display after the login
      */
     @Override
     public LoggedInInfo executeUserLogin(LoginCredentials credentials) {
@@ -77,15 +76,11 @@ public class UserLogin implements UserLoginBoundaryIn {
      * @return A LoggedInInfo data structure
      */
     private LoggedInInfo successDetails(User user) {
-        // TODO: get the required data for LoggedInInfo
-        // Second layer: groupID, group name, purchase list, planning list
-        // List((GroupId, GroupName, UsersInGroup(users), PurchaseList(item), planningList(items)), (GroupID,...))
         List<List<Object>> allGroups = new ArrayList<>();
         List<Group> groups = user.getGroups();
         for (Group group : groups) {
             List<Object> eachGroup = new ArrayList<>();
-            // Issue here is that groupid and name are not the same data type as the planning list,
-            // thus I'm not sure how I can store this in a 3d list format
+
             eachGroup.add(group.getGroupId());
             eachGroup.add(group.getGroupName());
 
@@ -95,25 +90,33 @@ public class UserLogin implements UserLoginBoundaryIn {
             List<List<String>> purchaseList = getPurchase(group.getPurchaseList());
             eachGroup.add(purchaseList);
 
-            // Same issue here, the users in a list if a different data structure than groupid or planning lists
             eachGroup.add(getUsersAsString(group));
 
-            // IDK how to get debts, because they are stored in such a day it is hard to extract the debts of everyone
-            // in a group
             List<Debt> debtAsDebts = group.getPurchaseBalance().getAllDebts();
-            List<List<String>> debtAsString = new ArrayList<>();
-            for (Debt debt : debtAsDebts) {
-                ArrayList<String> debtInfo = new ArrayList<>();
-                debtInfo.add(debt.getUserOwed().getUsername());
-                debtInfo.add(debt.getUserOwing().getUsername());
-                debtInfo.add(debt.getDebtValue().toString());
-                debtAsString.add(debtInfo);
-            }
-            eachGroup.add(debtAsString);
+            eachGroup.add(getDebtAsString(debtAsDebts));
 
             allGroups.add(eachGroup);
         }
         return new LoggedInInfo(user.getPassword(), allGroups);
+    }
+
+    /**
+     * Converts debt from a debt objects to a List of List of String, which is displayable by the view.
+     * Helper method for successDetails.
+     *
+     * @param debtAsDebts list of all debts in a group
+     * @return the nested list representation of the debt
+     */
+    private List<List<String>> getDebtAsString(List<Debt> debtAsDebts) {
+        List<List<String>> debtAsString = new ArrayList<>();
+        for (Debt debt : debtAsDebts) {
+            ArrayList<String> debtInfo = new ArrayList<>();
+            debtInfo.add(debt.getUserOwed().getUsername());
+            debtInfo.add(debt.getUserOwing().getUsername());
+            debtInfo.add(debt.getDebtValue().toString());
+            debtAsString.add(debtInfo);
+        }
+        return(debtAsString);
     }
 
     /**

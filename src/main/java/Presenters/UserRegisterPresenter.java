@@ -1,3 +1,6 @@
+/**
+ * Presenter for a Registering a user, displaying the result.
+ */
 package Presenters;
 
 import OutputBoundary.UserRegisterBoundaryOut;

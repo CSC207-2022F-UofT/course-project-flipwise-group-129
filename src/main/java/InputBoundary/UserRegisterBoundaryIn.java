@@ -4,7 +4,6 @@
 package InputBoundary;
 
 import DataStructures.RegisterCredentials;
-import java.io.IOException;
 
 public interface UserRegisterBoundaryIn {
 

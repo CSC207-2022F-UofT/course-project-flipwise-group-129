@@ -7,6 +7,12 @@ public class LoginCredentials {
     private final String username;
     private final String password;
 
+    /**
+     * Constructor for the data needs for login credentials
+     *
+     * @param username user's username
+     * @param password user's password
+     */
     public LoginCredentials(String username, String password) {
         this.username = username;
         this.password = password;

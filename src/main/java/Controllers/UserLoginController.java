@@ -1,3 +1,6 @@
+/**
+ * Controller for user login.
+ */
 package Controllers;
 
 import DataStructures.LoggedInInfo;

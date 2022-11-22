@@ -30,16 +30,4 @@ public class LoggedInInfo {
         this.statusBool = failed;
     }
 
-    public String getUsername() {
-        return this.username;
-    }
-
-    public List<List<Object>> getUserAllGroups() {
-        return this.userAllGroups;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
 }

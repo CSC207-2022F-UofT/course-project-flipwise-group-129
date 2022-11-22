@@ -1,3 +1,6 @@
+/**
+ * Presenter after a user logins, displaying a failure or additional information if the login is successful
+ */
 package Presenters;
 
 import DataStructures.LoggedInInfo;
