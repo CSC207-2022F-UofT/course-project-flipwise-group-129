@@ -202,7 +202,7 @@ public class AddPurchase implements AddPurchaseBoundaryIn {
             // since only purchased items have a price and buyer, need to check the
             // instance of which list is being updated
             if (inputList instanceof PurchaseList) {
-                tempList.add(item.getPrice().toString());
+                tempList.add(String.valueOf(item.getPrice()));
                 tempList.add(item.getBuyer().getUsername());
             }
             // add the list to the outer list, yay O(n) time
