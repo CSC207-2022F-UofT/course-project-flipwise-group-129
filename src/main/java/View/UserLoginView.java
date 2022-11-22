@@ -22,7 +22,6 @@ import org.json.simple.parser.ParseException;
 public class UserLoginView extends JPanel implements ActionListener{
 
     private JLabel title;
-
     private final JTextField username;
     private final JPasswordField password;
     private final JButton loginButton;
