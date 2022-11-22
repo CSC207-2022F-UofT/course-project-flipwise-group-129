@@ -37,15 +37,16 @@ public class UserLogin implements UserLoginBoundaryIn {
      * Updates the outputBoundary as to the success for failure of a login attempt.
      *
      * @param credentials the login credentials that the user entered
+     * @return
      */
     @Override
-    public void executeUserLogin(LoginCredentials credentials) {
+    public LoggedInInfo executeUserLogin(LoginCredentials credentials) {
         try {
             String username = credentials.getUsername();
             String password = credentials.getPassword();
-            outputBoundary.UserLoginBoundaryOut(usernamePasswordMatch(username, password));
+            return(outputBoundary.successfulLogin(usernamePasswordMatch(username, password)));
         } catch (JsonProcessingException e) {
-            outputBoundary.UserLoginBoundaryOut(false);
+            return(outputBoundary.failedLogin(new LoggedInInfo(false)));
         }
     }
 
@@ -99,7 +100,8 @@ public class UserLogin implements UserLoginBoundaryIn {
 
             // IDK how to get debts, because they are stored in such a day it is hard to extract the debts of everyone
             // in a group
-            eachGroup.add(group.getPurchaseBalance().getAllDebts());
+            List<Debt> debtAsDebts = group.getPurchaseBalance().getAllDebts();
+
 
             allGroups.add(eachGroup);
         }

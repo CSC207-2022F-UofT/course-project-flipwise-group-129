@@ -8,5 +8,5 @@ import java.io.IOException;
 
 public interface UserRegisterBoundaryIn {
 
-    void executeUserRegister(RegisterCredentials credentials) throws IOException;
+    boolean executeUserRegister(RegisterCredentials credentials);
 }

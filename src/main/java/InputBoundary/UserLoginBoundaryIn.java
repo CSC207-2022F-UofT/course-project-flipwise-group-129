@@ -3,10 +3,12 @@
  */
 package InputBoundary;
 
+import DataStructures.LoggedInInfo;
 import DataStructures.LoginCredentials;
-import java.io.IOException;
+import DataStructures.RegisterCredentials;
 
 public interface UserLoginBoundaryIn {
 
-    void executeUserLogin(LoginCredentials credentials) throws IOException;
+    LoggedInInfo executeUserLogin(LoginCredentials credentials);
+
 }

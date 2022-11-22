@@ -27,19 +27,19 @@ public class UserRegister implements UserRegisterBoundaryIn {
      * @param credentials a data structure containing the username, password, and repeat password
      */
     @Override
-    public void executeUserRegister(RegisterCredentials credentials){
+    public boolean executeUserRegister(RegisterCredentials credentials){
         try {
             String username = credentials.getUsername();
             String pw1 = credentials.getPassword1();
             String pw2 = credentials.getPassword2();
             if (usernameAvailable(credentials.getUsername()) & passwordsMatch(pw1, pw2)) {
                 createUser(username, pw1);
-                outputBoundary.success(true);
+                return(outputBoundary.success(true));
             } else {
-                outputBoundary.success(false);
+                return(outputBoundary.success(false));
             }
         } catch (IOException e) {
-            outputBoundary.success(false);
+            return(outputBoundary.success(false));
         }
     }
 
