@@ -2,6 +2,8 @@ package DataStructures;
 import java.util.Map;
 import java.util.List;
 
+import java.util.List;
+
 public class UpdatedDebts {
     /*
     Returns the users involved in a purchase and the updated list of debts for the entire group.
@@ -38,5 +40,4 @@ public class UpdatedDebts {
     public Map<String, List<Object>> getUpdatedDebtsList() {
         return this.updatedDebtsList;
     }
-
 }
