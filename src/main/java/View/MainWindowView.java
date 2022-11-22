@@ -11,10 +11,8 @@ import java.awt.event.ActionListener;
 public class MainWindowView extends JFrame implements ActionListener {
     private final UserLoginView loginView;
     private final UserRegisterView registerView;
-    private final UserRegisterController userRegisterController;
 
-    public MainWindowView(UserRegisterController controller) {
-        this.userRegisterController = controller;
+    public MainWindowView() {
 
         this.loginView = new UserLoginView();
         this.registerView = new UserRegisterView();
@@ -51,10 +49,7 @@ public class MainWindowView extends JFrame implements ActionListener {
 
         //EXCLUSIVE TO REGISTER
         if (e.getActionCommand().equals("Sign up")){
-            boolean registration = this.userRegisterController.controlUseCase(registerView.getUsername(),
-                    registerView.getPassword1(), registerView.getPassword2());
-
-
+            boolean registration = registerView.getFinalOutput();
             if (registration) {
                 JOptionPane.showMessageDialog(this, "Registration successful", "", JOptionPane.PLAIN_MESSAGE);
                 this.dispose();
