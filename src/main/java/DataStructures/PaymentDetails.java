@@ -19,20 +19,20 @@ public class PaymentDetails {
     }
 
     /**
-     * This function retrieves the name of the item in the package
-     * @return This returns the name of the item in the package
+     * This function retrieves the username of the owed user in the debt
+     * @return This returns the username of the owed user in the debt
      */
     public String getOwed(){    return owedUser;    }
 
     /**
-     * This function retrieves the name of the item in the package
-     * @return This returns the name of the item in the package
+     * This function retrieves the username of the owing user in the debt
+     * @return This returns the username of the owing user in the debt
      */
     public String getOwing(){    return owingUser;    }
 
     /**
-     * This function retrieves the groupId of the group of the item in the package
-     * @return This returns the groupId of the group of the item in the package
+     * This function retrieves the groupId of the group that contains this debt
+     * @return This returns the groupId of the group that contains this debt
      */
     public String getGroupId(){ return groupId; }
 }
