@@ -15,6 +15,7 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import Presenters.GroupCreatePresenter;
 
@@ -106,7 +107,7 @@ class GroupCreateTest {
                 assert outputData.getGroupName() == null;
                 assert outputData.getId() == null;
                 assert outputData.getAllGroupIds() == null;
-                assert outputData.getError() != null;
+                assert Objects.equals(outputData.getError(), "User Id does not exist");
                 return null;
             }
         };

@@ -23,6 +23,7 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -85,7 +86,7 @@ class GroupJoinTest {
                 assert joinedGroupInfo.getGroupNames() == null;
                 assert joinedGroupInfo.getPlanningList() == null;
                 assert joinedGroupInfo.getPurchasedList() == null;
-                assert joinedGroupInfo.getError() != null;
+                assert Objects.equals(joinedGroupInfo.getError(), "Invalid GroupID provided");
                 return null;
             }
         };
@@ -97,6 +98,41 @@ class GroupJoinTest {
         // 2) Input data — we can make this up for the test. Normally it would
         // be created by the Controller.
         JoinGroupRequest inputData = new JoinGroupRequest("mishaalk", "groupDarcy1");
+
+        // 3) Run the use case
+        useCase.joinGroup(inputData);
+
+    }
+
+    @Test
+    void joinGroupAlreadyJoined() throws IOException, ParseException {
+        // 1) Instantiate
+        GroupJoinPresenter presenter = new GroupJoinPresenter() {
+            @Override
+            public JoinedGroupInfo prepareSuccessView(JoinedGroupInfo outputData){
+                fail("Use case success is unexpected");
+                return null;
+            }
+
+            @Override
+            public JoinedGroupInfo prepareFailView(JoinedGroupInfo joinedGroupInfo){
+                assert joinedGroupInfo.getUsersInGroup()== null;
+                assert joinedGroupInfo.getGroupIds() == null;
+                assert joinedGroupInfo.getGroupNames() == null;
+                assert joinedGroupInfo.getPlanningList() == null;
+                assert joinedGroupInfo.getPurchasedList() == null;
+                assert Objects.equals(joinedGroupInfo.getError(), "User already in group");
+                return null;
+            }
+        };
+
+        GroupDataInterface groupData = new GroupDataAccess();
+        UserDataInterface userData = new UserDataAccess();
+        GroupJoinBoundaryIn useCase = new GroupJoin(presenter, groupData, userData);
+
+        // 2) Input data — we can make this up for the test. Normally it would
+        // be created by the Controller.
+        JoinGroupRequest inputData = new JoinGroupRequest("mishaalk", "groupDarcy");
 
         // 3) Run the use case
         useCase.joinGroup(inputData);
