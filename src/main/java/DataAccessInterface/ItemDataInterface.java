@@ -1,6 +1,7 @@
 package DataAccessInterface;
 
 import java.io.IOException;
+import java.util.Map;
 
 public interface ItemDataInterface {
     /*
@@ -29,4 +30,10 @@ public interface ItemDataInterface {
      * @return item details corresponding to itemId in string form
      */
     boolean itemIdExists(String itemId);
+
+    /**
+     * This function will be called in the tests to check if the database updated as expected
+     * @return the whole itemMap read from items.json
+     */
+    public Map<String, String> getItemMap();
 }
