@@ -3,7 +3,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.sql.Timestamp;
-import java.util.List;
 import java.util.Set;
 public class Group {
     /**
@@ -39,25 +38,6 @@ public class Group {
     public Group(){
         super();
     }
-
-//    public Group(String jsonString){
-//        JSONParser parser = new JSONParser();
-//        JSONObject obj;
-//        try {
-//            obj = (JSONObject) parser.parse(jsonString);
-//
-//            //setting atts
-//            this.userOwed = new User(obj.get("userOwed").toString());
-//            this.userOwing = new User(obj.get("userOwing").toString());
-//            this.groupId = obj.get("groupId").toString();
-//            this.debtValue = new Double(obj.get("debtValue").toString());
-//
-//
-//        } catch (ParseException e) {
-//            // TODO Auto-generated catch block
-//            e.printStackTrace();
-//        }
-//    }
 
     /**
      * Get all the users in the group
@@ -123,27 +103,13 @@ public class Group {
         this.users.add(user);
     }
 
-//    public JSONObject toJSON(){
-//        JSONObject obj = new JSONObject();
-//        List<String> allUsers = new ArrayList<>();
-//        this.users.forEach(user -> allUsers.add(user.toString()));
-//        obj.put("users", allUsers);
-//        obj.put("groupId", this.groupId);
-//        obj.put("plannedItems", this.planningList.toString());
-//        obj.put("purchasedItems", this.purchaseList.toString());
-//        obj.put("purchaseBalance", this.purchaseBalance.toString());
-//        obj.put("groupName", this.groupName);
-//
-//        return obj;
-//    }
-
     /**
      * method to return a JSONString representation of an instance of this class Group
      * @return a JSONString representation of an instance of this class Group
      */
     @Override
     public String toString() {
-        //converts the current instance into a JSONString for datastorage purposes
+        //converts the current instance into a JSONString for data storage purposes
         ObjectMapper mapper = new ObjectMapper();
         try {
             return mapper.writeValueAsString(this);

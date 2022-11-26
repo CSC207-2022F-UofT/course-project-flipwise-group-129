@@ -2,7 +2,6 @@
  * Data structure for storing output after a user login
  */
 package DataStructures;
-
 import java.util.List;
 
 public class LoggedInInfo {
@@ -30,4 +29,25 @@ public class LoggedInInfo {
         this.statusBool = failed;
     }
 
+    /**
+     * @return if the login was successful
+     */
+    public boolean isStatusBool() {
+        return statusBool;
+    }
+
+    /**
+     *
+     * @return the username of the user who logged in
+     */
+    public String getUsername() {
+        return username;
+    }
+
+    /**
+     * @return the details of groups that a user is a part of
+     */
+    public List<List<Object>> getUserAllGroups() {
+        return userAllGroups;
+    }
 }
