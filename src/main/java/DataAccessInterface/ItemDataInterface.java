@@ -35,5 +35,5 @@ public interface ItemDataInterface {
      * This function will be called in the tests to check if the database updated as expected
      * @return the whole itemMap read from items.json
      */
-    public Map<String, String> getItemMap();
+    Map<String, String> getItemMap();
 }
