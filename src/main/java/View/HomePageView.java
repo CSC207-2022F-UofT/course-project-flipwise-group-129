@@ -21,26 +21,56 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomePageView extends JFrame implements ActionListener {
+public class HomePageView extends JPanel implements ActionListener {
     JButton btn_create;
     JButton btn_join;
     JLabel homePage;
     JPanel group_btns = new JPanel();
 
     UserLoginView userLoginView = new UserLoginView();
-    String[] group_names = new String[]{};
+    List<String> group_names;
+    String username;
 
     JButton[] button_array;
     GroupCreateController controllerCreate;
     GroupJoinController controllerJoin;
 
-    public HomePageView() {
+    public HomePageView(String username, List<String> groupNames) {
 
         setSize(1000, 600);
-        setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         setVisible(true);
-        this.setGroupNames(userLoginView.getGroups());
-        setHomePageGUI();
+//        this.setGroupNames(userLoginView.getGroups());
+        button_array = createGroupButtons(group_names);
+        homePage = new JLabel("HomePage");
+        homePage.setAlignmentX(Component.CENTER_ALIGNMENT);
+        JPanel homepageDetails = new JPanel();
+        homepageDetails.add(homePage);
+
+        // Algorithm implementation
+        for (int i = 0; i < group_names.size(); i++) {
+            button_array[i].addActionListener(this);
+            group_btns.add(button_array[i]);
+        }
+
+        btn_create = new JButton("Create Group");
+        btn_join = new JButton("Join Group");
+        JPanel groupButtons = new JPanel();
+        groupButtons.setAlignmentX(Component.CENTER_ALIGNMENT);
+        groupButtons.add(btn_create);
+        groupButtons.add(btn_join);
+
+        this.add(homePage);
+        this.add(Box.createRigidArea(new Dimension(0, 5)));
+        this.add(groupButtons);
+        this.add(group_btns);
+
+        btn_create.addActionListener(this);
+        btn_join.addActionListener(this);
+
+
+        this.username = username;
+        this.group_names = groupNames;
 
         UserDataInterface UserInterface;
 
@@ -76,12 +106,10 @@ public class HomePageView extends JFrame implements ActionListener {
             JOptionPane.showMessageDialog(null, "Your Group Name is "
                     + groupName + ".");
 
-            this.controllerCreate.create(groupName, "PlaceHOLDER"); //PLACEHOLDER
+            this.controllerCreate.create(groupName, this.username); //PLACEHOLDER
 
             if (!(groupName.equals("null"))){
                 System.out.println("running");
-                this.setGroupNames(new String[]{"Hello", "Avi"});
-                setHomePageGUI();
             }
             //controller stuff
 //            GroupCreateController createController = new GroupCreateController();
@@ -92,7 +120,7 @@ public class HomePageView extends JFrame implements ActionListener {
             JOptionPane.showMessageDialog(null, "The Group ID is "
                     + groupID + ".");
 
-            this.controllerJoin.create(groupID, "SALEH");
+            this.controllerJoin.create(groupID, this.username);
 
             if (!(groupID.equals("null"))){
                 // Filter through mishs code and change group namess
@@ -104,56 +132,27 @@ public class HomePageView extends JFrame implements ActionListener {
         else {
             String groupSelected = e.getActionCommand();
 //            navigate to group
-            GroupSummaryView selectedGroupView = new GroupSummaryView(groupSelected, groupSelected);
-            this.setContentPane(selectedGroupView);
+//            GroupSummaryView selectedGroupView = new GroupSummaryView(groupSelected, groupSelected);
         }
 
     }
 
 //        public void getNumberOfGroups(){ return }
 
-    public JButton[] createGroupButtons(String[] Current_Groups) {
-        JButton[] output = new JButton[Current_Groups.length];
-        for (int i = 0; i < Current_Groups.length; i++) {
-            JButton checkbox_member = new JButton(Current_Groups[i]);
+    public JButton[] createGroupButtons(List<String> Current_Groups) {
+        JButton[] output = new JButton[Current_Groups.size()];
+        for (int i = 0; i < Current_Groups.size(); i++) {
+            JButton checkbox_member = new JButton(Current_Groups.get(i));
             output[i] = checkbox_member;
         }
         return output;
     }
 
-    public void setGroupNames(String[] group_names){
+    public void setGroupNames(List<String> group_names){
         this.group_names = group_names;
     }
 
-    public void setHomePageGUI(){
 
-        button_array = createGroupButtons(group_names);
-        homePage = new JLabel("HomePage");
-        homePage.setAlignmentX(Component.CENTER_ALIGNMENT);
-        JPanel homepageDetails = new JPanel();
-        homepageDetails.add(homePage);
-
-        // Algorithm implementation
-        for (int i = 0; i < group_names.length; i++) {
-            button_array[i].addActionListener(this);
-            group_btns.add(button_array[i]);
-        }
-
-        btn_create = new JButton("Create Group");
-        btn_join = new JButton("Join Group");
-        JPanel groupButtons = new JPanel();
-        groupButtons.setAlignmentX(Component.CENTER_ALIGNMENT);
-        groupButtons.add(btn_create);
-        groupButtons.add(btn_join);
-
-        this.add(homePage);
-        this.add(Box.createRigidArea(new Dimension(0, 5)));
-        this.add(groupButtons);
-        this.add(group_btns);
-
-        btn_create.addActionListener(this);
-        btn_join.addActionListener(this);
-    }
 
 
 

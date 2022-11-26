@@ -1,98 +1,157 @@
 package View;
-import Controllers.GroupCreateController;
-import Controllers.GroupJoinController;
-import DataAccess.GroupDataAccess;
-import DataAccess.UserDataAccess;
-import DataAccessInterface.GroupDataInterface;
-import DataAccessInterface.UserDataInterface;
-import DataStructures.JoinGroupRequest;
-import DataStructures.JoinedGroupInfo;
+
+//import UseCases.UserLogin;
+
+import Controllers.UserRegisterController;
 import DataStructures.LoggedInInfo;
-import InputBoundary.GroupCreateBoundaryIn;
-import InputBoundary.GroupJoinBoundaryIn;
-import InputBoundary.UserLoginBoundaryIn;
-import Presenters.GroupCreatePresenter;
-import Presenters.GroupJoinPresenter;
-import Presenters.UserLoginPresenter;
-import UseCases.GroupCreate;
-import UseCases.GroupJoin;
-import UseCases.UserLogin;
-import org.json.simple.parser.ParseException;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainWindowView extends JFrame implements ActionListener {
-    private final HomePageView homePageView;
+    private final UserLoginView loginView;
+    private final UserRegisterView registerView;
+ //   private final HomePageView homePageView;
+    private LoggedInInfo userInfo;
 
-    /**
-     * Generates main window to switch between home and group summery pages.
-     */
     public MainWindowView() {
 
-        homePageView = new HomePageView(this);
-
-        System.out.print("Main window");
-
-        // SetUp main window
-        setSize(1500, 820);
+        this.loginView = new UserLoginView();
+        this.registerView = new UserRegisterView();
+        setSize(1000,600);
+        this.setContentPane(loginView);
         setVisible(true);
-        this.setContentPane(homePageView);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        homePageView.getCreateGroup().addActionListener(this);
-        homePageView.getJoinGroup().addActionListener(this);
+
+
+        this.pack();
+
+        loginView.getLoginButton().addActionListener(this);
+        loginView.getNewButton().addActionListener(this);
 
     }
 
-    /**.
-     * @param evt the event to be processed
-     * React to a certain button click that results in evt.
-     */
-    public void actionPerformed(ActionEvent evt){
-        if (evt.getActionCommand().equals("Return to Groups")){
-            setContentPane(homePageView);
+    public void actionPerformed(ActionEvent e) {
+        System.out.println("Click " + e.getActionCommand());
+
+        if (e.getActionCommand().equals("Login")) {
+            this.userInfo = loginView.getUserInfo();
+            this.dispose();
+            HomePageView homePageView = new HomePageView(getUsername(userInfo), getGroupNames(userInfo));
+            homePageView.setVisible(true);
+            //after user logins, all the log-in information is immediately stored
         }
 
-        else if (evt.getActionCommand().equals("Create Group")){
-            String groupName = JOptionPane.showInputDialog("Please enter in Group Name:");
-            System.out.println(groupName);
-//            this.groupCreateController.create(groupName, userLoginView.getUsername());
-
-            JButton boo = new JButton("boo");
-            setContentPane(homePageView);
-
-
-        }
-        else if (evt.getActionCommand().equals("Join Group")){
-            String groupID = JOptionPane.showInputDialog("Please enter in Group ID:");
-
-//            this.groupJoinController.create(groupID, userLoginView.getUsername());
-
+        if (e.getActionCommand().equals("New to Flipwise?")) {
+            setUserRegisterView();
         }
 
-        else{
-            setGroupSummery(evt.getActionCommand());
+        if (e.getActionCommand().equals("Exit")) {
+            this.setContentPane(loginView);
+            this.pack();
         }
 
-        System.out.println("Clicked " + evt.getActionCommand() + " from Main");
+        //EXCLUSIVE TO REGISTER
+        if (e.getActionCommand().equals("Sign up")){
+            boolean registration = registerView.getFinalOutput();
+            if (registration) {
+                JOptionPane.showMessageDialog(this, "Registration successful", "", JOptionPane.PLAIN_MESSAGE);
+                this.dispose();
+                HomePageView homePageView = new HomePageView(getUsername(userInfo), getGroupNames(userInfo));
+                homePageView.setVisible(true);
+            }
+        }
+        //EXCLUSIVE
+
 
 
     }
 
-    public String getGroupID(){
-        return "hello";
+    private void setUserRegisterView(){
+        this.setContentPane(registerView);
+        registerView.getSignUpButton().addActionListener(this);
+        registerView.getExitButton().addActionListener(this);
+        this.pack();
     }
-    public void setGroupSummery(String group) {
-        GroupSummaryView selectedGroup = new GroupSummaryView(group, getGroupID());
-        selectedGroup.toHomepage.addActionListener(this);
-        setContentPane(selectedGroup);
+
+    public String getUsername(LoggedInInfo loggedInInfo) {
+        return loggedInInfo.getUsername();
     }
+
+    public List<String> getGroupNames(LoggedInInfo loggedInInfo) {
+        List<List<Object>> allGroups = loggedInInfo.getUserAllGroups();
+        List<String> output = new ArrayList<>();
+        for (int i = 0; i < allGroups.size(); i++) {
+            List<Object> currentGroup = allGroups.get(i);
+            output.add((String) currentGroup.get(1));
+        }
+        return output;
+    }
+
+    public List<String> getGroupIDs(LoggedInInfo loggedInInfo) {
+        List<List<Object>> allGroups = loggedInInfo.getUserAllGroups();
+        List<String> output = new ArrayList<>();
+        for (int i = 0; i < allGroups.size(); i++) {
+            List<Object> currentGroup = allGroups.get(i);
+            output.add((String) currentGroup.get(0));
+        }
+        return output;
+    }
+
+    public List<List<String>> getPurchaseListData(LoggedInInfo loggedInInfo, String groupID) {
+        List<List<Object>> allGroups = loggedInInfo.getUserAllGroups();
+        List<List<String>> output = new ArrayList<>();
+        for (int i = 0; i < allGroups.size(); i++) {
+            List<Object> currentGroup = allGroups.get(i);
+            if (currentGroup.get(0) == groupID) {
+                output = (List<List<String>>) currentGroup.get(3);
+            }
+        }
+        return output;
+    }
+
+    public List<List<String>> getPlanningListData(LoggedInInfo loggedInInfo, String groupID) {
+        List<List<Object>> allGroups = loggedInInfo.getUserAllGroups();
+        List<List<String>> output = new ArrayList<>();
+        for (int i = 0; i < allGroups.size(); i++) {
+            List<Object> currentGroup = allGroups.get(i);
+            if (currentGroup.get(0) == groupID) {
+                output = (List<List<String>>) currentGroup.get(2);
+            }
+        }
+        return output;
+    }
+
+    public List<String> getAllUserNames(LoggedInInfo loggedInInfo, String groupID) {
+        List<List<Object>> allGroups = loggedInInfo.getUserAllGroups();
+        List<String> output = new ArrayList<>();
+        for (int i = 0; i < allGroups.size(); i++) {
+            List<Object> currentGroup = allGroups.get(i);
+            if (currentGroup.get(0) == groupID) {
+                output = (List<String>) currentGroup.get(4);
+            }
+        }
+        return output;
+    }
+
+    public List<List<String>> getGroupDebtData(LoggedInInfo loggedInInfo, String groupID) {
+        List<List<Object>> allGroups = loggedInInfo.getUserAllGroups();
+        List<List<String>> output = new ArrayList<>();
+        for (int i = 0; i < allGroups.size(); i++) {
+            List<Object> currentGroup = allGroups.get(i);
+            if (currentGroup.get(2) == groupID) {
+                output = (List<List<String>>) currentGroup.get(5);
+            }
+        }
+        return output;
+    }
+
+
+
 
 
 }

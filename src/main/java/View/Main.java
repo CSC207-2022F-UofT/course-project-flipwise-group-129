@@ -5,11 +5,10 @@ public class Main {
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-                new HomePageView();
-//                JFrame frame = new JFrame();
-//                frame.add(new GroupSummaryView());
-//                frame.setVisible(true);
-//                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                JFrame new_frame = new JFrame();
+                new_frame.add(new UserRegisterView());
+                new_frame.setVisible(true);
+                new_frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
             }
         });
     }
