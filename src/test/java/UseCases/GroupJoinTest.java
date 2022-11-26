@@ -169,7 +169,7 @@ class GroupJoinTest {
         if (!groupDsInterface.groupIdExists("0001")){
             throw new RuntimeException("Group Id does not exist");
         }
-        String groupString = groupDsInterface.groupAsString("groupDarcy");
+        String groupString = groupDsInterface.groupAsString("0001");
 
         try {
             Group group = Group.fromString(groupString);
