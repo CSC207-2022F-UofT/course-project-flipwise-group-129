@@ -96,6 +96,10 @@ public class PurchaseBalance implements Iterable<Debt>{
 //        return obj;
 //    }
 
+    /**
+     * iterator function for iteration
+     * @return the iterator that has been initialized
+     */
     public Iterator<Debt> iterator() {
         return new PurchaseBalanceIterator<>(this.allDebts);
     }
@@ -113,10 +117,18 @@ public class PurchaseBalance implements Iterable<Debt>{
 
 class PurchaseBalanceIterator<Debt> implements Iterator<Debt> {
 
+    /**
+     * Class implementing the iterator object for the class PurchaseBalance.
+     * This class is used to iterate over the list of debts in any implementation of PurchaseBalance
+     */
+
     Integer current;
     List<Debt> debts;
 
-    // constructor
+    /**
+     * Constructor for the iterator object
+     * @param obj the list of debts in the PurchaseBalance implementation
+     */
     PurchaseBalanceIterator(List<Debt> obj){
         // initialize cursor
         if (obj.isEmpty()){
@@ -127,12 +139,18 @@ class PurchaseBalanceIterator<Debt> implements Iterator<Debt> {
         this.debts = obj;
     }
 
-    // Checks if the next element exists
+    /**
+     * checking if the next element exists
+     * @return whether a next element exists
+     */
     public boolean hasNext() {
         return current != null;
     }
 
-    // moves the cursor/iterator to next element
+    /**
+     * moves the cursor/iterator to next element
+     * @return the element at the current cursor position
+     */
     public Debt next() {
         Debt toReturn = debts.get(this.current);
         if (debts.size() == current + 1){

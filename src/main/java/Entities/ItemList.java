@@ -40,6 +40,10 @@ abstract public class ItemList implements Iterable<Item> {
         this.items.add(item);
     }
 
+    /**
+     * iterator function for iteration
+     * @return the iterator that has been initialized
+     */
     public Iterator<Item> iterator() {
         return new ItemListIterator<>(this.items);
     }
@@ -62,10 +66,17 @@ abstract public class ItemList implements Iterable<Item> {
 
 class ItemListIterator<Item> implements Iterator<Item> {
 
+    /**
+     * Class implementing the iterator object for the class itemlist.
+     * This class is used to iterate over the list of items in any implementation of ItemList
+     */
     Integer current;
     List<Item> items;
 
-    // constructor
+    /**
+     * Constructor for the iterator object
+     * @param obj the list of items in the ItemList implementation
+     */
     ItemListIterator(List<Item> obj){
         // initialize cursor
         if (obj.isEmpty()){
@@ -76,12 +87,18 @@ class ItemListIterator<Item> implements Iterator<Item> {
         this.items = obj;
     }
 
-    // Checks if the next element exists
+    /**
+     * checking if the next element exists
+     * @return whether a next element exists
+     */
     public boolean hasNext() {
         return current != null;
     }
 
-    // moves the cursor/iterator to next element
+    /**
+     * moves the cursor/iterator to next element
+     * @return the element at the current cursor position
+     */
     public Item next() {
         Item toReturn = items.get(this.current);
         if (items.size() == current + 1){
