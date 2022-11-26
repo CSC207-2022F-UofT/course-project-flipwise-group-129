@@ -12,6 +12,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 
@@ -193,9 +194,10 @@ public class AddPurchase implements AddPurchaseBoundaryIn {
     public List<List<String>> convertList(ItemList inputList) {
         // this class is abstracted to convert the new planning and purchase lists from the group
         // into the format of 2 dimensional lists with the required data to show the modification on the view
-        List<Item> tempListItems = inputList.getItems();
         List<List<String>> tempListItemStrings = new ArrayList<>();
-        for (Item item: tempListItems) {
+        Iterator<Item> iter = inputList.iterator();
+        while (iter.hasNext()) {
+            Item item = iter.next();
             List<String> tempList = new ArrayList<>();
             tempList.add(item.getItemId());
             tempList.add(item.getItemName());
