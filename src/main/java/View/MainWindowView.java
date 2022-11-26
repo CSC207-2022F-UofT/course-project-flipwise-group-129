@@ -1,75 +1,98 @@
 package View;
-
-//import UseCases.UserLogin;
-
-import Controllers.UserRegisterController;
+import Controllers.GroupCreateController;
+import Controllers.GroupJoinController;
+import DataAccess.GroupDataAccess;
+import DataAccess.UserDataAccess;
+import DataAccessInterface.GroupDataInterface;
+import DataAccessInterface.UserDataInterface;
+import DataStructures.JoinGroupRequest;
+import DataStructures.JoinedGroupInfo;
+import DataStructures.LoggedInInfo;
+import InputBoundary.GroupCreateBoundaryIn;
+import InputBoundary.GroupJoinBoundaryIn;
+import InputBoundary.UserLoginBoundaryIn;
+import Presenters.GroupCreatePresenter;
+import Presenters.GroupJoinPresenter;
+import Presenters.UserLoginPresenter;
+import UseCases.GroupCreate;
+import UseCases.GroupJoin;
+import UseCases.UserLogin;
+import org.json.simple.parser.ParseException;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainWindowView extends JFrame implements ActionListener {
-    private final UserLoginView loginView;
-    private final UserRegisterView registerView;
+    private final HomePageView homePageView;
 
+    /**
+     * Generates main window to switch between home and group summery pages.
+     */
     public MainWindowView() {
 
-        this.loginView = new UserLoginView();
-        this.registerView = new UserRegisterView();
-        setSize(1000,600);
-        this.setContentPane(loginView);
+        homePageView = new HomePageView(this);
+
+        System.out.print("Main window");
+
+        // SetUp main window
+        setSize(1500, 820);
         setVisible(true);
+        this.setContentPane(homePageView);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-
-        this.pack();
-
-        loginView.getLoginButton().addActionListener(this);
-        loginView.getNewButton().addActionListener(this);
+        homePageView.getCreateGroup().addActionListener(this);
+        homePageView.getJoinGroup().addActionListener(this);
 
     }
 
-    public void actionPerformed(ActionEvent e) {
-        System.out.println("Click " + e.getActionCommand());
-
-        if (e.getActionCommand().equals("Continue")) {
-            this.dispose();
-            HomePageView homePageView = new HomePageView(new String[]{"Hello"});
-            homePageView.setVisible(true);
+    /**.
+     * @param evt the event to be processed
+     * React to a certain button click that results in evt.
+     */
+    public void actionPerformed(ActionEvent evt){
+        if (evt.getActionCommand().equals("Return to Groups")){
+            setContentPane(homePageView);
         }
 
-        if (e.getActionCommand().equals("New to Flipwise?")) {
-            setUserRegisterView();
+        else if (evt.getActionCommand().equals("Create Group")){
+            String groupName = JOptionPane.showInputDialog("Please enter in Group Name:");
+            System.out.println(groupName);
+//            this.groupCreateController.create(groupName, userLoginView.getUsername());
+
+            JButton boo = new JButton("boo");
+            setContentPane(homePageView);
+
+
+        }
+        else if (evt.getActionCommand().equals("Join Group")){
+            String groupID = JOptionPane.showInputDialog("Please enter in Group ID:");
+
+//            this.groupJoinController.create(groupID, userLoginView.getUsername());
+
         }
 
-        if (e.getActionCommand().equals("Exit")) {
-            this.setContentPane(loginView);
-            this.pack();
+        else{
+            setGroupSummery(evt.getActionCommand());
         }
 
-        //EXCLUSIVE TO REGISTER
-        if (e.getActionCommand().equals("Sign up")){
-            boolean registration = registerView.getFinalOutput();
-            if (registration) {
-                JOptionPane.showMessageDialog(this, "Registration successful", "", JOptionPane.PLAIN_MESSAGE);
-                this.dispose();
-                HomePageView homePageView = new HomePageView();
-                homePageView.setVisible(true);
-            }
-        }
-        //EXCLUSIVE
-
+        System.out.println("Clicked " + evt.getActionCommand() + " from Main");
 
 
     }
 
-    private void setUserRegisterView(){
-        this.setContentPane(registerView);
-        registerView.getSignUpButton().addActionListener(this);
-        registerView.getExitButton().addActionListener(this);
-        this.pack();
+    public String getGroupID(){
+        return "hello";
     }
-
+    public void setGroupSummery(String group) {
+        GroupSummaryView selectedGroup = new GroupSummaryView(group, getGroupID());
+        selectedGroup.toHomepage.addActionListener(this);
+        setContentPane(selectedGroup);
+    }
 
 
 }

@@ -12,6 +12,7 @@ public class ClearDebtView extends JOptionPane {
     JButton confirm;
     JButton reject;
     JTextArea confirmation;
+
     public ClearDebtView() {
         //set window
 //        setSize(500, 250);

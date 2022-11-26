@@ -1,12 +1,6 @@
 package View;
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.IOException;
 
 import Controllers.UserLoginController;
-import Controllers.UserRegisterController;
 import DataAccess.GroupDataAccess;
 import DataAccess.UserDataAccess;
 import DataAccessInterface.GroupDataInterface;
@@ -15,110 +9,116 @@ import DataStructures.LoggedInInfo;
 import InputBoundary.UserLoginBoundaryIn;
 import Presenters.UserLoginPresenter;
 import UseCases.UserLogin;
-import View.ViewInterface;
 import org.json.simple.parser.ParseException;
 
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.util.List;
 
 public class UserLoginView extends JPanel implements ActionListener{
 
-    private JLabel title;
-    private final JTextField username;
-    private final JPasswordField password;
-    private final JButton loginButton;
-    private JButton newButton;
-    private final JLabel t1, t2, t3;
-    private UserLoginController controller;
+    JLabel title, t1, t2;
+    private final JTextField username = new JTextField(25);
+    private final JPasswordField password = new JPasswordField(15);
+    public final JButton login;
+    public JButton toRegister;
+    public LoggedInInfo userInfo;
+//    private final UserLoginController controller;
 
-
+    /**
+     * Builds the gui for the user login page.
+     */
     public UserLoginView(){
 
-            // Defining JComponents
-            t1 = new JLabel("Login");
-            Font f = new Font("Arial", Font.BOLD, 24);
-            t1.setFont(f);
-            t2 = new JLabel("Username");
-            username = new JTextField(30);
-            t3 = new JLabel("Password");
-            password = new JPasswordField(20);
-            loginButton = new JButton("Continue");
-            newButton = new JButton("New to Flipwise?");
+//        UserDataInterface userData;
+//        GroupDataInterface groupData;
+//        try {
+//            userData = new UserDataAccess();
+//            groupData = new GroupDataAccess();
+//        } catch (IOException | ParseException e2) {
+//            throw new RuntimeException(e2); // Display popup
+//        }
+//
+//        UserLoginPresenter presenter = new UserLoginPresenter();
+//        UserLoginBoundaryIn useCase = new UserLogin(presenter, userData, groupData);
+//
+//        this.controller = new UserLoginController(useCase);
 
+        // Defining JComponents
+        title = new JLabel("Welcome Back");
+        Font f = new Font("Arial", Font.BOLD, 24);
+        title.setFont(f);
+        t1 = new JLabel("Username");
+        t2 = new JLabel("Password");
+        login = new JButton("Log In");
+        toRegister = new JButton("New to Flipwise?");
 
-            // Setting positions of JComponents
-            t1.setBounds(70, 40, 300, 40);
-            t2.setBounds(70, 100, 200, 20);
-            username.setBounds(70, 120, 300, 30);
-            t3.setBounds(70, 170, 200, 20);
-            password.setBounds(70, 190, 300, 30);
-            loginButton.setBounds(240, 240, 130, 30);
-            newButton.setBounds(70, 240, 130, 30);
+        // Setting positions of JComponents
+        title.setBounds(70, 40, 300, 40);
+        t1.setBounds(70, 100, 200, 20);
+        username.setBounds(70, 120, 300, 30);
+        t2.setBounds(70, 170, 200, 20);
+        password.setBounds(70, 190, 300, 30);
+        login.setBounds(240, 240, 130, 30);
+        toRegister.setBounds(70, 240, 130, 30);
 
-            // Adding JComponents to JPanel
-            this.add(t1);
-            this.add(t2);
-            this.add(username);
-            this.add(t3);
-            this.add(password);
-            this.add(loginButton);
-            this.add(newButton);
+        // Adding JComponents to JPanel
+        this.add(title);
+        this.add(t1);
+        this.add(username);
+        this.add(t2);
+        this.add(password);
+        this.add(login);
+        this.add(toRegister);
 
-            // JPanel SetUp
-            this.setLayout(null);
-            this.setSize(1000, 600);
-            setVisible(true);
+        // JPanel SetUp
+        this.setLayout(null);
+        setSize(1500, 820);
+        setVisible(true);
 
-            loginButton.addActionListener(this);
-            newButton.addActionListener(this);
-
-        }
-
-//    @Override
-    public void actionPerformed(ActionEvent e) {
-        if (e.getActionCommand().equals("Continue")) {
-            UserDataInterface userData;
-            GroupDataInterface groupData;
-            try {
-                userData = new UserDataAccess();
-                groupData = new GroupDataAccess();
-            } catch (IOException | ParseException e2) {
-                throw new RuntimeException(e2); // Display popup
-            }
-
-            UserLoginPresenter presenter = new UserLoginPresenter();
-            UserLoginBoundaryIn useCase = new UserLogin(presenter, userData, groupData);
-
-            this.controller = new UserLoginController(useCase);
-
-            LoggedInInfo userInfo = this.controller.controlUseCase(getUsername(), String.valueOf(password.getPassword()));
-
-        }
+        login.addActionListener(this);
+        toRegister.addActionListener(this);
     }
 
     /**
-     * displays message dialog when login fails.
-     * @param errorMessage te message to be displayed to the user after failed log in.
+     * Calls the controller with the entered username and password as arguments.
+     * @param evt the event to be processed
      */
-    public void showFailureLoginMessage(String errorMessage) {
-        JOptionPane.showMessageDialog(this, errorMessage);
-    }
-    public JButton getLoginButton(){
-        return loginButton;
+    public void actionPerformed(ActionEvent evt) {
+        if (evt.getActionCommand().equals("Log In")) {
+            System.out.println("Collecting stuff from login");
+//            userInfo = this.controller.controlUseCase(this.getUsername(),
+//                    String.valueOf(password.getPassword()));
+
+        }
     }
 
-    public JButton getNewButton(){
-        return newButton;
-    }
+//    /**
+//     * Displays message dialog when login fails.
+//     * @param errorMessage the message to be displayed to the user after failed log in.
+//     */
+//    public void showFailureLoginMessage(String errorMessage) {
+//        JOptionPane.showMessageDialog(this, errorMessage);
+//    }
 
-    public String[] getGroups(){
-        // Filter through alexs code here
-        // testing
-        String[] s = new String[]{"Saleh"};
-        return s;
-    }
+    /**
+     * @return the username of the user that logged in.
+     */
+    public String getUsername(){ return this.username.getText(); }
 
-    public String getUsername(){
-        return this.username.getText();
-    }
+    /**
+     * @return the log in button that brings user to homepage.
+     */
+    public JButton getLogin(){ return login; }
+
+    /**
+     * @return the button that brings user to registration page.
+     */
+    public JButton getToRegister(){ return toRegister; }
+    public List<List<Object>> getGroupNames(){ return userInfo.getUserAllGroups(); }
 
 }
 

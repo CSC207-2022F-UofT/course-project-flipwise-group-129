@@ -13,6 +13,10 @@ public class PurchaseListView extends JPanel {
     private JScrollPane scrollPane;
     Object[][] rows;
     String[] columns = new String[]{"Item Name", "Cost", "Who brought it"};
+
+    /**
+     * Builds the gui for the table that displays all purchases.
+     */
     public PurchaseListView() {
         setPurchaseList();
         DefaultTableModel model = new DefaultTableModel(rows, columns);
@@ -22,10 +26,14 @@ public class PurchaseListView extends JPanel {
 
         add(scrollPane);
 
+        // SetUp JPanel
         setVisible(true);
         setSize(1000, 600);
     }
 
+    /**
+     * Inputs data of the group's purchases within the rows of the table.
+     */
     public void setPurchaseList(){
         rows = new Object[][]{{new JButton("button"), "Amit", "670000"},
                 {"102", "Jai", "780000"},

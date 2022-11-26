@@ -31,6 +31,9 @@ public class PlanningListView extends JPanel {
     String[] columns = new String[]{"", "Item name"};
     GroupSummaryView groupSummaryView;
 
+    /**
+     * Builds the gui for the table that displays planning list.
+     */
     public PlanningListView() {
 
         setPlanningList();
@@ -83,7 +86,7 @@ public class PlanningListView extends JPanel {
             }
         };
 
-        ButtonColumn buttonColumn = new ButtonColumn(table, delete, 0);
+//        ButtonColumn buttonColumn = new ButtonColumn(table, delete, 0);
 
 
         scrollPane = new JScrollPane(table);
@@ -95,6 +98,9 @@ public class PlanningListView extends JPanel {
 
     }
 
+    /**
+     * Inputs data of the group's planning list within the rows of the table.
+     */
     public void setPlanningList(){
         // filter through codis data (codis data in parameter)
         // get updated planning list and reload page
