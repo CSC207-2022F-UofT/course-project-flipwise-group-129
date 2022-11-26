@@ -53,4 +53,12 @@ public class ItemDataAccess extends DataAccess implements ItemDataInterface {
     public String itemAsString(String itemId) {
         return itemMap.get(itemId);
     }
+
+    /**
+     * This function will be called in the tests to check if the database updated as expected
+     * @return the whole itemMap read from items.json
+     */
+    public Map<String, String> getItemMap(){
+        return itemMap;
+    }
 }
