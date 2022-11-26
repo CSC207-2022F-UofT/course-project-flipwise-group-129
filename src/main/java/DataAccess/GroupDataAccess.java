@@ -49,4 +49,12 @@ public class GroupDataAccess extends DataAccess implements GroupDataInterface {
     public String groupAsString(String groupId) {
         return groupMap.get(groupId);
     }
+
+    /**
+     * This function will be called in the tests to check if the database updated as expected
+     * @return the whole groupMap read from groups.json
+     */
+    public Map<String, String> getGroupMap(){
+        return groupMap;
+    }
 }
