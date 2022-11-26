@@ -13,7 +13,7 @@ public class User implements Comparable<User> {
 
     private String username;
     private String password;
-    private List<Group> groups;
+    private List<String> groups;
 
     /**
      * Constructor to create a new user object
@@ -22,7 +22,7 @@ public class User implements Comparable<User> {
      * @param groups
      */
 
-    public User(String username, String password, List<Group> groups){
+    public User(String username, String password, List<String> groups){
         this.username = username;
         this.password = password;
         this.groups = groups;
@@ -57,7 +57,7 @@ public class User implements Comparable<User> {
      * the groups user is in
      * @return list of all groups the user is in
      */
-    public List<Group> getGroups() {
+    public List<String> getGroups() {
         //return all the groups that the users is in
         return groups;
     }
@@ -74,7 +74,7 @@ public class User implements Comparable<User> {
      * add a group to the list of groups the user is in
      * @param group the group to add to list of groups the user is in
      */
-    public void addGroup(Group group){
+    public void addGroup(String group){
         // add a group for this user to the  list of groups they're in
         this.groups.add(group);
     }

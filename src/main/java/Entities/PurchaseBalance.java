@@ -66,7 +66,7 @@ public class PurchaseBalance implements Iterable<Debt>{
      */
     public Debt getDebtPair(String userOwed, String userOwing){
         for (Debt debt : this.allDebts) {
-            if (debt.getUserOwing().getUsername().equals(userOwing) && debt.getUserOwed().getUsername().equals(userOwing)){
+            if (debt.getUserOwing().getUsername().equals(userOwing) && debt.getUserOwed().getUsername().equals(userOwed)){
                 return debt;
             }
         }
