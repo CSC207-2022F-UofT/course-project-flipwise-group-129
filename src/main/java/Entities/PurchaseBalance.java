@@ -4,10 +4,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.simple.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 
-public class PurchaseBalance {
+public class PurchaseBalance implements Iterable<Debt>{
 
     /*
     Represents a list of all the debts
@@ -94,6 +95,11 @@ public class PurchaseBalance {
 //
 //        return obj;
 //    }
+
+    public Iterator<Debt> iterator() {
+        return new PurchaseBalanceIterator<>(this.allDebts);
+    }
+
     @Override
     public String toString() {
         ObjectMapper mapper = new ObjectMapper();
@@ -103,4 +109,38 @@ public class PurchaseBalance {
             throw new RuntimeException(e);
         }
     }
+}
+
+class PurchaseBalanceIterator<Debt> implements Iterator<Debt> {
+
+    Integer current;
+    List<Debt> debts;
+
+    // constructor
+    PurchaseBalanceIterator(List<Debt> obj){
+        // initialize cursor
+        if (obj.isEmpty()){
+            current = null;
+        }else{
+            current = 0;
+        }
+        this.debts = obj;
+    }
+
+    // Checks if the next element exists
+    public boolean hasNext() {
+        return current != null;
+    }
+
+    // moves the cursor/iterator to next element
+    public Debt next() {
+        Debt toReturn = debts.get(this.current);
+        if (debts.size() == current + 1){
+            current = null;
+        }else{
+            current = current + 1;
+        }
+        return toReturn;
+    }
+
 }
