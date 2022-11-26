@@ -20,6 +20,7 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 class AddToPlanningListTest {
@@ -162,15 +163,18 @@ class AddToPlanningListTest {
 
     String getItemInfo() throws IOException, ParseException {
         ItemDataInterface itemDsInterface = new ItemDataAccess();
-        if (!itemDsInterface.itemIdExists("")){
-            return "itemId does not exist";
+        Map<String, String> itemDsMap = itemDsInterface.getItemMap();
+        String currentItemId = null;
+        for(Map.Entry<String, String> curItem: itemDsMap.entrySet()){
+            try {
+                String curItemName = Item.fromString(curItem.getValue()).getItemName();
+                if(curItemName.equals("maggi")){
+                    return curItem.getKey();
+                }
+            } catch (JsonProcessingException e) {
+                return "Unable to process item from the database";
+            }
         }
-        try {
-            String itemId = "";
-            Item retrievedItem = Item.fromString(itemDsInterface.itemAsString(itemId));
-            return retrievedItem.getItemName();
-        } catch (JsonProcessingException e) {
-            return "Unable to process item from the database";
-        }
+        return "item does not exist";
     }
 }
