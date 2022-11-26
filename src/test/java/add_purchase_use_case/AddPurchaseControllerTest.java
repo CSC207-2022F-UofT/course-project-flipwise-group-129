@@ -14,7 +14,7 @@ import Entities.PlanningList;
 import Entities.PurchaseList;
 import InputBoundary.AddPurchaseBoundaryIn;
 import UseCases.AddPurchase;
-import com.fasterxml.jackson.core.JsonProcessingException;
+import static org.junit.jupiter.api.Assertions.*;
 import org.json.simple.parser.ParseException;
 import org.junit.jupiter.api.Test;
 import Presenters.AddPurchasePresenter;
@@ -73,6 +73,60 @@ class AddPurchaseControllerTest {
     }
 
     @Test
+    void testPurchaseFail() throws IOException, ParseException {
+        // To test the use case:
+        // 1) Create a AddPurchaseController and prerequisite objects
+        //    (arguments for the AddPurchaseController constructor parameters)
+        // 2) create the Input Data in the form of the group, lists, and item
+        // 3) Call the use case AddPurchase input boundary method to run the use case
+        // 4) Check that the Output Data passed to the Presenter is correct
+        // 5) Check that the expected changes to the data layer are there.
+
+        // 1) Instantiate
+        AddPurchasePresenter presenter = new AddPurchasePresenter() {
+            /**
+             * Prepares and returns the information changed by the use case to the view
+             *
+             * @param updatedLists the data structure with the new planning and purchased lists
+             * @return a UpdatedLists object containing the updated information of the lists
+             */
+            @Override
+            public UpdatedLists prepareSuccessViewInformation(UpdatedLists updatedLists) {
+                fail("Use case success is unprecendeted");
+                return null;
+            }
+
+            /**
+             * Returns the information from an error in the form of an error message to the view
+             *
+             * @param errorInformation contains the error message raised
+             * @return the data structure containing the error information
+             */
+            @Override
+            public UpdatedLists prepareFailViewInformation(UpdatedLists errorInformation) {
+                assert errorInformation.getNewPurchasedList() == null;
+                assert errorInformation.getNewPlanningList() == null;
+                assert !Objects.equals(errorInformation.getResultMessage(), "Success");
+                return null;
+            }
+        };
+        AddPurchaseBoundaryIn usecase = new AddPurchase();
+        GroupDataInterface groupData = new GroupDataAccess();
+        UserDataInterface userData = new UserDataAccess();
+        ItemDataInterface itemData = new ItemDataAccess();
+
+
+        // 2) Input data — we can make this up for the test. Normally it would
+        // be created by the Controller.
+        PurchaseInfo inputData = new PurchaseInfo("1", new ArrayList<>(Collections.singleton("Avi")),
+                "Avi", 10.0f, "group1", presenter, groupData, itemData, userData);
+
+        // 3) Run the use case
+        UpdatedLists outputData = usecase.executeUseCase(inputData);
+
+    }
+
+    @Test
     void updateDbTest() throws IOException, ParseException {
         // 1) Instantiate
         AddPurchasePresenter presenter = new AddPurchasePresenter();
@@ -116,9 +170,6 @@ class AddPurchaseControllerTest {
 
     Group getGroupInfo() throws IOException, ParseException {
         GroupDataInterface groupDsInterface = new GroupDataAccess();
-        List<String> stringUsers = new ArrayList<>();
-        List<String> stringItems = new ArrayList<>();
-        List<String> stringPlanned = new ArrayList<>();
         // get the user from the database
         //check if the user exists
         if (!groupDsInterface.groupIdExists("group1")){
@@ -126,7 +177,6 @@ class AddPurchaseControllerTest {
         }
         String groupString = groupDsInterface.groupAsString("group1");
 
-        Group group = Group.fromString(groupString);
-        return group;
+        return Group.fromString(groupString);
     }
 }
