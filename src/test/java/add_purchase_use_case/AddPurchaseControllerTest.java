@@ -15,6 +15,7 @@ import Entities.PurchaseList;
 import InputBoundary.AddPurchaseBoundaryIn;
 import UseCases.AddPurchase;
 import static org.junit.jupiter.api.Assertions.*;
+
 import org.json.simple.parser.ParseException;
 import org.junit.jupiter.api.Test;
 import Presenters.AddPurchasePresenter;
@@ -145,6 +146,10 @@ class AddPurchaseControllerTest {
         UpdatedLists outputData = usecase.executeUseCase(inputData);
 
         Group groupInfoAfter = getGroupInfo();
+        Item itemInfoAfter = getItemInfo();
+
+        assert (Objects.equals(itemInfoAfter.getBuyer().getUsername(), "Avi"));
+        assert (itemInfoAfter.getPrice() == 10.0f);
 
         List<List<String>> returnedPlanning = outputData.getNewPlanningList();
         List<List<String>> returnedPurchased = outputData.getNewPurchasedList();
@@ -178,5 +183,16 @@ class AddPurchaseControllerTest {
         String groupString = groupDsInterface.groupAsString("group1");
 
         return Group.fromString(groupString);
+    }
+
+    Item getItemInfo() throws IOException, ParseException {
+        ItemDataInterface itemDsInterface = new ItemDataAccess();
+
+        if (!itemDsInterface.itemIdExists("1")){
+            throw new RuntimeException(("ItemId does not exist"));
+        }
+        String itemString = itemDsInterface.itemAsString("1");
+
+        return Item.fromString(itemString);
     }
 }
