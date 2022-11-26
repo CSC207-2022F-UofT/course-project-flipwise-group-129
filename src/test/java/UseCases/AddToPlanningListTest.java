@@ -151,17 +151,10 @@ class AddToPlanningListTest {
     }
     Group getGroupInfo() throws IOException, ParseException {
         GroupDataInterface groupDsInterface = new GroupDataAccess();
-        Map<String, String> groupDsMap = groupDsInterface.getGroupMap();
-        for(Map.Entry<String, String> curGroup: groupDsMap.entrySet()){
-            try {
-                Group curGroupEntity = Group.fromString(curGroup.getValue());
-                if(curGroupEntity.getGroupName().equals("group1")){
-                    return curGroupEntity;
-                }
-            } catch (JsonProcessingException e) {
-                return null;
-            }
+        try {
+            return Group.fromString(groupDsInterface.groupAsString("group1"));
+        } catch (JsonProcessingException e) {
+            return null;
         }
-        return null;
     }
 }
