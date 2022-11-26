@@ -21,10 +21,7 @@ import org.junit.jupiter.api.Test;
 import Presenters.AddPurchasePresenter;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 class AddPurchaseControllerTest {
 
@@ -93,7 +90,7 @@ class AddPurchaseControllerTest {
              */
             @Override
             public UpdatedLists prepareSuccessViewInformation(UpdatedLists updatedLists) {
-                fail("Use case success is unprecendeted");
+                fail("Use case success is unprecedented");
                 return null;
             }
 
@@ -160,16 +157,24 @@ class AddPurchaseControllerTest {
         assert (dbPlanning.getItems().size() == returnedPlanning.size());
         assert (dbPurchased.getItems().size() == returnedPurchased.size());
 
-        for (int i = 0; i < dbPlanning.getItems().size(); i++) {
-            assert (Objects.equals(dbPlanning.getItems().get(i).getItemId(), returnedPlanning.get(i).get(0)));
-            assert (Objects.equals(dbPlanning.getItems().get(i).getItemName(), returnedPlanning.get(i).get(1)));
+        int i = 0;
+        Iterator<Item> iterPlan = dbPlanning.iterator();
+        while (iterPlan.hasNext()) {
+            Item item = iterPlan.next();
+            assert (Objects.equals(item.getItemId(), returnedPlanning.get(i).get(0)));
+            assert (Objects.equals(item.getItemName(), returnedPlanning.get(i).get(1)));
+            i++;
         }
 
-        for (int i = 0; i < dbPurchased.getItems().size(); i++) {
-            assert (Objects.equals(dbPurchased.getItems().get(i).getItemId(), returnedPurchased.get(i).get(0)));
-            assert (Objects.equals(dbPurchased.getItems().get(i).getItemName(), returnedPurchased.get(i).get(1)));
-            assert (Objects.equals(String.valueOf(dbPurchased.getItems().get(i).getPrice()), returnedPurchased.get(i).get(2)));
-            assert (Objects.equals(dbPurchased.getItems().get(i).getBuyer().getUsername(), returnedPurchased.get(i).get(3)));
+        i = 0;
+        Iterator<Item> iterPur = dbPurchased.iterator();
+        while (iterPur.hasNext()) {
+            Item item = iterPur.next();
+            assert (Objects.equals(item.getItemId(), returnedPurchased.get(i).get(0)));
+            assert (Objects.equals(item.getItemName(), returnedPurchased.get(i).get(1)));
+            assert (Objects.equals(String.valueOf(item.getPrice()), returnedPurchased.get(i).get(2)));
+            assert (Objects.equals(item.getBuyer().getUsername(), returnedPurchased.get(i).get(3)));
+            i++;
         }
     }
 
