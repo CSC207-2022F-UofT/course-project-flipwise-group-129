@@ -18,7 +18,8 @@ public class UpdatePaymentBalance implements UpdatePaymentBalanceBoundaryIn {
     final UpdatePaymentBalanceBoundaryOut updatePaymentBalancePresenter;
     final PaymentDetails paymentDetails;
 
-    public UpdatePaymentBalance(GroupDataInterface gdi, ItemDataInterface idi, UpdatePaymentBalanceBoundaryOut upbp, PaymentDetails pd) {
+    public UpdatePaymentBalance(GroupDataInterface gdi, ItemDataInterface idi, UpdatePaymentBalanceBoundaryOut upbp,
+                                PaymentDetails pd) {
         this.groupDataInterface = gdi;
         this.itemDataInterface = idi;
         this.updatePaymentBalancePresenter = upbp;
@@ -37,6 +38,7 @@ public class UpdatePaymentBalance implements UpdatePaymentBalanceBoundaryIn {
         String userPurchasedItem = paymentDetails.getUsername();
         float itemPrice = paymentDetails.getItemPrice();
         String itemID = paymentDetails.getItemID();
+        List<String> usersInvolvedInPurcase = paymentDetails.getUsersInvolvedInPurchase();
 
         /*
         There are going to be three steps, I can only implement step 2 right now, and then I can
@@ -85,7 +87,8 @@ public class UpdatePaymentBalance implements UpdatePaymentBalanceBoundaryIn {
             return raiseError(e);
         }
         Set<User> usersInGroup = groupInvolvedInPurchase.getUsers();
-        int amountOfUsersInvolvedInPurchase = purchasedItem.getUsersInvolved().size();
+
+        int amountOfUsersInvolvedInPurchase = usersInvolvedInPurcase.size();
         List<String> groupUsernames = new ArrayList<>();
         for(User user : usersInGroup) {
             groupUsernames.add(user.getUsername());
@@ -99,15 +102,18 @@ public class UpdatePaymentBalance implements UpdatePaymentBalanceBoundaryIn {
 
         /*
         Each of the debts in currentDebtList contains the user who is owed the money, and the user who needs to
-        pay that user, so we work our way through the list and if the user owed is equal to the user who made the purchase,
-        then, we can update the debt between the two users using setDebtValue().
+        pay that user, so we work our way through the list and all the usernames in usersInvolvedInPurchase, and
+        if the user owed is equal to the user who made the purchase, and the user owing is equal to username, then we
+        can update the debt between the two users using setDebtValue().
          */
         for(Debt d : currentDebtList) {
-            String currentUserOwed = d.getUserOwed().getUsername();
-            if(userPurchasedItem.equals(currentUserOwed)) {
-                double currentDebt = d.getDebtValue();
-                double updatedDebt = currentDebt + itemPrice/amountOfUsersInvolvedInPurchase;
-                d.setDebtValue(updatedDebt);
+            for(String username : usersInvolvedInPurcase) {
+                if(d.getUserOwing().getUsername().equals(username) &&
+                        d.getUserOwed().getUsername().equals(userPurchasedItem)) {
+                    double currentDebt = d.getDebtValue();
+                    double updatedDebt = currentDebt + itemPrice/amountOfUsersInvolvedInPurchase;
+                    d.setDebtValue(updatedDebt);
+                }
             }
         }
 

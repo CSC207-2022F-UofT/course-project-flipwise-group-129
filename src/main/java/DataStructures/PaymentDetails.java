@@ -1,5 +1,8 @@
 package DataStructures;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class PaymentDetails {
     private final String groupID;
 
@@ -9,18 +12,22 @@ public class PaymentDetails {
 
     private final String itemID;
 
+    private final List<String> usersInvolvedInPurchase;
+
     /**
      * Assigns values from the parameters to the class attribute variables.
      * @param group_id the String which represents the ID of the group which was involved in the purchase.
      * @param user the User who made the purchase.
      * @param price the price of the item purchased represented as a float.
      * @param item_id the String which represents the ID of the item which was purchased.
+     * @param users the list of all users involved in the purchase of the item;
      */
-    public PaymentDetails(String group_id, String user, float price, String item_id) {
+    public PaymentDetails(String group_id, String user, float price, String item_id, List<String> users) {
         this.groupID = group_id;
         this.username = user;
         this.itemPrice = price;
         this.itemID = item_id;
+        this.usersInvolvedInPurchase = users;
     }
 
     /*
@@ -56,4 +63,7 @@ public class PaymentDetails {
         return this.itemID;
     }
 
+    public List<String> getUsersInvolvedInPurchase() {
+        return this.usersInvolvedInPurchase;
+    }
 }

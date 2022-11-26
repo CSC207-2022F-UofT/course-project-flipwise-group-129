@@ -3,6 +3,7 @@ package Controllers;
 import DataStructures.PaymentDetails;
 import DataStructures.UpdatedDebts;
 import InputBoundary.UpdatePaymentBalanceBoundaryIn;
+import java.util.List;
 
 public class UpdatePaymentBalanceController {
 
@@ -28,8 +29,8 @@ public class UpdatePaymentBalanceController {
      * @return the information sent back by the presenter through the use case to go to the view layer as an
      * UpdatedDebts object.
      */
-    UpdatedDebts create(String groupID, String user, float price, String itemID) {
-        PaymentDetails proposedInfo = new PaymentDetails(groupID, user, price, itemID);
+    UpdatedDebts create(String groupID, String user, float price, String itemID, List<String> usersInPurchase) {
+        PaymentDetails proposedInfo = new PaymentDetails(groupID, user, price, itemID, usersInPurchase);
 
         return userInput.updatePaymentBalance(proposedInfo);
     }
