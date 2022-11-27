@@ -25,7 +25,7 @@ class SettlementPaymentTest {
         GroupDataInterface groupData;
         {
             try {
-                groupData = new GroupDataAccess();
+                groupData = new GroupDataAccess("testgroups.json");
             } catch (IOException | ParseException e) {
                 throw new RuntimeException(e);
             }
@@ -35,7 +35,7 @@ class SettlementPaymentTest {
         SettlementBoundaryIn usecase = new SettlementPayment(presenter, groupData);
 
         // 2) Input data we can make this up for the test. Normally it would be created by the Controller.
-        PaymentDetails inputData = new PaymentDetails("Codi", "Avi", "group1");
+        PaymentDetails inputData = new PaymentDetails("mishaalk", "randomC", "grpOne11");
 
         // 3) Run the use case
         UpdatedDebts outputData = usecase.executeDebtSettlement(inputData);
@@ -49,7 +49,7 @@ class SettlementPaymentTest {
         GroupDataInterface groupData;
         {
             try {
-                groupData = new GroupDataAccess();
+                groupData = new GroupDataAccess("testgroups.json");
             } catch (IOException | ParseException e) {
                 throw new RuntimeException(e);
             }
@@ -59,7 +59,7 @@ class SettlementPaymentTest {
         SettlementBoundaryIn usecase = new SettlementPayment(presenter, groupData);
 
         // 2) Input data we can make this up for the test. Normally it would be created by the Controller.
-        PaymentDetails inputData = new PaymentDetails("Codi", "Avi", "group1");
+        PaymentDetails inputData = new PaymentDetails("mishaalk", "sopleee", "grpOne11");
         // 3) Run the use case
         usecase.executeDebtSettlement(inputData);
 
@@ -67,17 +67,17 @@ class SettlementPaymentTest {
         try {
             Group groupAfter = getGroupInfo();
             assert !(groupAfter == null);
-            assert (groupAfter.getGroupId().equals("group1"));
-            assert groupAfter.getPurchaseBalance().getDebtPair("Codi", "Avi").getDebtValue() == 0.0;
+            assert (groupAfter.getGroupId().equals("grpOne11"));
+            assert groupAfter.getPurchaseBalance().getDebtPair("mishaalk", "sopleee").getDebtValue() == 0.0;
         } catch (IOException | ParseException e) {
             throw new RuntimeException(e);
         }
     }
 
     Group getGroupInfo() throws IOException, ParseException {
-        GroupDataInterface groupDsInterface = new GroupDataAccess();
+        GroupDataInterface groupDsInterface = new GroupDataAccess("testgroups.json");
         try {
-            return Group.fromString(groupDsInterface.groupAsString("group1"));
+            return Group.fromString(groupDsInterface.groupAsString("grpOne11"));
         } catch (JsonProcessingException e) {
             return null;
         }
