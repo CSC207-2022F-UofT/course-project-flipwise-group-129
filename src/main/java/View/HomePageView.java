@@ -1,29 +1,39 @@
 package View;
 
+import DataStructures.CreatedGroupInfo;
+import DataStructures.JoinedGroupInfo;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 public class HomePageView extends JPanel implements ActionListener {
-
     private JLabel homePage;
+
+    public String input_groupName;
+    public String input_groupID;
     public JPanel groupButtons;
     public JButton createGroup;
     public JButton joinGroup;
-    public String[] group_names = new String[]{"Hello"};
+
+    private String user;
+    private Object[] group_names;
     JButton[] button_array;
 
-    private final MainWindowView mainWindow;
+//    private final MainWindowView mainWindow;
 
 //    private final GroupJoinController groupJoinController;
 //    private final GroupCreateController groupCreateController;
     /**
      * Builds the gui for the user home page initializes controller.
      */
-    public HomePageView(MainWindowView mainWindow){
+    public HomePageView(String user, Object[] group_names){
 
-        this.mainWindow = mainWindow;
+        this.user = user;
+        this.group_names = group_names;
 
         //        UserDataInterface userData;
 //        GroupDataInterface groupData;
@@ -60,16 +70,11 @@ public class HomePageView extends JPanel implements ActionListener {
         groupButtons.add(createGroup);
         groupButtons.add(joinGroup);
 
-        //
-//        setGroupNames();
-        // need
-        //
-
         JPanel group_btns = new JPanel();
-        button_array = createGroupButtons(group_names);
+        button_array = createGroupButtons();
 
         for (int i = 0; i < group_names.length; i++) {
-            button_array[i].addActionListener(mainWindow);
+            button_array[i].addActionListener(this);
             group_btns.add(button_array[i]);
         }
 
@@ -80,8 +85,21 @@ public class HomePageView extends JPanel implements ActionListener {
 
     }
 
+    public void actionPerformed(ActionEvent evt) {
 
-    public void actionPerformed(ActionEvent e) {
+
+        if (evt.getActionCommand().equals("Create Group")){
+            input_groupName = JOptionPane.showInputDialog("Please enter in Group Name:");
+//            CreatedGroupInfo groupInfo = groupCreateController.create(groupName, userLoginView.getUsername());
+
+        }
+        else if (evt.getActionCommand().equals("Join Group")){
+            input_groupID = JOptionPane.showInputDialog("Please enter in Group ID:");
+//            JoinedGroupInfo groupInfo = groupJoinController.create(groupID, userLoginView.getUsername());
+
+        }
+
+        System.out.println("Clicked " + evt.getActionCommand() + " from Homepage");
 
     }
 
@@ -91,10 +109,10 @@ public class HomePageView extends JPanel implements ActionListener {
      * @param Current_Groups the list of all groups that include the user
      * @return list including all inputted groups converted into JButtons
      */
-    public JButton[] createGroupButtons(String[] Current_Groups) {
+    public JButton[] createGroupButtons(Object[] Current_Groups) {
         JButton[] output = new JButton[Current_Groups.length];
         for (int i = 0; i < Current_Groups.length; i++) {
-            JButton checkbox_member = new JButton(Current_Groups[i]);
+            JButton checkbox_member = new JButton(Current_Groups[i].toString());
             output[i] = checkbox_member;
         }
         return output;
@@ -114,10 +132,5 @@ public class HomePageView extends JPanel implements ActionListener {
      * @return the create group button that allows user to create a new group.
      */
     public JButton getCreateGroup(){ return this.createGroup; }
-
-//    public setGroupNames(){
-//
-//    }
-
 
 }
