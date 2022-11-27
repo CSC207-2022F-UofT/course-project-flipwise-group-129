@@ -131,9 +131,7 @@ public class GroupSummaryView extends JPanel implements ActionListener {
         if (e.getActionCommand().equals("Clear Debt")){
             ClearDebtView clearDebtView = new ClearDebtView();
         }
-        if (evt.getActionCommand().equals("Return to Groups")){
 
-        }
 
         if (e.getActionCommand().equals("Return to Groups")){
         }
