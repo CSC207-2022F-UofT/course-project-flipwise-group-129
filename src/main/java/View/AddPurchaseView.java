@@ -15,7 +15,7 @@ public class AddPurchaseView extends JOptionPane{
     List<String> checked_members;
 
     int reply;
-    public AddPurchaseView() {
+    public AddPurchaseView(String username, String groupID, String itemID, List<String> groupUserNames) {
 
         JPanel p = new JPanel();
         p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));
@@ -34,7 +34,6 @@ public class AddPurchaseView extends JOptionPane{
         JPanel contributing_members_text = new JPanel();
         contributing_members_text.add(text_contributing_members);
 
-        setMembers(new String[]{"Saleh"});
         contributing_members = createCheckboxes(members);
 
         //fetch contributing members

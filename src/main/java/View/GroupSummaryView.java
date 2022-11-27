@@ -19,82 +19,65 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
+import java.util.List;
 
 public class GroupSummaryView extends JPanel implements ActionListener {
 
     private JTabbedPane t;
-    private JPanel p1, p2, p3;
-    private JTextArea group_members;
+    private JComponent p1, p2, p3;
+    private JTextArea temp, RHS, group_members;
+
     private String groupname;
     private String groupid;
-    public JButton addItem = new JButton("Add Item");
-    public JButton settleDebt = new JButton("Clear Debt");
-    public JButton toHomepage = new JButton("Return to Groups");
+    JButton add_item = new JButton("Add Item");
+    JButton clear_debt = new JButton("Clear Debt");
+    JButton return_to_homepage = new JButton("Return to Groups");
     private AddToPlanningController controllerAddPlanning;
 
-    /**
-     * Builds the gui for the group summery page and initializes controller.
-     */
-    public GroupSummaryView(String groupname, String groupid) {
+    public GroupSummaryView(String groupname, String groupid, String username,
+                            List<List<String>> purchaseListData, List<List<String>> planningListData,
+                            List<List<String>> debtData, List<String> groupUserNames) {
 
         this.groupid = groupid;
         this.groupname = groupname;
 
-//        ItemDataInterface itemData;
-//        GroupDataInterface groupData;
-//        try {
-//            itemData = new ItemDataAccess();
-//            groupData = new GroupDataAccess();
-//        } catch (IOException | ParseException e1) {
-//            throw new RuntimeException(e1); // Display popup
-//        }
-//
-//        AddToPlanningPresenter presenter = new AddToPlanningPresenter();
-//
-//        AddToPlanningBoundaryIn useCase = new AddToPlanningList(presenter, groupData, itemData);
-//
-//        this.controllerAddPlanning = new AddToPlanningController(useCase);
-
-        // SetUp JPanel
-        setSize(1500, 820);
+        setSize(1000,600);
         setVisible(true);
         setLayout(new BorderLayout());
 
-        // Defining and positioning JComponents
         t = new JTabbedPane();
         p1 = new JPanel();
         p2 = new JPanel();
         p3 = new JPanel();
 
-        // Title
-        JTextArea title = new JTextArea(groupname);
-        title.setEditable(false);
-        JPanel title_panel = new JPanel();
-        title_panel.add(title);
+        temp = new JTextArea("Group Summary");
+        temp.setEditable(false);
 
-        // Group Information
-        JTextArea RHS = new JTextArea(
+        JPanel temporary_panel = new JPanel();
+        temporary_panel.add(temp);
+
+        RHS = new JTextArea("This is the group information. \n" +
                 "Group Name: " + this.groupname + "\n" +
                 "Group Code: " + this.groupid + "\n");
         RHS.setEditable(false);
 
-        // Buttons
         JPanel btn_group = new JPanel();
-        btn_group.add(addItem);
-        btn_group.add(settleDebt);
-        btn_group.add(toHomepage);
+        btn_group.add(add_item);
+        btn_group.add(clear_debt);
+        btn_group.add(return_to_homepage);
 
         JPanel text_group = new JPanel();
         text_group.add(RHS);
+
 
         JPanel right_hand_side = new JPanel();
         right_hand_side.setLayout(new BoxLayout(right_hand_side, BoxLayout.PAGE_AXIS));
         right_hand_side.add(text_group);
         right_hand_side.add(btn_group);
 
-        PlanningListView c = new PlanningListView();
-        PurchaseListView p = new PurchaseListView();
-        BalanceView b = new BalanceView();
+        PlanningListView c = new PlanningListView(planningListData, username, groupid, groupUserNames);
+        PurchaseListView p = new PurchaseListView(purchaseListData);
+        BalanceView b = new BalanceView(debtData, username, groupUserNames);
         p2.add(p);
         p1.add(c);
 
@@ -102,6 +85,7 @@ public class GroupSummaryView extends JPanel implements ActionListener {
         group_members.setEditable(false);
         JPanel bottoms_up = new JPanel();
         bottoms_up.add(group_members);
+
 
         t.addTab("Planning", p1);
         t.setMnemonicAt(0, KeyEvent.VK_1);
@@ -112,46 +96,54 @@ public class GroupSummaryView extends JPanel implements ActionListener {
 
         p3.add(b);
         add(t, BorderLayout.CENTER);
-        add(title_panel, BorderLayout.NORTH);
+        add(temporary_panel, BorderLayout.NORTH);
         add(right_hand_side, BorderLayout.LINE_START);
         add(bottoms_up, BorderLayout.SOUTH);
 
-        addItem.addActionListener(this);
-        settleDebt.addActionListener(this);
-        toHomepage.addActionListener(this);
+        add_item.addActionListener(this);
+        clear_debt.addActionListener(this);
+        return_to_homepage.addActionListener(this);
     }
 
-    /**.
-     * @param evt the event to be processed
-     * React to a certain button click that results in evt.
-     */
     @Override
-    public void actionPerformed(ActionEvent evt) {
-        if (evt.getActionCommand().equals("Add Item")){
+    public void actionPerformed(ActionEvent e) {
+        if (e.getActionCommand().equals("Add Item")){
             String item = JOptionPane.showInputDialog("Please enter in Item Name:");
 
-//            this.controllerAddPlanning.performPlanningAdd(item, this.groupid);
+            ItemDataInterface itemData;
+            GroupDataInterface groupData;
+            try {
+                itemData = new ItemDataAccess();
+                groupData = new GroupDataAccess();
+            } catch (IOException | ParseException e1) {
+                throw new RuntimeException(e1); // Display popup
+            }
 
+            AddToPlanningPresenter presenter = new AddToPlanningPresenter();
+
+            AddToPlanningBoundaryIn useCase = new AddToPlanningList(presenter, groupData, itemData);
+
+            this.controllerAddPlanning = new AddToPlanningController(useCase);
+
+            this.controllerAddPlanning.performPlanningAdd(item, this.groupid);
         }
 
-        if (evt.getActionCommand().equals("Clear Debt")){
+        if (e.getActionCommand().equals("Clear Debt")){
             ClearDebtView clearDebtView = new ClearDebtView();
         }
         if (evt.getActionCommand().equals("Return to Groups")){
 
         }
 
+        if (e.getActionCommand().equals("Return to Groups")){
+        }
     }
-    
-    public JButton getToHomepage(){ return this.toHomepage; }
 
 
 //    private void setHomepageView(){
 //        HomePageView homePageView = new HomePageView();
 ////        this.setContentPane(homePageView);
 //    }
-
-
 
 }
 

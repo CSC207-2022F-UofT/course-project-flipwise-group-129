@@ -23,6 +23,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
+import java.util.List;
 
 public class PlanningListView extends JPanel {
     private JTable table;
@@ -31,12 +32,10 @@ public class PlanningListView extends JPanel {
     String[] columns = new String[]{"", "Item name"};
     GroupSummaryView groupSummaryView;
 
-    /**
-     * Builds the gui for the table that displays planning list.
-     */
-    public PlanningListView() {
+    public PlanningListView(List<List<String>> planningListData, String username, String groupID,
+                            List<String> groupUserName) {
 
-        setPlanningList();
+        setRows(planningListData);
         DefaultTableModel model = new DefaultTableModel(rows, columns);
         table = new JTable(model);
 
@@ -49,7 +48,7 @@ public class PlanningListView extends JPanel {
                 JTable table = (JTable)evt.getSource();
                 int modelRow = Integer.valueOf( evt.getActionCommand() );
 
-                AddPurchaseView addPurchaseView = new AddPurchaseView();
+                AddPurchaseView addPurchaseView = new AddPurchaseView(username, groupID, "PLACEHOLDER", groupUserName);
                 if (addPurchaseView.getReply() == JOptionPane.YES_OPTION) {
 
 
@@ -98,16 +97,21 @@ public class PlanningListView extends JPanel {
 
     }
 
-    /**
-     * Inputs data of the group's planning list within the rows of the table.
-     */
-    public void setPlanningList(){
-        // filter through codis data (codis data in parameter)
-        // get updated planning list and reload page
-        // testing
-        rows = new Object[][]{{"Purchase", "the"},
-                {"Purchase", "the"},
-                {"Purchase", "Sandwich"},
-                {"Purchase", "8"}};
+//    public void setPlanningList(){
+//        // filter through codis data (codis data in parameter)
+//        // get updated planning list and reload page
+//        // testing
+//        rows = new Object[][]{{"Purchase", "the"},
+//                {"Purchase", "the"},
+//                {"Purchase", "Sandwich"},
+//                {"Purchase", "8"}};
+//    }
+
+    public void setRows(List<List<String>> planningListData) {
+        this.rows = new Object[planningListData.size()][2];
+        for (int i = 0; i < planningListData.size(); i++) {
+            this.rows[i] = planningListData.get(i).toArray();
+            //CONFIRM WITH CODI WHAT IS IN THIS 2D ARRAY
+        }
     }
 }

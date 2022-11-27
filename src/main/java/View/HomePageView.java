@@ -1,136 +1,160 @@
 package View;
-
-import DataStructures.CreatedGroupInfo;
-import DataStructures.JoinedGroupInfo;
+import Controllers.GroupCreateController;
+import Controllers.GroupJoinController;
+import DataAccess.GroupDataAccess;
+import DataAccess.UserDataAccess;
+import DataAccessInterface.GroupDataInterface;
+import DataAccessInterface.UserDataInterface;
+import InputBoundary.GroupCreateBoundaryIn;
+import InputBoundary.GroupJoinBoundaryIn;
+import Presenters.GroupCreatePresenter;
+import Presenters.GroupJoinPresenter;
+import UseCases.GroupCreate;
+import UseCases.GroupJoin;
+import org.json.simple.parser.ParseException;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class HomePageView extends JPanel implements ActionListener {
-    private JLabel homePage;
+    JButton btn_create;
+    JButton btn_join;
+    JLabel homePage;
+    JPanel group_btns = new JPanel();
 
-    public String input_groupName;
-    public String input_groupID;
-    public JPanel groupButtons;
-    public JButton createGroup;
-    public JButton joinGroup;
+    UserLoginView userLoginView = new UserLoginView();
+    List<String> group_names;
+    String username;
 
-    private String user;
-    private Object[] group_names;
     JButton[] button_array;
+    GroupCreateController controllerCreate;
+    GroupJoinController controllerJoin;
 
-//    private final MainWindowView mainWindow;
+    public HomePageView(String username, List<String> groupNames) {
 
-//    private final GroupJoinController groupJoinController;
-//    private final GroupCreateController groupCreateController;
-    /**
-     * Builds the gui for the user home page initializes controller.
-     */
-    public HomePageView(String user, Object[] group_names){
-
-        this.user = user;
-        this.group_names = group_names;
-
-        //        UserDataInterface userData;
-//        GroupDataInterface groupData;
-//        try {
-//            userData = new UserDataAccess();
-//            groupData = new GroupDataAccess();
-//        } catch (IOException | ParseException e2) {
-//            throw new RuntimeException(e2); // Display popup
-//        }
-//
-//        GroupCreatePresenter groupCreatePresenter = new GroupCreatePresenter();
-//        GroupCreateBoundaryIn groupCreateUseCase = new GroupCreate(groupCreatePresenter, groupData, userData);
-//
-//        GroupJoinPresenter groupJoinPresenter = new GroupJoinPresenter();
-//        GroupJoinBoundaryIn groupJoinUseCase = new GroupJoin(groupJoinPresenter, groupData, userData);
-//
-//        this.groupCreateController = new GroupCreateController(groupCreateUseCase);
-//        this.groupJoinController = new GroupJoinController(groupJoinUseCase);
-
-        // SetUp JPanel
-        setSize(1500, 820);
-        setVisible(true);
+        setSize(1000, 600);
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-
-        // Defining JComponents
-        homePage = new JLabel("Dashboard");
-        createGroup = new JButton("Create Group");
-        joinGroup = new JButton("Join Group");
-
-        // Positioning JComponents
+        setVisible(true);
+//        this.setGroupNames(userLoginView.getGroups());
+        button_array = createGroupButtons(group_names);
+        homePage = new JLabel("HomePage");
         homePage.setAlignmentX(Component.CENTER_ALIGNMENT);
-        groupButtons = new JPanel();
-        groupButtons.setAlignmentX(Component.CENTER_ALIGNMENT);
-        groupButtons.add(createGroup);
-        groupButtons.add(joinGroup);
+        JPanel homepageDetails = new JPanel();
+        homepageDetails.add(homePage);
 
-        JPanel group_btns = new JPanel();
-        button_array = createGroupButtons();
-
-        for (int i = 0; i < group_names.length; i++) {
+        // Algorithm implementation
+        for (int i = 0; i < group_names.size(); i++) {
             button_array[i].addActionListener(this);
             group_btns.add(button_array[i]);
         }
 
-        add(homePage);
-        add(Box.createRigidArea(new Dimension(0, 5)));
-        add(groupButtons);
-        add(group_btns);
+        btn_create = new JButton("Create Group");
+        btn_join = new JButton("Join Group");
+        JPanel groupButtons = new JPanel();
+        groupButtons.setAlignmentX(Component.CENTER_ALIGNMENT);
+        groupButtons.add(btn_create);
+        groupButtons.add(btn_join);
+
+        this.add(homePage);
+        this.add(Box.createRigidArea(new Dimension(0, 5)));
+        this.add(groupButtons);
+        this.add(group_btns);
+
+        btn_create.addActionListener(this);
+        btn_join.addActionListener(this);
+
+
+        this.username = username;
+        this.group_names = groupNames;
+
+        UserDataInterface UserInterface;
+
+        GroupDataInterface GroupInterface;
+        try {
+            GroupInterface = new GroupDataAccess();
+            UserInterface = new UserDataAccess();
+        } catch (IOException | ParseException e) {
+            throw new RuntimeException(e);
+        }
+
+        //GroupCreate
+        GroupCreatePresenter presenterCreate = new GroupCreatePresenter();
+        GroupCreateBoundaryIn useCaseCreate = new GroupCreate(presenterCreate, GroupInterface, UserInterface);
+
+        this.controllerCreate = new GroupCreateController(useCaseCreate);
+
+
+
+
+        //GroupJoin
+        GroupJoinPresenter presenterJoin = new GroupJoinPresenter();
+        GroupJoinBoundaryIn useCaseJoin = new GroupJoin(presenterJoin, GroupInterface, UserInterface);
+
+        this.controllerJoin = new GroupJoinController(useCaseJoin);
+
 
     }
 
-    public void actionPerformed(ActionEvent evt) {
+    public void actionPerformed(ActionEvent e){
+        if (e.getActionCommand().equals("Create Group")){
+            String groupName = JOptionPane.showInputDialog("Please enter in Group Name:");
+            JOptionPane.showMessageDialog(null, "Your Group Name is "
+                    + groupName + ".");
 
+            this.controllerCreate.create(groupName, this.username); //PLACEHOLDER
 
-        if (evt.getActionCommand().equals("Create Group")){
-            input_groupName = JOptionPane.showInputDialog("Please enter in Group Name:");
-//            CreatedGroupInfo groupInfo = groupCreateController.create(groupName, userLoginView.getUsername());
+            if (!(groupName.equals("null"))){
+                System.out.println("running");
+            }
+            //controller stuff
+//            GroupCreateController createController = new GroupCreateController();
+            // update homepage
+        }
+        else if (e.getActionCommand().equals("Join Group")){
+            String groupID = JOptionPane.showInputDialog("Please enter in Group ID:");
+            JOptionPane.showMessageDialog(null, "The Group ID is "
+                    + groupID + ".");
+
+            this.controllerJoin.create(groupID, this.username);
+
+            if (!(groupID.equals("null"))){
+                // Filter through mishs code and change group namess
+//                this.group_names.add("Saleh");
+//                this.repaint();
+            }
 
         }
-        else if (evt.getActionCommand().equals("Join Group")){
-            input_groupID = JOptionPane.showInputDialog("Please enter in Group ID:");
-//            JoinedGroupInfo groupInfo = groupJoinController.create(groupID, userLoginView.getUsername());
-
+        else {
+            String groupSelected = e.getActionCommand();
+//            navigate to group
+//            GroupSummaryView selectedGroupView = new GroupSummaryView(groupSelected, groupSelected);
         }
-
-        System.out.println("Clicked " + evt.getActionCommand() + " from Homepage");
 
     }
 
-    /**.
-     * Generates a list of JButtons of all the groups that include the user to display
-     * on the home page.
-     * @param Current_Groups the list of all groups that include the user
-     * @return list including all inputted groups converted into JButtons
-     */
-    public JButton[] createGroupButtons(Object[] Current_Groups) {
-        JButton[] output = new JButton[Current_Groups.length];
-        for (int i = 0; i < Current_Groups.length; i++) {
-            JButton checkbox_member = new JButton(Current_Groups[i].toString());
+//        public void getNumberOfGroups(){ return }
+
+    public JButton[] createGroupButtons(List<String> Current_Groups) {
+        JButton[] output = new JButton[Current_Groups.size()];
+        for (int i = 0; i < Current_Groups.size(); i++) {
+            JButton checkbox_member = new JButton(Current_Groups.get(i));
             output[i] = checkbox_member;
         }
         return output;
     }
 
-    //    public void setGroupNames(){
-//        this.group_names = group_names;
-//
-//    }
+    public void setGroupNames(List<String> group_names){
+        this.group_names = group_names;
+    }
 
-    /**
-     * @return the join group button that allows user to join a group.
-     */
-    public JButton getJoinGroup(){ return this.joinGroup; }
 
-    /**
-     * @return the create group button that allows user to create a new group.
-     */
-    public JButton getCreateGroup(){ return this.createGroup; }
+
+
+
 
 }
