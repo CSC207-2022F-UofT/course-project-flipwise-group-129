@@ -13,13 +13,21 @@ public class ItemDataAccess extends DataAccess implements ItemDataInterface {
      * Implements ItemDataInterface-
      * This is an ItemDataAccess which facilitates data reading and writing from items.json to update
      */
-    public final File itemFile = new File("items.json");
+    public File itemFile = new File("items.json");
     private final Map<String, String> itemMap = new HashMap<>();
 
     /**
      * Creates an item data access instance by first reading the items.json file and storing all information locally
      */
     public ItemDataAccess() throws IOException, ParseException {
+        super.readFile(itemFile, itemMap);
+    }
+
+    /**
+     * Creates a test item data access instance by first reading and storing the testitems.json file locally
+     */
+    public ItemDataAccess(String testPath) throws IOException, ParseException {
+        this.itemFile = new File(testPath);
         super.readFile(itemFile, itemMap);
     }
 
