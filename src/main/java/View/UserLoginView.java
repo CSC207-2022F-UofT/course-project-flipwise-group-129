@@ -16,6 +16,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserLoginView extends JPanel implements ActionListener{
@@ -92,7 +93,6 @@ public class UserLoginView extends JPanel implements ActionListener{
             System.out.println("Collecting stuff from login");
 //            userInfo = this.controller.controlUseCase(this.getUsername(),
 //                    String.valueOf(password.getPassword()));
-
         }
     }
 
@@ -118,7 +118,10 @@ public class UserLoginView extends JPanel implements ActionListener{
      * @return the button that brings user to registration page.
      */
     public JButton getToRegister(){ return toRegister; }
-    public List<List<Object>> getGroupNames(){ return userInfo.getUserAllGroups(); }
+
+    public LoggedInInfo getUserInfo(){
+        return this.userInfo;
+    }
 
 }
 
