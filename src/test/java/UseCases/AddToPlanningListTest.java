@@ -31,8 +31,8 @@ class AddToPlanningListTest {
         ItemDataInterface itemData = null;
         {
             try {
-                groupData = new GroupDataAccess();
-                itemData = new ItemDataAccess();
+                groupData = new GroupDataAccess("testgroups.json");
+                itemData = new ItemDataAccess("testitems.json");
             } catch (IOException | ParseException e) {
                 assert(false);
             }
@@ -43,14 +43,14 @@ class AddToPlanningListTest {
 
         // 2) Input data — we can make this up for the test. Normally it would
         // be created by the Controller.
-        PlannedItemInfo newItem = new PlannedItemInfo("maggi", "group1");
+        PlannedItemInfo newItem = new PlannedItemInfo("maggi", "grpOne11");
 
         // 3) Run the use case
         UpdatedLists outputData = usecase.addPlanning(newItem);
 
         if(outputData.getNewPlanningList() != null){
             for (List<String> temp: outputData.getNewPlanningList()) {
-                if (Objects.equals(temp.get(1), "Maggi")) {
+                if (Objects.equals(temp.get(1), "maggi")) {
                     flagExists = true;
                     break;
                 }
@@ -70,8 +70,8 @@ class AddToPlanningListTest {
         ItemDataInterface itemData = null;
         {
             try {
-                groupData = new GroupDataAccess();
-                itemData = new ItemDataAccess();
+                groupData = new GroupDataAccess("testgroups.json");
+                itemData = new ItemDataAccess("testitems.json");
             } catch (IOException | ParseException e) {
                 assert(false);
             }
@@ -100,8 +100,8 @@ class AddToPlanningListTest {
         ItemDataInterface itemData = null;
         {
             try {
-                groupData = new GroupDataAccess();
-                itemData = new ItemDataAccess();
+                groupData = new GroupDataAccess("testgroups.json");
+                itemData = new ItemDataAccess("testitems.json");
             } catch (IOException | ParseException e) {
                 assert(false);
             }
@@ -112,7 +112,7 @@ class AddToPlanningListTest {
 
         // 2) Input data — we can make this up for the test. Normally it would
         // be created by the Controller.
-        PlannedItemInfo newItem = new PlannedItemInfo("maggi", "noGroup");
+        PlannedItemInfo newItem = new PlannedItemInfo("paneer", "grpOne11");
         List<String> itemInfoBefore = getItemInfo();
         Group groupBefore = getGroupInfo();
         // 3) Run the use case
@@ -123,20 +123,20 @@ class AddToPlanningListTest {
             assert !(groupAfter == null | groupBefore == null);
             assert (groupBefore.getPlanningList().getItems().size() + 1) == groupAfter.getPlanningList().getItems().size();
             assert itemInfoBefore.get(0).equals("itemId does not exist");
-            assert itemInfoAfter.get(1).equals("maggi");
+            assert itemInfoAfter.get(1).equals("paneer");
         } catch (IOException | ParseException e) {
             throw new RuntimeException(e);
         }
     }
 
     List<String> getItemInfo() throws IOException, ParseException {
-        ItemDataInterface itemDsInterface = new ItemDataAccess();
+        ItemDataInterface itemDsInterface = new ItemDataAccess("testitems.json");
         List<String> itemInfo = new ArrayList<>();
         Map<String, String> itemDsMap = itemDsInterface.getItemMap();
         for(Map.Entry<String, String> curItem: itemDsMap.entrySet()){
             try {
                 String curItemName = Item.fromString(curItem.getValue()).getItemName();
-                if(curItemName.equals("maggi")){
+                if(curItemName.equals("paneer")){
                     itemInfo.add(curItem.getKey());
                     itemInfo.add(curItemName);
                     return itemInfo;
@@ -150,9 +150,9 @@ class AddToPlanningListTest {
         return itemInfo;
     }
     Group getGroupInfo() throws IOException, ParseException {
-        GroupDataInterface groupDsInterface = new GroupDataAccess();
+        GroupDataInterface groupDsInterface = new GroupDataAccess("testgroups.json");
         try {
-            return Group.fromString(groupDsInterface.groupAsString("group1"));
+            return Group.fromString(groupDsInterface.groupAsString("grpOne11"));
         } catch (JsonProcessingException e) {
             return null;
         }
