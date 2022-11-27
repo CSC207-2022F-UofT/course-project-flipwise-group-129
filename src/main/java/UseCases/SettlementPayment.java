@@ -47,6 +47,9 @@ public class SettlementPayment implements SettlementBoundaryIn{
         }
         // get the corresponding debt pair and set the value to 0.0.
         Debt currentDebt = currGroup.getPurchaseBalance().getDebtPair(settlement.getOwed(), settlement.getOwing());
+        if(currentDebt == null){
+            return raiseError("debt between selected users does not exist");
+        }
         currentDebt.setDebtValue(0.0);
         try {
             saveGroup(settlement.getGroupId(), currGroup.toString());

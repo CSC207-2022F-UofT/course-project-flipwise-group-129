@@ -45,6 +45,31 @@ class SettlementPaymentTest {
     }
 
     @Test
+    void debtSettlementFailure() {
+
+        GroupDataInterface groupData;
+        {
+            try {
+                groupData = new GroupDataAccess("testgroups.json");
+            } catch (IOException | ParseException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        SettlementPresenter presenter = new SettlementPresenter();
+        SettlementBoundaryIn usecase = new SettlementPayment(presenter, groupData);
+
+        // 2) Input data we can make this up for the test. Normally it would be created by the Controller.
+        PaymentDetails inputData = new PaymentDetails("mishaalk", "userDne", "grpOne11");
+
+        // 3) Run the use case
+        UpdatedDebts outputData = usecase.executeDebtSettlement(inputData);
+
+        // Add an assert statement or multiple to check if the output data is correct
+        assert (Objects.equals(outputData.getOutcomeMessage(), "debt between selected users does not exist") && outputData.getUpdatedBalances() == null);
+    }
+
+    @Test
     void createDebtDbCheck() throws IOException, org.json.simple.parser.ParseException {
         GroupDataInterface groupData;
         {
@@ -68,7 +93,7 @@ class SettlementPaymentTest {
             Group groupAfter = getGroupInfo();
             assert !(groupAfter == null);
             assert (groupAfter.getGroupId().equals("grpOne11"));
-            assert groupAfter.getPurchaseBalance().getDebtPair("mishaalk", "sopleee").getDebtValue() == 0.0;
+            assert groupAfter.getPurchaseBalance().getDebtPair("sopleee", "mishaal").getDebtValue() == 0.0;
         } catch (IOException | ParseException e) {
             throw new RuntimeException(e);
         }
