@@ -16,59 +16,67 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class UserRegisterTest {
 
-//    @BeforeEach
-//    void setUp() {
-//    }
-
-//    @AfterEach
-//    void tearDown() {
-//    }
-
+    /**
+     * Test a successful user register.
+     */
     @Test
     void executeUserRegisterSuccess() {
+        UserDataAccess data = null;
         try {
-            UserRegisterPresenter presenter = new UserRegisterPresenter();
-            UserDataAccess data = new UserDataAccess();
-            UserRegisterBoundaryIn input = new UserRegister(presenter, data);
-            UserRegisterController controller = new UserRegisterController(input);
-            boolean result = controller.controlUseCase("not_alex.yu", "IsAFoodie3", "IsAFoodie3");
-            assertTrue(result);
+            data = new UserDataAccess("testusers.json");
         } catch (IOException e) {
             fail("IOException, issue with UserDataAccess");
         } catch (ParseException e) {
             fail("ParseException, issue with UserDataAccess, parsing the json");
         }
+
+        UserRegisterPresenter presenter = new UserRegisterPresenter();
+        UserRegisterBoundaryIn input = new UserRegister(presenter, data);
+        UserRegisterController controller = new UserRegisterController(input);
+        boolean result = controller.controlUseCase("not_alex.yu", "IsAFoodie3", "IsAFoodie3");
+        assertTrue(result);
     }
 
+    /**
+     * Test an unsuccessful user register where the password and the repeat
+     * password do not match.
+     */
     @Test
     void executeUserRegisterPwNotMatching() {
+        UserDataAccess data = null;
         try {
-            UserRegisterPresenter presenter = new UserRegisterPresenter();
-            UserDataAccess data = new UserDataAccess();
-            UserRegisterBoundaryIn input = new UserRegister(presenter, data);
-            UserRegisterController controller = new UserRegisterController(input);
-            boolean result = controller.controlUseCase("not_alex.yu", "IsAFoodie2", "IsAFoodie3");
-            assertFalse(result);
+            data = new UserDataAccess("testusers.json");
         } catch (IOException e) {
             fail("IOException, issue with UserDataAccess");
         } catch (ParseException e) {
             fail("ParseException, issue with UserDataAccess, parsing the json");
         }
+
+        UserRegisterPresenter presenter = new UserRegisterPresenter();
+        UserRegisterBoundaryIn input = new UserRegister(presenter, data);
+        UserRegisterController controller = new UserRegisterController(input);
+        boolean result = controller.controlUseCase("not_alex.yu", "IsAFoodie3", "IsAFoodie3");
+        assertFalse(result);
     }
 
+    /**
+     * Test an unsuccessful user register where the username entered
+     * by the user is already taken.
+     */
     @Test
     void executeUserRegisterUsernameTaken() {
+        UserDataAccess data = null;
         try {
-            UserRegisterPresenter presenter = new UserRegisterPresenter();
-            UserDataAccess data = new UserDataAccess();
-            UserRegisterBoundaryIn input = new UserRegister(presenter, data);
-            UserRegisterController controller = new UserRegisterController(input);
-            boolean result = controller.controlUseCase("not_alex.yu", "IsAFoodie3", "IsAFoodie3");
-            assertTrue(result);
+            data = new UserDataAccess("testusers.json");
         } catch (IOException e) {
             fail("IOException, issue with UserDataAccess");
         } catch (ParseException e) {
             fail("ParseException, issue with UserDataAccess, parsing the json");
         }
-    }
+        UserRegisterPresenter presenter = new UserRegisterPresenter();
+        UserRegisterBoundaryIn input = new UserRegister(presenter, data);
+        UserRegisterController controller = new UserRegisterController(input);
+        boolean result = controller.controlUseCase("randomC", "statistical_satire", "statistical_satire");
+        assertFalse(result);
+        }
 }

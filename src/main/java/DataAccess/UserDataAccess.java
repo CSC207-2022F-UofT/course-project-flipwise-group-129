@@ -10,13 +10,18 @@ public class UserDataAccess extends DataAccess implements UserDataInterface {
      * Implements UserDataInterface-
      * This is an UserDataAccess which facilitates data reading and writing from users.json to update
      */
-    public final File userFile = new File("users.json");
+    public File userFile = new File("users.json");
     private final Map<String, String> userMap = new HashMap<>();
 
     /**
      * Creates a user data access instance by first reading the users.json file and storing all information locally
      */
     public UserDataAccess() throws IOException, ParseException {
+        super.readFile(userFile, userMap);
+    }
+
+    public UserDataAccess(String testPath) throws IOException, ParseException {
+        this.userFile = new File(testPath);
         super.readFile(userFile, userMap);
     }
 
