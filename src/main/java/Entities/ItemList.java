@@ -2,9 +2,10 @@ package Entities;
 import org.json.simple.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
-abstract public class ItemList {
+abstract public class ItemList implements Iterable<Item> {
     /*
     Abstract class representing a list of items
     Used for the lists of item that were planned to be purchased
@@ -39,10 +40,73 @@ abstract public class ItemList {
         this.items.add(item);
     }
 
-//    public JSONObject toJSON(){
-//        JSONObject obj = new JSONObject();
-//        List<String> allItems = new ArrayList<>();
-//        this.items.forEach(item -> allItems.add(item.toString()));
-//        return obj;
+    /**
+     * iterator function for iteration
+     * @return the iterator that has been initialized
+     */
+    public Iterator<Item> iterator() {
+        return new ItemListIterator<>(this.items);
+    }
+
+//    public static void main(String[] args) {
+//        Item item1 = new Item("apple");
+//        Item item2 = new Item("orange");
+//        Item item3 = new Item("pomegranate");
+//        PlanningList planning = new PlanningList();
+//
+//        planning.addItems(item1);
+//        planning.addItems(item2);
+//        planning.addItems(item3);
+//
+//        for (Item item : planning) {
+//            System.out.println(item);
+//        }
 //    }
+}
+
+class ItemListIterator<Item> implements Iterator<Item> {
+
+    /**
+     * Class implementing the iterator object for the class itemlist.
+     * This class is used to iterate over the list of items in any implementation of ItemList
+     */
+    Integer current;
+    List<Item> items;
+
+    /**
+     * Constructor for the iterator object
+     * @param obj the list of items in the ItemList implementation
+     */
+    ItemListIterator(List<Item> obj){
+        // initialize cursor
+        if (obj.isEmpty()){
+            current = null;
+        }else{
+            current = 0;
+        }
+        this.items = obj;
+    }
+
+    /**
+     * checking if the next element exists
+     * @return whether a next element exists
+     */
+    public boolean hasNext() {
+        return current != null;
+    }
+
+    /**
+     * moves the cursor/iterator to next element
+     * @return the element at the current cursor position
+     */
+    public Item next() {
+        Item toReturn = items.get(this.current);
+        if (items.size() == current + 1){
+            current = null;
+        }else{
+            current = current + 1;
+        }
+        return toReturn;
+    }
+
 }
