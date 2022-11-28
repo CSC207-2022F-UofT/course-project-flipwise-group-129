@@ -73,22 +73,22 @@ public class SettlementPayment implements SettlementBoundaryIn{
      */
     private List<List<String>> getUpdatedDebts(PurchaseBalance purchaseBalance){
         List<List<String>> stringPurchaseBalance = new ArrayList<>();
-        Iterator<String> iter = purchaseBalance.iterator();
-        while(iter.hasNext()){
-            Debt curDebt = iter.next();
-            List<String> currentDebt = new ArrayList<>();
-            currentDebt.add(curDebt.getUserOwed().getUsername());
-            currentDebt.add(curDebt.getUserOwing().getUsername());
-            currentDebt.add(curDebt.getDebtValue().toString());
-            stringPurchaseBalance.add(currentDebt);
-        }
-//        for(Debt curDebt: purchaseBalance.getAllDebts()){
+//        Iterator<String> iter = purchaseBalance.iterator();
+//        while(iter.hasNext()){
+//            Debt curDebt = iter.next();
 //            List<String> currentDebt = new ArrayList<>();
 //            currentDebt.add(curDebt.getUserOwed().getUsername());
 //            currentDebt.add(curDebt.getUserOwing().getUsername());
 //            currentDebt.add(curDebt.getDebtValue().toString());
 //            stringPurchaseBalance.add(currentDebt);
 //        }
+        for(Debt curDebt: purchaseBalance){
+            List<String> currentDebt = new ArrayList<>();
+            currentDebt.add(curDebt.getUserOwed().getUsername());
+            currentDebt.add(curDebt.getUserOwing().getUsername());
+            currentDebt.add(curDebt.getDebtValue().toString());
+            stringPurchaseBalance.add(currentDebt);
+        }
         return stringPurchaseBalance;
     }
 
