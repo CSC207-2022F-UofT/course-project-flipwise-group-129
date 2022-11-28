@@ -25,7 +25,7 @@ public class GroupJoinController {
      * @param userId the username of the user requesting group creation
      * @return the output data structure with all the information to display to the view
      */
-    JoinedGroupInfo create(String groupId, String userId) {
+    public JoinedGroupInfo create(String groupId, String userId) {
         JoinGroupRequest proposedInfo = new JoinGroupRequest(groupId, userId); //create the input ds package
 
         return userInput.joinGroup(proposedInfo); // create the new group and return the output
