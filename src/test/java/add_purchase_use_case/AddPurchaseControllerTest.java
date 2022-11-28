@@ -38,25 +38,28 @@ class AddPurchaseControllerTest {
         // 1) Instantiate
         AddPurchasePresenter presenter = new AddPurchasePresenter();
         AddPurchaseBoundaryIn usecase = new AddPurchase();
-        GroupDataInterface groupData = new GroupDataAccess();
-        UserDataInterface userData = new UserDataAccess();
-        ItemDataInterface itemData = new ItemDataAccess();
+        GroupDataInterface groupData = new GroupDataAccess("test");
+        UserDataInterface userData = new UserDataAccess("test");
+        ItemDataInterface itemData = new ItemDataAccess("test");
 
 
         // 2) Input data — we can make this up for the test. Normally it would
         // be created by the Controller.
-        PurchaseInfo inputData = new PurchaseInfo("1", new ArrayList<>(Collections.singleton("Avi")),
-                "Avi", 10.0f, "group1", presenter, groupData, itemData, userData);
+        List<String> participatingUsers = new ArrayList<>();
+        participatingUsers.add("sopleee");
+        participatingUsers.add("mishaalk");
+        PurchaseInfo inputData = new PurchaseInfo("itemApple", participatingUsers,
+                "sopleee", 10.0f, "grpOne11", presenter, groupData, itemData, userData);
 
         // 3) Run the use case
         UpdatedLists outputData = usecase.executeUseCase(inputData);
 
         for (List<String> temp: outputData.getNewPlanningList()) {
-            assert (!Objects.equals(temp.get(0), "1"));
+            assert (!Objects.equals(temp.get(0), "itemApple"));
         }
         boolean flagExists = false;
         for (List<String> temp: outputData.getNewPurchasedList()) {
-            if (Objects.equals(temp.get(0), "1")) {
+            if (Objects.equals(temp.get(0), "itemApple")) {
                 flagExists = true;
                 break;
             }
@@ -65,8 +68,8 @@ class AddPurchaseControllerTest {
 
         assert(Objects.equals(outputData.getResultMessage(), "Success"));
 
-        Item finalItem = Item.fromString(itemData.itemAsString("1"));
-        assert(finalItem.getPrice() != 0.0 && finalItem.getBuyer() != null);
+        Item finalItem = Item.fromString(itemData.itemAsString("itemApple"));
+        assert(finalItem.getPrice() == 10.0f && Objects.equals(finalItem.getBuyer(), "sopleee"));
 
     }
 
@@ -109,15 +112,18 @@ class AddPurchaseControllerTest {
             }
         };
         AddPurchaseBoundaryIn usecase = new AddPurchase();
-        GroupDataInterface groupData = new GroupDataAccess();
-        UserDataInterface userData = new UserDataAccess();
-        ItemDataInterface itemData = new ItemDataAccess();
+        GroupDataInterface groupData = new GroupDataAccess("test");
+        UserDataInterface userData = new UserDataAccess("test");
+        ItemDataInterface itemData = new ItemDataAccess("test");
 
 
         // 2) Input data — we can make this up for the test. Normally it would
         // be created by the Controller.
-        PurchaseInfo inputData = new PurchaseInfo("1", new ArrayList<>(Collections.singleton("Avi")),
-                "Avi", 10.0f, "group1", presenter, groupData, itemData, userData);
+        List<String> participatingUsers = new ArrayList<>();
+        participatingUsers.add("sopleee");
+        participatingUsers.add("mishaalk");
+        PurchaseInfo inputData = new PurchaseInfo("itemApple", participatingUsers,
+                "sopleee", 10.0f, "grpOne11", presenter, groupData, itemData, userData);
 
         // 3) Run the use case
         UpdatedLists outputData = usecase.executeUseCase(inputData);
@@ -130,15 +136,18 @@ class AddPurchaseControllerTest {
         // 1) Instantiate
         AddPurchasePresenter presenter = new AddPurchasePresenter();
         AddPurchaseBoundaryIn usecase = new AddPurchase();
-        GroupDataInterface groupData = new GroupDataAccess();
-        UserDataInterface userData = new UserDataAccess();
-        ItemDataInterface itemData = new ItemDataAccess();
+        GroupDataInterface groupData = new GroupDataAccess("test");
+        UserDataInterface userData = new UserDataAccess("test");
+        ItemDataInterface itemData = new ItemDataAccess("test");
 
 
         // 2) Input data — we can make this up for the test. Normally it would
         // be created by the Controller.
-        PurchaseInfo inputData = new PurchaseInfo("1", new ArrayList<>(Collections.singleton("Avi")),
-                "Avi", 10.0f, "group1", presenter, groupData, itemData, userData);
+        List<String> participatingUsers = new ArrayList<>();
+        participatingUsers.add("sopleee");
+        participatingUsers.add("mishaalk");
+        PurchaseInfo inputData = new PurchaseInfo("itemApple", participatingUsers,
+                "sopleee", 10.0f, "grpOne11", presenter, groupData, itemData, userData);
 
         // 3) Run the use case
         UpdatedLists outputData = usecase.executeUseCase(inputData);
@@ -146,7 +155,7 @@ class AddPurchaseControllerTest {
         Group groupInfoAfter = getGroupInfo();
         Item itemInfoAfter = getItemInfo();
 
-        assert (Objects.equals(itemInfoAfter.getBuyer().getUsername(), "Avi"));
+        assert (Objects.equals(itemInfoAfter.getBuyer(), "sopleee"));
         assert (itemInfoAfter.getPrice() == 10.0f);
 
         List<List<String>> returnedPlanning = outputData.getNewPlanningList();
@@ -159,45 +168,41 @@ class AddPurchaseControllerTest {
         assert (dbPurchased.getItems().size() == returnedPurchased.size());
 
         int i = 0;
-        Iterator<Item> iterPlan = dbPlanning.iterator();
-        while (iterPlan.hasNext()) {
-            Item item = iterPlan.next();
+        for (Item item : dbPlanning) {
             assert (Objects.equals(item.getItemId(), returnedPlanning.get(i).get(0)));
             assert (Objects.equals(item.getItemName(), returnedPlanning.get(i).get(1)));
             i++;
         }
 
         i = 0;
-        Iterator<Item> iterPur = dbPurchased.iterator();
-        while (iterPur.hasNext()) {
-            Item item = iterPur.next();
+        for (Item item : dbPurchased) {
             assert (Objects.equals(item.getItemId(), returnedPurchased.get(i).get(0)));
             assert (Objects.equals(item.getItemName(), returnedPurchased.get(i).get(1)));
             assert (Objects.equals(String.valueOf(item.getPrice()), returnedPurchased.get(i).get(2)));
-            assert (Objects.equals(item.getBuyer().getUsername(), returnedPurchased.get(i).get(3)));
+            assert (Objects.equals(item.getBuyer(), returnedPurchased.get(i).get(3)));
             i++;
         }
     }
 
     Group getGroupInfo() throws IOException, ParseException {
-        GroupDataInterface groupDsInterface = new GroupDataAccess();
+        GroupDataInterface groupDsInterface = new GroupDataAccess("test");
         // get the user from the database
         //check if the user exists
-        if (!groupDsInterface.groupIdExists("group1")){
+        if (!groupDsInterface.groupIdExists("grpOne11")){
             throw new RuntimeException("Group Id does not exist");
         }
-        String groupString = groupDsInterface.groupAsString("group1");
+        String groupString = groupDsInterface.groupAsString("grpOne11");
 
         return Group.fromString(groupString);
     }
 
     Item getItemInfo() throws IOException, ParseException {
-        ItemDataInterface itemDsInterface = new ItemDataAccess();
+        ItemDataInterface itemDsInterface = new ItemDataAccess("test");
 
-        if (!itemDsInterface.itemIdExists("1")){
+        if (!itemDsInterface.itemIdExists("itemApple")){
             throw new RuntimeException(("ItemId does not exist"));
         }
-        String itemString = itemDsInterface.itemAsString("1");
+        String itemString = itemDsInterface.itemAsString("itemApple");
 
         return Item.fromString(itemString);
     }
