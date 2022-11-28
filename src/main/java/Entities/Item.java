@@ -14,11 +14,11 @@ public class Item {
     This class represents an item that has been bought in a purchase
      */
     private String itemName; //the name of the item
-    private User buyer; // the person who bought the item
+    private String buyer; // the id of the person who bought the item
     private double price; // the price of the item
 
     private String itemId; //id for unique identification purposes
-    private List<User> usersInvolved; // the list of all the users involved in the purchase
+    private List<String> usersInvolved; // the list of all the user ids involved in the purchase
 
     /**
      * Constructor to make a new item
@@ -53,7 +53,7 @@ public class Item {
      * get the buyer
      * @return the buyer
      */
-    public User getBuyer(){
+    public String getBuyer(){
         // return the buyer of this item
         return buyer;
     }
@@ -80,7 +80,7 @@ public class Item {
      * get all the users involved in the purchase
      * @return the users involved in the purchase as a List
      */
-    public List<User> getUsersInvolved() {
+    public List<String> getUsersInvolved() {
         //return the list of all the users involved in the purchase.
         return this.usersInvolved;
     }
@@ -107,7 +107,7 @@ public class Item {
      * set the person who bought the item
      * @param buyer the person who bought the item
      */
-    public void setBuyer(User buyer){
+    public void setBuyer(String buyer){
         //set the buyer who bought the product
         this.buyer = buyer;
     }
@@ -116,7 +116,7 @@ public class Item {
      * set all the users invovled in the purchase of item
      * @param users the users involved in the purchase of item
      */
-    public void setUsersInvolved(List<User> users){
+    public void setUsersInvolved(List<String> users){
         //enter all the users involved
         this.usersInvolved = users;
     }
@@ -125,7 +125,7 @@ public class Item {
      *  add a person to the purchase of item
      * @param user the person to add to purchase of item
      */
-    public void addUsersInvolved(User user){
+    public void addUsersInvolved(String user){
         // add all the users invovled in this item purchase
         this.usersInvolved.add(user);
     }
