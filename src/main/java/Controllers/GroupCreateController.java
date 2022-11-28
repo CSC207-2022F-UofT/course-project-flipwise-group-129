@@ -24,7 +24,7 @@ public class GroupCreateController {
      * @param userId the username of the user requesting group creation
      * @return the output data structure with all the information to display to the view
      */
-    CreatedGroupInfo create(String groupName, String userId) {
+    public CreatedGroupInfo create(String groupName, String userId) {
         ProposedGroupInfo proposedInfo = new ProposedGroupInfo(groupName, userId); //create the input ds package
 
         return userInput.createNewGroup(proposedInfo); // create the new group and return the output
