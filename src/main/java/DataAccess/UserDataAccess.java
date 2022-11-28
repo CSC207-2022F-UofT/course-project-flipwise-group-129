@@ -20,11 +20,6 @@ public class UserDataAccess extends DataAccess implements UserDataInterface {
         super.readFile(userFile, userMap);
     }
 
-    public UserDataAccess(String testPath) throws IOException, ParseException {
-        this.userFile = new File(testPath);
-        super.readFile(userFile, userMap);
-    }
-
     /**
      * Creates a test user data access instance by first reading and storing the testusers.json file locally
      */
