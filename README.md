@@ -1,16 +1,18 @@
-#Flipwise Submission
+5#Flipwise Submission
 ## 1. How to Start and Run Flipwise
 - [ ] Clone the Project Flipwise repository and open the folder in your Intellij (preferred to easily make JavaDoc)
 - [ ] Go to file Main.java located in the src/main/java directory
 - [ ] Right click on the Main and select Run Main.main() 
 
-## 2. Running the Tests
-### 2. How to run the testing program and generate the test coverage report
-- [ ] Go to file MainTest.java located in the src/main/java/test directory
-- [ ] Right click on Maintest and select Run Test
-### How to generate the test coverage report
+## 2. How to run the testing program and generate the test coverage report
+- [ ] Run test configuration by selecting 'Testing Configurations' in the Configuration dropdown
+- [ ] Select 'Run Testing Configurations with Coverage' button three buttons left of Configuration dropdown
+- [ ] Unfortunately, for testing purposes, we need a test database. Since we have not generated enough data to run our tests on , our tests do not compile as of now. We will complete our tests and submit for Milestone 5.
+- [ ] Coverage Report will thus indicate that all significant files, are tested to 0%.
 
 ## 3. Generating Javadocs
+- [ ] On the top of Intellij, open the Tools dropdown and select GenerateJavadoc
+- [ ] Select 'Whole Project' for Javadoc Scope and push the generate button
 
 ## 4. Design Pattern Used
 ### 1. Dependency Injection:

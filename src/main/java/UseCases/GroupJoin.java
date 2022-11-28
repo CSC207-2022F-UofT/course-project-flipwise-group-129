@@ -144,14 +144,14 @@ public class GroupJoin implements GroupJoinBoundaryIn{
 
         //adding all needed new debt pairs:
         PurchaseBalance grpPurchaseBalance = group.getPurchaseBalance();
-        for (User groupUser : group.getUsers()) {
-            grpPurchaseBalance.addDebtPair(new Debt(groupUser, user, group.getGroupId()));
-            grpPurchaseBalance.addDebtPair(new Debt(user, groupUser, group.getGroupId()));
+        for (String groupUserName : group.getUsers()) {
+            grpPurchaseBalance.addDebtPair(new Debt(getUserFromDb(groupUserName), user, group.getGroupId()));
+            grpPurchaseBalance.addDebtPair(new Debt(user, getUserFromDb(groupUserName), group.getGroupId()));
         }
         //mutating method, so no need to reassign
 
-        group.addUser(user); // add the user into the list of users in the group
-        user.addGroup(group); // add the group into the list of groups the user is a part of
+        group.addUser(user.getUsername()); // add the user into the list of users in the group
+        user.addGroup(group.getGroupId()); // add the group into the list of groups the user is a part of
     }
 
     /**
@@ -182,15 +182,13 @@ public class GroupJoin implements GroupJoinBoundaryIn{
      */
 
     private JoinedGroupInfo createOutputData(User user, Group group){
-        List<String> usersInGroup = new ArrayList<>();
-        List<String> groupIds = new ArrayList<>();
         List<String> groupNames = new ArrayList<>();
         List<List<String>> planningList = new ArrayList<>();
         List<List<String>> purchasedList = new ArrayList<>();
 
-        group.getUsers().forEach(user1 -> usersInGroup.add(user1.getUsername()));
-        user.getGroups().forEach(group1 -> groupIds.add(group1.getGroupId()));
-        user.getGroups().forEach(group1 -> groupIds.add(group1.getGroupName()));
+        List<String> usersInGroup = new ArrayList<>(group.getUsers());
+        List<String> groupIds = new ArrayList<>(user.getGroups());
+        user.getGroups().forEach(group1 -> groupNames.add(getGroupFromDb(group1).getGroupName()));
 
         //make a sublist  of the purchased and planning list
         planningList = this.getListItemList(group.getPlanningList());
@@ -206,7 +204,7 @@ public class GroupJoin implements GroupJoinBoundaryIn{
             List<String> subList = new ArrayList<>();
             subList.add(item.getItemId());
             subList.add(item.getItemName());
-            subList.add(item.getBuyer().getUsername());
+            subList.add(item.getBuyer());
         }
 
         return newList;
