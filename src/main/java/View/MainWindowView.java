@@ -15,6 +15,7 @@ import java.util.List;
 public class MainWindowView extends JFrame implements ActionListener {
     private final UserLoginView loginView;
     private final UserRegisterView registerView;
+    private HomePageView homePageView;
 
     private LoggedInInfo userInfo;
 
@@ -82,14 +83,21 @@ public class MainWindowView extends JFrame implements ActionListener {
         }
 
         else if (evt.getActionCommand().equals("Create Group")) {
+            createdGroupInfo = homePageView.getCreatedGroupInfo();
             setHomePage(userInfo.getUsername(), createdGroupInfo.getAllGroupNames());
         }
 
         else if (evt.getActionCommand().equals("Join Group")){
+            joinedGroupInfo = homePageView.getJoinedGroupInfo();
             setHomePage(userInfo.getUsername(), joinedGroupInfo.getGroupNames());
         }
         else {
-            setGroupSummery(evt.getActionCommand());
+            String groupID = getGroupID(getGroupIDs(userInfo),
+                getGroupNames(userInfo), evt.getActionCommand());
+            setGroupSummery(evt.getActionCommand(), groupID, userInfo.getUsername(),
+                getPurchaseListData(userInfo, groupID), getPlanningListData(userInfo, groupID),
+                getGroupDebtData(userInfo, groupID), getAllUserNames(userInfo, groupID));
+
         }
     }
 
@@ -108,11 +116,9 @@ public class MainWindowView extends JFrame implements ActionListener {
      * @param user the name of the user that logged in.
      * @param groupnames the list of groups the user is apart of.
      */
-    private void setHomePage (String user, List<String> groupnames){
+    private void setHomePage(String user, List<String> groupnames){
         HomePageView homePageView = new HomePageView(user, groupnames);
         this.setContentPane(homePageView);
-        createdGroupInfo = homePageView.getCreatedGroupInfo();
-        joinedGroupInfo = homePageView.getJoinedGroupInfo();
         homePageView.getJoinGroup().addActionListener(this);
         homePageView.getCreateGroup().addActionListener(this);
     }
@@ -121,22 +127,39 @@ public class MainWindowView extends JFrame implements ActionListener {
      * Switches to group summery page on the main window.
      * @param group the name of the group.
      */
-    public void setGroupSummery(String group) {
+    public void setGroupSummery(String group, String groupid, String username,
+                                List<List<String>> purchaseListData, List<List<String>> planningListData,
+                                List<List<String>> debtData, List<String> groupUserNames) {
 //        String groupID = getGroupID(getGroupIDs(userInfo),
 //                getGroupNames(userInfo), group);
 //        GroupSummaryView selectedGroup = new GroupSummaryView(group, groupID, userInfo.getUsername(),
 //                getPurchaseListData(userInfo, groupID), getPlanningListData(userInfo, groupID),
 //                getGroupDebtData(userInfo, groupID), getAllUserNames(userInfo, groupID));
-//        setContentPane(selectedGroup);
+        this.dispose();
+        GroupSummaryView selectedGroup = new GroupSummaryView(group, groupid, username,
+                purchaseListData, planningListData, debtData, groupUserNames);
+        selectedGroup.setVisible(true);
+
     }
 
+    /**
+     * @return the name of the user that logged in.
+     */
     public String getUsername(LoggedInInfo userInfo){
         return userInfo.getUsername();
     }
+
+    /**
+     * @return the ID of the group the user selected.
+     */
     public String getGroupID(List<String> groupIDs, List<String> groupnames, String group){
         int index = groupnames.indexOf(group);
         return groupIDs.get(index);
     }
+
+    /**
+     * @return the list of names of the groups the user is apart of.
+     */
     public List<String> getGroupNames(LoggedInInfo loggedInInfo) {
         List<List<Object>> allGroups = loggedInInfo.getUserAllGroups();
         List<String> output = new ArrayList<>();
@@ -147,6 +170,9 @@ public class MainWindowView extends JFrame implements ActionListener {
         return output;
     }
 
+    /**
+     * @return the list of IDs of the groups the user is apart of.
+     */
     public List<String> getGroupIDs(LoggedInInfo loggedInInfo) {
         List<List<Object>> allGroups = loggedInInfo.getUserAllGroups();
         List<String> output = new ArrayList<>();
@@ -157,6 +183,9 @@ public class MainWindowView extends JFrame implements ActionListener {
         return output;
     }
 
+    /**
+     * @return the list of all purchased items of a group.
+     */
     public List<List<String>> getPurchaseListData(LoggedInInfo loggedInInfo, String groupID) {
         List<List<Object>> allGroups = loggedInInfo.getUserAllGroups();
         List<List<String>> output = new ArrayList<>();
@@ -169,6 +198,9 @@ public class MainWindowView extends JFrame implements ActionListener {
         return output;
     }
 
+    /**
+     * @return the list of all planning items of a group.
+     */
     public List<List<String>> getPlanningListData(LoggedInInfo loggedInInfo, String groupID) {
         List<List<Object>> allGroups = loggedInInfo.getUserAllGroups();
         List<List<String>> output = new ArrayList<>();
@@ -181,6 +213,9 @@ public class MainWindowView extends JFrame implements ActionListener {
         return output;
     }
 
+    /**
+     * @return the list of all users a part of a group.
+     */
     public List<String> getAllUserNames(LoggedInInfo loggedInInfo, String groupID) {
         List<List<Object>> allGroups = loggedInInfo.getUserAllGroups();
         List<String> output = new ArrayList<>();
@@ -193,6 +228,9 @@ public class MainWindowView extends JFrame implements ActionListener {
         return output;
     }
 
+    /**
+     * @return the list of debt information between members of a group.
+     */
     public List<List<String>> getGroupDebtData(LoggedInInfo loggedInInfo, String groupID) {
         List<List<Object>> allGroups = loggedInInfo.getUserAllGroups();
         List<List<String>> output = new ArrayList<>();
@@ -209,4 +247,6 @@ public class MainWindowView extends JFrame implements ActionListener {
 
 
 
-}
+    }
+
+
