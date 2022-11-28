@@ -22,6 +22,7 @@ public class UserDataAccess extends DataAccess implements UserDataInterface {
 
     /**
      * Creates a test user data access instance by first reading and storing the testusers.json file locally
+     * @param testPath a string of the filepath for the test data database
      */
     public UserDataAccess(String testPath) throws IOException, ParseException {
         this.userFile = new File(testPath);
