@@ -25,10 +25,10 @@ public class ItemDataAccess extends DataAccess implements ItemDataInterface {
 
     /**
      * Creates a test item data access instance by first reading and storing the testitems.json file locally
-     * @param testPath a string of the filepath for the test data database
+     * @param testString a string confirming database to access is test
      */
-    public ItemDataAccess(String testPath) throws IOException, ParseException {
-        this.itemFile = new File(testPath);
+    public ItemDataAccess(String testString) throws IOException, ParseException {
+        this.itemFile = new File("src/main/testitems.json");
         super.readFile(itemFile, itemMap);
     }
 
