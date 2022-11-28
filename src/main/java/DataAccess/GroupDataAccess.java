@@ -12,6 +12,7 @@ public class GroupDataAccess extends DataAccess implements GroupDataInterface {
      */
     public File groupFile = new File("src/main/groups.json");
     private final Map<String, String> groupMap = new HashMap<>();
+
     /**
      * Creates a group data access instance by first reading the groups.json file and storing all information locally
      */
@@ -21,6 +22,7 @@ public class GroupDataAccess extends DataAccess implements GroupDataInterface {
 
     /**
      * Creates a test group data access instance by first reading and storing the testgroups.json file locally
+     * @param testPath a string of the filepath for the test data database
      */
     public GroupDataAccess(String testPath) throws IOException, ParseException {
         this.groupFile = new File(testPath);
