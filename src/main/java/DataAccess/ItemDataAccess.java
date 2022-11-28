@@ -13,7 +13,7 @@ public class ItemDataAccess extends DataAccess implements ItemDataInterface {
      * Implements ItemDataInterface-
      * This is an ItemDataAccess which facilitates data reading and writing from items.json to update
      */
-    public File itemFile = new File("items.json");
+    public File itemFile = new File("src/main/items.json");
     private final Map<String, String> itemMap = new HashMap<>();
 
     /**
