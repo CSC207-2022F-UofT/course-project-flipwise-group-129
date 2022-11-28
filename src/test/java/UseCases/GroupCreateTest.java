@@ -54,7 +54,7 @@ class GroupCreateTest {
     }
 
     List<String> getUserInfo() throws IOException, ParseException {
-        UserDataInterface userDsInterface = new UserDataAccess("src/test/resources/testusersCopy.json");
+        UserDataInterface userDsInterface = new UserDataAccess("test");
         // get the user from the database
         //check if the user exists
         if (!userDsInterface.userIdExists("mishaalk")){
@@ -100,8 +100,8 @@ class GroupCreateTest {
         };
 
 
-        GroupDataInterface groupData = new GroupDataAccess("src/test/resources/testgroups.json");
-        UserDataInterface userData = new UserDataAccess("src/test/resources/testusersCopy.json");
+        GroupDataInterface groupData = new GroupDataAccess("test");
+        UserDataInterface userData = new UserDataAccess("test");
         GroupCreateBoundaryIn useCase = new GroupCreate(presenter, groupData, userData);
 
         // 2) Input data — we can make this up for the test. Normally it would
@@ -147,8 +147,8 @@ class GroupCreateTest {
         };
 
 
-        GroupDataInterface groupData = new GroupDataAccess("src/test/resources/testgroups.json");
-        UserDataInterface userData = new UserDataAccess("src/test/resources/testusersCopy.json");
+        GroupDataInterface groupData = new GroupDataAccess("test");
+        UserDataInterface userData = new UserDataAccess("test");
         GroupCreateBoundaryIn useCase = new GroupCreate(presenter, groupData, userData);
 
         // 2) Input data — we can make this up for the test. Normally it would
@@ -189,8 +189,8 @@ class GroupCreateTest {
         };
 
 
-        GroupDataInterface groupData = new GroupDataAccess("src/test/resources/testgroups.json");
-        UserDataInterface userData = new UserDataAccess("src/test/resources/testusersCopy.json");
+        GroupDataInterface groupData = new GroupDataAccess("test");
+        UserDataInterface userData = new UserDataAccess("test");
         GroupCreateBoundaryIn useCase = new GroupCreate(presenter, groupData, userData);
 
         //setting the data from the database as a constant to check later

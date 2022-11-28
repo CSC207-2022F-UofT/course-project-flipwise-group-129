@@ -82,8 +82,8 @@ class GroupJoinTest {
             }
         };
 
-        GroupDataInterface groupData = new GroupDataAccess("src/test/resources/testgroupsCopy.json");
-        UserDataInterface userData = new UserDataAccess("src/test/resources/testusersCopy.json");
+        GroupDataInterface groupData = new GroupDataAccess("test");
+        UserDataInterface userData = new UserDataAccess("test");
         GroupJoinBoundaryIn useCase = new GroupJoin(presenter, groupData, userData);
 
         // 2) Input data — we can make this up for the test. Normally it would
@@ -122,8 +122,8 @@ class GroupJoinTest {
             }
         };
 
-        GroupDataInterface groupData = new GroupDataAccess("src/test/resources/testgroupsCopy.json");
-        UserDataInterface userData = new UserDataAccess("src/test/resources/testusersCopy.json");
+        GroupDataInterface groupData = new GroupDataAccess("test");
+        UserDataInterface userData = new UserDataAccess("test");
         GroupJoinBoundaryIn useCase = new GroupJoin(presenter, groupData, userData);
 
         // 2) Input data — we can make this up for the test. Normally it would
@@ -162,8 +162,8 @@ class GroupJoinTest {
             }
         };
 
-        GroupDataInterface groupData = new GroupDataAccess("src/test/resources/testgroupsCopy.json");
-        UserDataInterface userData = new UserDataAccess("src/test/resources/testusersCopy.json");
+        GroupDataInterface groupData = new GroupDataAccess("test");
+        UserDataInterface userData = new UserDataAccess("test");
         GroupJoinBoundaryIn useCase = new GroupJoin(presenter, groupData, userData);
 
         // 2) Input data — we can make this up for the test. Normally it would
@@ -179,7 +179,7 @@ class GroupJoinTest {
 
 
     List<String> getUserInfo() throws IOException, ParseException {
-        UserDataInterface userDsInterface = new UserDataAccess("src/test/resources/testusersCopy.json");
+        UserDataInterface userDsInterface = new UserDataAccess("test");
         // get the user from the database
         //check if the user exists
         if (!userDsInterface.userIdExists("rcordi")){
@@ -196,7 +196,7 @@ class GroupJoinTest {
 
 
     List<List<String>> getGroupInfo() throws IOException, ParseException {
-        GroupDataInterface groupDsInterface = new GroupDataAccess("src/test/resources/testgroupsCopy.json");
+        GroupDataInterface groupDsInterface = new GroupDataAccess("test");
         List<String> stringItems = new ArrayList<>();
         List<String> stringPlanned = new ArrayList<>();
         // get the user from the database
@@ -241,8 +241,8 @@ class GroupJoinTest {
             }
         };
 
-        GroupDataInterface groupData = new GroupDataAccess();
-        UserDataInterface userData = new UserDataAccess();
+        GroupDataInterface groupData = new GroupDataAccess("test");
+        UserDataInterface userData = new UserDataAccess("test");
         GroupJoinBoundaryIn useCase = new GroupJoin(presenter, groupData, userData);
 
         // 2) Input data — we can make this up for the test. Normally it would
