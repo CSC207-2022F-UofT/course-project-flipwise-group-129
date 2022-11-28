@@ -4,6 +4,7 @@ import org.json.simple.parser.ParseException;
 import java.util.*;
 import java.io.*;
 import DataAccessInterface.GroupDataInterface;
+import {groups} from "groups.json";
 
 public class GroupDataAccess extends DataAccess implements GroupDataInterface {
     /**
@@ -22,10 +23,10 @@ public class GroupDataAccess extends DataAccess implements GroupDataInterface {
 
     /**
      * Creates a test group data access instance by first reading and storing the testgroups.json file locally
-     * @param testPath a string of the filepath for the test data database
+     * @param testString a string confirming database to access is test
      */
-    public GroupDataAccess(String testPath) throws IOException, ParseException {
-        this.groupFile = new File(testPath);
+    public GroupDataAccess(String testString) throws IOException, ParseException {
+        this.groupFile = new File("src/main/testgroups.json");
         super.readFile(groupFile, groupMap);
     }
 
