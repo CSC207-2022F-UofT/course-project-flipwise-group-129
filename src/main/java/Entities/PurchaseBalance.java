@@ -4,10 +4,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.simple.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 
-public class PurchaseBalance {
+public class PurchaseBalance implements Iterable<Debt>{
 
     /*
     Represents a list of all the debts
@@ -65,7 +66,7 @@ public class PurchaseBalance {
      */
     public Debt getDebtPair(String userOwed, String userOwing){
         for (Debt debt : this.allDebts) {
-            if (debt.getUserOwing().getUsername().equals(userOwing) && debt.getUserOwed().getUsername().equals(userOwing)){
+            if (debt.getUserOwing().getUsername().equals(userOwing) && debt.getUserOwed().getUsername().equals(userOwed)){
                 return debt;
             }
         }
@@ -94,6 +95,15 @@ public class PurchaseBalance {
 //
 //        return obj;
 //    }
+
+    /**
+     * iterator function for iteration
+     * @return the iterator that has been initialized
+     */
+    public Iterator<Debt> iterator() {
+        return new PurchaseBalanceIterator<>(this.allDebts);
+    }
+
     @Override
     public String toString() {
         ObjectMapper mapper = new ObjectMapper();
@@ -103,4 +113,52 @@ public class PurchaseBalance {
             throw new RuntimeException(e);
         }
     }
+}
+
+class PurchaseBalanceIterator<Debt> implements Iterator<Debt> {
+
+    /**
+     * Class implementing the iterator object for the class PurchaseBalance.
+     * This class is used to iterate over the list of debts in any implementation of PurchaseBalance
+     */
+
+    Integer current;
+    List<Debt> debts;
+
+    /**
+     * Constructor for the iterator object
+     * @param obj the list of debts in the PurchaseBalance implementation
+     */
+    PurchaseBalanceIterator(List<Debt> obj){
+        // initialize cursor
+        if (obj.isEmpty()){
+            current = null;
+        }else{
+            current = 0;
+        }
+        this.debts = obj;
+    }
+
+    /**
+     * checking if the next element exists
+     * @return whether a next element exists
+     */
+    public boolean hasNext() {
+        return current != null;
+    }
+
+    /**
+     * moves the cursor/iterator to next element
+     * @return the element at the current cursor position
+     */
+    public Debt next() {
+        Debt toReturn = debts.get(this.current);
+        if (debts.size() == current + 1){
+            current = null;
+        }else{
+            current = current + 1;
+        }
+        return toReturn;
+    }
+
 }

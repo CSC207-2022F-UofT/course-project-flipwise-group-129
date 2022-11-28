@@ -1,5 +1,6 @@
 package DataAccessInterface;
 import java.io.IOException;
+import java.util.Map;
 
 public interface GroupDataInterface {
     /*
@@ -28,4 +29,10 @@ public interface GroupDataInterface {
      * @return group details corresponding to groupId in string form
      */
     String groupAsString(String groupId);
+
+    /**
+     * This function will be called in the tests to check if the database updated as expected
+     * @return the whole groupMap read from groups.json
+     */
+    Map<String, String> getGroupMap()
 }

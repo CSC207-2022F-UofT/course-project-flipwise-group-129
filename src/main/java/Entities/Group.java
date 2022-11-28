@@ -8,7 +8,7 @@ public class Group {
     /**
     This class represents a Group of users that have decided to conduct purchases together
      */
-    private Set<User> users; // all the users that are involved the group
+    private Set<String> users; // all the ids of users that are involved the group
     private PurchaseList purchaseList; // the list of things to purchase
     private PlanningList planningList; // the list of all the things that are planned to purchase
     private PurchaseBalance purchaseBalance; // has all the debts in the group
@@ -22,7 +22,7 @@ public class Group {
      * @param name the name of the group to be created
      * @param users all the users in the group
      */
-    public Group(String name, Set<User> users){
+    public Group(String name, Set<String> users){
         Timestamp ts = new Timestamp(System.currentTimeMillis());
         this.groupId = "Group" + name + ts.toInstant().toString();
         this.groupName = name;
@@ -43,7 +43,7 @@ public class Group {
      * Get all the users in the group
      * @return the set of all users in the group
      */
-    public Set<User> getUsers(){
+    public Set<String> getUsers(){
         // return all the users in this group
         return this.users;
     }
@@ -98,7 +98,7 @@ public class Group {
      * adds the user to the set of users in the group
      * @param user the user to add to the set of users in the group
      */
-    public void addUser(User user){
+    public void addUser(String user){
         // add a user into the group
         this.users.add(user);
     }
