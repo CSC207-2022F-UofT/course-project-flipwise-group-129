@@ -14,7 +14,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 public class UserLogin implements UserLoginBoundaryIn {
     UserLoginBoundaryOut outputBoundary;
@@ -62,8 +61,7 @@ public class UserLogin implements UserLoginBoundaryIn {
             String userDetails = userDataInterface.userAsString(username);
             User user = User.fromString(userDetails);
             if (Objects.equals(user.getPassword(), password)) {
-                LoggedInInfo info = successDetails(user);
-                // TODO: figure out how to pass the data up into output boundary
+                return(successDetails(user));
             }
         }
         return new LoggedInInfo(false);
@@ -75,10 +73,12 @@ public class UserLogin implements UserLoginBoundaryIn {
      * @param user user object that logged in successfully
      * @return A LoggedInInfo data structure
      */
-    private LoggedInInfo successDetails(User user) {
+    private LoggedInInfo successDetails(User user) throws JsonProcessingException {
         List<List<Object>> allGroups = new ArrayList<>();
-        List<Group> groups = user.getGroups();
-        for (Group group : groups) {
+        List<String> groups = user.getGroups();
+        for (String stringGroup : groups) {
+            // Gets a group representation of each group
+            Group group = Group.fromString(groupDataInterface.groupAsString(stringGroup));
             List<Object> eachGroup = new ArrayList<>();
 
             eachGroup.add(group.getGroupId());
@@ -90,7 +90,7 @@ public class UserLogin implements UserLoginBoundaryIn {
             List<List<String>> purchaseList = getPurchase(group.getPurchaseList());
             eachGroup.add(purchaseList);
 
-            eachGroup.add(getUsersAsString(group));
+            eachGroup.add(getUsersAsList(group));
 
             List<Debt> debtAsDebts = group.getPurchaseBalance().getAllDebts();
             eachGroup.add(getDebtAsString(debtAsDebts));
@@ -126,13 +126,8 @@ public class UserLogin implements UserLoginBoundaryIn {
      * @param group the group to get all users fomr
      * @return a list of string of usernames
      */
-    private List<String> getUsersAsString(Group group) {
-        ArrayList<String> usersInGroupList = new ArrayList<>();
-        Set<User> usersInGroup = group.getUsers();
-        for (User u : usersInGroup) {
-            usersInGroupList.add(u.getUsername());
-        }
-        return(usersInGroupList);
+    private List<String> getUsersAsList(Group group) {
+        return new ArrayList<>(group.getUsers());
     }
 
     /**
@@ -166,8 +161,8 @@ public class UserLogin implements UserLoginBoundaryIn {
             List<String> currentItem = new ArrayList<>();
             currentItem.add(curItem.getItemId());
             currentItem.add(curItem.getItemName());
-            currentItem.add(curItem.getPrice().toString());
-            currentItem.add(curItem.getBuyer().getUsername());
+            currentItem.add(String.valueOf(curItem.getPrice()));
+            currentItem.add(curItem.getBuyer());
             stringPurchasedList.add(currentItem);
         }
         return stringPurchasedList;
