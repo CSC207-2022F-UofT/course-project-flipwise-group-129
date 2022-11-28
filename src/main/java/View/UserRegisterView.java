@@ -1,5 +1,6 @@
 package View;
 
+import DataStructures.AccountStatus;
 import View.ViewInterface;
 import Controllers.UserRegisterController;
 import DataAccess.UserDataAccess;
@@ -24,7 +25,7 @@ public class UserRegisterView extends JPanel implements ActionListener {
     public JButton signup;
     public JButton exitSignUp;
 
-//    UserRegisterController controller;
+    UserRegisterController controller;
     public boolean final_output;
 
     /**
@@ -32,17 +33,17 @@ public class UserRegisterView extends JPanel implements ActionListener {
      */
     public UserRegisterView() {
 
-//        UserDataInterface userData;
-//        try {
-//            userData = new UserDataAccess();
-//        } catch (IOException | ParseException e) {
-//            throw new RuntimeException(e); // Display popup
-//        }
-//
-//        UserRegisterPresenter presenter = new UserRegisterPresenter();
-//        UserRegisterBoundaryIn useCase = new UserRegister(presenter, userData);
-//
-//        this.controller = new UserRegisterController(useCase);
+        UserDataInterface userData;
+        try {
+            userData = new UserDataAccess();
+        } catch (IOException | ParseException e) {
+            throw new RuntimeException(e); // Display popup
+        }
+
+        UserRegisterPresenter presenter = new UserRegisterPresenter();
+        UserRegisterBoundaryIn useCase = new UserRegister(presenter, userData);
+
+        this.controller = new UserRegisterController(useCase);
 
         // Defining JComponents
         title = new JLabel("Create an Account");
@@ -78,7 +79,7 @@ public class UserRegisterView extends JPanel implements ActionListener {
 
         // JPanel Setup
         setLayout(null);
-        setSize(1600, 820);
+        setSize(1500, 820);
         setVisible(true);
 
         signup.addActionListener(this);
@@ -93,21 +94,20 @@ public class UserRegisterView extends JPanel implements ActionListener {
     public void actionPerformed (ActionEvent e){
         if (e.getActionCommand().equals("Sign Up")){
             System.out.println("Collecting stuff from signup");
-            //        this.final_output = controller.controlUseCase(username.getText(), String.valueOf(password.getPassword()),
-//                String.valueOf(repeatPassword.getPassword()));
-//            this.final_output = true;
+            this.final_output = controller.controlUseCase(username.getText(), String.valueOf(password.getPassword()),
+                String.valueOf(repeatPassword.getPassword()));
         }
     }
 
     /**
      * @return the sign up button that brings user to homepage.
      */
-    public JButton getSignupButton () { return signup; }
+    public JButton getSignup() { return signup; }
 
     /**
      * @return the exit button that brings user back to log in.
      */
-    public JButton getExitSignUp () { return exitSignUp; }
+    public JButton getExitSignUp() { return exitSignUp; }
 
 //    public String getUsername() { return this.username.getText(); }
 //
