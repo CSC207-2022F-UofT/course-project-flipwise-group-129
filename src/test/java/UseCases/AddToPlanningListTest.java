@@ -31,8 +31,8 @@ class AddToPlanningListTest {
         ItemDataInterface itemData = null;
         {
             try {
-                groupData = new GroupDataAccess("testgroups.json");
-                itemData = new ItemDataAccess("testitems.json");
+                groupData = new GroupDataAccess("src/main/testgroups.json");
+                itemData = new ItemDataAccess("src/main/testitems.json");
             } catch (IOException | ParseException e) {
                 assert(false);
             }
@@ -70,8 +70,8 @@ class AddToPlanningListTest {
         ItemDataInterface itemData = null;
         {
             try {
-                groupData = new GroupDataAccess("testgroups.json");
-                itemData = new ItemDataAccess("testitems.json");
+                groupData = new GroupDataAccess("src/main/testgroups.json");
+                itemData = new ItemDataAccess("src/main/testitems.json");
             } catch (IOException | ParseException e) {
                 assert(false);
             }
@@ -100,8 +100,8 @@ class AddToPlanningListTest {
         ItemDataInterface itemData = null;
         {
             try {
-                groupData = new GroupDataAccess("testgroups.json");
-                itemData = new ItemDataAccess("testitems.json");
+                groupData = new GroupDataAccess("src/main/testgroups.json");
+                itemData = new ItemDataAccess("src/main/testitems.json");
             } catch (IOException | ParseException e) {
                 assert(false);
             }
@@ -130,7 +130,7 @@ class AddToPlanningListTest {
     }
 
     List<String> getItemInfo() throws IOException, ParseException {
-        ItemDataInterface itemDsInterface = new ItemDataAccess("testitems.json");
+        ItemDataInterface itemDsInterface = new ItemDataAccess("src/main/testitems.json");
         List<String> itemInfo = new ArrayList<>();
         Map<String, String> itemDsMap = itemDsInterface.getItemMap();
         for(Map.Entry<String, String> curItem: itemDsMap.entrySet()){
@@ -150,7 +150,7 @@ class AddToPlanningListTest {
         return itemInfo;
     }
     Group getGroupInfo() throws IOException, ParseException {
-        GroupDataInterface groupDsInterface = new GroupDataAccess("testgroups.json");
+        GroupDataInterface groupDsInterface = new GroupDataAccess("src/main/testgroups.json");
         try {
             return Group.fromString(groupDsInterface.groupAsString("grpOne11"));
         } catch (JsonProcessingException e) {
