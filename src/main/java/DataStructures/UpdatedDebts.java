@@ -39,4 +39,7 @@ public class UpdatedDebts {
         return this.updatedDebtsList;
     }
 
+    public String getError() {
+        return this.error;
+    }
 }
