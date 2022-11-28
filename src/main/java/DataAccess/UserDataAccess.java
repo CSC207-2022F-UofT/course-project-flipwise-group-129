@@ -26,6 +26,14 @@ public class UserDataAccess extends DataAccess implements UserDataInterface {
     }
 
     /**
+     * Creates a test user data access instance by first reading and storing the testusers.json file locally
+     */
+    public UserDataAccess(String testPath) throws IOException, ParseException {
+        this.userFile = new File(testPath);
+        super.readFile(userFile, userMap);
+    }
+
+    /**
      * This function will be called to add or update any user entity to the map and saving the updated information
      * back into the users.json file
      * @param username the username of the current modified or added user

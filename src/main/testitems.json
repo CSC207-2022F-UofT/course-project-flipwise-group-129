@@ -1,0 +1,10 @@
+["entity", {
+  "entityId": "itemApple",
+  "entityInfo": "{\"itemName\":\"apple\",\"buyer\":null,\"price\":0.0,\"itemId\":\"itemApple\",\"usersInvolved\":[]}"
+},"entity", {
+  "entityId" : "itemOrange",
+  "entityInfo" : "{\"itemName\":\"orange\",\"buyer\":{\"username\":\"mishaalk\",\"password\":\"2222\",\"groups\":[\"grpOne11\"]},\"price\":20.0,\"itemId\":\"itemOrange\",\"usersInvolved\":[{\"username\":\"mishaalk\",\"password\":\"2222\",\"groups\":[\"grpOne11\"]},{\"username\":\"randomC\",\"password\":\"1111\",\"groups\":[\"grpOne11\"]}]}\n"
+}, "entity", {
+  "entityId" : "itemPomegranate",
+  "entityInfo" : "{\"itemName\":\"pomegranate\",\"buyer\":null,\"price\":0.0,\"itemId\":\"itemPomegranate\",\"usersInvolved\":[]}"
+}]
