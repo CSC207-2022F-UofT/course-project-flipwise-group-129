@@ -1,4 +1,13 @@
 package View;
 
-public class ViewInterface {
+import java.awt.event.ActionEvent;
+
+interface ViewInterface {
+    public void actionPerformed(ActionEvent e);
+
+
+
+
+
+
 }
