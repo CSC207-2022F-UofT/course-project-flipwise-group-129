@@ -4,7 +4,6 @@ import org.json.simple.parser.ParseException;
 import java.util.*;
 import java.io.*;
 import DataAccessInterface.GroupDataInterface;
-import {groups} from "groups.json";
 
 public class GroupDataAccess extends DataAccess implements GroupDataInterface {
     /**
