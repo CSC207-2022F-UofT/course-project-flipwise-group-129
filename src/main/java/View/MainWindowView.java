@@ -2,7 +2,8 @@ package View;
 
 //import UseCases.UserLogin;
 
-import Controllers.UserRegisterController;
+import DataStructures.CreatedGroupInfo;
+import DataStructures.JoinedGroupInfo;
 import DataStructures.LoggedInInfo;
 
 import javax.swing.*;
@@ -14,74 +15,128 @@ import java.util.List;
 public class MainWindowView extends JFrame implements ActionListener {
     private final UserLoginView loginView;
     private final UserRegisterView registerView;
- //   private final HomePageView homePageView;
+
     private LoggedInInfo userInfo;
 
+    private CreatedGroupInfo createdGroupInfo;
+    private JoinedGroupInfo joinedGroupInfo;
+
+    /**
+     * Generates a window to switch between log in and registration pages.
+     */
     public MainWindowView() {
 
         this.loginView = new UserLoginView();
         this.registerView = new UserRegisterView();
-        setSize(1000,600);
-        this.setContentPane(loginView);
+
+        // SetUp main window
+        setSize(1500, 820);
         setVisible(true);
+        this.setContentPane(loginView);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-
-
-        this.pack();
-
-        loginView.getLoginButton().addActionListener(this);
-        loginView.getNewButton().addActionListener(this);
+        loginView.getLogin().addActionListener(this);
+        loginView.getToRegister().addActionListener(this);
 
     }
 
-    public void actionPerformed(ActionEvent e) {
-        System.out.println("Click " + e.getActionCommand());
+    /**
+     * @param evt the event to be processed
+     * React to a certain button click that results in evt.
+     */
+    public void actionPerformed(ActionEvent evt) {
+        System.out.println("Click " + evt.getActionCommand());
 
-        if (e.getActionCommand().equals("Login")) {
+        if (evt.getActionCommand().equals("Log In")) {
             this.userInfo = loginView.getUserInfo();
-            this.dispose();
-            HomePageView homePageView = new HomePageView(getUsername(userInfo), getGroupNames(userInfo));
-            homePageView.setVisible(true);
-            //after user logins, all the log-in information is immediately stored
-        }
+            if (userInfo.isStatusBool()) {
+                setHomePage(userInfo.getUsername(), getGroupNames(userInfo));
+            }
 
-        if (e.getActionCommand().equals("New to Flipwise?")) {
-            setUserRegisterView();
-        }
-
-        if (e.getActionCommand().equals("Exit")) {
-            this.setContentPane(loginView);
-            this.pack();
-        }
-
-        //EXCLUSIVE TO REGISTER
-        if (e.getActionCommand().equals("Sign up")){
-            boolean registration = registerView.getFinalOutput();
-            if (registration) {
-                JOptionPane.showMessageDialog(this, "Registration successful", "", JOptionPane.PLAIN_MESSAGE);
-                this.dispose();
-                HomePageView homePageView = new HomePageView(getUsername(userInfo), getGroupNames(userInfo));
-                homePageView.setVisible(true);
+            else {
+                JOptionPane.showMessageDialog(this,
+                        "Not Successful :(", "", JOptionPane.PLAIN_MESSAGE);
             }
         }
-        //EXCLUSIVE
 
+        else if (evt.getActionCommand().equals("New to Flipwise?")) {
+            setUserRegisterView(this.registerView);
+        }
 
+        else if (evt.getActionCommand().equals("Exit")) {
+            this.setContentPane(loginView);
+        }
 
+        else if (evt.getActionCommand().equals("Sign Up")){
+            if (registerView.final_output) {
+                JOptionPane.showMessageDialog(this,
+                        "Registration successful! Log in to your new account.", "",
+                        JOptionPane.PLAIN_MESSAGE);
+                setContentPane(loginView);
+            }
+
+            else {
+                JOptionPane.showMessageDialog(this,
+                        "Not Successful :(", "", JOptionPane.PLAIN_MESSAGE);
+            }
+        }
+
+        else if (evt.getActionCommand().equals("Create Group")) {
+            setHomePage(userInfo.getUsername(), createdGroupInfo.getAllGroupNames());
+        }
+
+        else if (evt.getActionCommand().equals("Join Group")){
+            setHomePage(userInfo.getUsername(), joinedGroupInfo.getGroupNames());
+        }
+        else {
+            setGroupSummery(evt.getActionCommand());
+        }
     }
 
-    private void setUserRegisterView(){
+    /**
+     * Switches to registration page on the main window.
+     * @param registerView the screen in which the user signs up.
+     */
+    private void setUserRegisterView(UserRegisterView registerView){
         this.setContentPane(registerView);
-        registerView.getSignUpButton().addActionListener(this);
-        registerView.getExitButton().addActionListener(this);
-        this.pack();
+        registerView.getSignup().addActionListener(this);
+        registerView.getExitSignUp().addActionListener(this);
     }
 
-    public String getUsername(LoggedInInfo loggedInInfo) {
-        return loggedInInfo.getUsername();
+    /**
+     * Switches to homepage on the main window.
+     * @param user the name of the user that logged in.
+     * @param groupnames the list of groups the user is apart of.
+     */
+    private void setHomePage (String user, List<String> groupnames){
+        HomePageView homePageView = new HomePageView(user, groupnames);
+        this.setContentPane(homePageView);
+        createdGroupInfo = homePageView.getCreatedGroupInfo();
+        joinedGroupInfo = homePageView.getJoinedGroupInfo();
+        homePageView.getJoinGroup().addActionListener(this);
+        homePageView.getCreateGroup().addActionListener(this);
     }
 
+    /**
+     * Switches to group summery page on the main window.
+     * @param group the name of the group.
+     */
+    public void setGroupSummery(String group) {
+//        String groupID = getGroupID(getGroupIDs(userInfo),
+//                getGroupNames(userInfo), group);
+//        GroupSummaryView selectedGroup = new GroupSummaryView(group, groupID, userInfo.getUsername(),
+//                getPurchaseListData(userInfo, groupID), getPlanningListData(userInfo, groupID),
+//                getGroupDebtData(userInfo, groupID), getAllUserNames(userInfo, groupID));
+//        setContentPane(selectedGroup);
+    }
+
+    public String getUsername(LoggedInInfo userInfo){
+        return userInfo.getUsername();
+    }
+    public String getGroupID(List<String> groupIDs, List<String> groupnames, String group){
+        int index = groupnames.indexOf(group);
+        return groupIDs.get(index);
+    }
     public List<String> getGroupNames(LoggedInInfo loggedInInfo) {
         List<List<Object>> allGroups = loggedInInfo.getUserAllGroups();
         List<String> output = new ArrayList<>();
