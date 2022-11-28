@@ -1,4 +1,4 @@
-package add_purchase_use_case;
+package UseCases;
 
 import DataAccess.GroupDataAccess;
 import DataAccess.ItemDataAccess;
