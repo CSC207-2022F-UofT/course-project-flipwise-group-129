@@ -66,20 +66,20 @@ public class AddToPlanningList implements AddToPlanningBoundaryIn{
      */
     private List<List<String>> getUpdatedPlanning(PlanningList planningList){
         List<List<String>> stringPlanningList = new ArrayList<>();
-        Iterator iter = planningList.iterator();
-        while(iter.hasNext()){
-            Item curItem = iter.next();
-            List<String> currentItem = new ArrayList<>();
-            currentItem.add(curItem.getItemId());
-            currentItem.add(curItem.getItemName());
-            stringPlanningList.add(currentItem);
-        }
-//        for(Item curItem: planningList.getItems()){
+//        Iterator iter = planningList.iterator();
+//        while(iter.hasNext()){
+//            Item curItem = iter.next();
 //            List<String> currentItem = new ArrayList<>();
 //            currentItem.add(curItem.getItemId());
 //            currentItem.add(curItem.getItemName());
 //            stringPlanningList.add(currentItem);
 //        }
+        for(Item curItem: planningList){
+            List<String> currentItem = new ArrayList<>();
+            currentItem.add(curItem.getItemId());
+            currentItem.add(curItem.getItemName());
+            stringPlanningList.add(currentItem);
+        }
         return stringPlanningList;
     }
     /**

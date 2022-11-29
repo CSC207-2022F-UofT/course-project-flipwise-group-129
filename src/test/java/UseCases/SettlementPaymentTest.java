@@ -25,7 +25,7 @@ class SettlementPaymentTest {
         GroupDataInterface groupData;
         {
             try {
-                groupData = new GroupDataAccess("testgroups.json");
+                groupData = new GroupDataAccess("test");
             } catch (IOException | ParseException e) {
                 throw new RuntimeException(e);
             }
@@ -50,7 +50,7 @@ class SettlementPaymentTest {
         GroupDataInterface groupData;
         {
             try {
-                groupData = new GroupDataAccess("testgroups.json");
+                groupData = new GroupDataAccess("test");
             } catch (IOException | ParseException e) {
                 throw new RuntimeException(e);
             }
@@ -74,7 +74,7 @@ class SettlementPaymentTest {
         GroupDataInterface groupData;
         {
             try {
-                groupData = new GroupDataAccess("testgroups.json");
+                groupData = new GroupDataAccess("test");
             } catch (IOException | ParseException e) {
                 throw new RuntimeException(e);
             }
@@ -100,7 +100,7 @@ class SettlementPaymentTest {
     }
 
     Group getGroupInfo() throws IOException, ParseException {
-        GroupDataInterface groupDsInterface = new GroupDataAccess("testgroups.json");
+        GroupDataInterface groupDsInterface = new GroupDataAccess("test");
         try {
             return Group.fromString(groupDsInterface.groupAsString("grpOne11"));
         } catch (JsonProcessingException e) {
