@@ -61,7 +61,7 @@ public class SettlementPayment implements SettlementBoundaryIn {
             return raiseError("unable to save debt changes");
         }
 
-        Map<String, List<Object>> stringDebtList = getUpdatedDebts(currGroup.getPurchaseBalance());
+        Map<String, List<List<Object>>> stringDebtList = getUpdatedDebts(currGroup.getPurchaseBalance(), currGroup.getUsers());
         UpdatedDebts updatedDebts = new UpdatedDebts(stringDebtList);
         return outputBoundary.displayDebts(updatedDebts);
     }
@@ -76,13 +76,18 @@ public class SettlementPayment implements SettlementBoundaryIn {
      * @param purchaseBalance the list of Debts in the group
      * @return This returns a list of debts formatted as a nested list of strings [userOwedUsername, userOwingUsername, debtValue]
      */
-    private Map<String, List<Object>> getUpdatedDebts(PurchaseBalance purchaseBalance) {
-        Map<String, List<Object>> stringPurchaseBalance = new HashMap<>();
-        for (Debt curDebt : purchaseBalance) {
-            List<Object> currentDebt = new ArrayList<>();
-            currentDebt.add(curDebt.getUserOwing().getUsername());
-            currentDebt.add(curDebt.getDebtValue());
-            stringPurchaseBalance.put(curDebt.getUserOwed().getUsername(), currentDebt);
+    private Map<String, List<List<Object>>> getUpdatedDebts(PurchaseBalance purchaseBalance, Set<String> users) {
+        Map<String, List<List<Object>>> stringPurchaseBalance = new HashMap<>();
+        for(String curUser : users) {
+            List<Debt> debtList = purchaseBalance.getUserOwed(curUser);
+            List<List<Object>> stringUserOwedDebtList = new ArrayList<>();
+            for (Debt curDebt : debtList) {
+                List<Object> currentDebt = new ArrayList<>();
+                currentDebt.add(curDebt.getUserOwing().getUsername());
+                currentDebt.add(curDebt.getDebtValue());
+                stringUserOwedDebtList.add(currentDebt);
+            }
+            stringPurchaseBalance.put(curUser, stringUserOwedDebtList);
         }
         return stringPurchaseBalance;
     }
