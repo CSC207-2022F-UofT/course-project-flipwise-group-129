@@ -1,11 +1,13 @@
 package DataStructures;
 import java.util.Map;
 import java.util.List;
+import java.util.Map;
 
 public class UpdatedDebts {
     /**
      * this class represents the output data structure to pass to the view when debts have been updated
      */
+
     private final Map<String, List<List<Object>>> updatedBalances;
     private String outcomeMessage = "Success";
 
