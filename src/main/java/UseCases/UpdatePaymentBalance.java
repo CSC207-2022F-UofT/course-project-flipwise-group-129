@@ -7,6 +7,7 @@ import InputBoundary.UpdatePaymentBalanceBoundaryIn;
 import OutputBoundary.UpdatePaymentBalanceBoundaryOut;
 import DataAccessInterface.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import org.json.simple.parser.ParseException;
 
 import java.io.IOException;
 import java.util.*;
@@ -33,11 +34,10 @@ public class UpdatePaymentBalance implements UpdatePaymentBalanceBoundaryIn {
      * @return the information that is prepared by the presenter to the controller.
      */
     @Override
-    public UpdatedDebts updatePaymentBalance(PaymentInformation paymentDetails) {
+    public UpdatedDebts updatePaymentBalance(PaymentInformation paymentDetails) throws IOException, ParseException {
         String groupID = paymentDetails.getGroupID();
         String userPurchasedItem = paymentDetails.getUsername();
         float itemPrice = paymentDetails.getItemPrice();
-        String itemID = paymentDetails.getItemID();
         List<String> usersInvolvedInPurcase = paymentDetails.getUsersInvolvedInPurchase();
 
         /*
@@ -59,26 +59,24 @@ public class UpdatePaymentBalance implements UpdatePaymentBalanceBoundaryIn {
         - (2) Return this.updatePaymentBalancePresenter.prepareUpdatedDebtList(with the UpdatedDebts object
         we created in the last step).
 
-         */
-
-        /*
-
-         We first use the itemID to get this item from the Database. We can also assume that class Item contains a
-         list of Users involved in the purchase of said item.
-         */
-        Item purchasedItem;
-        try {
-            purchasedItem = getItemFromDb(itemID);
-        }
-        catch (RuntimeException e) {
-            return raiseError(e);
-        }
-
         /*
          We now use the groupID to get the group of people in which the purchase has been made, and then we call
          the getUsers() method to get the Set of Users in the group (not all of them are necessarily involved in
          the purchase).
          */
+        int count = 0;
+        for(String userInvolvedInPurchase : usersInvolvedInPurcase) {
+            for(String u : usersInvolvedInPurcase) {
+                if(userInvolvedInPurchase.equals(u)) {
+                    count++;
+                }
+            }
+        }
+        if(count >= 2) {
+            return this.updatePaymentBalancePresenter.prepareFailView(
+                    new UpdatedDebts("The list containing users involved in the purchase contain duplicates."));
+        }
+
         Group groupInvolvedInPurchase;
         try {
             groupInvolvedInPurchase = getGroupFromDb(groupID);
@@ -127,18 +125,20 @@ public class UpdatePaymentBalance implements UpdatePaymentBalanceBoundaryIn {
         owed money, and at index[0], the List contains the name of the user who owes money as a String, and at index[1],
         the List contains the amount the user owes as a double.
          */
-        Map<String, List<Object>> updatedDebtsList = new HashMap<>();
+        Map<String, List<List<Object>>> updatedDebtsList = new HashMap<>();
         for(Debt d : currentDebtList) {
-            List<Object> userOwingAndDebtValue = new ArrayList<>();
-            userOwingAndDebtValue.add(d.getUserOwing().getUsername());
-            userOwingAndDebtValue.add(d.getDebtValue());
+            List<List<Object>> userOwingAndDebtValue = new ArrayList<>();
+            List<Object> current = new ArrayList<>();
+            current.add(d.getUserOwing().getUsername());
+            current.add(d.getDebtValue());
+            userOwingAndDebtValue.add(current);
             updatedDebtsList.put(d.getUserOwed().getUsername(), userOwingAndDebtValue);
         }
 
         /*
         Now we can take the Map use it in the constructor for UpdatedDebts to create our final returned value.
          */
-        return new UpdatedDebts(updatedDebtsList);
+        return this.updatePaymentBalancePresenter.prepareSuccessView(new UpdatedDebts(updatedDebtsList));
     }
 
     /**
@@ -147,7 +147,7 @@ public class UpdatePaymentBalance implements UpdatePaymentBalanceBoundaryIn {
      *          exist.
      * @return the failed view of the updatePaymentBalance presenter.
      */
-    private UpdatedDebts raiseError(RuntimeException e) {
+    private UpdatedDebts raiseError(RuntimeException e) throws IOException, ParseException {
         return this.updatePaymentBalancePresenter.prepareFailView(new UpdatedDebts(e.toString()));
     }
 

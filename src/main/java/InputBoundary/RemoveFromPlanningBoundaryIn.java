@@ -1,9 +1,9 @@
 package InputBoundary;
 
-import DataStructures.PaymentDetails;
+import DataStructures.PaymentInformation;
 import DataStructures.UpdatedDebts;
 
 public interface RemoveFromPlanningBoundaryIn {
-    UpdatedDebts removeFromPlanningList(PaymentDetails paymentDetails);
+    UpdatedDebts removeFromPlanningList(PaymentInformation paymentDetails);
 
 }

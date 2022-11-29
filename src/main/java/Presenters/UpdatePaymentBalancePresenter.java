@@ -2,7 +2,9 @@ package Presenters;
 
 import DataStructures.UpdatedDebts;
 import OutputBoundary.UpdatePaymentBalanceBoundaryOut;
+import org.json.simple.parser.ParseException;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,7 +17,7 @@ public class UpdatePaymentBalancePresenter implements UpdatePaymentBalanceBounda
      * @return an UpdatedDebts object containing the updated information of the debts in the group between users.
      */
     @Override
-    public UpdatedDebts prepareSuccessView(UpdatedDebts updatedDebts) {
+    public UpdatedDebts prepareSuccessView(UpdatedDebts updatedDebts) throws IOException, ParseException {
         return updatedDebts;
     }
 
@@ -25,7 +27,7 @@ public class UpdatePaymentBalancePresenter implements UpdatePaymentBalanceBounda
      * @return the data structure containing the error information.
      */
     @Override
-    public UpdatedDebts prepareFailView(UpdatedDebts updatedDebts) {
+    public UpdatedDebts prepareFailView(UpdatedDebts updatedDebts) throws IOException, ParseException {
         return updatedDebts;
     }
 }
