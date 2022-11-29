@@ -41,7 +41,7 @@ class UpdatePaymentBalanceTest {
         UpdatePaymentBalancePresenter presenter = new UpdatePaymentBalancePresenter() {
             @Override
             public UpdatedDebts prepareSuccessView(UpdatedDebts updatedDebts) {
-                assert updatedDebts.getUpdatedBalances().containsKey("rowanA");
+                assert updatedDebts.getUpdatedBalances().containsKey("mishaalk");
                 assert !updatedDebts.getUpdatedBalances().isEmpty();
                 assert updatedDebts.getOutcomeMessage() == null;
                 return null;
@@ -58,8 +58,8 @@ class UpdatePaymentBalanceTest {
         ItemDataInterface itemData = new ItemDataAccess("test");
 
         // 2. Input Data - we can make this up for the test, but normally it would be created from the controller.
-        PaymentInformation inputData = new PaymentInformation("jitHouse", "rowanA", (float) 19.99,
-                "laundryDetergent", Arrays.asList("genS", "ethanV", "naveenD", "farahM"));
+        PaymentInformation inputData = new PaymentInformation("grpOne11", "mishaalk", (float) 19.99,
+                "itemApple", Arrays.asList("rcordi", "randomC", "sopleee"));
         UpdatePaymentBalanceBoundaryIn useCase = new UpdatePaymentBalance(groupData, itemData, presenter, inputData);
 
         // 3. Run the use case.
@@ -80,7 +80,7 @@ class UpdatePaymentBalanceTest {
             @Override
             public UpdatedDebts prepareFailView(UpdatedDebts updatedDebts) {
                 assert updatedDebts.getUpdatedBalances().isEmpty();
-                assert !updatedDebts.getUpdatedBalances().containsKey("rowanA");
+                assert !updatedDebts.getUpdatedBalances().containsKey("mishaalk");
                 assert Objects.equals(updatedDebts.getOutcomeMessage(), "Invalid HashMap provided.");
                 return null;
             }
@@ -90,8 +90,8 @@ class UpdatePaymentBalanceTest {
         ItemDataInterface itemData = new ItemDataAccess("test");
 
         // 2. Input Data - we can make this up for the test, but normally it would be created from the controller.
-        PaymentInformation inputData = new PaymentInformation("jitHouse", "rowanA", (float) 19.99,
-                "laundryDetergent", Arrays.asList("genS", "ethanV", "naveenD", "farahM"));
+        PaymentInformation inputData = new PaymentInformation("grpOne11", "mishaalk", (float) 19.99,
+                "itemApple", Arrays.asList("rcordi", "randomC", "sopleee"));
         UpdatePaymentBalanceBoundaryIn useCase = new UpdatePaymentBalance(groupData, itemData, presenter, inputData);
 
         // 3. Run the use case.
@@ -112,7 +112,7 @@ class UpdatePaymentBalanceTest {
             @Override
             public UpdatedDebts prepareFailView(UpdatedDebts updatedDebts) {
                 assert updatedDebts.getUpdatedBalances().isEmpty();
-                assert !updatedDebts.getUpdatedBalances().containsKey("rowanA");
+                assert !updatedDebts.getUpdatedBalances().containsKey("mishaalk");
                 assert Objects.equals(updatedDebts.getOutcomeMessage(), "Debts have already been updated.");
                 return null;
             }
@@ -122,8 +122,8 @@ class UpdatePaymentBalanceTest {
         ItemDataInterface itemData = new ItemDataAccess("test");
 
         // 2. Input Data - we can make this up for the test, but normally it would be created from the controller.
-        PaymentInformation inputData = new PaymentInformation("jitHouse", "rowanA", (float) 19.99,
-                "laundryDetergent", Arrays.asList("genS", "ethanV", "naveenD", "farahM"));
+        PaymentInformation inputData = new PaymentInformation("grpOne11", "mishaalk", (float) 19.99,
+                "itemApple", Arrays.asList("rcordi", "randomC", "sopleee"));
         UpdatePaymentBalanceBoundaryIn useCase = new UpdatePaymentBalance(groupData, itemData, presenter, inputData);
 
         // 3. Run the use case.
@@ -200,8 +200,8 @@ class UpdatePaymentBalanceTest {
         ItemDataInterface itemData = new ItemDataAccess("test");
 
         // 2. Input Data - we can make this up for the test, but normally it would be created from the controller.
-        PaymentInformation inputData = new PaymentInformation("jitHouse", "rowanA", (float) 19.99,
-                "laundryDetergent", Arrays.asList("genS", "ethanV", "naveenD", "farahM"));
+        PaymentInformation inputData = new PaymentInformation("grpOne11", "mishaalk", (float) 19.99,
+                "itemApple", Arrays.asList("rcordi", "randomC", "sopleee"));
         UpdatePaymentBalanceBoundaryIn useCase = new UpdatePaymentBalance(groupData, itemData, presenter, inputData);
 
         // We now set the data from the database as a constant to check against our use case.
@@ -216,7 +216,7 @@ class UpdatePaymentBalanceTest {
             for (String s : userInfoBefore) {
                 assert userInfoAfter.contains(s);
             }
-            assert userInfoAfter.contains("rowanA");
+            assert userInfoAfter.contains("mishaalk");
         } catch (IOException | ParseException e) {
             throw new RuntimeException(e);
         }
