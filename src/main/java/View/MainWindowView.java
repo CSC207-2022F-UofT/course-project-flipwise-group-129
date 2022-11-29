@@ -2,6 +2,7 @@ package View;
 
 import Controllers.GroupCreateController;
 import Controllers.GroupJoinController;
+import Controllers.UserLoginController;
 import DataAccess.GroupDataAccess;
 import DataAccess.UserDataAccess;
 import DataAccessInterface.GroupDataInterface;
@@ -11,10 +12,13 @@ import DataStructures.JoinedGroupInfo;
 import DataStructures.LoggedInInfo;
 import InputBoundary.GroupCreateBoundaryIn;
 import InputBoundary.GroupJoinBoundaryIn;
+import InputBoundary.UserLoginBoundaryIn;
 import Presenters.GroupCreatePresenter;
 import Presenters.GroupJoinPresenter;
+import Presenters.UserLoginPresenter;
 import UseCases.GroupCreate;
 import UseCases.GroupJoin;
+import UseCases.UserLogin;
 import org.json.simple.parser.ParseException;
 
 import javax.swing.*;
@@ -30,9 +34,10 @@ public class MainWindowView extends JFrame implements ActionListener {
     private final GroupCreateController controllerCreate;
     private final GroupJoinController controllerJoin;
 
-    private final LoggedInInfo userInfo;
+    private LoggedInInfo userInfo;
 
-    private final List<List<Object>> userGroups;
+    private List<List<Object>> userGroups;
+    private final UserLoginController userLoginController;
 
 
     /**
@@ -62,10 +67,13 @@ public class MainWindowView extends JFrame implements ActionListener {
 
         this.controllerJoin = new GroupJoinController(useCaseJoin);
 
+        UserLoginPresenter userLoginPresenter = new UserLoginPresenter();
+        UserLoginBoundaryIn useCase = new UserLogin(userLoginPresenter, UserInterface, GroupInterface);
+
+        this.userLoginController = new UserLoginController(useCase);
+
         this.loginView = new UserLoginView();
         this.registerView = new UserRegisterView();
-        this.userInfo = loginView.getUserInfo();
-        this.userGroups = this.userInfo.getUserAllGroups();
 
         // SetUp main window
         setSize(1500, 820);
@@ -86,6 +94,10 @@ public class MainWindowView extends JFrame implements ActionListener {
         System.out.println("Click " + evt.getActionCommand());
 
         if (evt.getActionCommand().equals("Log In")) {
+
+            this.userInfo = this.userLoginController.controlUseCase(loginView.getUsername(),
+                    loginView.getPassword());
+            this.userGroups = userInfo.getUserAllGroups();
             if (userInfo.statusBool()) {
                 setHomePage(userInfo.getUsername(), getGroupNames(userGroups));
             }

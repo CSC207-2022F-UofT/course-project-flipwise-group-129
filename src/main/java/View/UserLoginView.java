@@ -92,9 +92,8 @@ public class UserLoginView extends JPanel implements ActionListener{
      * @param evt the event to be processed
      */
     public void actionPerformed(ActionEvent evt) {
-        if (evt.getActionCommand().equals("Continue")) {
-            this.userInfo = presenter.successfulLogin(this.controller.controlUseCase(getUsername(),
-                    String.valueOf(password.getPassword())));
+        if (evt.getActionCommand().equals("Log In")) {
+
         }
     }
 
@@ -103,6 +102,13 @@ public class UserLoginView extends JPanel implements ActionListener{
      */
     public String getUsername(){
         return this.username.getText();
+    }
+
+    /**
+     * @return the password of the user that logged in.
+     */
+    public String getPassword(){
+        return String.valueOf(this.password.getPassword());
     }
 
     /**
