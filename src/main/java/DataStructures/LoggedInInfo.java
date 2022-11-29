@@ -23,16 +23,16 @@ public class LoggedInInfo {
 
     /**
      * Constructor called when the login fails
-     * @param failed to report the login as failed
+     * @param success to report the login as failed
      */
-    public LoggedInInfo(boolean failed) {
-        this.statusBool = failed;
+    public LoggedInInfo(boolean success) {
+        this.statusBool = success;
     }
 
     /**
      * @return if the login was successful
      */
-    public boolean isStatusBool() {
+    public boolean statusBool() {
         return statusBool;
     }
 
