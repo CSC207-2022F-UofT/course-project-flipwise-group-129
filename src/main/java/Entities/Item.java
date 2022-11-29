@@ -14,67 +14,118 @@ public class Item {
     This class represents an item that has been bought in a purchase
      */
     private String itemName; //the name of the item
-    private User buyer; // the person who bought the item
-    private Float price; // the price of the item
+    private String buyer; // the id of the person who bought the item
+    private double price; // the price of the item
 
     private String itemId; //id for unique identification purposes
-    private List<User> usersInvolved; // the list of all the users invovled in the purchase
+    private List<String> usersInvolved; // the list of all the user ids involved in the purchase
 
-    public Item(String itemName, User buyer, Float price, List<User> usersInvolved){
+    /**
+     * Constructor to make a new item
+     * @param itemName the name of the item
+     */
+    public Item(String itemName){
         Timestamp ts = new Timestamp(System.currentTimeMillis());
         this.itemId = "Item" + itemName + ts.toInstant().toString();
         this.itemName = itemName;
-        this.buyer = buyer;
-        this.price = price;
-        this.usersInvolved = usersInvolved;
+        this.buyer = null;
+        this.price = 0.0;
+        this.usersInvolved = new ArrayList<>();
     }
 
+    /**
+     * constructor empty for JSON parsing
+     */
+    public Item(){
+        super();
+    }
+
+    /**
+     * get the name of the item
+     * @return the name of the item
+     */
     public String getItemName(){
         // return the name of the item
         return itemName;
     }
 
-    public User getBuyer(){
+    /**
+     * get the buyer
+     * @return the buyer
+     */
+    public String getBuyer(){
         // return the buyer of this item
         return buyer;
     }
 
-    public Float getPrice(){
+    /**
+     * get the price of this item
+     * @return the price
+     */
+    public double getPrice(){
         // reutn the price of the item
         return price;
     }
 
+    /**
+     * get the id of this item
+     * @return the id
+     */
     public String getItemId(){
         //return the item id
         return this.itemId;
     }
 
-    public List<User> getUsersInvolved() {
+    /**
+     * get all the users involved in the purchase
+     * @return the users involved in the purchase as a List
+     */
+    public List<String> getUsersInvolved() {
         //return the list of all the users involved in the purchase.
         return this.usersInvolved;
     }
 
-    public void setPrice(Float price){
+    /**
+     * set the price of the item when bought
+     * @param price the price
+     */
+    public void setPrice(double price){
         //set the price of the item, useful for editing the value after construction
         this.price = price;
     }
 
+    /**
+     * set the name of the item
+     * @param name the name of the item
+     */
     public void setItemName(String name){
         //set the name of the item
         this.itemName = name;
     }
 
-    public void setBuyer(User buyer){
+    /**
+     * set the person who bought the item
+     * @param buyer the person who bought the item
+     */
+    public void setBuyer(String buyer){
         //set the buyer who bought the product
         this.buyer = buyer;
     }
 
-    public void setUsersInvolved(List<User> users){
+    /**
+     * set all the users invovled in the purchase of item
+     * @param users the users involved in the purchase of item
+     */
+    public void setUsersInvolved(List<String> users){
         //enter all the users involved
         this.usersInvolved = users;
     }
 
-    public void addUsersInvolved(User user){
+    /**
+     *  add a person to the purchase of item
+     * @param user the person to add to purchase of item
+     */
+    public void addUsersInvolved(String user){
         // add all the users invovled in this item purchase
         this.usersInvolved.add(user);
     }
@@ -91,6 +142,10 @@ public class Item {
 //
 //        return obj;
 //    }
+    /**
+     * method to return a JSONString representation of an instance of this class Item
+     * @return a JSONString representation of an instance of this class Item
+     */
     @Override
     public String toString() {
         ObjectMapper mapper = new ObjectMapper();
@@ -101,6 +156,13 @@ public class Item {
         }
     }
 
+    /**
+     * returns the instance of class Item present in the JSONString
+     * if unable to parse, throw exception
+     * @param itemString the JSONString containing all the information
+     * @return returns the instance stored in the JSONString
+     * @throws JsonProcessingException if unable to process the String into a Group instance
+     */
     public static Item fromString(String itemString) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         return mapper.readValue(itemString, Item.class);
