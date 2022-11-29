@@ -99,10 +99,11 @@ public class SettlementPayment implements SettlementBoundaryIn {
      * @return This returns a group object if found in the database, otherwise, null
      */
     private Group retreiveGroup(String groupId) {
-        String groupInfo = groupAccess.groupAsString(groupId);
+        String groupInfo;
         try {
+            groupInfo = groupAccess.groupAsString(groupId);
             return Group.fromString(groupInfo);
-        } catch (JsonProcessingException e) {
+        } catch (ParseException | IOException e) {
             throw new RuntimeException(e);
         }
     }
@@ -114,7 +115,7 @@ public class SettlementPayment implements SettlementBoundaryIn {
     private void saveGroup(String groupId, String groupData) {
         try {
             groupAccess.addorUpdateGroup(groupId, groupData);
-        } catch (IOException e) {
+        } catch (IOException | ParseException e) {
             throw new RuntimeException(e);
         }
     }
