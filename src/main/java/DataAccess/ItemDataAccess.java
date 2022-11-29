@@ -39,7 +39,8 @@ public class ItemDataAccess extends DataAccess implements ItemDataInterface {
      * @param itemInfo the summarized item information of the current modified or added item
      */
     @Override
-    public void addorUpdateItem(String itemId, String itemInfo) throws IOException {
+    public void addorUpdateItem(String itemId, String itemInfo) throws IOException, ParseException {
+        super.readFile(itemFile, itemMap);
         super.addorUpdateEntity(itemFile, itemMap, itemId, itemInfo);
     }
 
@@ -49,7 +50,8 @@ public class ItemDataAccess extends DataAccess implements ItemDataInterface {
      * @return true if the itemId was found from the items.json file and false otherwise
      */
     @Override
-    public boolean itemIdExists(String itemId) {
+    public boolean itemIdExists(String itemId) throws IOException, ParseException {
+        super.readFile(itemFile, itemMap);
         return itemMap.containsKey(itemId);
     }
 
@@ -59,7 +61,8 @@ public class ItemDataAccess extends DataAccess implements ItemDataInterface {
      * @return item details corresponding to itemId in string form
      */
     @Override
-    public String itemAsString(String itemId) {
+    public String itemAsString(String itemId) throws IOException, ParseException {
+        super.readFile(itemFile, itemMap);
         return itemMap.get(itemId);
     }
 
