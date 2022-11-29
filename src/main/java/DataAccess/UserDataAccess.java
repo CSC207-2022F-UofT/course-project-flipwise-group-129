@@ -25,7 +25,7 @@ public class UserDataAccess extends DataAccess implements UserDataInterface {
      * @param testString a string confirming database to access is test
      */
     public UserDataAccess(String testString) throws IOException, ParseException {
-        this.userFile = new File("src/main/testusers.json");
+        this.userFile = new File("././src/main/testusers.json");
         super.readFile(userFile, userMap);
     }
 
