@@ -13,7 +13,7 @@ import InputBoundary.AddToPlanningBoundaryIn;
 import OutputBoundary.AddPurchaseBoundaryOut;
 import Presenters.AddPurchasePresenter;
 import Presenters.AddToPlanningPresenter;
-import UseCases.AddPurchase;
+//import UseCases.AddPurchase;
 import UseCases.AddToPlanningList;
 import org.json.simple.parser.ParseException;
 
@@ -36,7 +36,7 @@ public class PlanningListView extends JPanel implements ActionListener{
     GroupSummaryView groupSummaryView;
 
     private ButtonTable buttonTable;
-    private final AddPurchaseController controllerAddPurchase;
+//    private final AddPurchaseController controllerAddPurchase;
 
     public PlanningListView(List<List<String>> planningListData, String username, String groupID,
                             List<String> groupUserName) {
@@ -45,23 +45,23 @@ public class PlanningListView extends JPanel implements ActionListener{
         this.groupID = groupID;
         this.groupUserName = groupUserName;
 
-        ItemDataInterface itemData;
-        GroupDataInterface groupData;
-        UserDataInterface userData;
-        try {
-            itemData = new ItemDataAccess();
-            groupData = new GroupDataAccess();
-            userData = new UserDataAccess();
-        } catch (IOException | ParseException e) {
-            throw new RuntimeException(e); // Display popup
-        }
-
-        AddPurchaseBoundaryOut presenter = new AddPurchasePresenter();
-
-
-        AddPurchaseBoundaryIn useCase = new AddPurchase();
-
-        this.controllerAddPurchase = new AddPurchaseController(presenter, useCase, groupData, itemData, userData);
+//        ItemDataInterface itemData;
+//        GroupDataInterface groupData;
+//        UserDataInterface userData;
+//        try {
+//            itemData = new ItemDataAccess();
+//            groupData = new GroupDataAccess();
+//            userData = new UserDataAccess();
+//        } catch (IOException | ParseException e) {
+//            throw new RuntimeException(e); // Display popup
+//        }
+//
+//        AddPurchaseBoundaryOut presenter = new AddPurchasePresenter();
+//
+//
+//        AddPurchaseBoundaryIn useCase = new AddPurchase();
+//
+//        this.controllerAddPurchase = new AddPurchaseController(presenter, useCase, groupData, itemData, userData);
 
         setRows(planningListData);
         DefaultTableModel model = new DefaultTableModel(rows, columns);
@@ -79,7 +79,6 @@ public class PlanningListView extends JPanel implements ActionListener{
         setVisible(true);
         setSize(1000, 600);
 
-
     }
 
     public void actionPerformed(ActionEvent evt) {
@@ -89,9 +88,9 @@ public class PlanningListView extends JPanel implements ActionListener{
 
             JOptionPane.showMessageDialog(null, "Purchased item.");
 
-            this.controllerAddPurchase.controlAddPurchaseUseCase("Item#23", addPurchaseView.getSelectedMembers(),
-                    "Saleh", Float.parseFloat(addPurchaseView.item_price.getText().toString()),
-                    "Group#24");
+//            this.controllerAddPurchase.controlAddPurchaseUseCase("Item#23", addPurchaseView.getSelectedMembers(),
+//                    "Saleh", Float.parseFloat(addPurchaseView.item_price.getText().toString()),
+//                    "Group#24");
 
         }
     }

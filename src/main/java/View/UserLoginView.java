@@ -95,16 +95,7 @@ public class UserLoginView extends JPanel implements ActionListener{
         if (evt.getActionCommand().equals("Continue")) {
             this.userInfo = presenter.successfulLogin(this.controller.controlUseCase(getUsername(),
                     String.valueOf(password.getPassword())));
-            System.out.print("The output is " + userInfo.getUsername());
         }
-    }
-
-    /**
-     * displays message dialog when login fails.
-     * @param errorMessage te message to be displayed to the user after failed log in.
-     */
-    public void showFailureLoginMessage(String errorMessage) {
-        JOptionPane.showMessageDialog(this, errorMessage);
     }
 
     /**
@@ -115,7 +106,7 @@ public class UserLoginView extends JPanel implements ActionListener{
     }
 
     /**
-     * @return the log in button that brings user to homepage.
+     * @return the button that allows the user to log in.
      */
     public JButton getLogin(){ return login; }
 
@@ -127,9 +118,7 @@ public class UserLoginView extends JPanel implements ActionListener{
     /**
      * @return the data of the user.
      */
-    public LoggedInInfo getUserInfo() {
-        return this.userInfo;
-    }
+    public LoggedInInfo getUserInfo() { return this.userInfo; }
 
 }
 

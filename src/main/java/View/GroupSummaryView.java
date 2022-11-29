@@ -24,10 +24,7 @@ import java.util.List;
 
 public class GroupSummaryView extends JFrame implements ActionListener {
 
-    private JTabbedPane t;
-    private JComponent p1, p2, p3;
-    private JTextArea temp, RHS, group_members;
-
+    HomePageView homePageView;
     private final String groupname;
     private final String groupid;
     private List<List<String>> purchaseListData;
@@ -38,6 +35,7 @@ public class GroupSummaryView extends JFrame implements ActionListener {
     public JButton settleDebt = new JButton("Clear Debt");
     public JButton toHomepage = new JButton("Return to Groups");
     private final AddToPlanningController controllerAddPlanning;
+    JPanel main;
 
     /**
      * Builds the gui for the group summery page and initializes controller.
@@ -53,13 +51,15 @@ public class GroupSummaryView extends JFrame implements ActionListener {
         this.debtData = debtData;
         this.groupUserNames = groupUserNames;
 
+        main = new JPanel();
+
         ItemDataInterface itemData;
         GroupDataInterface groupData;
         try {
             itemData = new ItemDataAccess();
             groupData = new GroupDataAccess();
         } catch (IOException | ParseException e1) {
-            throw new RuntimeException(e1); // Display popup
+            throw new RuntimeException(e1);
         }
 
         AddToPlanningPresenter presenter = new AddToPlanningPresenter();
@@ -70,23 +70,28 @@ public class GroupSummaryView extends JFrame implements ActionListener {
 
         // SetUp JFrame
         setSize(1500, 820);
-        setLayout(new BorderLayout());
+        setLayout(null);
         setVisible(true);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        // SetUp JPanel
+        main.setSize(1500, 820);
+        main.setLayout(new BorderLayout());
 
         // Defining and positioning JComponents
-        t = new JTabbedPane();
-        p1 = new JPanel();
-        p2 = new JPanel();
-        p3 = new JPanel();
+        JTabbedPane t = new JTabbedPane();
+        JComponent p1 = new JPanel();
+        JComponent p2 = new JPanel();
+        JComponent p3 = new JPanel();
 
         // Title
-        temp = new JTextArea(groupname);
+        JTextArea temp = new JTextArea(groupname);
         temp.setEditable(false);
         JPanel temporary_panel = new JPanel();
         temporary_panel.add(temp);
 
         // Group Information
-        RHS = new JTextArea("This is the group information. \n" +
+        JTextArea RHS = new JTextArea("This is the group information. \n" +
                 "Group Name: " + this.groupname + "\n" +
                 "Group Code: " + this.groupid + "\n");
         RHS.setEditable(false);
@@ -111,11 +116,10 @@ public class GroupSummaryView extends JFrame implements ActionListener {
         p2.add(p);
         p1.add(c);
 
-        group_members = new JTextArea("Placeholder for the names");
+        JTextArea group_members = new JTextArea("Placeholder for the names");
         group_members.setEditable(false);
         JPanel bottoms_up = new JPanel();
         bottoms_up.add(group_members);
-
 
         t.addTab("Planning", p1);
         t.setMnemonicAt(0, KeyEvent.VK_1);
@@ -125,10 +129,12 @@ public class GroupSummaryView extends JFrame implements ActionListener {
         t.setMnemonicAt(2, KeyEvent.VK_3);
 
         p3.add(b);
-        add(t, BorderLayout.CENTER);
-        add(temporary_panel, BorderLayout.NORTH);
-        add(right_hand_side, BorderLayout.LINE_START);
-        add(bottoms_up, BorderLayout.SOUTH);
+        main.add(t, BorderLayout.CENTER);
+        main.add(temporary_panel, BorderLayout.NORTH);
+        main.add(right_hand_side, BorderLayout.LINE_START);
+        main.add(bottoms_up, BorderLayout.SOUTH);
+
+        setContentPane(main);
 
         addItem.addActionListener(this);
         settleDebt.addActionListener(this);
@@ -139,29 +145,16 @@ public class GroupSummaryView extends JFrame implements ActionListener {
      * @param evt the event to be processed
      * React to a certain button click that results in evt.
      */
-    @Override
     public void actionPerformed(ActionEvent evt) {
         if (evt.getActionCommand().equals("Add Item")){
             String item = JOptionPane.showInputDialog("Please enter in Item Name:");
-
             UpdatedLists planningList = this.controllerAddPlanning.performPlanningAdd(item, this.groupid);
         }
 
         if (evt.getActionCommand().equals("Clear Debt")){
             ClearDebtView clearDebtView = new ClearDebtView();
         }
-
-
-        if (evt.getActionCommand().equals("Return to Groups")){
-            MainWindowView mainWindowView = new MainWindowView();
-
-        }
     }
-
-//    private void setHomepageView(){
-//        HomePageView homePageView = new HomePageView();
-////        this.setContentPane(homePageView);
-//    }
 
 }
 

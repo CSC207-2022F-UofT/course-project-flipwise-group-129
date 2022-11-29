@@ -95,12 +95,12 @@ public class UserRegisterView extends JPanel implements ActionListener {
         if (e.getActionCommand().equals("Sign Up")){
             System.out.println("Collecting stuff from signup");
             this.final_output = controller.controlUseCase(username.getText(), String.valueOf(password.getPassword()),
-                String.valueOf(repeatPassword.getPassword()));
+                    String.valueOf(repeatPassword.getPassword()));
         }
     }
 
     /**
-     * @return the sign up button that brings user to homepage.
+     * @return the button that allows user to sign up for an account.
      */
     public JButton getSignup() { return signup; }
 
@@ -109,13 +109,9 @@ public class UserRegisterView extends JPanel implements ActionListener {
      */
     public JButton getExitSignUp() { return exitSignUp; }
 
-//    public String getUsername() { return this.username.getText(); }
-//
-//    public String getPassword1() { return new String(password.getPassword()); }
-//
-//    public String getPassword2() { return new String(repeatPassword.getPassword()); }
-//
-//    public boolean getFinalOutput() { return this.final_output; }
+    public String getUsername() { return this.username.getText(); }
+
+    public boolean getFinalOutput() { return this.final_output; }
 
     }
 
