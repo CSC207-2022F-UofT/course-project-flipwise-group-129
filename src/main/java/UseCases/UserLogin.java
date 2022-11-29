@@ -84,17 +84,15 @@ public class UserLogin implements UserLoginBoundaryIn {
             eachGroup.add(group.getGroupId());
             eachGroup.add(group.getGroupName());
 
-            List<List<String>> planningList = getPlanning(group.getPlanningList());
-            eachGroup.add(planningList);
-
-            List<List<String>> purchaseList = getPurchase(group.getPurchaseList());
-            eachGroup.add(purchaseList);
+            eachGroup.add(getPlanning(group.getPlanningList()));
+            eachGroup.add(getPurchase(group.getPurchaseList()));
 
             eachGroup.add(getUsersAsList(group));
 
             List<Debt> debtAsDebts = group.getPurchaseBalance().getAllDebts();
             eachGroup.add(getDebtAsString(debtAsDebts));
 
+            // Add all the group details to a outer list.
             allGroups.add(eachGroup);
         }
         return new LoggedInInfo(user.getPassword(), allGroups);
