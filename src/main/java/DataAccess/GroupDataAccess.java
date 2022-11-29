@@ -10,7 +10,7 @@ public class GroupDataAccess extends DataAccess implements GroupDataInterface {
      * Implements GroupDataInterface
      * This represents an GroupDataAccess which facilitates data reading and writing from groups.json to update
      */
-    public File groupFile = new File("src/main/groups.json");
+    public File groupFile = new File("././src/main/groups.json");
     private final Map<String, String> groupMap = new HashMap<>();
 
     /**
@@ -25,7 +25,7 @@ public class GroupDataAccess extends DataAccess implements GroupDataInterface {
      * @param testString a string confirming database to access is test
      */
     public GroupDataAccess(String testString) throws IOException, ParseException {
-        this.groupFile = new File("src/main/testgroups.json");
+        this.groupFile = new File("././src/main/testgroups.json");
         super.readFile(groupFile, groupMap);
     }
 
