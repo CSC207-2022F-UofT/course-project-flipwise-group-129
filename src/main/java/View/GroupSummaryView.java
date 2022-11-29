@@ -5,6 +5,7 @@ import DataAccess.GroupDataAccess;
 import DataAccess.ItemDataAccess;
 import DataAccessInterface.GroupDataInterface;
 import DataAccessInterface.ItemDataInterface;
+import DataStructures.UpdatedLists;
 import Entities.PurchaseList;
 import InputBoundary.AddToPlanningBoundaryIn;
 import Presenters.AddToPlanningPresenter;
@@ -21,54 +22,83 @@ import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.util.List;
 
-public class GroupSummaryView extends JPanel implements ActionListener {
+public class GroupSummaryView extends JFrame implements ActionListener {
 
     private JTabbedPane t;
     private JComponent p1, p2, p3;
     private JTextArea temp, RHS, group_members;
 
-    private String groupname;
-    private String groupid;
-    JButton add_item = new JButton("Add Item");
-    JButton clear_debt = new JButton("Clear Debt");
-    JButton return_to_homepage = new JButton("Return to Groups");
-    private AddToPlanningController controllerAddPlanning;
+    private final String groupname;
+    private final String groupid;
+    private List<List<String>> purchaseListData;
+    List<List<String>> planningListData;
+    List<List<String>> debtData;
+    List<String> groupUserNames;
+    public JButton addItem = new JButton("Add Item");
+    public JButton settleDebt = new JButton("Clear Debt");
+    public JButton toHomepage = new JButton("Return to Groups");
+    private final AddToPlanningController controllerAddPlanning;
 
+    /**
+     * Builds the gui for the group summery page and initializes controller.
+     */
     public GroupSummaryView(String groupname, String groupid, String username,
                             List<List<String>> purchaseListData, List<List<String>> planningListData,
                             List<List<String>> debtData, List<String> groupUserNames) {
 
         this.groupid = groupid;
         this.groupname = groupname;
+        this.planningListData = planningListData;
+        this.purchaseListData = purchaseListData;
+        this.debtData = debtData;
+        this.groupUserNames = groupUserNames;
 
-        setSize(1000,600);
-        setVisible(true);
+        ItemDataInterface itemData;
+        GroupDataInterface groupData;
+        try {
+            itemData = new ItemDataAccess();
+            groupData = new GroupDataAccess();
+        } catch (IOException | ParseException e1) {
+            throw new RuntimeException(e1); // Display popup
+        }
+
+        AddToPlanningPresenter presenter = new AddToPlanningPresenter();
+
+        AddToPlanningBoundaryIn useCase = new AddToPlanningList(presenter, groupData, itemData);
+
+        this.controllerAddPlanning = new AddToPlanningController(useCase);
+
+        // SetUp JFrame
+        setSize(1500, 820);
         setLayout(new BorderLayout());
+        setVisible(true);
 
+        // Defining and positioning JComponents
         t = new JTabbedPane();
         p1 = new JPanel();
         p2 = new JPanel();
         p3 = new JPanel();
 
-        temp = new JTextArea("Group Summary");
+        // Title
+        temp = new JTextArea(groupname);
         temp.setEditable(false);
-
         JPanel temporary_panel = new JPanel();
         temporary_panel.add(temp);
 
+        // Group Information
         RHS = new JTextArea("This is the group information. \n" +
                 "Group Name: " + this.groupname + "\n" +
                 "Group Code: " + this.groupid + "\n");
         RHS.setEditable(false);
 
+        // Buttons
         JPanel btn_group = new JPanel();
-        btn_group.add(add_item);
-        btn_group.add(clear_debt);
-        btn_group.add(return_to_homepage);
+        btn_group.add(addItem);
+        btn_group.add(settleDebt);
+        btn_group.add(toHomepage);
 
         JPanel text_group = new JPanel();
         text_group.add(RHS);
-
 
         JPanel right_hand_side = new JPanel();
         right_hand_side.setLayout(new BoxLayout(right_hand_side, BoxLayout.PAGE_AXIS));
@@ -100,43 +130,33 @@ public class GroupSummaryView extends JPanel implements ActionListener {
         add(right_hand_side, BorderLayout.LINE_START);
         add(bottoms_up, BorderLayout.SOUTH);
 
-        add_item.addActionListener(this);
-        clear_debt.addActionListener(this);
-        return_to_homepage.addActionListener(this);
+        addItem.addActionListener(this);
+        settleDebt.addActionListener(this);
+        toHomepage.addActionListener(this);
     }
 
+    /**.
+     * @param evt the event to be processed
+     * React to a certain button click that results in evt.
+     */
     @Override
-    public void actionPerformed(ActionEvent e) {
-        if (e.getActionCommand().equals("Add Item")){
+    public void actionPerformed(ActionEvent evt) {
+        if (evt.getActionCommand().equals("Add Item")){
             String item = JOptionPane.showInputDialog("Please enter in Item Name:");
 
-            ItemDataInterface itemData;
-            GroupDataInterface groupData;
-            try {
-                itemData = new ItemDataAccess();
-                groupData = new GroupDataAccess();
-            } catch (IOException | ParseException e1) {
-                throw new RuntimeException(e1); // Display popup
-            }
-
-            AddToPlanningPresenter presenter = new AddToPlanningPresenter();
-
-            AddToPlanningBoundaryIn useCase = new AddToPlanningList(presenter, groupData, itemData);
-
-            this.controllerAddPlanning = new AddToPlanningController(useCase);
-
-            this.controllerAddPlanning.performPlanningAdd(item, this.groupid);
+            UpdatedLists planningList = this.controllerAddPlanning.performPlanningAdd(item, this.groupid);
         }
 
-        if (e.getActionCommand().equals("Clear Debt")){
+        if (evt.getActionCommand().equals("Clear Debt")){
             ClearDebtView clearDebtView = new ClearDebtView();
         }
 
 
-        if (e.getActionCommand().equals("Return to Groups")){
+        if (evt.getActionCommand().equals("Return to Groups")){
+            MainWindowView mainWindowView = new MainWindowView();
+            set
         }
     }
-
 
 //    private void setHomepageView(){
 //        HomePageView homePageView = new HomePageView();

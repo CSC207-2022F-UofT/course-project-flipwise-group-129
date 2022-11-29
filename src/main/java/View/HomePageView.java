@@ -45,30 +45,30 @@ public class HomePageView extends JPanel implements ActionListener {
      */
     public HomePageView(String username, List<String> groupNames) {
 
-        this.username = username;
-        this.group_names = groupNames;
-
-        UserDataInterface UserInterface;
-
-        GroupDataInterface GroupInterface;
-        try {
-            GroupInterface = new GroupDataAccess();
-            UserInterface = new UserDataAccess();
-        } catch (IOException | ParseException e) {
-            throw new RuntimeException(e);
-        }
-
-        //GroupCreate
-        GroupCreatePresenter presenterCreate = new GroupCreatePresenter();
-        GroupCreateBoundaryIn useCaseCreate = new GroupCreate(presenterCreate, GroupInterface, UserInterface);
-
-        this.controllerCreate = new GroupCreateController(useCaseCreate);
-
-        //GroupJoin
-        GroupJoinPresenter presenterJoin = new GroupJoinPresenter();
-        GroupJoinBoundaryIn useCaseJoin = new GroupJoin(presenterJoin, GroupInterface, UserInterface);
-
-        this.controllerJoin = new GroupJoinController(useCaseJoin);
+//        this.username = username;
+//        this.group_names = groupNames;
+//
+//        UserDataInterface UserInterface;
+//
+//        GroupDataInterface GroupInterface;
+//        try {
+//            GroupInterface = new GroupDataAccess();
+//            UserInterface = new UserDataAccess();
+//        } catch (IOException | ParseException e) {
+//            throw new RuntimeException(e);
+//        }
+//
+//        //GroupCreate
+//        GroupCreatePresenter presenterCreate = new GroupCreatePresenter();
+//        GroupCreateBoundaryIn useCaseCreate = new GroupCreate(presenterCreate, GroupInterface, UserInterface);
+//
+//        this.controllerCreate = new GroupCreateController(useCaseCreate);
+//
+//        //GroupJoin
+//        GroupJoinPresenter presenterJoin = new GroupJoinPresenter();
+//        GroupJoinBoundaryIn useCaseJoin = new GroupJoin(presenterJoin, GroupInterface, UserInterface);
+//
+//        this.controllerJoin = new GroupJoinController(useCaseJoin);
 
         // SetUp JPanel
         setSize(1500, 820);
@@ -114,18 +114,18 @@ public class HomePageView extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent evt){
         if (evt.getActionCommand().equals("Create Group")){
             String groupName = JOptionPane.showInputDialog("Please enter in Group Name:");
-            JOptionPane.showMessageDialog(null, "Your Group Name is "
+            JOptionPane.showMessageDialog(null, "The name of the group is "
                     + groupName + ".");
 
-            createdGroupInfo = this.controllerCreate.create(groupName, this.username); //FIXX
+//            createdGroupInfo = this.controllerCreate.create(groupName, this.username);
 
         }
         else if (evt.getActionCommand().equals("Join Group")){
             String groupID = JOptionPane.showInputDialog("Please enter in Group ID:");
-            JOptionPane.showMessageDialog(null, "The Group ID is "
+            JOptionPane.showMessageDialog(null, "The ID of the group is "
                     + groupID + ".");
 
-            joinedGroupInfo = this.controllerJoin.create(groupID, this.username);
+//            joinedGroupInfo = this.controllerJoin.create(groupID, this.username);
         }
 
     }
