@@ -3,7 +3,8 @@ package DataStructures;
 import java.util.List;
 import java.util.Map;
 
-public class JoinedGroupInfo {
+public class
+JoinedGroupInfo {
 
     /*
     Represents the output to be presented about the information of a group

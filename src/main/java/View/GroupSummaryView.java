@@ -154,7 +154,7 @@ public class GroupSummaryView extends JFrame implements ActionListener {
 
         if (evt.getActionCommand().equals("Return to Groups")){
             MainWindowView mainWindowView = new MainWindowView();
-            set
+
         }
     }
 

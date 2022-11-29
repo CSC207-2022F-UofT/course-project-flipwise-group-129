@@ -9,7 +9,7 @@ import java.util.*;
 import java.io.*;
 
 public class ItemDataAccess extends DataAccess implements ItemDataInterface {
-    public final File itemFile = new File("items.json");;
+    public final File itemFile = new File("src/main/items.json");;
     private final Map<String, String> itemMap = new HashMap<>();
     public ItemDataAccess() throws IOException, ParseException {
         super.readFile(itemFile, itemMap);
