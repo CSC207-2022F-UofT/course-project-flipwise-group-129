@@ -7,6 +7,7 @@ import DataStructures.RegisterCredentials;
 import Entities.*;
 import InputBoundary.UserRegisterBoundaryIn;
 import OutputBoundary.UserRegisterBoundaryOut;
+import org.json.simple.parser.ParseException;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -54,7 +55,11 @@ public class UserRegister implements UserRegisterBoundaryIn {
     public void createUser(String username, String pw1) throws IOException {
         List<String> noGroups = new ArrayList<>();
         User user = new User(username, pw1, noGroups);
-        dataAccess.addorUpdateUser(username, user.toString());
+        try {
+            dataAccess.addorUpdateUser(username, user.toString());
+        } catch (ParseException e) {
+            this.outputBoundary.success(false);
+        }
     }
 
     /**
@@ -64,7 +69,11 @@ public class UserRegister implements UserRegisterBoundaryIn {
      * @return if the username is available
      */
     public boolean usernameAvailable(String username) {
-        return dataAccess.userIdExists(username);
+        try {
+            return dataAccess.userIdExists(username);
+        } catch (IOException | ParseException e) {
+            this.outputBoundary.success(false);
+        }
     }
 
     /**
