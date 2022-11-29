@@ -13,6 +13,7 @@ import java.util.List;
 
 import DataAccessInterface.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import org.json.simple.parser.ParseException;
 
 public class GroupCreate implements GroupCreateBoundaryIn{
 
@@ -76,14 +77,15 @@ public class GroupCreate implements GroupCreateBoundaryIn{
     private User getUserFromDb(String username){
         // get the user from the database and create a User interface
         //check if the user exists
-        if (!this.userDsInterface.userIdExists(username)){
-            throw new RuntimeException("User Id does not exist");
-        }
-        String userString = this.userDsInterface.userAsString(username);
 
         try {
+            if (!this.userDsInterface.userIdExists(username)){
+                throw new RuntimeException("User Id does not exist");
+            }
+            String userString = "";
+            userString = this.userDsInterface.userAsString(username);
             return User.fromString(userString);
-        } catch (JsonProcessingException e) {
+        } catch (IOException | ParseException e) {
             throw new RuntimeException("Unable to process user from database");
         }
     }
@@ -91,17 +93,19 @@ public class GroupCreate implements GroupCreateBoundaryIn{
     private Group getGroupFromDb(String groupId){
         //obtain the group info form the database
         //check if the group exists
-        if (!this.groupDsInterface.groupIdExists(groupId)){
-            throw new RuntimeException("Invalid GroupID provided");
-        }
-        String groupString = this.groupDsInterface.groupAsString(groupId);
-        Group group = null;
+
         try {
+            if (!this.groupDsInterface.groupIdExists(groupId)){
+                throw new RuntimeException("Invalid GroupID provided");
+            }
+            String groupString = "";
+            Group group = null;
+            groupString = this.groupDsInterface.groupAsString(groupId);
             group = Group.fromString(groupString);
-        } catch (JsonProcessingException e) {
+            return group;
+        } catch (IOException | ParseException e) {
             throw new RuntimeException("Unable to obtain group info from database");
         }
-        return group;
     }
 
     /**
@@ -130,12 +134,12 @@ public class GroupCreate implements GroupCreateBoundaryIn{
         //pass new info to db
         try {
             this.groupDsInterface.addorUpdateGroup(group.getGroupId(), group.toString());
-        } catch (IOException e) {
+        } catch (IOException | ParseException e) {
             throw new RuntimeException("unable to update group into database");
         }
         try {
             this.userDsInterface.addorUpdateUser(user.getUsername(), user.toString());
-        } catch (IOException e) {
+        } catch (IOException | ParseException e) {
             throw new RuntimeException("unable to update user data into database");
         }
     }
