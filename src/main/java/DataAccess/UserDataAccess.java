@@ -36,7 +36,8 @@ public class UserDataAccess extends DataAccess implements UserDataInterface {
      * @param userInfo the summarized user information of the current modified or added user
      */
     @Override
-    public void addorUpdateUser(String username, String userInfo) throws IOException {
+    public void addorUpdateUser(String username, String userInfo) throws IOException, ParseException {
+        super.readFile(userFile, userMap);
         super.addorUpdateEntity(userFile, userMap, username, userInfo);
     }
 
@@ -46,7 +47,8 @@ public class UserDataAccess extends DataAccess implements UserDataInterface {
      * @return true if the username was found from the users.json file and false otherwise
      */
     @Override
-    public boolean userIdExists(String username) {
+    public boolean userIdExists(String username) throws IOException, ParseException {
+        super.readFile(userFile, userMap);
         return userMap.containsKey(username);
     }
 
@@ -56,7 +58,8 @@ public class UserDataAccess extends DataAccess implements UserDataInterface {
      * @return user details corresponding to username in string form
      */
     @Override
-    public String userAsString(String username) {
+    public String userAsString(String username) throws IOException, ParseException {
+        super.readFile(userFile, userMap);
         return userMap.get(username);
     }
 }
