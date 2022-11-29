@@ -23,10 +23,12 @@ public class DataAccess {
      * @param entityMap the map to store all read data from filepath, this should be mutated
      */
     public void readFile(File jasonFile, Map<String, String> entityMap) throws IOException, ParseException {
-        FileReader reader = new FileReader(jasonFile);
-        JSONParser jsonParser = new JSONParser();
-        Object obj = jsonParser.parse(reader);
-        ((JSONArray) obj).forEach(currObj -> parseObject((JSONObject) currObj, entityMap));
+        if(jasonFile.length() != 0){
+            FileReader reader = new FileReader(jasonFile);
+            JSONParser jsonParser = new JSONParser();
+            Object obj = jsonParser.parse(reader);
+            ((JSONArray) obj).forEach(currObj -> parseObject((JSONObject) currObj, entityMap));
+        }
     }
 
     /**
@@ -35,9 +37,9 @@ public class DataAccess {
      * @param entityMap the map to store each object parsed from filepath, this should be mutated
      */
     protected void parseObject(JSONObject entityObject, Map<String, String> entityMap) {
-        JSONObject entityObjects = (JSONObject) entityObject.get("entity");
-        String id = (String) entityObjects.get("id");
-        String entityData = (String) entityObjects.get("entityData");
+//        JSONObject entityObjects = (JSONObject) entityObject.get("entity");
+        String id = (String) entityObject.get("id");
+        String entityData = (String) entityObject.get("entityData");
 
         entityMap.put(id, entityData);
     }
@@ -54,8 +56,7 @@ public class DataAccess {
             JSONObject entityDetails = new JSONObject();
             entityDetails.put("id", key);
             entityDetails.put("entityData", data);
-            JSONObject entityObject = new JSONObject();
-            entityList.add(entityObject);
+            entityList.add(entityDetails);
         });
         writer.write(entityList.toString());
         writer.flush();
