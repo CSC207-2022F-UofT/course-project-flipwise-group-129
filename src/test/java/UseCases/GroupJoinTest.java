@@ -20,12 +20,14 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.*;
+import java.nio.file.*;
 
 class GroupJoinTest {
 
@@ -37,14 +39,38 @@ class GroupJoinTest {
     // 4) Check that the Output Data passed to the Presenter is correct
     // 5) Check that the expected changes to the data layer are there.
 
+
+    @Before
+    public void setUp() throws IOException {
+        //copy and create duplicate test stuff
+        Path copiedGroups = Paths.get("src/test/resources/testgroupsCopy.json");
+        Path originalPathGroups = Paths.get("src/test/resources/testgroups.json");
+        Files.copy(originalPathGroups, copiedGroups, StandardCopyOption.REPLACE_EXISTING);
+
+        Path copiedUsers = Paths.get("src/test/resources/testusersCopy.json");
+        Path originalPathUsers = Paths.get("src/test/resources/testusers.json");
+        Files.copy(originalPathUsers, copiedUsers, StandardCopyOption.REPLACE_EXISTING);
+    }
+
+    @After
+    public void tearDown(){
+        File groupFile = new File("src/test/resources/testgroupsCopy.json");
+        groupFile.delete();
+
+        File userFile = new File("src/test/resources/testusersCopy.json");
+        userFile.delete();
+    }
     @Test
     void joinGroupSuccess() throws IOException, ParseException {
+
+        setUp();
+
         // 1) Instantiate
         GroupJoinPresenter presenter = new GroupJoinPresenter() {
             @Override
             public JoinedGroupInfo prepareSuccessView(JoinedGroupInfo outputData){
-                assert outputData.getGroupNames().contains("groupDarcy");
-                assert outputData.getUsersInGroup().contains("mishaalk");
+                assert outputData.getGroupNames().contains("group1");
+                assert outputData.getUsersInGroup().contains("rcordi");
                 assert outputData.getError() == null;
                 return null;
             }
@@ -56,21 +82,26 @@ class GroupJoinTest {
             }
         };
 
-        GroupDataInterface groupData = new GroupDataAccess();
-        UserDataInterface userData = new UserDataAccess();
+        GroupDataInterface groupData = new GroupDataAccess("test");
+        UserDataInterface userData = new UserDataAccess("test");
         GroupJoinBoundaryIn useCase = new GroupJoin(presenter, groupData, userData);
 
         // 2) Input data — we can make this up for the test. Normally it would
         // be created by the Controller.
-        JoinGroupRequest inputData = new JoinGroupRequest("mishaalk", "groupDarcy");
+        JoinGroupRequest inputData = new JoinGroupRequest("group1", "rcordi");
 
         // 3) Run the use case
         useCase.joinGroup(inputData);
+
+        tearDown();
 
     }
 
     @Test
     void joinGroupDNE() throws IOException, ParseException {
+
+        setUp();
+
         // 1) Instantiate
         GroupJoinPresenter presenter = new GroupJoinPresenter() {
             @Override
@@ -91,8 +122,8 @@ class GroupJoinTest {
             }
         };
 
-        GroupDataInterface groupData = new GroupDataAccess();
-        UserDataInterface userData = new UserDataAccess();
+        GroupDataInterface groupData = new GroupDataAccess("test");
+        UserDataInterface userData = new UserDataAccess("test");
         GroupJoinBoundaryIn useCase = new GroupJoin(presenter, groupData, userData);
 
         // 2) Input data — we can make this up for the test. Normally it would
@@ -102,10 +133,15 @@ class GroupJoinTest {
         // 3) Run the use case
         useCase.joinGroup(inputData);
 
+        tearDown();
+
     }
 
     @Test
     void joinGroupAlreadyJoined() throws IOException, ParseException {
+
+        setUp();
+
         // 1) Instantiate
         GroupJoinPresenter presenter = new GroupJoinPresenter() {
             @Override
@@ -126,33 +162,33 @@ class GroupJoinTest {
             }
         };
 
-        GroupDataInterface groupData = new GroupDataAccess();
-        UserDataInterface userData = new UserDataAccess();
+        GroupDataInterface groupData = new GroupDataAccess("test");
+        UserDataInterface userData = new UserDataAccess("test");
         GroupJoinBoundaryIn useCase = new GroupJoin(presenter, groupData, userData);
 
         // 2) Input data — we can make this up for the test. Normally it would
         // be created by the Controller.
-        JoinGroupRequest inputData = new JoinGroupRequest("mishaalk", "groupDarcy");
+        JoinGroupRequest inputData = new JoinGroupRequest("rcordi", "group1");
 
         // 3) Run the use case
         useCase.joinGroup(inputData);
+
+        tearDown();
 
     }
 
 
     List<String> getUserInfo() throws IOException, ParseException {
-        UserDataInterface userDsInterface = new UserDataAccess();
-        List<String> stringGroups = new ArrayList<>();
+        UserDataInterface userDsInterface = new UserDataAccess("test");
         // get the user from the database
         //check if the user exists
-        if (!userDsInterface.userIdExists("mishaalk")){
+        if (!userDsInterface.userIdExists("rcordi")){
             throw new RuntimeException("User Id does not exist");
         }
-        String userString = userDsInterface.userAsString("mishaalk");
+        String userString = userDsInterface.userAsString("rcordi");
 
         try {
-            User.fromString(userString).getGroups().forEach(group -> stringGroups.add(group.getGroupId()));
-            return stringGroups;
+            return new ArrayList<>(User.fromString(userString).getGroups());
         } catch (JsonProcessingException e) {
             throw new RuntimeException("Unable to process user from database");
         }
@@ -160,22 +196,21 @@ class GroupJoinTest {
 
 
     List<List<String>> getGroupInfo() throws IOException, ParseException {
-        GroupDataInterface groupDsInterface = new GroupDataAccess();
-        List<String> stringUsers = new ArrayList<>();
+        GroupDataInterface groupDsInterface = new GroupDataAccess("test");
         List<String> stringItems = new ArrayList<>();
         List<String> stringPlanned = new ArrayList<>();
         // get the user from the database
         //check if the user exists
-        if (!groupDsInterface.groupIdExists("0001")){
+        if (!groupDsInterface.groupIdExists("groupOne11")){
             throw new RuntimeException("Group Id does not exist");
         }
-        String groupString = groupDsInterface.groupAsString("0001");
+        String groupString = groupDsInterface.groupAsString("groupOne11");
 
         try {
             Group group = Group.fromString(groupString);
             group.getPurchaseList().getItems().forEach(item -> stringItems.add(item.getItemId()));
             group.getPlanningList().getItems().forEach(item -> stringPlanned.add(item.getItemId()));
-            group.getUsers().forEach(user -> stringUsers.add(user.getUsername()));
+            List<String> stringUsers = new ArrayList<>(group.getUsers());
             List<List<String>> overall = new ArrayList<>();
             overall.add(stringItems);
             overall.add(stringPlanned);
@@ -188,6 +223,8 @@ class GroupJoinTest {
 
     @Test
     void joinGroupDb() throws IOException, ParseException {
+
+        setUp();
         // 1) Instantiate
         GroupJoinPresenter presenter = new GroupJoinPresenter() {
             @Override
@@ -204,13 +241,13 @@ class GroupJoinTest {
             }
         };
 
-        GroupDataInterface groupData = new GroupDataAccess();
-        UserDataInterface userData = new UserDataAccess();
+        GroupDataInterface groupData = new GroupDataAccess("test");
+        UserDataInterface userData = new UserDataAccess("test");
         GroupJoinBoundaryIn useCase = new GroupJoin(presenter, groupData, userData);
 
         // 2) Input data — we can make this up for the test. Normally it would
         // be created by the Controller.
-        JoinGroupRequest inputData = new JoinGroupRequest("mishaalk", "groupDarcy1");
+        JoinGroupRequest inputData = new JoinGroupRequest("groupOne11", "rcordi");
 
         //setting the data from the database as a constant to check later
         List<String> userInfoBefore = getUserInfo();
@@ -224,7 +261,7 @@ class GroupJoinTest {
             for (String s : userInfoBefore) {
                 assert userInfoAfter.contains(s);
             }
-            assert userInfoAfter.contains("groupDarcy");
+            assert userInfoAfter.contains("groupOne11");
         } catch (IOException | ParseException e) {
             throw new RuntimeException(e);
         }
@@ -236,10 +273,12 @@ class GroupJoinTest {
             for (String s : groupInfoBefore.get(2)) {
                 assert groupInfoAfter.get(2).contains(s);
             }
-            assert groupInfoAfter.get(2).contains("mishaalk");
+            assert groupInfoAfter.get(2).contains("rcordi");
         } catch (IOException | ParseException e) {
             throw new RuntimeException(e);
         }
+
+        tearDown();
 
     }
 

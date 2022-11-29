@@ -10,15 +10,17 @@ import Entities.*;
 import InputBoundary.UserLoginBoundaryIn;
 import OutputBoundary.UserLoginBoundaryOut;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import org.json.simple.parser.ParseException;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 public class UserLogin implements UserLoginBoundaryIn {
-    UserLoginBoundaryOut outputBoundary;
-    UserDataInterface userDataInterface;
-    GroupDataInterface groupDataInterface;
+    final UserLoginBoundaryOut outputBoundary;
+    final UserDataInterface userDataInterface;
+    final GroupDataInterface groupDataInterface;
 
     /**
      * @param outputBoundary output boundary to display result of login
@@ -57,12 +59,16 @@ public class UserLogin implements UserLoginBoundaryIn {
      * @throws JsonProcessingException if there is an error parsing the JSON
      */
     private LoggedInInfo usernamePasswordMatch(String username, String password) throws JsonProcessingException {
-        if (userDataInterface.userIdExists(username)) {
-            String userDetails = userDataInterface.userAsString(username);
-            User user = User.fromString(userDetails);
-            if (Objects.equals(user.getPassword(), password)) {
-                return(successDetails(user));
+        try {
+            if (userDataInterface.userIdExists(username)) {
+                String userDetails = userDataInterface.userAsString(username);
+                User user = User.fromString(userDetails);
+                if (Objects.equals(user.getPassword(), password)) {
+                    return(successDetails(user));
+                }
             }
+        } catch (IOException | ParseException e) {
+            return new LoggedInInfo(false);
         }
         return new LoggedInInfo(false);
     }
@@ -78,30 +84,33 @@ public class UserLogin implements UserLoginBoundaryIn {
         List<String> groups = user.getGroups();
         for (String stringGroup : groups) {
             // Gets a group representation of each group
-            Group group = Group.fromString(groupDataInterface.groupAsString(stringGroup));
+            Group group;
+            try {
+                group = Group.fromString(groupDataInterface.groupAsString(stringGroup));
+            } catch (IOException | ParseException e) {
+                return new LoggedInInfo(false);
+            }
             List<Object> eachGroup = new ArrayList<>();
 
             eachGroup.add(group.getGroupId());
             eachGroup.add(group.getGroupName());
 
-            List<List<String>> planningList = getPlanning(group.getPlanningList());
-            eachGroup.add(planningList);
-
-            List<List<String>> purchaseList = getPurchase(group.getPurchaseList());
-            eachGroup.add(purchaseList);
+            eachGroup.add(getPlanning(group.getPlanningList()));
+            eachGroup.add(getPurchase(group.getPurchaseList()));
 
             eachGroup.add(getUsersAsList(group));
 
             List<Debt> debtAsDebts = group.getPurchaseBalance().getAllDebts();
             eachGroup.add(getDebtAsString(debtAsDebts));
 
+            // Add all the group details to outer list.
             allGroups.add(eachGroup);
         }
         return new LoggedInInfo(user.getPassword(), allGroups);
     }
 
     /**
-     * Converts debt from a debt objects to a List of List of String, which is displayable by the view.
+     * Converts debt from a debt objects to a Nested List of String, which is displayable by the view.
      * Helper method for successDetails.
      *
      * @param debtAsDebts list of all debts in a group

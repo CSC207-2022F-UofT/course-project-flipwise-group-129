@@ -24,8 +24,32 @@ import java.util.Map;
 import java.util.Objects;
 
 class AddToPlanningListTest {
+    
+    @Before
+    public void setUp() throws IOException {
+        //copy and create duplicate test stuff
+        Path copiedGroups = Paths.get("src/test/resources/testgroupsCopy.json");
+        Path originalPathGroups = Paths.get("src/test/resources/testgroups.json");
+        Files.copy(originalPathGroups, copiedGroups, StandardCopyOption.REPLACE_EXISTING);
+
+        Path copiedUsers = Paths.get("src/test/resources/testusersCopy.json");
+        Path originalPathUsers = Paths.get("src/test/resources/testusers.json");
+        Files.copy(originalPathUsers, copiedUsers, StandardCopyOption.REPLACE_EXISTING);
+    }
+
+    @After
+    public void tearDown(){
+        File groupFile = new File("src/test/resources/testgroupsCopy.json");
+        groupFile.delete();
+
+        File userFile = new File("src/test/resources/testusersCopy.json");
+        userFile.delete();
+    }
+    
     @Test
     void itemAddedWithAllRequiredInfoTest(){
+        
+        setUp();
         boolean flagExists = false;
         GroupDataInterface groupData = null;
         ItemDataInterface itemData = null;
@@ -61,10 +85,14 @@ class AddToPlanningListTest {
         }
 
         assert (flagExists);
+        
+        tearDown();
     }
 
     @Test
     void itemNotAddedIfGroupIdDNETest(){
+        setUp();
+        
         boolean flagExists = false;
         GroupDataInterface groupData = null;
         ItemDataInterface itemData = null;
@@ -92,10 +120,14 @@ class AddToPlanningListTest {
         }
 
         assert (flagExists);
+        
+        tearDown();
     }
 
     @Test
     void createItemDbCheck() throws IOException, org.json.simple.parser.ParseException {
+        
+        setUp():
         GroupDataInterface groupData = null;
         ItemDataInterface itemData = null;
         {
@@ -127,6 +159,8 @@ class AddToPlanningListTest {
         } catch (IOException | ParseException e) {
             throw new RuntimeException(e);
         }
+        
+        tearDown();
     }
 
     List<String> getItemInfo() throws IOException, ParseException {
