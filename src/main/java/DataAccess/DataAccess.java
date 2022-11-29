@@ -37,10 +37,8 @@ public class DataAccess {
      * @param entityMap the map to store each object parsed from filepath, this should be mutated
      */
     protected void parseObject(JSONObject entityObject, Map<String, String> entityMap) {
-//        JSONObject entityObjects = (JSONObject) entityObject.get("entity");
-        String id = (String) entityObject.get("id");
-        String entityData = (String) entityObject.get("entityData");
-
+        String id = (String) entityObject.get("entityId");
+        String entityData = (String) entityObject.get("entityInfo");
         entityMap.put(id, entityData);
     }
 
