@@ -1,19 +1,19 @@
 package DataStructures;
-
+import java.util.Map;
 import java.util.List;
 
 public class UpdatedDebts {
     /**
      * this class represents the output data structure to pass to the view when debts have been updated
      */
-    private final List<List<String>> updatedBalances;
+    private final Map<String, List<List<Object>>> updatedBalances;
     private String outcomeMessage = "Success";
 
     /**
      * initiates a new type of UpdatedDebts in case of no error
-     * @param updatedBalances the list of updated balances in the group
+     * @param updatedBalances the map of updated balances in the group with relevant information
      */
-    public UpdatedDebts(List<List<String>> updatedBalances) {
+    public UpdatedDebts(Map<String, List<List<Object>>> updatedBalances) {
         this.updatedBalances = updatedBalances;
     }
 
@@ -30,7 +30,7 @@ public class UpdatedDebts {
      * get the updatedBalances in the group
      * @return the updatedBalances in the group
      */
-    public List<List<String>> getUpdatedBalances(){
+    public Map<String, List<List<Object>>> getUpdatedBalances(){
         return this.updatedBalances;
     }
 
