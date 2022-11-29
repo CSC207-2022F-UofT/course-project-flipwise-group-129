@@ -72,7 +72,7 @@ public class UserRegister implements UserRegisterBoundaryIn {
         try {
             return dataAccess.userIdExists(username);
         } catch (IOException | ParseException e) {
-            this.outputBoundary.success(false);
+            return false;
         }
     }
 
