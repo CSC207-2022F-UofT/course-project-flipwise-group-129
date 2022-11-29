@@ -24,15 +24,39 @@ import java.util.Map;
 import java.util.Objects;
 
 class AddToPlanningListTest {
+    
+    @Before
+    public void setUp() throws IOException {
+        //copy and create duplicate test stuff
+        Path copiedGroups = Paths.get("src/test/resources/testgroupsCopy.json");
+        Path originalPathGroups = Paths.get("src/test/resources/testgroups.json");
+        Files.copy(originalPathGroups, copiedGroups, StandardCopyOption.REPLACE_EXISTING);
+
+        Path copiedUsers = Paths.get("src/test/resources/testusersCopy.json");
+        Path originalPathUsers = Paths.get("src/test/resources/testusers.json");
+        Files.copy(originalPathUsers, copiedUsers, StandardCopyOption.REPLACE_EXISTING);
+    }
+
+    @After
+    public void tearDown(){
+        File groupFile = new File("src/test/resources/testgroupsCopy.json");
+        groupFile.delete();
+
+        File userFile = new File("src/test/resources/testusersCopy.json");
+        userFile.delete();
+    }
+    
     @Test
     void itemAddedWithAllRequiredInfoTest(){
+        
+        setUp();
         boolean flagExists = false;
         GroupDataInterface groupData = null;
         ItemDataInterface itemData = null;
         {
             try {
-                groupData = new GroupDataAccess("testgroups.json");
-                itemData = new ItemDataAccess("testitems.json");
+                groupData = new GroupDataAccess("test");
+                itemData = new ItemDataAccess("test");
             } catch (IOException | ParseException e) {
                 assert(false);
             }
@@ -61,17 +85,21 @@ class AddToPlanningListTest {
         }
 
         assert (flagExists);
+        
+        tearDown();
     }
 
     @Test
     void itemNotAddedIfGroupIdDNETest(){
+        setUp();
+        
         boolean flagExists = false;
         GroupDataInterface groupData = null;
         ItemDataInterface itemData = null;
         {
             try {
-                groupData = new GroupDataAccess("testgroups.json");
-                itemData = new ItemDataAccess("testitems.json");
+                groupData = new GroupDataAccess("test");
+                itemData = new ItemDataAccess("test");
             } catch (IOException | ParseException e) {
                 assert(false);
             }
@@ -92,16 +120,20 @@ class AddToPlanningListTest {
         }
 
         assert (flagExists);
+        
+        tearDown();
     }
 
     @Test
     void createItemDbCheck() throws IOException, org.json.simple.parser.ParseException {
+        
+        setUp():
         GroupDataInterface groupData = null;
         ItemDataInterface itemData = null;
         {
             try {
-                groupData = new GroupDataAccess("testgroups.json");
-                itemData = new ItemDataAccess("testitems.json");
+                groupData = new GroupDataAccess("test");
+                itemData = new ItemDataAccess("test");
             } catch (IOException | ParseException e) {
                 assert(false);
             }
@@ -127,10 +159,12 @@ class AddToPlanningListTest {
         } catch (IOException | ParseException e) {
             throw new RuntimeException(e);
         }
+        
+        tearDown();
     }
 
     List<String> getItemInfo() throws IOException, ParseException {
-        ItemDataInterface itemDsInterface = new ItemDataAccess("testitems.json");
+        ItemDataInterface itemDsInterface = new ItemDataAccess("test");
         List<String> itemInfo = new ArrayList<>();
         Map<String, String> itemDsMap = itemDsInterface.getItemMap();
         for(Map.Entry<String, String> curItem: itemDsMap.entrySet()){
@@ -150,7 +184,7 @@ class AddToPlanningListTest {
         return itemInfo;
     }
     Group getGroupInfo() throws IOException, ParseException {
-        GroupDataInterface groupDsInterface = new GroupDataAccess("testgroups.json");
+        GroupDataInterface groupDsInterface = new GroupDataAccess("test");
         try {
             return Group.fromString(groupDsInterface.groupAsString("grpOne11"));
         } catch (JsonProcessingException e) {
