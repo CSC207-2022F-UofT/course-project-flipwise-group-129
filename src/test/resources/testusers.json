@@ -1,13 +1,13 @@
-["entity", {
+[{
   "entityId": "mishaalk",
   "entityInfo" : "{\"username\":\"mishaalk\",\"password\":\"2222\",\"groups\":[\"grpOne11\"]}"
-},"entity", {
+},{
   "entityId" : "rcordi",
   "entityInfo" : "{\"username\":\"rcordi\",\"password\":\"4444\",\"groups\":[]}"
-},"entity", {
+},{
   "entityId": "randomC",
   "entityInfo" : "{\"username\":\"randomC\",\"password\":\"1111\",\"groups\":[\"grpOne11\"]}"
-},"entity", {
+},{
   "entityId": "sopleee",
   "entityInfo" : "{\"username\":\"sopleee\",\"password\":\"3333\",\"groups\":[\"grpOne11\"]}"
 }]
