@@ -11,9 +11,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import org.json.simple.parser.ParseException;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 public class SettlementPayment implements SettlementBoundaryIn {
     SettlementBoundaryOut outputBoundary;
@@ -63,7 +61,7 @@ public class SettlementPayment implements SettlementBoundaryIn {
             return raiseError("unable to save debt changes");
         }
 
-        List<List<String>> stringDebtList = getUpdatedDebts(currGroup.getPurchaseBalance());
+        Map<String, List<Object>> stringDebtList = getUpdatedDebts(currGroup.getPurchaseBalance());
         UpdatedDebts updatedDebts = new UpdatedDebts(stringDebtList);
         return outputBoundary.displayDebts(updatedDebts);
     }
@@ -78,23 +76,13 @@ public class SettlementPayment implements SettlementBoundaryIn {
      * @param purchaseBalance the list of Debts in the group
      * @return This returns a list of debts formatted as a nested list of strings [userOwedUsername, userOwingUsername, debtValue]
      */
-    private List<List<String>> getUpdatedDebts(PurchaseBalance purchaseBalance) {
-        List<List<String>> stringPurchaseBalance = new ArrayList<>();
-//        Iterator<String> iter = purchaseBalance.iterator();
-//        while(iter.hasNext()){
-//            Debt curDebt = iter.next();
-//            List<String> currentDebt = new ArrayList<>();
-//            currentDebt.add(curDebt.getUserOwed().getUsername());
-//            currentDebt.add(curDebt.getUserOwing().getUsername());
-//            currentDebt.add(curDebt.getDebtValue().toString());
-//            stringPurchaseBalance.add(currentDebt);
-//        }
+    private Map<String, List<Object>> getUpdatedDebts(PurchaseBalance purchaseBalance) {
+        Map<String, List<Object>> stringPurchaseBalance = new HashMap<>();
         for (Debt curDebt : purchaseBalance) {
-            List<String> currentDebt = new ArrayList<>();
-            currentDebt.add(curDebt.getUserOwed().getUsername());
+            List<Object> currentDebt = new ArrayList<>();
             currentDebt.add(curDebt.getUserOwing().getUsername());
-            currentDebt.add(curDebt.getDebtValue().toString());
-            stringPurchaseBalance.add(currentDebt);
+            currentDebt.add(curDebt.getDebtValue());
+            stringPurchaseBalance.put(curDebt.getUserOwed().getUsername(), currentDebt);
         }
         return stringPurchaseBalance;
     }
