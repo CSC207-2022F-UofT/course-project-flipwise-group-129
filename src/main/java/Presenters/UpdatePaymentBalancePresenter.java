@@ -17,7 +17,7 @@ public class UpdatePaymentBalancePresenter implements UpdatePaymentBalanceBounda
      * @return an UpdatedDebts object containing the updated information of the debts in the group between users.
      */
     @Override
-    public UpdatedDebts prepareSuccessView(UpdatedDebts updatedDebts) throws IOException, ParseException {
+    public UpdatedDebts prepareSuccessView(UpdatedDebts updatedDebts) {
         return updatedDebts;
     }
 
@@ -27,7 +27,7 @@ public class UpdatePaymentBalancePresenter implements UpdatePaymentBalanceBounda
      * @return the data structure containing the error information.
      */
     @Override
-    public UpdatedDebts prepareFailView(UpdatedDebts updatedDebts) throws IOException, ParseException {
+    public UpdatedDebts prepareFailView(UpdatedDebts updatedDebts) {
         return updatedDebts;
     }
 }

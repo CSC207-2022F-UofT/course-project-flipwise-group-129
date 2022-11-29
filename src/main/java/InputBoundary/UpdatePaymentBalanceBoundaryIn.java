@@ -13,5 +13,5 @@ public interface UpdatePaymentBalanceBoundaryIn {
      *                       group.
      * @return the information that is prepared by the presenter to the controller.
      */
-    UpdatedDebts updatePaymentBalance(PaymentInformation paymentDetails) throws IOException, ParseException;
+    UpdatedDebts updatePaymentBalance(PaymentInformation paymentDetails);
 }
