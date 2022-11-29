@@ -110,10 +110,24 @@ public class AddPurchase implements AddPurchaseBoundaryIn {
         // Set the new attributes for the item which only have values when the purchase is made,
         // price, buyer, involved users
         this.purchasedItem.setPrice(this.price);
-        this.purchasedItem.setBuyer(this.buyer);
-        this.purchasedItem.setUsersInvolved(this.participatingUsers);
+        this.purchasedItem.setBuyer(this.buyer.getUsername());
+        List<String> participatingUsernames = extractUsernames(this.participatingUsers);
+        this.purchasedItem.setUsersInvolved(participatingUsernames);
         // update the purchased list of the group with the new item with updated information
         purchaseList.addItems(this.purchasedItem);
+    }
+
+    /**
+     * Converts a list of users into a list of strings of their usernames
+     * @param users the list of users
+     * @return the list of usernames of the users in the list participatingUsers
+     */
+    private List<String> extractUsernames(List<User> users) {
+        List<String> tempList = new ArrayList<>();
+        for (User user : users) {
+            tempList.add(user.getUsername());
+        }
+        return tempList;
     }
 
     /**
@@ -193,9 +207,8 @@ public class AddPurchase implements AddPurchaseBoundaryIn {
     public List<List<String>> convertList(ItemList inputList) {
         // this class is abstracted to convert the new planning and purchase lists from the group
         // into the format of 2 dimensional lists with the required data to show the modification on the view
-        List<Item> tempListItems = inputList.getItems();
         List<List<String>> tempListItemStrings = new ArrayList<>();
-        for (Item item: tempListItems) {
+        for (Item item : inputList) {
             List<String> tempList = new ArrayList<>();
             tempList.add(item.getItemId());
             tempList.add(item.getItemName());
@@ -203,7 +216,7 @@ public class AddPurchase implements AddPurchaseBoundaryIn {
             // instance of which list is being updated
             if (inputList instanceof PurchaseList) {
                 tempList.add(String.valueOf(item.getPrice()));
-                tempList.add(item.getBuyer().getUsername());
+                tempList.add(item.getBuyer());
             }
             // add the list to the outer list, yay O(n) time
             tempListItemStrings.add(tempList);

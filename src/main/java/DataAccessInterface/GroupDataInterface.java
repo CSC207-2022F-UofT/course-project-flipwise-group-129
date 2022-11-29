@@ -1,4 +1,6 @@
 package DataAccessInterface;
+import org.json.simple.parser.ParseException;
+
 import java.io.IOException;
 import java.util.Map;
 
@@ -14,25 +16,25 @@ public interface GroupDataInterface {
      * @param groupId the groupId of the current modified or added group
      * @param groupInfo the summarized group information of the current modified or added group
      */
-    void addorUpdateGroup(String groupId, String groupInfo) throws IOException;
+    void addorUpdateGroup(String groupId, String groupInfo) throws IOException, ParseException;
 
     /**
      * This function will be called to check if a group entity already has been entered in groups.json file
      * @param groupId the groupId of the current modified or added group
      * @return true if the groupId was found from the groups.json file and false otherwise
      */
-    boolean groupIdExists(String groupId);
+    boolean groupIdExists(String groupId) throws IOException, ParseException;
 
     /**
      * This function will be called to retrieve the stored information from groups.json of a group based on its groupId
      * @param groupId the groupId of the desired group
      * @return group details corresponding to groupId in string form
      */
-    String groupAsString(String groupId);
+    String groupAsString(String groupId) throws IOException, ParseException;
 
     /**
      * This function will be called in the tests to check if the database updated as expected
      * @return the whole groupMap read from groups.json
      */
-    Map<String, String> getGroupMap()
+    Map<String, String> getGroupMap();
 }
