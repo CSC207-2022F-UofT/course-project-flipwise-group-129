@@ -24,6 +24,27 @@ import java.io.IOException;
 import java.util.*;
 
 class AddPurchaseControllerTest {
+    
+    @Before
+    public void setUp() throws IOException {
+        //copy and create duplicate test stuff
+        Path copiedGroups = Paths.get("src/test/resources/testgroupsCopy.json");
+        Path originalPathGroups = Paths.get("src/test/resources/testgroups.json");
+        Files.copy(originalPathGroups, copiedGroups, StandardCopyOption.REPLACE_EXISTING);
+
+        Path copiedUsers = Paths.get("src/test/resources/testusersCopy.json");
+        Path originalPathUsers = Paths.get("src/test/resources/testusers.json");
+        Files.copy(originalPathUsers, copiedUsers, StandardCopyOption.REPLACE_EXISTING);
+    }
+
+    @After
+    public void tearDown(){
+        File groupFile = new File("src/test/resources/testgroupsCopy.json");
+        groupFile.delete();
+
+        File userFile = new File("src/test/resources/testusersCopy.json");
+        userFile.delete();
+    }
 
     @Test
     void testPurchaseSuccess() throws IOException, ParseException {
@@ -35,6 +56,7 @@ class AddPurchaseControllerTest {
         // 4) Check that the Output Data passed to the Presenter is correct
         // 5) Check that the expected changes to the data layer are there.
 
+        setUp();
         // 1) Instantiate
         AddPurchasePresenter presenter = new AddPurchasePresenter();
         AddPurchaseBoundaryIn usecase = new AddPurchase();
@@ -70,6 +92,8 @@ class AddPurchaseControllerTest {
 
         Item finalItem = Item.fromString(itemData.itemAsString("itemApple"));
         assert(finalItem.getPrice() == 10.0f && Objects.equals(finalItem.getBuyer(), "sopleee"));
+        
+        tearDown();
 
     }
 
@@ -83,6 +107,7 @@ class AddPurchaseControllerTest {
         // 4) Check that the Output Data passed to the Presenter is correct
         // 5) Check that the expected changes to the data layer are there.
 
+        setUp();
         // 1) Instantiate
         AddPurchasePresenter presenter = new AddPurchasePresenter() {
             /**
@@ -127,12 +152,16 @@ class AddPurchaseControllerTest {
 
         // 3) Run the use case
         UpdatedLists outputData = usecase.executeUseCase(inputData);
+        
+        tearDown();
 
 
     }
 
     @Test
     void updateDbTest() throws IOException, ParseException {
+        setUp();
+        
         // 1) Instantiate
         AddPurchasePresenter presenter = new AddPurchasePresenter();
         AddPurchaseBoundaryIn usecase = new AddPurchase();
@@ -182,6 +211,7 @@ class AddPurchaseControllerTest {
             assert (Objects.equals(item.getBuyer(), returnedPurchased.get(i).get(3)));
             i++;
         }
+        tearDown();
     }
 
     Group getGroupInfo() throws IOException, ParseException {
