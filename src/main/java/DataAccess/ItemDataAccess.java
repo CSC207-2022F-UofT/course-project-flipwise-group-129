@@ -13,7 +13,7 @@ public class ItemDataAccess extends DataAccess implements ItemDataInterface {
      * Implements ItemDataInterface-
      * This is an ItemDataAccess which facilitates data reading and writing from items.json to update
      */
-    public File itemFile = new File("src/main/items.json");
+    public File itemFile = new File("././src/main/items.json");
     private final Map<String, String> itemMap = new HashMap<>();
 
     /**
@@ -28,7 +28,7 @@ public class ItemDataAccess extends DataAccess implements ItemDataInterface {
      * @param testString a string confirming database to access is test
      */
     public ItemDataAccess(String testString) throws IOException, ParseException {
-        this.itemFile = new File("src/main/testitems.json");
+        this.itemFile = new File("././src/test/resources/testitems.json");
         super.readFile(itemFile, itemMap);
     }
 
