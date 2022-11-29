@@ -9,6 +9,7 @@ import Entities.*;
 import InputBoundary.AddPurchaseBoundaryIn;
 import OutputBoundary.AddPurchaseBoundaryOut;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import org.json.simple.parser.ParseException;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -99,6 +100,8 @@ public class AddPurchase implements AddPurchaseBoundaryIn {
         } catch (IOException e) {
             // in the case of the io exception, we return a runtime exception
             raiseError("IO Exception");
+        } catch (ParseException e) {
+            raiseError("Parse Exception");
         }
     }
 
@@ -110,10 +113,24 @@ public class AddPurchase implements AddPurchaseBoundaryIn {
         // Set the new attributes for the item which only have values when the purchase is made,
         // price, buyer, involved users
         this.purchasedItem.setPrice(this.price);
-        this.purchasedItem.setBuyer(this.buyer);
-        this.purchasedItem.setUsersInvolved(this.participatingUsers);
+        this.purchasedItem.setBuyer(this.buyer.getUsername());
+        List<String> participatingUsernames = extractUsernames(this.participatingUsers);
+        this.purchasedItem.setUsersInvolved(participatingUsernames);
         // update the purchased list of the group with the new item with updated information
         purchaseList.addItems(this.purchasedItem);
+    }
+
+    /**
+     * Converts a list of users into a list of strings of their usernames
+     * @param users the list of users
+     * @return the list of usernames of the users in the list participatingUsers
+     */
+    private List<String> extractUsernames(List<User> users) {
+        List<String> tempList = new ArrayList<>();
+        for (User user : users) {
+            tempList.add(user.getUsername());
+        }
+        return tempList;
     }
 
     /**
@@ -133,7 +150,7 @@ public class AddPurchase implements AddPurchaseBoundaryIn {
 
         try {
             this.purchasedItem = Item.fromString(this.itemData.itemAsString(this.purchaseInfo.getItemId()));
-        } catch (JsonProcessingException e) {
+        } catch (IOException | ParseException e) {
             raiseError("JSON Processing Exception");
         }
 
@@ -142,12 +159,12 @@ public class AddPurchase implements AddPurchaseBoundaryIn {
         this.price = purchaseInfo.getPrice();
         try {
             this.purchaseGroup = Group.fromString(this.groupData.groupAsString(purchaseInfo.getPurchaseGroup()));
-        } catch (JsonProcessingException e) {
+        } catch (IOException | ParseException e) {
             raiseError("JSON Processing Exception");
         }
         try {
             this.buyer = User.fromString(this.userData.userAsString(purchaseInfo.getBuyer()));
-        } catch (JsonProcessingException e) {
+        } catch (IOException | ParseException e) {
             raiseError("JSON Processing Exception");
         }
 
@@ -177,7 +194,7 @@ public class AddPurchase implements AddPurchaseBoundaryIn {
             // need a try catch for the json processing exception
             try {
                 this.participatingUsers.add(User.fromString(this.userData.userAsString(username)));
-            } catch (JsonProcessingException e) {
+            } catch (IOException | ParseException e) {
                 raiseError(e.toString());
             }
             // yay O(n) time
@@ -193,9 +210,8 @@ public class AddPurchase implements AddPurchaseBoundaryIn {
     public List<List<String>> convertList(ItemList inputList) {
         // this class is abstracted to convert the new planning and purchase lists from the group
         // into the format of 2 dimensional lists with the required data to show the modification on the view
-        List<Item> tempListItems = inputList.getItems();
         List<List<String>> tempListItemStrings = new ArrayList<>();
-        for (Item item: tempListItems) {
+        for (Item item : inputList) {
             List<String> tempList = new ArrayList<>();
             tempList.add(item.getItemId());
             tempList.add(item.getItemName());
@@ -203,7 +219,7 @@ public class AddPurchase implements AddPurchaseBoundaryIn {
             // instance of which list is being updated
             if (inputList instanceof PurchaseList) {
                 tempList.add(String.valueOf(item.getPrice()));
-                tempList.add(item.getBuyer().getUsername());
+                tempList.add(item.getBuyer());
             }
             // add the list to the outer list, yay O(n) time
             tempListItemStrings.add(tempList);

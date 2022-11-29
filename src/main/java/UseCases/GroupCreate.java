@@ -13,6 +13,7 @@ import java.util.List;
 
 import DataAccessInterface.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import org.json.simple.parser.ParseException;
 
 public class GroupCreate implements GroupCreateBoundaryIn{
 
@@ -43,7 +44,7 @@ public class GroupCreate implements GroupCreateBoundaryIn{
     @Override
     public CreatedGroupInfo createNewGroup(ProposedGroupInfo newGroupInfo){
         //obtain the user from the database
-        User createdUser = null;
+        User createdUser;
         try{
             createdUser = this.getUserFromDb(newGroupInfo.getUsername());
         }catch (RuntimeException e) {
@@ -76,15 +77,34 @@ public class GroupCreate implements GroupCreateBoundaryIn{
     private User getUserFromDb(String username){
         // get the user from the database and create a User interface
         //check if the user exists
-        if (!this.userDsInterface.userIdExists(username)){
-            throw new RuntimeException("User Id does not exist");
-        }
-        String userString = this.userDsInterface.userAsString(username);
 
         try {
+            if (!this.userDsInterface.userIdExists(username)){
+                throw new RuntimeException("User Id does not exist");
+            }
+            String userString = "";
+            userString = this.userDsInterface.userAsString(username);
             return User.fromString(userString);
-        } catch (JsonProcessingException e) {
+        } catch (IOException | ParseException e) {
             throw new RuntimeException("Unable to process user from database");
+        }
+    }
+
+    private Group getGroupFromDb(String groupId){
+        //obtain the group info form the database
+        //check if the group exists
+
+        try {
+            if (!this.groupDsInterface.groupIdExists(groupId)){
+                throw new RuntimeException("Invalid GroupID provided");
+            }
+            String groupString = "";
+            Group group = null;
+            groupString = this.groupDsInterface.groupAsString(groupId);
+            group = Group.fromString(groupString);
+            return group;
+        } catch (IOException | ParseException e) {
+            throw new RuntimeException("Unable to obtain group info from database");
         }
     }
 
@@ -97,10 +117,10 @@ public class GroupCreate implements GroupCreateBoundaryIn{
      */
     private Group createGroup(User createdUser, String groupName){
         //intialize a set of users in the group
-        Set<User> users = new TreeSet<>();
-        users.add(createdUser); //add the created user into the group
+        Set<String> users = new TreeSet<>();
+        users.add(createdUser.getUsername()); //add the created user into the group
         Group group = new Group(groupName, users);// create the required group
-        createdUser.addGroup(group); // add the new group the list of groups the user is a part of
+        createdUser.addGroup(group.getGroupId()); // add the new group the list of groups the user is a part of
 
         return group;
     }
@@ -114,12 +134,12 @@ public class GroupCreate implements GroupCreateBoundaryIn{
         //pass new info to db
         try {
             this.groupDsInterface.addorUpdateGroup(group.getGroupId(), group.toString());
-        } catch (IOException e) {
+        } catch (IOException | ParseException e) {
             throw new RuntimeException("unable to update group into database");
         }
         try {
             this.userDsInterface.addorUpdateUser(user.getUsername(), user.toString());
-        } catch (IOException e) {
+        } catch (IOException | ParseException e) {
             throw new RuntimeException("unable to update user data into database");
         }
     }
@@ -132,12 +152,10 @@ public class GroupCreate implements GroupCreateBoundaryIn{
      * @return the datastructure that will be handled by the presenter
      */
     private CreatedGroupInfo createOutputData(User createdUser, Group group){
-        List<Group> allGroups = new ArrayList<>(createdUser.getGroups());
-        List<String> allGroupIds = new ArrayList<>();
+        List<String> allGroupIds = new ArrayList<>(createdUser.getGroups());
         List<String> allGroupNames = new ArrayList<>();
-        for (Group group1: allGroups){
-            allGroupNames.add(group1.getGroupName());
-            allGroupIds.add(group1.getGroupId());
+        for (String groupid: allGroupIds){
+            allGroupNames.add(getGroupFromDb(groupid).getGroupName());
         }
         //return the output ds
         return new CreatedGroupInfo(

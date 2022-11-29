@@ -6,11 +6,11 @@ public class PaymentDetails {
     final private String groupId;
 
     /**
-     * Creates a new package of information needed to execute the SettlementDebts use case which consists of
-     * information on the two users involved in the debt and the groupId involved
-     * @param owedUser the owedUser's username in the selected debt
-     * @param owingUser the owingUser's username in the selected
-     * @param groupId the groupId of the group with the debt
+     * Creates a new package of information needed to execute the AddtoPlanning use case which consists of
+     * information on the new item to add and its group
+     * @param owedUser the user owed money
+     * @param owingUser the user owing money
+     * @param groupId the groupId of the group storing this new item
      */
     public PaymentDetails(String owedUser, String owingUser, String groupId){
         this.owedUser = owedUser;

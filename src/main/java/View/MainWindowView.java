@@ -50,7 +50,7 @@ public class MainWindowView extends JFrame implements ActionListener {
 
         if (evt.getActionCommand().equals("Log In")) {
             this.userInfo = loginView.getUserInfo();
-            if (userInfo.isStatusBool()) {
+            if (userInfo.statusBool()) {
                 setHomePage(userInfo.getUsername(), getGroupNames(userInfo));
             }
 

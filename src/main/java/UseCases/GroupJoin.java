@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import org.json.simple.parser.ParseException;
 
 public class GroupJoin implements GroupJoinBoundaryIn{
     /**
@@ -94,14 +95,15 @@ public class GroupJoin implements GroupJoinBoundaryIn{
     private User getUserFromDb(String username){
         // get the user from the database and create a User interface
         //check if the user exists
-        if (!this.userDsInterface.userIdExists(username)){
-            throw new RuntimeException("User Id does not exist");
-        }
-        String userString = this.userDsInterface.userAsString(username);
 
         try {
+            if (!this.userDsInterface.userIdExists(username)){
+                throw new RuntimeException("User Id does not exist");
+            }
+            String userString;
+            userString = this.userDsInterface.userAsString(username);
             return User.fromString(userString);
-        } catch (JsonProcessingException e) {
+        } catch (IOException | ParseException e) {
             throw new RuntimeException("Unable to process user from database");
         }
     }
@@ -116,17 +118,19 @@ public class GroupJoin implements GroupJoinBoundaryIn{
     private Group getGroupFromDb(String groupId){
         //obtain the group info form the database
         //check if the group exists
-        if (!this.groupDsInterface.groupIdExists(groupId)){
-            throw new RuntimeException("Invalid GroupID provided");
-        }
-        String groupString = this.groupDsInterface.groupAsString(groupId);
-        Group group = null;
+
         try {
+            if (!this.groupDsInterface.groupIdExists(groupId)){
+                throw new RuntimeException("Invalid GroupID provided");
+            }
+            String groupString;
+            Group group;
+            groupString = this.groupDsInterface.groupAsString(groupId);
             group = Group.fromString(groupString);
-        } catch (JsonProcessingException e) {
+            return group;
+        } catch (IOException | ParseException e) {
             throw new RuntimeException("Unable to obtain group info from database");
         }
-        return group;
     }
 
     /**
@@ -144,14 +148,14 @@ public class GroupJoin implements GroupJoinBoundaryIn{
 
         //adding all needed new debt pairs:
         PurchaseBalance grpPurchaseBalance = group.getPurchaseBalance();
-        for (User groupUser : group.getUsers()) {
-            grpPurchaseBalance.addDebtPair(new Debt(groupUser, user, group.getGroupId()));
-            grpPurchaseBalance.addDebtPair(new Debt(user, groupUser, group.getGroupId()));
+        for (String groupUserName : group.getUsers()) {
+            grpPurchaseBalance.addDebtPair(new Debt(getUserFromDb(groupUserName), user, group.getGroupId()));
+            grpPurchaseBalance.addDebtPair(new Debt(user, getUserFromDb(groupUserName), group.getGroupId()));
         }
         //mutating method, so no need to reassign
 
-        group.addUser(user); // add the user into the list of users in the group
-        user.addGroup(group); // add the group into the list of groups the user is a part of
+        group.addUser(user.getUsername()); // add the user into the list of users in the group
+        user.addGroup(group.getGroupId()); // add the group into the list of groups the user is a part of
     }
 
     /**
@@ -164,12 +168,12 @@ public class GroupJoin implements GroupJoinBoundaryIn{
         //pass new info to db
         try {
             this.groupDsInterface.addorUpdateGroup(group.getGroupId(), group.toString());
-        } catch (IOException e) {
+        } catch (IOException | ParseException e) {
             throw new RuntimeException("Unable to modify group info to database");
         }
         try {
             this.userDsInterface.addorUpdateUser(user.getUsername(), user.toString());
-        } catch (IOException e) {
+        } catch (IOException | ParseException e) {
             throw new RuntimeException("Unable to save user info into database");
         }
     }
@@ -182,15 +186,13 @@ public class GroupJoin implements GroupJoinBoundaryIn{
      */
 
     private JoinedGroupInfo createOutputData(User user, Group group){
-        List<String> usersInGroup = new ArrayList<>();
-        List<String> groupIds = new ArrayList<>();
         List<String> groupNames = new ArrayList<>();
         List<List<String>> planningList = new ArrayList<>();
         List<List<String>> purchasedList = new ArrayList<>();
 
-        group.getUsers().forEach(user1 -> usersInGroup.add(user1.getUsername()));
-        user.getGroups().forEach(group1 -> groupIds.add(group1.getGroupId()));
-        user.getGroups().forEach(group1 -> groupIds.add(group1.getGroupName()));
+        List<String> usersInGroup = new ArrayList<>(group.getUsers());
+        List<String> groupIds = new ArrayList<>(user.getGroups());
+        user.getGroups().forEach(group1 -> groupNames.add(getGroupFromDb(group1).getGroupName()));
 
         //make a sublist  of the purchased and planning list
         planningList = this.getListItemList(group.getPlanningList());
@@ -206,7 +208,7 @@ public class GroupJoin implements GroupJoinBoundaryIn{
             List<String> subList = new ArrayList<>();
             subList.add(item.getItemId());
             subList.add(item.getItemName());
-            subList.add(item.getBuyer().getUsername());
+            subList.add(item.getBuyer());
         }
 
         return newList;

@@ -10,7 +10,7 @@ public class UserDataAccess extends DataAccess implements UserDataInterface {
      * Implements UserDataInterface-
      * This is an UserDataAccess which facilitates data reading and writing from users.json to update
      */
-    public final File userFile = new File("users.json");
+    public File userFile = new File("src/main/users.json");
     private final Map<String, String> userMap = new HashMap<>();
 
     /**
@@ -21,13 +21,23 @@ public class UserDataAccess extends DataAccess implements UserDataInterface {
     }
 
     /**
+     * Creates a test user data access instance by first reading and storing the testusers.json file locally
+     * @param testString a string confirming database to access is test
+     */
+    public UserDataAccess(String testString) throws IOException, ParseException {
+        this.userFile = new File("././src/test/resources/testusersCopy.json");
+        super.readFile(new File("././src/test/resources/testusers.json"), userMap);
+    }
+
+    /**
      * This function will be called to add or update any user entity to the map and saving the updated information
      * back into the users.json file
      * @param username the username of the current modified or added user
      * @param userInfo the summarized user information of the current modified or added user
      */
     @Override
-    public void addorUpdateUser(String username, String userInfo) throws IOException {
+    public void addorUpdateUser(String username, String userInfo) throws IOException, ParseException {
+        super.readFile(userFile, userMap);
         super.addorUpdateEntity(userFile, userMap, username, userInfo);
     }
 
@@ -37,7 +47,8 @@ public class UserDataAccess extends DataAccess implements UserDataInterface {
      * @return true if the username was found from the users.json file and false otherwise
      */
     @Override
-    public boolean userIdExists(String username) {
+    public boolean userIdExists(String username) throws IOException, ParseException {
+        super.readFile(userFile, userMap);
         return userMap.containsKey(username);
     }
 
@@ -47,7 +58,8 @@ public class UserDataAccess extends DataAccess implements UserDataInterface {
      * @return user details corresponding to username in string form
      */
     @Override
-    public String userAsString(String username) {
+    public String userAsString(String username) throws IOException, ParseException {
+        super.readFile(userFile, userMap);
         return userMap.get(username);
     }
 }

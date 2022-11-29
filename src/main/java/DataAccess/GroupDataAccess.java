@@ -10,13 +10,24 @@ public class GroupDataAccess extends DataAccess implements GroupDataInterface {
      * Implements GroupDataInterface
      * This represents an GroupDataAccess which facilitates data reading and writing from groups.json to update
      */
-    public final File groupFile = new File("groups.json");
+    public File groupFile = new File("././src/main/groups.json");
+
     private final Map<String, String> groupMap = new HashMap<>();
+
     /**
      * Creates a group data access instance by first reading the groups.json file and storing all information locally
      */
     public GroupDataAccess() throws IOException, ParseException {
         super.readFile(groupFile, groupMap);
+    }
+
+    /**
+     * Creates a test group data access instance by first reading and storing the testgroups.json file locally
+     * @param testString a string confirming database to access is test
+     */
+    public GroupDataAccess(String testString) throws IOException, ParseException {
+        this.groupFile = new File("././src/test/resources/testgroupsCopy.json");
+        super.readFile(new File("././src/test/resources/testgroups.json"), groupMap);
     }
 
     /**
@@ -26,7 +37,8 @@ public class GroupDataAccess extends DataAccess implements GroupDataInterface {
      * @param groupInfo the summarized group information of the current modified or added group
      */
     @Override
-    public void addorUpdateGroup(String groupId, String groupInfo) throws IOException {
+    public void addorUpdateGroup(String groupId, String groupInfo) throws IOException, ParseException {
+        super.readFile(groupFile, groupMap);
         super.addorUpdateEntity(groupFile, groupMap, groupId, groupInfo);
     }
 
@@ -36,7 +48,8 @@ public class GroupDataAccess extends DataAccess implements GroupDataInterface {
      * @return true if the groupId was found from the groups.json file and false otherwise
      */
     @Override
-    public boolean groupIdExists(String groupId) {
+    public boolean groupIdExists(String groupId) throws IOException, ParseException {
+        super.readFile(groupFile, groupMap);
         return groupMap.containsKey(groupId);
     }
 
@@ -46,7 +59,16 @@ public class GroupDataAccess extends DataAccess implements GroupDataInterface {
      * @return group details corresponding to groupId in string form
      */
     @Override
-    public String groupAsString(String groupId) {
+    public String groupAsString(String groupId) throws IOException, ParseException {
+        super.readFile(groupFile, groupMap);
         return groupMap.get(groupId);
+    }
+
+    /**
+     * This function will be called in the tests to check if the database updated as expected
+     * @return the whole groupMap read from groups.json
+     */
+    public Map<String, String> getGroupMap(){
+        return groupMap;
     }
 }
