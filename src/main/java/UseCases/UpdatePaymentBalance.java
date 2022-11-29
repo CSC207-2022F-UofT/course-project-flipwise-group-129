@@ -1,6 +1,6 @@
 package UseCases;
 
-import DataStructures.PaymentDetails;
+import DataStructures.PaymentInformation;
 import DataStructures.UpdatedDebts;
 import Entities.*;
 import InputBoundary.UpdatePaymentBalanceBoundaryIn;
@@ -16,10 +16,10 @@ public class UpdatePaymentBalance implements UpdatePaymentBalanceBoundaryIn {
     final GroupDataInterface groupDataInterface;
     final ItemDataInterface itemDataInterface;
     final UpdatePaymentBalanceBoundaryOut updatePaymentBalancePresenter;
-    final PaymentDetails paymentDetails;
+    final PaymentInformation paymentDetails;
 
     public UpdatePaymentBalance(GroupDataInterface gdi, ItemDataInterface idi, UpdatePaymentBalanceBoundaryOut upbp,
-                                PaymentDetails pd) {
+                                PaymentInformation pd) {
         this.groupDataInterface = gdi;
         this.itemDataInterface = idi;
         this.updatePaymentBalancePresenter = upbp;
@@ -28,12 +28,12 @@ public class UpdatePaymentBalance implements UpdatePaymentBalanceBoundaryIn {
 
     /**
      * Updates the list of debts for a group after the purchase of an item has been made.
-     * @param paymentDetails the data structure containing all of the information required to update the debts in the
+     * @param paymentDetails the data structure containing all the information required to update the debts in the
      *                       group.
      * @return the information that is prepared by the presenter to the controller.
      */
     @Override
-    public UpdatedDebts updatePaymentBalance(PaymentDetails paymentDetails) {
+    public UpdatedDebts updatePaymentBalance(PaymentInformation paymentDetails) {
         String groupID = paymentDetails.getGroupID();
         String userPurchasedItem = paymentDetails.getUsername();
         float itemPrice = paymentDetails.getItemPrice();
@@ -86,12 +86,12 @@ public class UpdatePaymentBalance implements UpdatePaymentBalanceBoundaryIn {
         catch (RuntimeException e) {
             return raiseError(e);
         }
-        Set<User> usersInGroup = groupInvolvedInPurchase.getUsers();
+        Set<String> usersInGroup = groupInvolvedInPurchase.getUsers();
 
         int amountOfUsersInvolvedInPurchase = usersInvolvedInPurcase.size();
         List<String> groupUsernames = new ArrayList<>();
-        for(User user : usersInGroup) {
-            groupUsernames.add(user.getUsername());
+        for(String user : usersInGroup) {
+            groupUsernames.add(user);
         }
 
         /*

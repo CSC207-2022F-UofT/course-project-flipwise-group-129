@@ -7,13 +7,11 @@ import DataAccessInterface.GroupDataInterface;
 import DataAccessInterface.ItemDataInterface;
 
 import DataAccessInterface.UserDataInterface;
-import DataStructures.PaymentDetails;
+import DataStructures.PaymentInformation;
 import DataStructures.UpdatedDebts;
 import Entities.Group;
-import Entities.Item;
 import Entities.User;
 import InputBoundary.UpdatePaymentBalanceBoundaryIn;
-import OutputBoundary.UpdatePaymentBalanceBoundaryOut;
 import Presenters.UpdatePaymentBalancePresenter;
 
 import java.io.IOException;
@@ -43,9 +41,9 @@ class UpdatePaymentBalanceTest {
         UpdatePaymentBalancePresenter presenter = new UpdatePaymentBalancePresenter() {
             @Override
             public UpdatedDebts prepareSuccessView(UpdatedDebts updatedDebts) {
-                assert updatedDebts.getUpdatedDebtsList().containsKey("rowanA");
-                assert !updatedDebts.updatedDebtsList.isEmpty();
-                assert updatedDebts.getError() == null;
+                assert updatedDebts.getUpdatedBalances().containsKey("rowanA");
+                assert !updatedDebts.getUpdatedBalances().isEmpty();
+                assert updatedDebts.getOutcomeMessage() == null;
                 return null;
             }
 
@@ -56,11 +54,11 @@ class UpdatePaymentBalanceTest {
             }
         };
 
-        GroupDataInterface groupData = new GroupDataAccess();
-        ItemDataInterface itemData = new ItemDataAccess();
+        GroupDataInterface groupData = new GroupDataAccess("test");
+        ItemDataInterface itemData = new ItemDataAccess("test");
 
         // 2. Input Data - we can make this up for the test, but normally it would be created from the controller.
-        PaymentDetails inputData = new PaymentDetails("jitHouse", "rowanA", (float) 19.99,
+        PaymentInformation inputData = new PaymentInformation("jitHouse", "rowanA", (float) 19.99,
                 "laundryDetergent", Arrays.asList("genS", "ethanV", "naveenD", "farahM"));
         UpdatePaymentBalanceBoundaryIn useCase = new UpdatePaymentBalance(groupData, itemData, presenter, inputData);
 
@@ -81,18 +79,18 @@ class UpdatePaymentBalanceTest {
 
             @Override
             public UpdatedDebts prepareFailView(UpdatedDebts updatedDebts) {
-                assert updatedDebts.updatedDebtsList.isEmpty();
-                assert !updatedDebts.updatedDebtsList.containsKey("rowanA");
-                assert Objects.equals(updatedDebts.getError(), "Invalid HashMap provided.");
+                assert updatedDebts.getUpdatedBalances().isEmpty();
+                assert !updatedDebts.getUpdatedBalances().containsKey("rowanA");
+                assert Objects.equals(updatedDebts.getOutcomeMessage(), "Invalid HashMap provided.");
                 return null;
             }
         };
 
-        GroupDataInterface groupData = new GroupDataAccess();
-        ItemDataInterface itemData = new ItemDataAccess();
+        GroupDataInterface groupData = new GroupDataAccess("test");
+        ItemDataInterface itemData = new ItemDataAccess("test");
 
         // 2. Input Data - we can make this up for the test, but normally it would be created from the controller.
-        PaymentDetails inputData = new PaymentDetails("jitHouse", "rowanA", (float) 19.99,
+        PaymentInformation inputData = new PaymentInformation("jitHouse", "rowanA", (float) 19.99,
                 "laundryDetergent", Arrays.asList("genS", "ethanV", "naveenD", "farahM"));
         UpdatePaymentBalanceBoundaryIn useCase = new UpdatePaymentBalance(groupData, itemData, presenter, inputData);
 
@@ -113,18 +111,18 @@ class UpdatePaymentBalanceTest {
 
             @Override
             public UpdatedDebts prepareFailView(UpdatedDebts updatedDebts) {
-                assert updatedDebts.updatedDebtsList.isEmpty();
-                assert !updatedDebts.updatedDebtsList.containsKey("rowanA");
-                assert Objects.equals(updatedDebts.getError(), "Debts have already been updated.");
+                assert updatedDebts.getUpdatedBalances().isEmpty();
+                assert !updatedDebts.getUpdatedBalances().containsKey("rowanA");
+                assert Objects.equals(updatedDebts.getOutcomeMessage(), "Debts have already been updated.");
                 return null;
             }
         };
 
-        GroupDataInterface groupData = new GroupDataAccess();
-        ItemDataInterface itemData = new ItemDataAccess();
+        GroupDataInterface groupData = new GroupDataAccess("test");
+        ItemDataInterface itemData = new ItemDataAccess("test");
 
         // 2. Input Data - we can make this up for the test, but normally it would be created from the controller.
-        PaymentDetails inputData = new PaymentDetails("jitHouse", "rowanA", (float) 19.99,
+        PaymentInformation inputData = new PaymentInformation("jitHouse", "rowanA", (float) 19.99,
                 "laundryDetergent", Arrays.asList("genS", "ethanV", "naveenD", "farahM"));
         UpdatePaymentBalanceBoundaryIn useCase = new UpdatePaymentBalance(groupData, itemData, presenter, inputData);
 
@@ -133,7 +131,7 @@ class UpdatePaymentBalanceTest {
     }
 
     List<String> getUserInfo() throws IOException, ParseException {
-        UserDataInterface userDsInterface = new UserDataAccess();
+        UserDataInterface userDsInterface = new UserDataAccess("test");
         List<String> stringGroups = new ArrayList<>();
         // get the user from the database
         //check if the user exists
@@ -143,7 +141,7 @@ class UpdatePaymentBalanceTest {
         String userString = userDsInterface.userAsString("mishaalk");
 
         try {
-            User.fromString(userString).getGroups().forEach(group -> stringGroups.add(group.getGroupId()));
+            User.fromString(userString).getGroups().forEach(group -> stringGroups.add(group));
             return stringGroups;
         } catch (JsonProcessingException e) {
             throw new RuntimeException("Unable to process user from database");
@@ -151,13 +149,13 @@ class UpdatePaymentBalanceTest {
     }
 
     List<List<String>> getGroupInfo() throws IOException, ParseException {
-        GroupDataInterface groupDsInterface = new GroupDataAccess();
+        GroupDataInterface groupDsInterface = new GroupDataAccess("test");
         List<String> stringUsers = new ArrayList<>();
         List<String> stringItems = new ArrayList<>();
         List<String> stringPlanned = new ArrayList<>();
         List<String> debtsList = new ArrayList<>();
         // get the user from the database
-        //check if the user exists
+        // check if the user exists
         if (!groupDsInterface.groupIdExists("0001")){
             throw new RuntimeException("Group Id does not exist");
         }
@@ -167,7 +165,7 @@ class UpdatePaymentBalanceTest {
             Group group = Group.fromString(groupString);
             group.getPurchaseList().getItems().forEach(item -> stringItems.add(item.getItemId()));
             group.getPlanningList().getItems().forEach(item -> stringPlanned.add(item.getItemId()));
-            group.getUsers().forEach(user -> stringUsers.add(user.getUsername()));
+            group.getUsers().forEach(user -> stringUsers.add(user));
             group.getPurchaseBalance().getAllDebts().forEach(Debt -> debtsList.add(Debt.getDebtValue().toString()));
             List<List<String>> overall = new ArrayList<>();
             overall.add(stringItems);
@@ -187,7 +185,7 @@ class UpdatePaymentBalanceTest {
 
             @Override
             public UpdatedDebts prepareSuccessView(UpdatedDebts updatedDebts) {
-                assert updatedDebts.getError() != null;
+                assert updatedDebts.getOutcomeMessage() != null;
                 return null;
             }
 
@@ -198,11 +196,11 @@ class UpdatePaymentBalanceTest {
             }
         };
 
-        GroupDataInterface groupData = new GroupDataAccess();
-        ItemDataInterface itemData = new ItemDataAccess();
+        GroupDataInterface groupData = new GroupDataAccess("test");
+        ItemDataInterface itemData = new ItemDataAccess("test");
 
         // 2. Input Data - we can make this up for the test, but normally it would be created from the controller.
-        PaymentDetails inputData = new PaymentDetails("jitHouse", "rowanA", (float) 19.99,
+        PaymentInformation inputData = new PaymentInformation("jitHouse", "rowanA", (float) 19.99,
                 "laundryDetergent", Arrays.asList("genS", "ethanV", "naveenD", "farahM"));
         UpdatePaymentBalanceBoundaryIn useCase = new UpdatePaymentBalance(groupData, itemData, presenter, inputData);
 

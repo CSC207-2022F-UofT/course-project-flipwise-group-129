@@ -8,6 +8,7 @@ import OutputBoundary.AddToPlanningBoundaryOut;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class AddToPlanningList implements AddToPlanningBoundaryIn{
@@ -65,12 +66,20 @@ public class AddToPlanningList implements AddToPlanningBoundaryIn{
      */
     private List<List<String>> getUpdatedPlanning(PlanningList planningList){
         List<List<String>> stringPlanningList = new ArrayList<>();
-        for(Item curItem: planningList.getItems()){
+        Iterator iter = planningList.iterator();
+        while(iter.hasNext()){
+            Item curItem = iter.next();
             List<String> currentItem = new ArrayList<>();
             currentItem.add(curItem.getItemId());
             currentItem.add(curItem.getItemName());
             stringPlanningList.add(currentItem);
         }
+//        for(Item curItem: planningList.getItems()){
+//            List<String> currentItem = new ArrayList<>();
+//            currentItem.add(curItem.getItemId());
+//            currentItem.add(curItem.getItemName());
+//            stringPlanningList.add(currentItem);
+//        }
         return stringPlanningList;
     }
     /**

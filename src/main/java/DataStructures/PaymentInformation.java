@@ -3,7 +3,7 @@ package DataStructures;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PaymentDetails {
+public class PaymentInformation {
     private final String groupID;
 
     private final String username;
@@ -22,7 +22,7 @@ public class PaymentDetails {
      * @param item_id the String which represents the ID of the item which was purchased.
      * @param users the list of all users involved in the purchase of the item;
      */
-    public PaymentDetails(String group_id, String user, float price, String item_id, List<String> users) {
+    public PaymentInformation(String group_id, String user, float price, String item_id, List<String> users) {
         this.groupID = group_id;
         this.username = user;
         this.itemPrice = price;
@@ -43,21 +43,36 @@ public class PaymentDetails {
     }
 
     /**
+     <<<<<<< HEAD
      * @return the username of the user who purchased the item.
+    =======
+     * This function retrieves the username of the owed user in the debt
+     * @return This returns the username of the owed user in the debt
+    >>>>>>> 6c8f8846703a862ca61272a4f9429562cae24dff
      */
     public String getUsername() {
         return this.username;
     }
 
     /**
+     <<<<<<< HEAD
      * @return the price of the item purchased.
+    =======
+     * This function retrieves the username of the owing user in the debt
+     * @return This returns the username of the owing user in the debt
+    >>>>>>> 6c8f8846703a862ca61272a4f9429562cae24dff
      */
     public float getItemPrice() {
         return this.itemPrice;
     }
 
     /**
+     <<<<<<< HEAD
      * @return the itemID of the purchased item.
+    =======
+     * This function retrieves the groupId of the group that contains this debt
+     * @return This returns the groupId of the group that contains this debt
+    >>>>>>> 6c8f8846703a862ca61272a4f9429562cae24dff
      */
     public String getItemID() {
         return this.itemID;

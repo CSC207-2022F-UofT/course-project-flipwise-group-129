@@ -3,13 +3,12 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.sql.Timestamp;
-import java.util.List;
 import java.util.Set;
 public class Group {
     /**
     This class represents a Group of users that have decided to conduct purchases together
      */
-    private Set<User> users; // all the users that are involved the group
+    private Set<String> users; // all the ids of users that are involved the group
     private PurchaseList purchaseList; // the list of things to purchase
     private PlanningList planningList; // the list of all the things that are planned to purchase
     private PurchaseBalance purchaseBalance; // has all the debts in the group
@@ -23,7 +22,7 @@ public class Group {
      * @param name the name of the group to be created
      * @param users all the users in the group
      */
-    public Group(String name, Set<User> users){
+    public Group(String name, Set<String> users){
         Timestamp ts = new Timestamp(System.currentTimeMillis());
         this.groupId = "Group" + name + ts.toInstant().toString();
         this.groupName = name;
@@ -40,30 +39,11 @@ public class Group {
         super();
     }
 
-//    public Group(String jsonString){
-//        JSONParser parser = new JSONParser();
-//        JSONObject obj;
-//        try {
-//            obj = (JSONObject) parser.parse(jsonString);
-//
-//            //setting atts
-//            this.userOwed = new User(obj.get("userOwed").toString());
-//            this.userOwing = new User(obj.get("userOwing").toString());
-//            this.groupId = obj.get("groupId").toString();
-//            this.debtValue = new Double(obj.get("debtValue").toString());
-//
-//
-//        } catch (ParseException e) {
-//            // TODO Auto-generated catch block
-//            e.printStackTrace();
-//        }
-//    }
-
     /**
      * Get all the users in the group
      * @return the set of all users in the group
      */
-    public Set<User> getUsers(){
+    public Set<String> getUsers(){
         // return all the users in this group
         return this.users;
     }
@@ -118,24 +98,10 @@ public class Group {
      * adds the user to the set of users in the group
      * @param user the user to add to the set of users in the group
      */
-    public void addUser(User user){
+    public void addUser(String user){
         // add a user into the group
         this.users.add(user);
     }
-
-//    public JSONObject toJSON(){
-//        JSONObject obj = new JSONObject();
-//        List<String> allUsers = new ArrayList<>();
-//        this.users.forEach(user -> allUsers.add(user.toString()));
-//        obj.put("users", allUsers);
-//        obj.put("groupId", this.groupId);
-//        obj.put("plannedItems", this.planningList.toString());
-//        obj.put("purchasedItems", this.purchaseList.toString());
-//        obj.put("purchaseBalance", this.purchaseBalance.toString());
-//        obj.put("groupName", this.groupName);
-//
-//        return obj;
-//    }
 
     /**
      * method to return a JSONString representation of an instance of this class Group
@@ -143,7 +109,7 @@ public class Group {
      */
     @Override
     public String toString() {
-        //converts the current instance into a JSONString for datastorage purposes
+        //converts the current instance into a JSONString for data storage purposes
         ObjectMapper mapper = new ObjectMapper();
         try {
             return mapper.writeValueAsString(this);

@@ -1,6 +1,6 @@
 package InputBoundary;
 
-import DataStructures.PaymentDetails;
+import DataStructures.PaymentInformation;
 import DataStructures.UpdatedDebts;
 
 public interface UpdatePaymentBalanceBoundaryIn {
@@ -10,5 +10,5 @@ public interface UpdatePaymentBalanceBoundaryIn {
      *                       group.
      * @return the information that is prepared by the presenter to the controller.
      */
-    UpdatedDebts updatePaymentBalance(PaymentDetails paymentDetails);
+    UpdatedDebts updatePaymentBalance(PaymentInformation paymentDetails);
 }

@@ -1,6 +1,6 @@
 package Controllers;
 
-import DataStructures.PaymentDetails;
+import DataStructures.PaymentInformation;
 import DataStructures.UpdatedDebts;
 import InputBoundary.UpdatePaymentBalanceBoundaryIn;
 import java.util.List;
@@ -30,7 +30,7 @@ public class UpdatePaymentBalanceController {
      * UpdatedDebts object.
      */
     UpdatedDebts create(String groupID, String user, float price, String itemID, List<String> usersInPurchase) {
-        PaymentDetails proposedInfo = new PaymentDetails(groupID, user, price, itemID, usersInPurchase);
+        PaymentInformation proposedInfo = new PaymentInformation(groupID, user, price, itemID, usersInPurchase);
 
         return userInput.updatePaymentBalance(proposedInfo);
     }
