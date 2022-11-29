@@ -14,8 +14,8 @@ import java.util.List;
 import java.util.Objects;
 
 public class UserRegister implements UserRegisterBoundaryIn {
-    UserRegisterBoundaryOut outputBoundary;
-    UserDataInterface dataAccess;
+    final UserRegisterBoundaryOut outputBoundary;
+    final UserDataInterface dataAccess;
 
     public UserRegister(UserRegisterBoundaryOut outputBoundary, UserDataInterface dataAccess) {
         this.outputBoundary = outputBoundary;
@@ -52,7 +52,7 @@ public class UserRegister implements UserRegisterBoundaryIn {
      * @throws IOException handles file reading error
      */
     public void createUser(String username, String pw1) throws IOException {
-        List<String> noGroups = new ArrayList<String>();
+        List<String> noGroups = new ArrayList<>();
         User user = new User(username, pw1, noGroups);
         dataAccess.addorUpdateUser(username, user.toString());
     }

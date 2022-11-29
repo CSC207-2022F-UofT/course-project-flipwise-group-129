@@ -16,9 +16,9 @@ import java.util.List;
 import java.util.Objects;
 
 public class UserLogin implements UserLoginBoundaryIn {
-    UserLoginBoundaryOut outputBoundary;
-    UserDataInterface userDataInterface;
-    GroupDataInterface groupDataInterface;
+    final UserLoginBoundaryOut outputBoundary;
+    final UserDataInterface userDataInterface;
+    final GroupDataInterface groupDataInterface;
 
     /**
      * @param outputBoundary output boundary to display result of login
