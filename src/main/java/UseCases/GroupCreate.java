@@ -44,6 +44,7 @@ public class GroupCreate implements GroupCreateBoundaryIn{
     @Override
     public CreatedGroupInfo createNewGroup(ProposedGroupInfo newGroupInfo){
         //obtain the user from the database
+//        System.out.println(newGroupInfo.getUsername());
         User createdUser;
         try{
             createdUser = this.getUserFromDb(newGroupInfo.getUsername());

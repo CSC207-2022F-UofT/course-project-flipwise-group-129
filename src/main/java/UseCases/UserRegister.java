@@ -70,7 +70,7 @@ public class UserRegister implements UserRegisterBoundaryIn {
      */
     public boolean usernameAvailable(String username) {
         try {
-            return dataAccess.userIdExists(username);
+            return !dataAccess.userIdExists(username);
         } catch (IOException | ParseException e) {
             return false;
         }

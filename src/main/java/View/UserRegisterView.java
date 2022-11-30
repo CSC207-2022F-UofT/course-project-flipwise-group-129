@@ -93,9 +93,16 @@ public class UserRegisterView extends JPanel implements ActionListener {
      */
     public void actionPerformed (ActionEvent e){
         if (e.getActionCommand().equals("Sign Up")){
-            System.out.println("Collecting stuff from signup");
+//            System.out.println("Collecting stuff from signup");
             this.final_output = controller.controlUseCase(username.getText(), String.valueOf(password.getPassword()),
                     String.valueOf(repeatPassword.getPassword()));
+            System.out.println("From sign up " + this.final_output);
+            if (this.final_output) {
+                JOptionPane.showMessageDialog(this,
+                        "Registration successful! Log in to your new account.");
+            }
+
+            else { JOptionPane.showMessageDialog(this, "Not Successful :("); }
         }
     }
 

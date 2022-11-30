@@ -52,8 +52,8 @@ public class DataAccess {
         JSONArray entityList = new JSONArray();
         entityMap.forEach((key, data) -> {
             JSONObject entityDetails = new JSONObject();
-            entityDetails.put("id", key);
-            entityDetails.put("entityData", data);
+            entityDetails.put("entityId", key);
+            entityDetails.put("entityInfo", data);
             entityList.add(entityDetails);
         });
         writer.write(entityList.toString());

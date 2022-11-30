@@ -24,13 +24,13 @@ import java.util.List;
 
 public class GroupSummaryView extends JFrame implements ActionListener {
 
-    HomePageView homePageView;
+    private HomePageView homePageView;
     private final String groupname;
     private final String groupid;
     private List<List<String>> purchaseListData;
     List<List<String>> planningListData;
     List<List<String>> debtData;
-    List<String> groupUserNames;
+    List<String> groupUserNames;;
     public JButton addItem = new JButton("Add Item");
     public JButton settleDebt = new JButton("Clear Debt");
     public JButton toHomepage = new JButton("Return to Groups");
@@ -42,7 +42,7 @@ public class GroupSummaryView extends JFrame implements ActionListener {
      */
     public GroupSummaryView(String groupname, String groupid, String username,
                             List<List<String>> purchaseListData, List<List<String>> planningListData,
-                            List<List<String>> debtData, List<String> groupUserNames) {
+                            List<List<String>> debtData, List<String> groupUserNames, HomePageView homePageView) {
 
         this.groupid = groupid;
         this.groupname = groupname;
@@ -50,6 +50,7 @@ public class GroupSummaryView extends JFrame implements ActionListener {
         this.purchaseListData = purchaseListData;
         this.debtData = debtData;
         this.groupUserNames = groupUserNames;
+        this.homePageView = homePageView;
 
         main = new JPanel();
 
@@ -116,7 +117,7 @@ public class GroupSummaryView extends JFrame implements ActionListener {
         p2.add(p);
         p1.add(c);
 
-        JTextArea group_members = new JTextArea("Placeholder for the names");
+        JTextArea group_members = new JTextArea("Members: " + this.groupUserNames.toString());
         group_members.setEditable(false);
         JPanel bottoms_up = new JPanel();
         bottoms_up.add(group_members);
@@ -149,10 +150,22 @@ public class GroupSummaryView extends JFrame implements ActionListener {
         if (evt.getActionCommand().equals("Add Item")){
             String item = JOptionPane.showInputDialog("Please enter in Item Name:");
             UpdatedLists planningList = this.controllerAddPlanning.performPlanningAdd(item, this.groupid);
+
         }
 
         if (evt.getActionCommand().equals("Clear Debt")){
             ClearDebtView clearDebtView = new ClearDebtView();
+        }
+
+        if (evt.getActionCommand().equals("Return to Groups")) {
+            this.dispose();
+            MainWindowView mainWindowView = new MainWindowView();
+            mainWindowView.setContentPane(homePageView);
+            mainWindowView.setVisible(true);
+        }
+
+        if (evt.getActionCommand().equals("Purchase")){
+
         }
     }
 

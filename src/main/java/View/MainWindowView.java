@@ -26,6 +26,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class MainWindowView extends JFrame implements ActionListener {
@@ -91,7 +92,7 @@ public class MainWindowView extends JFrame implements ActionListener {
      * React to a certain button click that results in evt.
      */
     public void actionPerformed(ActionEvent evt) {
-        System.out.println("Click " + evt.getActionCommand());
+//        System.out.println("Click " + evt.getActionCommand());
 
         if (evt.getActionCommand().equals("Log In")) {
 
@@ -113,25 +114,25 @@ public class MainWindowView extends JFrame implements ActionListener {
         }
 
         else if (evt.getActionCommand().equals("Sign Up")){
-            if (registerView.final_output) {
-                showMessage("Registration successful! Log in to your new account.");
-                setContentPane(loginView);
-            }
-
-            else { showMessage("Not Successful :("); }
+            System.out.println("From main " + registerView.getFinalOutput());
+           setContentPane(loginView);
         }
 
         else if (evt.getActionCommand().equals("Create Group")) {
+            System.out.println("Create group");
             String groupName = JOptionPane.showInputDialog("Please enter in Group Name:");
             showMessage("The name of the group is " + groupName + ".");
 
-            CreatedGroupInfo createdGroupInfo = this.controllerCreate.create(groupName, userInfo.getUsername());
+            CreatedGroupInfo createdGroupInfo = this.controllerCreate.create(userInfo.getUsername(), groupName);
 
+            System.out.println(createdGroupInfo);
             if (createdGroupInfo.getError() == null) {
                 setHomePage(userInfo.getUsername(), createdGroupInfo.getAllGroupNames());
                 addCreateGroup(this.userGroups, createdGroupInfo);
             }
             else { showMessage(createdGroupInfo.getError()); }
+
+            System.out.println(userGroups.toString());
         }
 
         else if (evt.getActionCommand().equals("Join Group")){
@@ -149,19 +150,19 @@ public class MainWindowView extends JFrame implements ActionListener {
             else { showMessage(joinedGroupInfo.getError());}
         }
 
-        else if (evt.getActionCommand().equals("Return to Groups")){
-            setHomePage(this.userInfo.getUsername(), getGroupNames(userGroups));
-        }
-
         else {
             String groupname = evt.getActionCommand();
-            String groupID = getGroupID(getGroupIDs(userGroups), getGroupNames(userGroups), groupname);
+            System.out.println(getGroupIDs(userGroups).toString());
+            System.out.println(getGroupNames(userGroups).toString());
+            String[] name = groupname.split(" ");
+            List<Object> temp = List.of(Arrays.stream(name).toArray());
+            String groupID = getGroupID(getGroupIDs(userGroups), getGroupNames(userGroups), (String) temp.get(1));
             setGroupSummary(groupname, groupID, userInfo.getUsername(), getPurchaseListData(userGroups, groupID),
                     getPlanningListData(userGroups, groupID), getGroupDebtData(userGroups, groupID),
-                    getAllUserNames(userGroups, groupID));
+                    getAllUserNames(userGroups, groupID), new HomePageView(userInfo.getUsername(),
+                            getGroupNames(userGroups), this));
             }
     }
-
 
     /**
      * Switches to registration page on the main window.
@@ -179,6 +180,7 @@ public class MainWindowView extends JFrame implements ActionListener {
      * @param groupnames the list of groups the user is involved in.
      */
     private void setHomePage(String user, List<String> groupnames){
+        System.out.println("set homepage");
         HomePageView homePageView = new HomePageView(user, groupnames, this);
         this.setContentPane(homePageView);
         homePageView.getJoinGroup().addActionListener(this);
@@ -191,10 +193,10 @@ public class MainWindowView extends JFrame implements ActionListener {
      */
     public void setGroupSummary(String group, String groupid, String username,
                                 List<List<String>> purchaseListData, List<List<String>> planningListData,
-                                List<List<String>> debtData, List<String> groupUserNames) {
+                                List<List<String>> debtData, List<String> groupUserNames, HomePageView homePageView) {
         this.dispose();
         GroupSummaryView selectedGroup = new GroupSummaryView(group, groupid, username,
-                purchaseListData, planningListData, debtData, groupUserNames);
+                purchaseListData, planningListData, debtData, groupUserNames, homePageView);
         selectedGroup.setVisible(true);
 
     }
@@ -211,6 +213,7 @@ public class MainWindowView extends JFrame implements ActionListener {
      */
     public String getGroupID(List<String> groupIDs, List<String> groupnames, String group){
         int index = groupnames.indexOf(group);
+        System.out.println(index);
         return groupIDs.get(index);
     }
 
