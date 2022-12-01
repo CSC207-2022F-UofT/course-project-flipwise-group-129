@@ -79,6 +79,8 @@ public class GroupJoin implements GroupJoinBoundaryIn{
             return this.groupJoinPresenter.prepareFailView(joinedGroupInfo);
         }
 
+        System.out.println(user.getGroups());
+
         //to controller
         JoinedGroupInfo joinedGroupInfo = this.createOutputData(user, group);
         return this.groupJoinPresenter.prepareSuccessView(joinedGroupInfo);
@@ -209,6 +211,7 @@ public class GroupJoin implements GroupJoinBoundaryIn{
             subList.add(item.getItemId());
             subList.add(item.getItemName());
             subList.add(item.getBuyer());
+            newList.add(subList);
         }
 
         return newList;

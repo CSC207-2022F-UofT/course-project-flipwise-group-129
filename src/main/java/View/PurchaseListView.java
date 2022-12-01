@@ -29,10 +29,11 @@ public class PurchaseListView extends JPanel {
     }
 
     public void setRows(List<List<String>> purchasedListData) {
-        this.rows = new Object[purchasedListData.size()][3];
-        for (int i = 0; i < purchasedListData.size(); i++) {
-            this.rows[i] = purchasedListData.get(i).toArray();
-            //CONFIRM WITH CODI WHAT IS IN THIS 2D ARRAY
+        if (purchasedListData != null) {
+            this.rows = new Object[purchasedListData.size()][3];
+            for (int i = 0; i < purchasedListData.size(); i++) {
+                this.rows[i] = purchasedListData.get(i).toArray();
+            }
         }
     }
 }

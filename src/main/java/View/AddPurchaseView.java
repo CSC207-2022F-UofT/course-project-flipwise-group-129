@@ -6,16 +6,14 @@ import java.util.List;
 
 
 public class AddPurchaseView extends JOptionPane{
-
-    String[] members;
     JLabel item_request;
     JTextField item_price;
     JTextArea text_contributing_members;
     JCheckBox[] contributing_members;
-    List<String> checked_members;
 
     int reply;
     public AddPurchaseView(String itemID, String username, String groupID, List<String> groupUserNames) {
+
 
         JPanel p = new JPanel();
         p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));
@@ -34,7 +32,7 @@ public class AddPurchaseView extends JOptionPane{
         JPanel contributing_members_text = new JPanel();
         contributing_members_text.add(text_contributing_members);
 
-        contributing_members = createCheckboxes(members);
+        contributing_members = createCheckboxes(groupUserNames);
 
         //fetch contributing members
         JPanel check_box_contributing_members = new JPanel();
@@ -51,10 +49,10 @@ public class AddPurchaseView extends JOptionPane{
                 JOptionPane.QUESTION_MESSAGE, null, null, null);
 
     }
-    public JCheckBox[] createCheckboxes(String[] Current_Members) {
-        JCheckBox[] output = new JCheckBox[Current_Members.length];
-        for (int i = 0; i < Current_Members.length; i++) {
-            JCheckBox checkbox_member = new JCheckBox(Current_Members[i]);
+    public JCheckBox[] createCheckboxes(List<String> Current_Members) {
+        JCheckBox[] output = new JCheckBox[Current_Members.size()];
+        for (int i = 0; i < Current_Members.size(); i++) {
+            JCheckBox checkbox_member = new JCheckBox(Current_Members.get(i));
             output[i] = checkbox_member;
             // update planning and purchase lists
         }
@@ -64,11 +62,7 @@ public class AddPurchaseView extends JOptionPane{
     public int getReply(){
         return this.reply;
     }
-    public float getItemPrice(){ return Float.parseFloat(this.item_price.getText()); }
-
-    public void setMembers(String[] members){
-        this.members = members;
-    }
+    public String getItemPrice(){ return item_price.getText(); }
 
     public List<String> getSelectedMembers(){
         List<String> selectedMembers = new ArrayList<String>();

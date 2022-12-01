@@ -29,6 +29,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static javax.swing.JOptionPane.NO_OPTION;
+
 public class MainWindowView extends JFrame implements ActionListener {
     private final UserLoginView loginView;
     private final UserRegisterView registerView;
@@ -146,6 +148,7 @@ public class MainWindowView extends JFrame implements ActionListener {
             if (joinedGroupInfo.getError() == null) {
                 setHomePage(userInfo.getUsername(), joinedGroupInfo.getGroupNames());
                 addJoinGroup(this.userGroups, joinedGroupInfo, groupID);
+                System.out.println("joined group added " + userGroups);
             } else { showMessage(joinedGroupInfo.getError()); }
         }
 
@@ -193,6 +196,13 @@ public class MainWindowView extends JFrame implements ActionListener {
     public void setGroupSummary(String group, String groupid, String username,
                                 List<List<String>> purchaseListData, List<List<String>> planningListData,
                                 List<List<String>> debtData, List<String> groupUserNames, HomePageView homePageView) {
+        System.out.println("This is group " + group);
+        System.out.println("This is groupID " + groupid);
+        System.out.println("This is username " + username);
+        System.out.println("This is planning " + planningListData);
+        System.out.println("This is purchase " + purchaseListData);
+        System.out.println("This is debt " + debtData);
+        System.out.println("This is members " + groupUserNames);
         GroupSummaryView selectedGroup = new GroupSummaryView(group, groupid, username,
                 purchaseListData, planningListData, debtData, groupUserNames, this);
         setContentPane(selectedGroup);
@@ -307,6 +317,7 @@ public class MainWindowView extends JFrame implements ActionListener {
 
     public void addCreateGroup(List<List<Object>> userGroups, CreatedGroupInfo createdGroupInfo){
         List<Object> newGroup = new ArrayList<>();
+
         newGroup.add(createdGroupInfo.getId());
         newGroup.add(createdGroupInfo.getGroupName());
         newGroup.add(null);

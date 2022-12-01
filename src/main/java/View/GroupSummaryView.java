@@ -185,23 +185,26 @@ public class GroupSummaryView extends JPanel implements ActionListener {
 
             DefaultTableModel model = (DefaultTableModel) table.getModel();
 
-            if (table.getSelectedRowCount() == 1){
+            if (table.getSelectedRowCount() == 1 && !(this.groupUserNames == null)) {
                 String item = (String) table.getValueAt(table.getSelectedRow(), 0);
 
                 String itemID = getItemID(planningListData, item);
                 AddPurchaseView addPurchaseView = new AddPurchaseView(itemID,
                         this.username, this.groupID, this.groupUserNames);
-                UpdatedLists updatedList = controllerAddPurchase.controlAddPurchaseUseCase(itemID,
-                        addPurchaseView.getSelectedMembers(), this.username,
-                        addPurchaseView.getItemPrice(), this.groupID);
 
-                if (updatedList.getResultMessage().equals("Success")) {
-                    resetGroupSummary(this.group_name, this.groupID, this.username, updatedList.getNewPurchasedList(),
-                            updatedList.getNewPlanningList(), this.debtData, this.groupUserNames,
-                            this.mainWindowView);
-                }
+                if ((addPurchaseView.getItemPrice().matches("[0-9]+")) && (addPurchaseView.getSelectedMembers().size() > 0)) {
+                    UpdatedLists updatedList = controllerAddPurchase.controlAddPurchaseUseCase(itemID,
+                            addPurchaseView.getSelectedMembers(), this.username,
+                            Float.parseFloat(addPurchaseView.getItemPrice()), this.groupID);
 
-                else { showMessage(updatedList.getResultMessage()); }
+                    if (updatedList.getResultMessage().equals("Success")) {
+                        resetGroupSummary(this.group_name, this.groupID, this.username, updatedList.getNewPurchasedList(),
+                                updatedList.getNewPlanningList(), this.debtData, this.groupUserNames,
+                                this.mainWindowView);
+                    } else {
+                        showMessage(updatedList.getResultMessage());
+                    }
+                }else { showMessage("Error with inputs!");}
             }
             else {
                 if (table.getRowCount() == 0) { showMessage("The table is empty! " +

@@ -25,6 +25,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class PlanningListView extends JPanel {
@@ -59,13 +60,15 @@ public class PlanningListView extends JPanel {
 
 
     }
-
         public void setRows (List <List<String>> planningListData) {
-        System.out.println(planningListData);
-            this.rows = new Object[planningListData.size()][1];
-            for (int i = 0; i < planningListData.size(); i++) {
-                this.rows[i] = planningListData.get(i).toArray();
-                //CONFIRM WITH CODI WHAT IS IN THIS 2D ARRAY
+            if (planningListData != null) {
+                List<String> itemnames = new ArrayList<>();
+                this.rows = new Object[planningListData.size()][1];
+                for (int i = 0; i < planningListData.size(); i++) {
+                    itemnames.add(planningListData.get(i).get(1));
+                    this.rows[i] = itemnames.toArray();
+                    itemnames = new ArrayList<>();
+                }
             }
         }
 
