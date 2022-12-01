@@ -19,8 +19,8 @@ import View.ViewInterface;
 import org.json.simple.parser.ParseException;
 
 
-public class UserLoginView extends JPanel implements ActionListener{
-
+public class UserLoginView extends JPanel {
+// implements ActionListener
     JLabel title, t1, t2;
     private final JTextField username = new JTextField(25);
     private final JPasswordField password = new JPasswordField(15);
@@ -82,20 +82,20 @@ public class UserLoginView extends JPanel implements ActionListener{
         setSize(1500, 820);
         setVisible(true);
 
-        login.addActionListener(this);
-        toRegister.addActionListener(this);
+//        login.addActionListener(this);
+//        toRegister.addActionListener(this);
 
     }
 
-    /**
-     * Calls the controller with the entered username and password as arguments.
-     * @param evt the event to be processed
-     */
-    public void actionPerformed(ActionEvent evt) {
-        if (evt.getActionCommand().equals("Log In")) {
-
-        }
-    }
+//    /**
+//     * Calls the controller with the entered username and password as arguments.
+//     * @param evt the event to be processed
+//     */
+//    public void actionPerformed(ActionEvent evt) {
+//        if (evt.getActionCommand().equals("Log In")) {
+//
+//        }
+//    }
 
     /**
      * @return the username of the user that logged in.

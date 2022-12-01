@@ -9,31 +9,22 @@ import java.util.List;
 public class BalanceView extends JPanel{
 
     private JTable table;
-    private JScrollPane scrollPane;
     Object[][] rows;
     String[] columns = new String[]{"Member", "You Owe", "They Owe", "Debt"};
 
     public BalanceView(List<List<String>> debtData, String username, List<String> groupUsernames) {
+
+        setSize(1000, 600);
+        setVisible(true);
         setRows(debtData, username, groupUsernames);
         DefaultTableModel model = new DefaultTableModel(rows, columns);
         table = new JTable(model);
         table.setEnabled(false);
-        scrollPane = new JScrollPane(table);
+        JScrollPane scrollPane = new JScrollPane(table);
 
         add(scrollPane);
 
-
-        setSize(1000, 600);
-        setVisible(true);
-
     }
-
-//    public void setBalances(){
-//        rows =  new Object[][]{{new JButton("button"), "Amit", " ", " "},
-//                {"102", "Jai", " ", " "},
-//                {"101", "Sachin", " ", " "},
-//                {"1", "2", " ", " "}};
-//    }
 
     public void setRows(List<List<String>> debtData, String username, List<String> groupUsernames) {
         this.rows = new Object[groupUsernames.size()][];

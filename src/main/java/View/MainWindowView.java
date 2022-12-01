@@ -95,15 +95,16 @@ public class MainWindowView extends JFrame implements ActionListener {
 //        System.out.println("Click " + evt.getActionCommand());
 
         if (evt.getActionCommand().equals("Log In")) {
-
-            this.userInfo = this.userLoginController.controlUseCase(loginView.getUsername(),
-                    loginView.getPassword());
-            this.userGroups = userInfo.getUserAllGroups();
-            if (userInfo.statusBool()) {
-                setHomePage(userInfo.getUsername(), getGroupNames(userGroups));
+            if (isAlpha(loginView.getUsername()) && isAlpha(loginView.getPassword())) {
+                this.userInfo = this.userLoginController.controlUseCase(loginView.getUsername(),
+                        loginView.getPassword());
+                this.userGroups = userInfo.getUserAllGroups();
+                if (userInfo.statusBool()) {
+                    setHomePage(userInfo.getUsername(), getGroupNames(userGroups));
+                }
+                else { showMessage("Not Successful :("); }
             }
-
-            else { showMessage("Not Successful :("); }
+            else { showMessage("Error with inputs!"); }
         }
         else if (evt.getActionCommand().equals("New to Flipwise?")) {
             setUserRegisterView(this.registerView);
@@ -119,23 +120,23 @@ public class MainWindowView extends JFrame implements ActionListener {
         }
 
         else if (evt.getActionCommand().equals("Create Group")) {
-            System.out.println("Create group");
+
             String groupName = JOptionPane.showInputDialog("Please enter in Group Name:");
             showMessage("The name of the group is " + groupName + ".");
 
-            CreatedGroupInfo createdGroupInfo = this.controllerCreate.create(userInfo.getUsername(), groupName);
+            if (groupName.matches("[A-Za-z0-9 ]+")) {
+                CreatedGroupInfo createdGroupInfo = this.controllerCreate.create(userInfo.getUsername(), groupName);
 
-            System.out.println(createdGroupInfo);
-            if (createdGroupInfo.getError() == null) {
-                setHomePage(userInfo.getUsername(), createdGroupInfo.getAllGroupNames());
-                addCreateGroup(this.userGroups, createdGroupInfo);
-            }
-            else { showMessage(createdGroupInfo.getError()); }
+                System.out.println(createdGroupInfo);
+                if (createdGroupInfo.getError() == null) {
+                    setHomePage(userInfo.getUsername(), createdGroupInfo.getAllGroupNames());
+                    addCreateGroup(this.userGroups, createdGroupInfo);
+                } else { showMessage(createdGroupInfo.getError()); }
 
-            System.out.println(userGroups.toString());
+            } else { showMessage("Error with input!"); }
         }
 
-        else if (evt.getActionCommand().equals("Join Group")){
+        else if (evt.getActionCommand().equals("Join Group")) {
 
             String groupID = JOptionPane.showInputDialog("Please enter in Group ID:");
             JOptionPane.showMessageDialog(null, "The ID of the group is "
@@ -145,18 +146,16 @@ public class MainWindowView extends JFrame implements ActionListener {
             if (joinedGroupInfo.getError() == null) {
                 setHomePage(userInfo.getUsername(), joinedGroupInfo.getGroupNames());
                 addJoinGroup(this.userGroups, joinedGroupInfo, groupID);
-            }
+            } else { showMessage(joinedGroupInfo.getError()); }
+        }
 
-            else { showMessage(joinedGroupInfo.getError());}
+        else if (evt.getActionCommand().equals("Return to Groups")) {
+            setHomePage(userInfo.getUsername(), getGroupNames(userGroups));
         }
 
         else {
-            String groupname = evt.getActionCommand();
-            System.out.println(getGroupIDs(userGroups).toString());
-            System.out.println(getGroupNames(userGroups).toString());
-            String[] name = groupname.split(" ");
-            List<Object> temp = List.of(Arrays.stream(name).toArray());
-            String groupID = getGroupID(getGroupIDs(userGroups), getGroupNames(userGroups), (String) temp.get(1));
+            String groupname = filterGroupName( evt.getActionCommand());
+            String groupID = getGroupID(getGroupIDs(userGroups), getGroupNames(userGroups), groupname);
             setGroupSummary(groupname, groupID, userInfo.getUsername(), getPurchaseListData(userGroups, groupID),
                     getPlanningListData(userGroups, groupID), getGroupDebtData(userGroups, groupID),
                     getAllUserNames(userGroups, groupID), new HomePageView(userInfo.getUsername(),
@@ -194,10 +193,10 @@ public class MainWindowView extends JFrame implements ActionListener {
     public void setGroupSummary(String group, String groupid, String username,
                                 List<List<String>> purchaseListData, List<List<String>> planningListData,
                                 List<List<String>> debtData, List<String> groupUserNames, HomePageView homePageView) {
-        this.dispose();
         GroupSummaryView selectedGroup = new GroupSummaryView(group, groupid, username,
-                purchaseListData, planningListData, debtData, groupUserNames, homePageView);
-        selectedGroup.setVisible(true);
+                purchaseListData, planningListData, debtData, groupUserNames, this);
+        setContentPane(selectedGroup);
+        selectedGroup.getToHomepage().addActionListener(this);
 
     }
 
@@ -213,6 +212,8 @@ public class MainWindowView extends JFrame implements ActionListener {
      */
     public String getGroupID(List<String> groupIDs, List<String> groupnames, String group){
         int index = groupnames.indexOf(group);
+        System.out.println(groupnames);
+        System.out.println(groupIDs);
         System.out.println(index);
         return groupIDs.get(index);
     }
@@ -322,6 +323,17 @@ public class MainWindowView extends JFrame implements ActionListener {
     public void showMessage(String message) {
         JOptionPane.showMessageDialog(this, message);
     }
+
+    public String filterGroupName(String groupButton){
+        String[] name = groupButton.split("_");
+        List<Object> temp = List.of(Arrays.stream(name).toArray());
+        return (String) temp.get(1);
+    }
+
+    public boolean isAlpha(String name) {
+        return name.matches("[a-zA-Z0-9]+");
+    }
+
 
 
 }

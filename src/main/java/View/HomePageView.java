@@ -68,7 +68,7 @@ public class HomePageView extends JPanel {
     public JButton[] createGroupButtons(List<String> Current_Groups) {
         JButton[] output = new JButton[Current_Groups.size()];
         for (int i = 0; i < Current_Groups.size(); i++) {
-            JButton checkbox_member = new JButton("Enter " + Current_Groups.get(i));
+            JButton checkbox_member = new JButton("Enter_" + Current_Groups.get(i));
             output[i] = checkbox_member;
         }
         return output;

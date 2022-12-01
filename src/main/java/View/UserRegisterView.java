@@ -93,17 +93,24 @@ public class UserRegisterView extends JPanel implements ActionListener {
      */
     public void actionPerformed (ActionEvent e){
         if (e.getActionCommand().equals("Sign Up")){
-//            System.out.println("Collecting stuff from signup");
-            this.final_output = controller.controlUseCase(username.getText(), String.valueOf(password.getPassword()),
+            if (isAlpha(getUsername()) && isAlpha(getPassword())) {
+                this.final_output = controller.controlUseCase(username.getText(),
+                        String.valueOf(password.getPassword()),
                     String.valueOf(repeatPassword.getPassword()));
-            System.out.println("From sign up " + this.final_output);
-            if (this.final_output) {
+
+                if (this.final_output) {
                 JOptionPane.showMessageDialog(this,
                         "Registration successful! Log in to your new account.");
-            }
+                }
 
-            else { JOptionPane.showMessageDialog(this, "Not Successful :("); }
+                else { JOptionPane.showMessageDialog(this, "Not Successful :("); }
+            }
+            else { showMessage("Error with inputs!"); }
         }
+    }
+
+    public void showMessage(String message) {
+        JOptionPane.showMessageDialog(this, message);
     }
 
     /**
@@ -116,9 +123,21 @@ public class UserRegisterView extends JPanel implements ActionListener {
      */
     public JButton getExitSignUp() { return exitSignUp; }
 
+    /**
+     * @return the password of the user that logged in.
+     */
+    public String getPassword() { return String.valueOf(this.password.getPassword());}
+
+    /**
+     * @return the username of the user that logged in.
+     */
     public String getUsername() { return this.username.getText(); }
 
     public boolean getFinalOutput() { return this.final_output; }
+
+    public boolean isAlpha(String name) {
+        return name.matches("[a-zA-Z0-9]+");
+    }
 
     }
 

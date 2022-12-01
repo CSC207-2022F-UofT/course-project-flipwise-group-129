@@ -15,7 +15,7 @@ public class AddPurchaseView extends JOptionPane{
     List<String> checked_members;
 
     int reply;
-    public AddPurchaseView(String username, String groupID, String itemID, List<String> groupUserNames) {
+    public AddPurchaseView(String itemID, String username, String groupID, List<String> groupUserNames) {
 
         JPanel p = new JPanel();
         p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));
@@ -46,10 +46,9 @@ public class AddPurchaseView extends JOptionPane{
         p.add(contributing_members_text);
         p.add(check_box_contributing_members);
 
-        reply = this.showOptionDialog(null, p,
+        showOptionDialog(null, p,
                 "Purchase Item", JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE, null, null, null);
-
 
     }
     public JCheckBox[] createCheckboxes(String[] Current_Members) {
@@ -62,12 +61,10 @@ public class AddPurchaseView extends JOptionPane{
         return output;
     }
 
-//    public void setMembers(){}
-
     public int getReply(){
         return this.reply;
     }
-    public String getItemPrice(){ return this.item_price.getText(); }
+    public float getItemPrice(){ return Float.parseFloat(this.item_price.getText()); }
 
     public void setMembers(String[] members){
         this.members = members;
