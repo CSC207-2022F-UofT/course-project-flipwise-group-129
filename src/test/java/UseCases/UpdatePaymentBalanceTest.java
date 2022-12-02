@@ -123,9 +123,9 @@ class UpdatePaymentBalanceTest {
                 assert updatedDebts.getUpdatedBalances().containsKey("mishaalk");
                 for (List<Object> userOwed : updatedDebts.getUpdatedBalances().get("mishaalk")) {
                     int indexOfUserOwing = groupInfoBefore.get("mishaalk").indexOf(userOwed);
-                    Object previousDebt = groupInfoBefore.get("mishaalk").get(indexOfUserOwing).get(1);
+                    double previousDebt = (double) groupInfoBefore.get("mishaalk").get(indexOfUserOwing).get(1);
                     if(users.contains((String) userOwed.get(0))) {
-                        assert (double) userOwed.get(1) == ((double) previousDebt) + 19.99/3;
+                        assert (double) userOwed.get(1) == previousDebt + 19.99/3;
                     }
                 }
                 assert updatedDebts.getOutcomeMessage() == null;

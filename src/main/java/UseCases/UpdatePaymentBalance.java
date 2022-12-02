@@ -38,7 +38,7 @@ public class UpdatePaymentBalance implements UpdatePaymentBalanceBoundaryIn {
         String groupID = paymentDetails.getGroupID();
         String userPurchasedItem = paymentDetails.getUsername();
         float itemPrice = paymentDetails.getItemPrice();
-        List<String> usersInvolvedInPurcase = paymentDetails.getUsersInvolvedInPurchase();
+        List<String> usersInvolvedInPurchase = paymentDetails.getUsersInvolvedInPurchase();
 
         /*
         There are going to be three steps, I can only implement step 2 right now, and then I can
@@ -65,17 +65,18 @@ public class UpdatePaymentBalance implements UpdatePaymentBalanceBoundaryIn {
          the purchase).
          */
         int count = 0;
-        for(String userInvolvedInPurchase : usersInvolvedInPurcase) {
-            for(String u : usersInvolvedInPurcase) {
+        for(String userInvolvedInPurchase : usersInvolvedInPurchase) {
+            for(String u : usersInvolvedInPurchase) {
                 if(userInvolvedInPurchase.equals(u)) {
                     count++;
                 }
             }
+            if(count >= 2) {
+                return this.updatePaymentBalancePresenter.prepareFailView(
+                        new UpdatedDebts("The list containing users involved in the purchase contain duplicates."));
+            }
         }
-        if(count >= 2) {
-            return this.updatePaymentBalancePresenter.prepareFailView(
-                    new UpdatedDebts("The list containing users involved in the purchase contain duplicates."));
-        }
+
 
         Group groupInvolvedInPurchase;
         try {
@@ -86,7 +87,7 @@ public class UpdatePaymentBalance implements UpdatePaymentBalanceBoundaryIn {
         }
         Set<String> usersInGroup = groupInvolvedInPurchase.getUsers();
 
-        int amountOfUsersInvolvedInPurchase = usersInvolvedInPurcase.size();
+        int amountOfUsersInvolvedInPurchase = usersInvolvedInPurchase.size();
         List<String> groupUsernames = new ArrayList<>();
         for(String user : usersInGroup) {
             groupUsernames.add(user);
@@ -105,7 +106,7 @@ public class UpdatePaymentBalance implements UpdatePaymentBalanceBoundaryIn {
         can update the debt between the two users using setDebtValue().
          */
         for(Debt d : currentDebtList) {
-            for(String username : usersInvolvedInPurcase) {
+            for(String username : usersInvolvedInPurchase) {
                 if(d.getUserOwing().getUsername().equals(username) &&
                         d.getUserOwed().getUsername().equals(userPurchasedItem)) {
                     double currentDebt = d.getDebtValue();
@@ -157,7 +158,7 @@ public class UpdatePaymentBalance implements UpdatePaymentBalanceBoundaryIn {
      * @return an instance of the actual Item which has been purchased if it exists in the database, otherwise,
      * returns a RuntimeException.
      */
-    private Item getItemFromDb(String itemID){
+    private Item getItemFromDb(String itemID) throws IOException, ParseException {
         // get the user from the database and create a User interface
         //check if the user exists
         if (!this.itemDataInterface.itemIdExists(itemID)){
@@ -178,7 +179,7 @@ public class UpdatePaymentBalance implements UpdatePaymentBalanceBoundaryIn {
      * @return an instance of the actual group in which the item has been purchased if it exists in the database,
      * otherwise, returns a RuntimeException.
      */
-    private Group getGroupFromDb(String groupID){
+    private Group getGroupFromDb(String groupID) throws IOException, ParseException {
         // get the user from the database and create a User interface
         //check if the user exists
         if (!this.groupDataInterface.groupIdExists(groupID)){
@@ -201,7 +202,7 @@ public class UpdatePaymentBalance implements UpdatePaymentBalanceBoundaryIn {
         //pass new info to db
         try {
             this.groupDataInterface.addorUpdateGroup(group.getGroupId(), group.toString());
-        } catch (IOException e) {
+        } catch (IOException | ParseException e) {
             throw new RuntimeException("Unable to modify group info to database");
         }
     }
