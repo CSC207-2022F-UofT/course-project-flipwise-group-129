@@ -32,9 +32,9 @@ class ItemTest {
         User user1 = new User("mishaalk", "2222", new ArrayList<>());
 
         Item item1 = new Item("apple");
-        item1.setBuyer(user1);
+        item1.setBuyer(user1.getUsername());
 
-        assert item1.getBuyer().equals(user1);
+        assert item1.getBuyer().equals(user1.getUsername());
 
     }
 
@@ -44,9 +44,9 @@ class ItemTest {
         User user1 = new User("mishaalk", "2222", new ArrayList<>());
         User user2 = new User("randomC", "1111", new ArrayList<>());
 
-        List<User> users = new ArrayList<>();
-        users.add(user1);
-        users.add(user2);
+        List<String> users = new ArrayList<>();
+        users.add(user1.getUsername());
+        users.add(user2.getUsername());
 
         Item item1 = new Item("apple");
         item1.setUsersInvolved(users);
@@ -61,9 +61,9 @@ class ItemTest {
         User user1 = new User("mishaalk", "2222", new ArrayList<>());
 
         Item item1 = new Item("apple");
-        item1.addUsersInvolved(user1);
+        item1.addUsersInvolved(user1.getUsername());
 
-        assert item1.getUsersInvolved().contains(user1);
+        assert item1.getUsersInvolved().contains(user1.getUsername());
 
     }
 }

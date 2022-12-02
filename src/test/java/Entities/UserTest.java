@@ -15,14 +15,14 @@ class UserTest {
         User user1 = new User("mishaalk", "2222", new ArrayList<>());
         User user2 = new User("randomC", "1111", new ArrayList<>());
 
-        Set<User> users = new TreeSet<>();
-        users.add(user1);
-        users.add(user2);
+        Set<String> users = new TreeSet<>();
+        users.add(user1.getUsername());
+        users.add(user2.getUsername());
         Group group = new Group("group1", users);
 
-        user1.addGroup(group);
+        user1.addGroup(group.getGroupId());
 
-        assert user1.getGroups().contains(group);
+        assert user1.getGroups().contains(group.getGroupId());
 
     }
 
@@ -31,15 +31,15 @@ class UserTest {
         User user1 = new User("mishaalk", "2222", new ArrayList<>());
         User user2 = new User("randomC", "1111", new ArrayList<>());
 
-        Set<User> users = new TreeSet<>();
-        users.add(user1);
-        users.add(user2);
+        Set<String> users = new TreeSet<>();
+        users.add(user1.getUsername());
+        users.add(user2.getUsername());
         Group group = new Group("group1", users);
 
-        user1.addGroup(group);
+        user1.addGroup(group.getGroupId());
 
         user1.removeFromGroup(group);
 
-        assert !user1.getGroups().contains(group);
+        assert !user1.getGroups().contains(group.getGroupId());
     }
 }

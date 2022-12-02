@@ -14,6 +14,23 @@ import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import org.json.simple.parser.ParseException;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.jupiter.api.Test;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+
 class UserRegisterTest {
     
     @Before
@@ -41,7 +58,7 @@ class UserRegisterTest {
      * Test a successful user register.
      */
     @Test
-    void executeUserRegisterSuccess() {
+    void executeUserRegisterSuccess() throws IOException {
         setUp();
         
         UserDataAccess data = null;
@@ -67,7 +84,7 @@ class UserRegisterTest {
      * password do not match.
      */
     @Test
-    void executeUserRegisterPwNotMatching() {
+    void executeUserRegisterPwNotMatching() throws IOException {
         setUp();
         
         UserDataAccess data = null;
@@ -93,7 +110,7 @@ class UserRegisterTest {
      * by the user is already taken.
      */
     @Test
-    void executeUserRegisterUsernameTaken() {
+    void executeUserRegisterUsernameTaken() throws IOException {
         setUp();
         
         UserDataAccess data = null;

@@ -17,13 +17,13 @@ class GroupTest {
         User user2 = new User("randomC", "1111", new ArrayList<>());
         User user3 = new User("sopleee", "3333", new ArrayList<>());
 
-        Set<User> users = new TreeSet<>();
-        users.add(user1);
-        users.add(user2);
+        Set<String> users = new TreeSet<>();
+        users.add(user1.getUsername());
+        users.add(user2.getUsername());
         Group group = new Group("group1", users);
 
-        group.addUser(user3);
+        group.addUser(user3.getUsername());
 
-        assert group.getUsers().contains(user3);
+        assert group.getUsers().contains(user3.getUsername());
     }
 }

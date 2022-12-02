@@ -116,8 +116,13 @@ class UpdatePaymentBalanceTest {
         // 1. Instantiate
         UpdatePaymentBalancePresenter presenter = new UpdatePaymentBalancePresenter() {
             @Override
-            public UpdatedDebts prepareSuccessView(UpdatedDebts updatedDebts) throws IOException, ParseException {
-                Map<String, List<List<Object>>> groupInfoBefore = getGroupInfo();
+            public UpdatedDebts prepareSuccessView(UpdatedDebts updatedDebts) {
+                Map<String, List<List<Object>>> groupInfoBefore = null;
+                try {
+                    groupInfoBefore = getGroupInfo();
+                } catch (IOException | ParseException e) {
+                    throw new RuntimeException(e);
+                }
                 List<String> users = Arrays.asList("rcordi", "randomC", "sopleee");
 
                 assert updatedDebts.getUpdatedBalances().containsKey("mishaalk");
@@ -168,7 +173,7 @@ class UpdatePaymentBalanceTest {
             }
 
             @Override
-            public UpdatedDebts prepareFailView(UpdatedDebts updatedDebts) throws IOException, ParseException {
+            public UpdatedDebts prepareFailView(UpdatedDebts updatedDebts) {
                 assert !updatedDebts.getUpdatedBalances().containsKey("mishaalk");
                 assert updatedDebts.getOutcomeMessage() == null;
                 return null;

@@ -15,9 +15,16 @@ import InputBoundary.AddToPlanningBoundaryIn;
 import Presenters.AddToPlanningPresenter;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.json.simple.parser.ParseException;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -48,8 +55,12 @@ class AddToPlanningListTest {
     
     @Test
     void itemAddedWithAllRequiredInfoTest(){
-        
-        setUp();
+
+        try {
+            setUp();
+        } catch (IOException e) {
+            fail("unexpected database error");
+        }
         boolean flagExists = false;
         GroupDataInterface groupData = null;
         ItemDataInterface itemData = null;
@@ -91,8 +102,12 @@ class AddToPlanningListTest {
 
     @Test
     void itemNotAddedIfGroupIdDNETest(){
-        setUp();
-        
+        try {
+            setUp();
+        } catch (IOException e) {
+            fail("unexpected database error");
+        }
+
         boolean flagExists = false;
         GroupDataInterface groupData = null;
         ItemDataInterface itemData = null;
@@ -127,7 +142,7 @@ class AddToPlanningListTest {
     @Test
     void createItemDbCheck() throws IOException, org.json.simple.parser.ParseException {
         
-        setUp():
+        setUp();
         GroupDataInterface groupData = null;
         ItemDataInterface itemData = null;
         {

@@ -18,10 +18,10 @@ class PurchaseBalanceTest {
         User user2 = new User("randomC", "1111", new ArrayList<>());
         User user3 = new User("sopleee", "3333", new ArrayList<>());
 
-        Set<User> users = new TreeSet<>();
-        users.add(user1);
-        users.add(user2);
-        users.add(user3);
+        Set<String> users = new TreeSet<>();
+        users.add(user1.getUsername());
+        users.add(user2.getUsername());
+        users.add(user3.getUsername());
 
         Group group = new Group("group1", users);
 
@@ -47,10 +47,10 @@ class PurchaseBalanceTest {
         User user2 = new User("randomC", "1111", new ArrayList<>());
         User user3 = new User("sopleee", "3333", new ArrayList<>());
 
-        Set<User> users = new TreeSet<>();
-        users.add(user1);
-        users.add(user2);
-        users.add(user3);
+        Set<String> users = new TreeSet<>();
+        users.add(user1.getUsername());
+        users.add(user2.getUsername());
+        users.add(user3.getUsername());
 
         Group group = new Group("group1", users);
 
