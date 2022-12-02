@@ -54,7 +54,6 @@ public class AddPurchaseView extends JOptionPane{
         for (int i = 0; i < Current_Members.size(); i++) {
             JCheckBox checkbox_member = new JCheckBox(Current_Members.get(i));
             output[i] = checkbox_member;
-            // update planning and purchase lists
         }
         return output;
     }
@@ -62,7 +61,7 @@ public class AddPurchaseView extends JOptionPane{
     public int getReply(){
         return this.reply;
     }
-    public String getItemPrice(){ return item_price.getText(); }
+    public String getItemPrice(){ return item_price.getText();}
 
     public List<String> getSelectedMembers(){
         List<String> selectedMembers = new ArrayList<String>();

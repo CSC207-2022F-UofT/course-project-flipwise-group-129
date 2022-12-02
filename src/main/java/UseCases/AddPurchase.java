@@ -50,6 +50,8 @@ public class AddPurchase implements AddPurchaseBoundaryIn {
         // move it to the purchased list
         PlanningList planningList = this.purchaseGroup.getPlanningList();
         boolean removeCheck = planningList.removeFromList(this.purchasedItem);
+        System.out.println(planningList);
+        System.out.println(removeCheck);
         if (!removeCheck) {
             raiseError("Item could not be removed from planning list, either the information " +
                     "was incorrect or the item did not exist in the list");

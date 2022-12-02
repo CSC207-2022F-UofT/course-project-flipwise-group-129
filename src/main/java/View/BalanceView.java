@@ -16,6 +16,7 @@ public class BalanceView extends JPanel{
 
         setSize(1000, 600);
         setVisible(true);
+
         setRows(debtData, username, groupUsernames);
         DefaultTableModel model = new DefaultTableModel(rows, columns);
         table = new JTable(model);
@@ -38,6 +39,8 @@ public class BalanceView extends JPanel{
             }
         }
     }
+
+
 }
 
 

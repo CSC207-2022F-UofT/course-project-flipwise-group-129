@@ -2,6 +2,7 @@ package View;
 
 import Controllers.AddPurchaseController;
 import Controllers.AddToPlanningController;
+import Controllers.SettlementController;
 import DataAccess.GroupDataAccess;
 import DataAccess.ItemDataAccess;
 import DataAccess.UserDataAccess;
@@ -11,11 +12,14 @@ import DataAccessInterface.UserDataInterface;
 import DataStructures.UpdatedLists;
 import InputBoundary.AddPurchaseBoundaryIn;
 import InputBoundary.AddToPlanningBoundaryIn;
+import InputBoundary.SettlementBoundaryIn;
 import OutputBoundary.AddPurchaseBoundaryOut;
 import Presenters.AddPurchasePresenter;
 import Presenters.AddToPlanningPresenter;
+import Presenters.SettlementPresenter;
 import UseCases.AddPurchase;
 import UseCases.AddToPlanningList;
+import UseCases.SettlementPayment;
 import org.json.simple.parser.ParseException;
 
 import javax.swing.*;
@@ -39,10 +43,11 @@ public class GroupSummaryView extends JPanel implements ActionListener {
     List<String> groupUserNames;
     PlanningListView planningListView;
     public JButton addItem = new JButton("Add Item");
-    public JButton settleDebt = new JButton("Clear Debt");
+    public JButton settleDebt = new JButton("Settle Debt");
     public JButton toHomepage = new JButton("Return to Groups");
     public JButton purchaseItem = new JButton("Purchase Item");
     private final AddToPlanningController controllerAddPlanning;
+    private final SettlementController controllerSettlementPayment;
 
     /**
      * Builds the gui for the group summery page and initializes controller.
@@ -82,6 +87,11 @@ public class GroupSummaryView extends JPanel implements ActionListener {
         AddToPlanningBoundaryIn planningUseCase = new AddToPlanningList(addToPlanningPresenter, groupData, itemData);
 
         this.controllerAddPlanning = new AddToPlanningController(planningUseCase);
+
+        SettlementPresenter settlementPresenter = new SettlementPresenter();
+        SettlementBoundaryIn settleUseCase = new SettlementPayment(settlementPresenter, groupData);
+
+        this.controllerSettlementPayment = new SettlementController(settleUseCase);
 
         // SetUp JFrame
         setSize(1500, 820);
@@ -160,7 +170,10 @@ public class GroupSummaryView extends JPanel implements ActionListener {
         if (evt.getActionCommand().equals("Add Item")) {
             String item = JOptionPane.showInputDialog("Please enter in Item Name:");
 
-            if (isAlpha(item)) {
+            if (item == null || !(isAlpha(item))) {
+                showMessage("Error with input!");
+            }
+            else {
                 UpdatedLists updatedLists = this.controllerAddPlanning.performPlanningAdd(item, this.groupID);
                 System.out.println("Item is " + item);
 
@@ -170,14 +183,14 @@ public class GroupSummaryView extends JPanel implements ActionListener {
                 } else {
                     showMessage("Not Successful :(");
                 }
-            }
-            else {
-                showMessage("Error with input!");
+
             }
         }
 
-        if (evt.getActionCommand().equals("Clear Debt")){
-            ClearDebtView clearDebtView = new ClearDebtView();
+        if (evt.getActionCommand().equals("Settle Debt")){
+            ClearDebtView clearDebtView = new ClearDebtView(this.username, this.groupID,
+                    this.groupUserNames);
+
         }
 
         if (evt.getActionCommand().equals("Purchase Item")){
@@ -193,11 +206,9 @@ public class GroupSummaryView extends JPanel implements ActionListener {
                         this.username, this.groupID, this.groupUserNames);
 
                 if ((addPurchaseView.getItemPrice().matches("[0-9]+")) && (addPurchaseView.getSelectedMembers().size() > 0)) {
-                    System.out.println("AP" + addPurchaseView.getSelectedMembers());
                     UpdatedLists updatedList = controllerAddPurchase.controlAddPurchaseUseCase(itemID,
                             addPurchaseView.getSelectedMembers(), this.username,
                             Float.parseFloat(addPurchaseView.getItemPrice()), this.groupID);
-
                     if (updatedList.getResultMessage().equals("Success")) {
                         resetGroupSummary(this.group_name, this.groupID, this.username, updatedList.getNewPurchasedList(),
                                 updatedList.getNewPlanningList(), this.debtData, this.groupUserNames,

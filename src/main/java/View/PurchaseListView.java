@@ -6,6 +6,7 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.List;
 
 public class PurchaseListView extends JPanel {
@@ -30,9 +31,14 @@ public class PurchaseListView extends JPanel {
 
     public void setRows(List<List<String>> purchasedListData) {
         if (purchasedListData != null) {
+            List<String> data = new ArrayList<>();
             this.rows = new Object[purchasedListData.size()][3];
             for (int i = 0; i < purchasedListData.size(); i++) {
-                this.rows[i] = purchasedListData.get(i).toArray();
+                data.add(purchasedListData.get(i).get(1));
+                data.add(purchasedListData.get(i).get(2));
+                data.add(purchasedListData.get(i).get(3));
+                this.rows[i] = data.toArray();
+                data = new ArrayList<>();
             }
         }
     }

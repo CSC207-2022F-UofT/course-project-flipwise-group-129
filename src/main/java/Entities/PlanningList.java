@@ -23,8 +23,10 @@ public class PlanningList extends ItemList{
      */
     public boolean removeFromList(Item item){
         // remove an item from the list if it exists
-        if (super.getItems().contains(item)){
-            super.getItems().remove(item);
+        if (this.getItems().contains(item)){
+            List<Item> tempList = this.getItems();
+            tempList.remove(item);
+            this.setItems(tempList);
             return true;
         }else{
             return false;

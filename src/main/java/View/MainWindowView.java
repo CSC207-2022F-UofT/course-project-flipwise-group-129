@@ -126,16 +126,14 @@ public class MainWindowView extends JFrame implements ActionListener {
             String groupName = JOptionPane.showInputDialog("Please enter in Group Name:");
             showMessage("The name of the group is " + groupName + ".");
 
-            if (groupName.matches("[A-Za-z0-9 ]+")) {
-                CreatedGroupInfo createdGroupInfo = this.controllerCreate.create(userInfo.getUsername(), groupName);
+            if (groupName == null || !(groupName.matches("[A-Za-z0-9 ]+"))) {
+                showMessage("Error with input!");
+            } else { CreatedGroupInfo createdGroupInfo = this.controllerCreate.create(userInfo.getUsername(), groupName);
 
-                System.out.println(createdGroupInfo);
                 if (createdGroupInfo.getError() == null) {
                     setHomePage(userInfo.getUsername(), createdGroupInfo.getAllGroupNames());
                     addCreateGroup(this.userGroups, createdGroupInfo);
-                } else { showMessage(createdGroupInfo.getError()); }
-
-            } else { showMessage("Error with input!"); }
+                } else { showMessage(createdGroupInfo.getError()); } }
         }
 
         else if (evt.getActionCommand().equals("Join Group")) {

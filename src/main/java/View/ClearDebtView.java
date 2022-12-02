@@ -2,34 +2,32 @@ package View;
 
 import javax.swing.*;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 
 public class ClearDebtView extends JOptionPane {
-    JTextArea debt_information;
-    List<String> members = new ArrayList<String>();
-    List<JRadioButton> list_of_members = createRadioButtons(members);
 
-    JButton confirm;
-    JButton reject;
-    JTextArea confirmation;
+    private String username;
+    private String groupID;
+    private List<String> members;
+    private  List<JRadioButton> list_of_members;
+    private ButtonGroup radio_btn_group;
 
-    public ClearDebtView() {
+    public ClearDebtView(String username, String groupID, List<String> members) {
+
+        this.username = username;
+        this.groupID = groupID;
+        this.members = members;
+        this.list_of_members = createRadioButtons(this.members);
 
         // fetch debt request
         JPanel radio_box_contributing_members = new JPanel();
-        ButtonGroup radio_btn_group = new ButtonGroup();
+        this.radio_btn_group = new ButtonGroup();
+
         for (int i = 0; i < list_of_members.size(); i++) {
             radio_box_contributing_members.add(list_of_members.get(i));
             radio_btn_group.add(list_of_members.get(i));
         }
-
-        //DUMMY
-        JRadioButton sample1 = new JRadioButton("Saleh");
-        JRadioButton sample2 = new JRadioButton("Rachel");
-        radio_box_contributing_members.add(sample1);
-        radio_box_contributing_members.add(sample2);
-        radio_btn_group.add(sample2);
-        radio_btn_group.add(sample1);
 
         showOptionDialog(this, radio_box_contributing_members,
                 "Who do you want to clear your debt with?", JOptionPane.YES_NO_OPTION,
@@ -44,4 +42,18 @@ public class ClearDebtView extends JOptionPane {
         }
         return output;
     }
+
+    public List<String> getSelectedMembers(){
+        List<String> selectedMembers = new ArrayList<String>();
+        Enumeration elements = this.radio_btn_group.getElements();
+        while (elements.hasMoreElements()) {
+            AbstractButton button = (AbstractButton)elements.nextElement();
+            if (button.isSelected()) {
+                selectedMembers.add(button.getText());
+            }
+        }
+        return selectedMembers;
+    }
+
+
 }
