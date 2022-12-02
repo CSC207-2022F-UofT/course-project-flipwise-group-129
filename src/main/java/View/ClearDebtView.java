@@ -43,17 +43,19 @@ public class ClearDebtView extends JOptionPane {
         return output;
     }
 
-    public List<String> getSelectedMembers(){
-        List<String> selectedMembers = new ArrayList<String>();
+    public String getSelectedMember(){
         Enumeration elements = this.radio_btn_group.getElements();
+        String member = "";
         while (elements.hasMoreElements()) {
             AbstractButton button = (AbstractButton)elements.nextElement();
             if (button.isSelected()) {
-                selectedMembers.add(button.getText());
+                member = button.getText();
             }
         }
-        return selectedMembers;
+        return member;
+
     }
+
 
 
 }

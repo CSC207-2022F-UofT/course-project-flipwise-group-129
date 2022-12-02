@@ -195,7 +195,7 @@ public class MainWindowView extends JFrame implements ActionListener {
      */
     public void setGroupSummary(String group, String groupid, String username,
                                 List<List<String>> purchaseListData, List<List<String>> planningListData,
-                                List<List<String>> debtData, List<String> groupUserNames, HomePageView homePageView) {
+                                List<List<Object>> debtData, List<String> groupUserNames, HomePageView homePageView) {
         System.out.println("This is group " + group);
         System.out.println("This is groupID " + groupid);
         System.out.println("This is username " + username);
@@ -292,11 +292,11 @@ public class MainWindowView extends JFrame implements ActionListener {
     /**
      * @return the list of debt information between members of a group.
      */
-    public List<List<String>> getGroupDebtData(List<List<Object>> allGroups, String groupID) {
-        List<List<String>> output = new ArrayList<>();
+    public List<List<Object>> getGroupDebtData(List<List<Object>> allGroups, String groupID) {
+        List<List<Object>> output = new ArrayList<>();
         for (List<Object> currentGroup : allGroups) {
             if (currentGroup.get(2) == groupID) {
-                output = (List<List<String>>) currentGroup.get(5);
+                output = (List<List<Object>>) currentGroup.get(5);
             }
         }
         return output;
