@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import org.json.simple.parser.ParseException;
 
 public class GroupJoin implements GroupJoinBoundaryIn{
     /**
@@ -49,23 +50,23 @@ public class GroupJoin implements GroupJoinBoundaryIn{
         User user = null;
         try{
             user = this.getUserFromDb(reqGroupInfo.getUsername());
-        }catch (RuntimeException e) {
+        }catch (RuntimeException | IOException | ParseException e) {
             JoinedGroupInfo joinedGroupInfo = new JoinedGroupInfo(e.toString());
             return this.groupJoinPresenter.prepareFailView(joinedGroupInfo);
         }
 
         //obtain the group from the databse:
-        Group group = null;
+        Group group;
         try{
             group = this.getGroupFromDb(reqGroupInfo.getGroupId());
-        }catch (RuntimeException e){
+        }catch (RuntimeException | IOException | ParseException e){
             JoinedGroupInfo joinedGroupInfo = new JoinedGroupInfo(e.toString());
             return this.groupJoinPresenter.prepareFailView(joinedGroupInfo);
         }
 
         try{
             this.addUserToGroup(user, group);
-        }catch (RuntimeException e){
+        }catch (RuntimeException | IOException | ParseException e){
             JoinedGroupInfo joinedGroupInfo = new JoinedGroupInfo("User already in group");
             return this.groupJoinPresenter.prepareFailView(joinedGroupInfo);
         }
@@ -93,7 +94,7 @@ public class GroupJoin implements GroupJoinBoundaryIn{
      * @return returns the user object obtained from db
      */
 
-    private User getUserFromDb(String username){
+    private User getUserFromDb(String username) throws IOException, ParseException {
         // get the user from the database and create a User interface
         //check if the user exists
         if (!this.userDsInterface.userIdExists(username)){
@@ -115,7 +116,7 @@ public class GroupJoin implements GroupJoinBoundaryIn{
      * @return returns the group object obtained form db
      */
 
-    private Group getGroupFromDb(String groupId){
+    private Group getGroupFromDb(String groupId) throws IOException, ParseException {
         //obtain the group info form the database
         //check if the group exists
         if (!this.groupDsInterface.groupIdExists(groupId)){
@@ -138,7 +139,7 @@ public class GroupJoin implements GroupJoinBoundaryIn{
      * @param group the group that was requested to join
      */
 
-    private void addUserToGroup(User user, Group group){
+    private void addUserToGroup(User user, Group group) throws IOException, ParseException {
         //check if user already in group?
         if (group.getUsers().contains(user)){
             throw new RuntimeException("User already in group");
@@ -166,12 +167,12 @@ public class GroupJoin implements GroupJoinBoundaryIn{
         //pass new info to db
         try {
             this.groupDsInterface.addorUpdateGroup(group.getGroupId(), group.toString());
-        } catch (IOException e) {
+        } catch (IOException | ParseException e) {
             throw new RuntimeException("Unable to modify group info to database");
         }
         try {
             this.userDsInterface.addorUpdateUser(user.getUsername(), user.toString());
-        } catch (IOException e) {
+        } catch (IOException | ParseException e) {
             throw new RuntimeException("Unable to save user info into database");
         }
     }
@@ -190,7 +191,13 @@ public class GroupJoin implements GroupJoinBoundaryIn{
 
         List<String> usersInGroup = new ArrayList<>(group.getUsers());
         List<String> groupIds = new ArrayList<>(user.getGroups());
-        user.getGroups().forEach(group1 -> groupNames.add(getGroupFromDb(group1).getGroupName()));
+        user.getGroups().forEach(group1 -> {
+            try {
+                groupNames.add(getGroupFromDb(group1).getGroupName());
+            } catch (IOException | ParseException e) {
+                throw new RuntimeException(e);
+            }
+        });
 
         //make a sublist  of the purchased and planning list
         planningList = this.getListItemList(group.getPlanningList());

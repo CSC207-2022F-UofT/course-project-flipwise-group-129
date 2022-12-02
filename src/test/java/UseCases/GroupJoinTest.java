@@ -43,21 +43,21 @@ class GroupJoinTest {
     @Before
     public void setUp() throws IOException {
         //copy and create duplicate test stuff
-        Path copiedGroups = Paths.get("src/test/resources/testgroupsCopy.json");
-        Path originalPathGroups = Paths.get("src/test/resources/testgroups.json");
+        Path copiedGroups = Paths.get("././src/test/resources/testgroupsCopy.json");
+        Path originalPathGroups = Paths.get("././src/test/resources/testgroups.json");
         Files.copy(originalPathGroups, copiedGroups, StandardCopyOption.REPLACE_EXISTING);
 
-        Path copiedUsers = Paths.get("src/test/resources/testusersCopy.json");
-        Path originalPathUsers = Paths.get("src/test/resources/testusers.json");
+        Path copiedUsers = Paths.get("././src/test/resources/testusersCopy.json");
+        Path originalPathUsers = Paths.get("././src/test/resources/testusers.json");
         Files.copy(originalPathUsers, copiedUsers, StandardCopyOption.REPLACE_EXISTING);
     }
 
     @After
     public void tearDown(){
-        File groupFile = new File("src/test/resources/testgroupsCopy.json");
+        File groupFile = new File("././src/test/resources/testgroupsCopy.json");
         groupFile.delete();
 
-        File userFile = new File("src/test/resources/testusersCopy.json");
+        File userFile = new File("././src/test/resources/testusersCopy.json");
         userFile.delete();
     }
     @Test

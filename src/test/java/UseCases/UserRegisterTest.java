@@ -99,7 +99,7 @@ class UserRegisterTest {
         UserRegisterPresenter presenter = new UserRegisterPresenter();
         UserRegisterBoundaryIn input = new UserRegister(presenter, data);
         UserRegisterController controller = new UserRegisterController(input);
-        boolean result = controller.controlUseCase("not_alex.yu", "IsAFoodie3", "IsAFoodie3");
+        boolean result = controller.controlUseCase("not_alex.yu", "IsAFoodie3", "IsAFoodie2");
         assertFalse(result);
         
         tearDown();
