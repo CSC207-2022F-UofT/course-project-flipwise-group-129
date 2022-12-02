@@ -8,11 +8,18 @@ import Entities.User;
 import InputBoundary.UserLoginBoundaryIn;
 import Presenters.UserLoginPresenter;
 import org.json.simple.parser.ParseException;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -41,8 +48,12 @@ class UserLoginTest {
 
     @Test
     void executeUserLoginSuccess() {
-        setUp();
-        
+        try {
+            setUp();
+        } catch (IOException e) {
+            fail("IOException, issue with UserDataAccess or GroupDataAccess");
+        }
+
         UserDataAccess userData = null;
         GroupDataAccess groupData = null;
         try {
@@ -65,7 +76,11 @@ class UserLoginTest {
 
     @Test
     void executeUserLoginWrongPw() {
-        setup();
+        try {
+            setUp();
+        } catch (IOException e) {
+            fail("IOException, issue with UserDataAccess or GroupDataAccess");
+        }
         
         UserDataAccess userData = null;
         GroupDataAccess groupData = null;
@@ -89,7 +104,11 @@ class UserLoginTest {
 
     @Test
     void executeUserLoginNoUsername() {
-        setUp();
+        try {
+            setUp();
+        } catch (IOException e) {
+            fail("IOException, issue with UserDataAccess or GroupDataAccess");
+        }
         
         UserDataAccess userData = null;
         GroupDataAccess groupData = null;

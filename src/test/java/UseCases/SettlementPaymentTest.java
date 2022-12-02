@@ -14,6 +14,23 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 import java.util.Objects;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import org.json.simple.parser.ParseException;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.jupiter.api.Test;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+
 class SettlementPaymentTest {
     
     @Before
@@ -38,8 +55,8 @@ class SettlementPaymentTest {
     }
 
     @Test
-    void executeDebtSettlement() {
-        
+    void executeDebtSettlement() throws IOException {
+
         setUp();
 
         GroupDataInterface groupData;
@@ -67,7 +84,7 @@ class SettlementPaymentTest {
     }
 
     @Test
-    void debtSettlementFailure() {
+    void debtSettlementFailure() throws IOException {
         
         setUp();
 
