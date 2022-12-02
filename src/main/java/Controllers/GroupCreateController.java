@@ -25,7 +25,7 @@ public class GroupCreateController {
      * @return the output data structure with all the information to display to the view
      */
     public CreatedGroupInfo create(String groupName, String userId) {
-        ProposedGroupInfo proposedInfo = new ProposedGroupInfo(groupName, userId); //create the input ds package
+        ProposedGroupInfo proposedInfo = new ProposedGroupInfo(userId, groupName); //create the input ds package
 
         return userInput.createNewGroup(proposedInfo); // create the new group and return the output
     }

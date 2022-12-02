@@ -139,6 +139,10 @@ public class UserRegisterView extends JPanel implements ActionListener {
         return name.matches("[a-zA-Z0-9]+");
     }
 
+    public boolean isPassword(String password) {
+        return password.matches("[a-zA-Z0-9@ ]+");
+    }
+
     }
 
 

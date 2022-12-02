@@ -190,7 +190,6 @@ public class GroupSummaryView extends JPanel implements ActionListener {
         if (evt.getActionCommand().equals("Settle Debt")){
             ClearDebtView clearDebtView = new ClearDebtView(this.username, this.groupID,
                     this.groupUserNames);
-
         }
 
         if (evt.getActionCommand().equals("Purchase Item")){
