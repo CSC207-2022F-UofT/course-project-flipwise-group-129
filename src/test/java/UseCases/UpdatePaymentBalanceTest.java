@@ -47,12 +47,12 @@ class UpdatePaymentBalanceTest {
     @Before
     public void setUp() throws IOException {
         //copy and create duplicate test stuff
-        Path copiedGroups = Paths.get("src/test/resources/testgroupsCopy.json");
-        Path originalPathGroups = Paths.get("src/test/resources/testgroups.json");
+        Path copiedGroups = Paths.get("././src/test/resources/testgroupsCopy.json");
+        Path originalPathGroups = Paths.get("././src/test/resources/testgroups.json");
         Files.copy(originalPathGroups, copiedGroups, StandardCopyOption.REPLACE_EXISTING);
 
-        Path copiedUsers = Paths.get("src/test/resources/testusersCopy.json");
-        Path originalPathUsers = Paths.get("src/test/resources/testusers.json");
+        Path copiedUsers = Paths.get("././src/test/resources/testusersCopy.json");
+        Path originalPathUsers = Paths.get("././src/test/resources/testusers.json");
         Files.copy(originalPathUsers, copiedUsers, StandardCopyOption.REPLACE_EXISTING);
     }
 
@@ -124,15 +124,29 @@ class UpdatePaymentBalanceTest {
                     throw new RuntimeException(e);
                 }
                 List<String> users = Arrays.asList("rcordi", "randomC", "sopleee");
-
-                assert updatedDebts.getUpdatedBalances().containsKey("mishaalk");
-                for (List<Object> userOwed : updatedDebts.getUpdatedBalances().get("mishaalk")) {
-                    int indexOfUserOwing = groupInfoBefore.get("mishaalk").indexOf(userOwed);
-                    Object previousDebt = groupInfoBefore.get("mishaalk").get(indexOfUserOwing).get(1);
-                    if(users.contains((String) userOwed.get(0))) {
-                        assert (double) userOwed.get(1) == ((double) previousDebt) + 19.99/3;
+                boolean containsOwed = false;
+                for(List<Object> curDebt : updatedDebts.getUpdatedBalances()){
+                    if((curDebt.get(0)).equals("mishaalk")){
+                        containsOwed = true;
+                        break;
                     }
                 }
+                assert containsOwed;
+//                        updatedDebts.getUpdatedBalances().containsKey("mishaalk");
+                for(List<Object> curDebt : updatedDebts.getUpdatedBalances()){
+                    if((curDebt.get(0)).equals("mishaalk") && users.contains((String) curDebt.get(1))){
+                        int indexOfUserOwing = groupInfoBefore.get("mishaalk").indexOf((String) curDebt.get(1));
+                        Object previousDebt = groupInfoBefore.get("mishaalk").get(indexOfUserOwing).get(1);
+                        assert (double) curDebt.get(3) == ((double) previousDebt) + 19.99/3;
+                    }
+                }
+//                for (List<Object> userOwed : updatedDebts.getUpdatedBalances().get("mishaalk")) {
+//                    int indexOfUserOwing = groupInfoBefore.get("mishaalk").indexOf(userOwed);
+//                    Object previousDebt = groupInfoBefore.get("mishaalk").get(indexOfUserOwing).get(1);
+//                    if(users.contains((String) userOwed.get(0))) {
+//                        assert (double) userOwed.get(1) == ((double) previousDebt) + 19.99/3;
+//                    }
+//                }
                 assert updatedDebts.getOutcomeMessage() == null;
                 return null;
             }
@@ -174,8 +188,8 @@ class UpdatePaymentBalanceTest {
 
             @Override
             public UpdatedDebts prepareFailView(UpdatedDebts updatedDebts) {
-                assert !updatedDebts.getUpdatedBalances().containsKey("mishaalk");
-                assert updatedDebts.getOutcomeMessage() == null;
+                assert updatedDebts.getUpdatedBalances() == null;
+                assert updatedDebts.getOutcomeMessage() != null;
                 return null;
             }
         };

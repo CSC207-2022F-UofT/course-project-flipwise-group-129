@@ -49,6 +49,7 @@ public class GroupCreate implements GroupCreateBoundaryIn{
             System.out.println(newGroupInfo.getUsername());
             createdUser = this.getUserFromDb(newGroupInfo.getUsername());
         }catch (RuntimeException e) {
+            System.out.println("error sdf: " + e.toString());
             CreatedGroupInfo createdGroupInfo = new CreatedGroupInfo(e.toString());
             return this.groupCreatePresenter.prepareFailView(createdGroupInfo);
         }
@@ -65,9 +66,14 @@ public class GroupCreate implements GroupCreateBoundaryIn{
             return this.groupCreatePresenter.prepareFailView(createdGroupInfo);
         }
 
-        CreatedGroupInfo createdGroupInfo = this.createOutputData(createdUser, group);
+        try{
+            CreatedGroupInfo createdGroupInfo = this.createOutputData(createdUser, group);
+            return this.groupCreatePresenter.prepareSuccessView(createdGroupInfo); //present it to the presenter
+        }catch (RuntimeException e){
+            CreatedGroupInfo createdGroupInfo = new CreatedGroupInfo(e.toString());
+            return this.groupCreatePresenter.prepareFailView(createdGroupInfo);
+        }
 
-        return this.groupCreatePresenter.prepareSuccessView(createdGroupInfo); //present it to the presenter
     }
 
     /**
@@ -101,7 +107,7 @@ public class GroupCreate implements GroupCreateBoundaryIn{
                 throw new RuntimeException("Invalid GroupID provided");
             }
             String groupString = "";
-            Group group = null;
+            Group group;
             groupString = this.groupDsInterface.groupAsString(groupId);
             group = Group.fromString(groupString);
             return group;

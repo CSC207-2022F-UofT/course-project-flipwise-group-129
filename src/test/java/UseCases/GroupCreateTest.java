@@ -35,21 +35,21 @@ class GroupCreateTest {
     @Before
     public void setUp() throws IOException {
         //copy and create duplicate test stuff
-        Path copiedGroups = Paths.get("src/test/resources/testgroupsCopy.json");
-        Path originalPathGroups = Paths.get("src/test/resources/testgroups.json");
+        Path copiedGroups = Paths.get("././src/test/resources/testgroupsCopy.json");
+        Path originalPathGroups = Paths.get("././src/test/resources/testgroups.json");
         Files.copy(originalPathGroups, copiedGroups, StandardCopyOption.REPLACE_EXISTING);
 
-        Path copiedUsers = Paths.get("src/test/resources/testusersCopy.json");
-        Path originalPathUsers = Paths.get("src/test/resources/testusers.json");
+        Path copiedUsers = Paths.get("././src/test/resources/testusersCopy.json");
+        Path originalPathUsers = Paths.get("././src/test/resources/testusers.json");
         Files.copy(originalPathUsers, copiedUsers, StandardCopyOption.REPLACE_EXISTING);
     }
 
     @After
     public void tearDown(){
-        File groupFile = new File("src/test/resources/testgroupsCopy.json");
+        File groupFile = new File("././src/test/resources/testgroupsCopy.json");
         groupFile.delete();
 
-        File userFile = new File("src/test/resources/testusersCopy.json");
+        File userFile = new File("././src/test/resources/testusersCopy.json");
         userFile.delete();
     }
 
@@ -104,6 +104,9 @@ class GroupCreateTest {
         UserDataInterface userData = new UserDataAccess("test");
         GroupCreateBoundaryIn useCase = new GroupCreate(presenter, groupData, userData);
 
+        System.out.print(groupData.getGroupMap());
+        System.out.print(Group.fromString(groupData.groupAsString("grpOne11")));
+
         // 2) Input data — we can make this up for the test. Normally it would
         // be created by the Controller.
         ProposedGroupInfo inputData = new ProposedGroupInfo("mishaalk", "groupDarcy");
@@ -141,7 +144,7 @@ class GroupCreateTest {
                 assert outputData.getGroupName() == null;
                 assert outputData.getId() == null;
                 assert outputData.getAllGroupIds() == null;
-                assert Objects.equals(outputData.getError(), "User Id does not exist");
+                assert outputData.getError().equals("java.lang.RuntimeException: User Id does not exist");
                 return null;
             }
         };
