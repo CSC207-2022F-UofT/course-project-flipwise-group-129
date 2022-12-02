@@ -15,12 +15,35 @@ import java.io.IOException;
 import static org.junit.jupiter.api.Assertions.*;
 
 class UserRegisterTest {
+    
+    @Before
+    public void setUp() throws IOException {
+        //copy and create duplicate test stuff
+        Path copiedGroups = Paths.get("src/test/resources/testgroupsCopy.json");
+        Path originalPathGroups = Paths.get("src/test/resources/testgroups.json");
+        Files.copy(originalPathGroups, copiedGroups, StandardCopyOption.REPLACE_EXISTING);
+
+        Path copiedUsers = Paths.get("src/test/resources/testusersCopy.json");
+        Path originalPathUsers = Paths.get("src/test/resources/testusers.json");
+        Files.copy(originalPathUsers, copiedUsers, StandardCopyOption.REPLACE_EXISTING);
+    }
+
+    @After
+    public void tearDown(){
+        File groupFile = new File("src/test/resources/testgroupsCopy.json");
+        groupFile.delete();
+
+        File userFile = new File("src/test/resources/testusersCopy.json");
+        userFile.delete();
+    }
 
     /**
      * Test a successful user register.
      */
     @Test
     void executeUserRegisterSuccess() {
+        setUp();
+        
         UserDataAccess data = null;
         try {
             data = new UserDataAccess("testusers.json");
@@ -35,6 +58,8 @@ class UserRegisterTest {
         UserRegisterController controller = new UserRegisterController(input);
         boolean result = controller.controlUseCase("not_alex.yu", "IsAFoodie3", "IsAFoodie3");
         assertTrue(result);
+        
+        tearDown();
     }
 
     /**
@@ -43,6 +68,8 @@ class UserRegisterTest {
      */
     @Test
     void executeUserRegisterPwNotMatching() {
+        setUp();
+        
         UserDataAccess data = null;
         try {
             data = new UserDataAccess("testusers.json");
@@ -57,6 +84,8 @@ class UserRegisterTest {
         UserRegisterController controller = new UserRegisterController(input);
         boolean result = controller.controlUseCase("not_alex.yu", "IsAFoodie3", "IsAFoodie3");
         assertFalse(result);
+        
+        tearDown();
     }
 
     /**
@@ -65,6 +94,8 @@ class UserRegisterTest {
      */
     @Test
     void executeUserRegisterUsernameTaken() {
+        setUp();
+        
         UserDataAccess data = null;
         try {
             data = new UserDataAccess("testusers.json");
@@ -78,5 +109,7 @@ class UserRegisterTest {
         UserRegisterController controller = new UserRegisterController(input);
         boolean result = controller.controlUseCase("randomC", "statistical_satire", "statistical_satire");
         assertFalse(result);
+        
+        tearDown();
         }
 }

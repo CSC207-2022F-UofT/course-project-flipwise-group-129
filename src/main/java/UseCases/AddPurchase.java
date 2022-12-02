@@ -9,6 +9,7 @@ import Entities.*;
 import InputBoundary.AddPurchaseBoundaryIn;
 import OutputBoundary.AddPurchaseBoundaryOut;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import org.json.simple.parser.ParseException;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -99,6 +100,8 @@ public class AddPurchase implements AddPurchaseBoundaryIn {
         } catch (IOException e) {
             // in the case of the io exception, we return a runtime exception
             raiseError("IO Exception");
+        } catch (ParseException e) {
+            raiseError("Parse Exception");
         }
     }
 
@@ -147,7 +150,7 @@ public class AddPurchase implements AddPurchaseBoundaryIn {
 
         try {
             this.purchasedItem = Item.fromString(this.itemData.itemAsString(this.purchaseInfo.getItemId()));
-        } catch (JsonProcessingException e) {
+        } catch (IOException | ParseException e) {
             raiseError("JSON Processing Exception");
         }
 
@@ -156,12 +159,12 @@ public class AddPurchase implements AddPurchaseBoundaryIn {
         this.price = purchaseInfo.getPrice();
         try {
             this.purchaseGroup = Group.fromString(this.groupData.groupAsString(purchaseInfo.getPurchaseGroup()));
-        } catch (JsonProcessingException e) {
+        } catch (IOException | ParseException e) {
             raiseError("JSON Processing Exception");
         }
         try {
             this.buyer = User.fromString(this.userData.userAsString(purchaseInfo.getBuyer()));
-        } catch (JsonProcessingException e) {
+        } catch (IOException | ParseException e) {
             raiseError("JSON Processing Exception");
         }
 
@@ -191,7 +194,7 @@ public class AddPurchase implements AddPurchaseBoundaryIn {
             // need a try catch for the json processing exception
             try {
                 this.participatingUsers.add(User.fromString(this.userData.userAsString(username)));
-            } catch (JsonProcessingException e) {
+            } catch (IOException | ParseException e) {
                 raiseError(e.toString());
             }
             // yay O(n) time

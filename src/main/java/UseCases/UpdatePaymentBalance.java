@@ -34,7 +34,7 @@ public class UpdatePaymentBalance implements UpdatePaymentBalanceBoundaryIn {
      * @return the information that is prepared by the presenter to the controller.
      */
     @Override
-    public UpdatedDebts updatePaymentBalance(PaymentInformation paymentDetails) throws IOException, ParseException {
+    public UpdatedDebts updatePaymentBalance(PaymentInformation paymentDetails) {
         String groupID = paymentDetails.getGroupID();
         String userPurchasedItem = paymentDetails.getUsername();
         float itemPrice = paymentDetails.getItemPrice();
@@ -148,30 +148,10 @@ public class UpdatePaymentBalance implements UpdatePaymentBalanceBoundaryIn {
      *          exist.
      * @return the failed view of the updatePaymentBalance presenter.
      */
-    private UpdatedDebts raiseError(RuntimeException e) throws IOException, ParseException {
+    private UpdatedDebts raiseError(RuntimeException e) {
         return this.updatePaymentBalancePresenter.prepareFailView(new UpdatedDebts(e.toString()));
     }
 
-    /**
-     * Helper method for updatePaymentBalance to check if the itemID exists in the given database.
-     * @param itemID the String which is the ID of the item which was purchased.
-     * @return an instance of the actual Item which has been purchased if it exists in the database, otherwise,
-     * returns a RuntimeException.
-     */
-    private Item getItemFromDb(String itemID) throws IOException, ParseException {
-        // get the user from the database and create a User interface
-        //check if the user exists
-        if (!this.itemDataInterface.itemIdExists(itemID)){
-            throw new RuntimeException("Item Id does not exist");
-        }
-        String userString = this.itemDataInterface.itemAsString(itemID);
-
-        try {
-            return Item.fromString(itemID);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException("Unable to process item from database");
-        }
-    }
 
     /**
      * Helper method for updatePaymentBalance to check if the groupID exists in the given database.
@@ -182,14 +162,14 @@ public class UpdatePaymentBalance implements UpdatePaymentBalanceBoundaryIn {
     private Group getGroupFromDb(String groupID) throws IOException, ParseException {
         // get the user from the database and create a User interface
         //check if the user exists
-        if (!this.groupDataInterface.groupIdExists(groupID)){
-            throw new RuntimeException("Group Id does not exist");
-        }
-        String userString = this.groupDataInterface.groupAsString(groupID);
 
         try {
-            return Group.fromString(groupID);
-        } catch (JsonProcessingException e) {
+            if (!this.groupDataInterface.groupIdExists(groupID)){
+                throw new RuntimeException("Group Id does not exist");
+            }
+            String groupString = this.groupDataInterface.groupAsString(groupID);
+            return Group.fromString(groupString);
+        } catch (IOException | ParseException e) {
             throw new RuntimeException("Unable to process group from database");
         }
     }

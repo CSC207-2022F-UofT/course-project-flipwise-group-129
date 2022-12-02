@@ -28,8 +28,8 @@ public class ItemDataAccess extends DataAccess implements ItemDataInterface {
      * @param testString a string confirming database to access is test
      */
     public ItemDataAccess(String testString) throws IOException, ParseException {
-        this.itemFile = new File("././src/test/resources/testitems.json");
-        super.readFile(itemFile, itemMap);
+        this.itemFile = new File("././src/test/resources/testitemsCopy.json");
+        super.readFile(new File("././src/test/resources/testitems.json"), itemMap);
     }
 
     /**

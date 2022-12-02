@@ -11,9 +11,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import org.json.simple.parser.ParseException;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 public class SettlementPayment implements SettlementBoundaryIn {
     SettlementBoundaryOut outputBoundary;
@@ -63,7 +61,7 @@ public class SettlementPayment implements SettlementBoundaryIn {
             return raiseError("unable to save debt changes");
         }
 
-        List<List<String>> stringDebtList = getUpdatedDebts(currGroup.getPurchaseBalance());
+        Map<String, List<List<Object>>> stringDebtList = getUpdatedDebts(currGroup.getPurchaseBalance(), currGroup.getUsers());
         UpdatedDebts updatedDebts = new UpdatedDebts(stringDebtList);
         return outputBoundary.displayDebts(updatedDebts);
     }
@@ -78,23 +76,18 @@ public class SettlementPayment implements SettlementBoundaryIn {
      * @param purchaseBalance the list of Debts in the group
      * @return This returns a list of debts formatted as a nested list of strings [userOwedUsername, userOwingUsername, debtValue]
      */
-    private List<List<String>> getUpdatedDebts(PurchaseBalance purchaseBalance) {
-        List<List<String>> stringPurchaseBalance = new ArrayList<>();
-//        Iterator<String> iter = purchaseBalance.iterator();
-//        while(iter.hasNext()){
-//            Debt curDebt = iter.next();
-//            List<String> currentDebt = new ArrayList<>();
-//            currentDebt.add(curDebt.getUserOwed().getUsername());
-//            currentDebt.add(curDebt.getUserOwing().getUsername());
-//            currentDebt.add(curDebt.getDebtValue().toString());
-//            stringPurchaseBalance.add(currentDebt);
-//        }
-        for (Debt curDebt : purchaseBalance) {
-            List<String> currentDebt = new ArrayList<>();
-            currentDebt.add(curDebt.getUserOwed().getUsername());
-            currentDebt.add(curDebt.getUserOwing().getUsername());
-            currentDebt.add(curDebt.getDebtValue().toString());
-            stringPurchaseBalance.add(currentDebt);
+    private Map<String, List<List<Object>>> getUpdatedDebts(PurchaseBalance purchaseBalance, Set<String> users) {
+        Map<String, List<List<Object>>> stringPurchaseBalance = new HashMap<>();
+        for(String curUser : users) {
+            List<Debt> debtList = purchaseBalance.getUserOwed(curUser);
+            List<List<Object>> stringUserOwedDebtList = new ArrayList<>();
+            for (Debt curDebt : debtList) {
+                List<Object> currentDebt = new ArrayList<>();
+                currentDebt.add(curDebt.getUserOwing().getUsername());
+                currentDebt.add(curDebt.getDebtValue());
+                stringUserOwedDebtList.add(currentDebt);
+            }
+            stringPurchaseBalance.put(curUser, stringUserOwedDebtList);
         }
         return stringPurchaseBalance;
     }
@@ -106,10 +99,11 @@ public class SettlementPayment implements SettlementBoundaryIn {
      * @return This returns a group object if found in the database, otherwise, null
      */
     private Group retreiveGroup(String groupId) {
-        String groupInfo = groupAccess.groupAsString(groupId);
+        String groupInfo;
         try {
+            groupInfo = groupAccess.groupAsString(groupId);
             return Group.fromString(groupInfo);
-        } catch (JsonProcessingException e) {
+        } catch (ParseException | IOException e) {
             throw new RuntimeException(e);
         }
     }
@@ -121,7 +115,7 @@ public class SettlementPayment implements SettlementBoundaryIn {
     private void saveGroup(String groupId, String groupData) {
         try {
             groupAccess.addorUpdateGroup(groupId, groupData);
-        } catch (IOException e) {
+        } catch (IOException | ParseException e) {
             throw new RuntimeException(e);
         }
     }

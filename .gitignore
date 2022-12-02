@@ -119,3 +119,6 @@ gradle-app.setting
 hs_err_pid*
 replay_pid*
 *.xml
+
+#ignore system files:
+*.DS_Store
