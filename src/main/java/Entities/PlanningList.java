@@ -6,6 +6,7 @@ import org.json.simple.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class PlanningList extends ItemList{
 
@@ -23,14 +24,14 @@ public class PlanningList extends ItemList{
      */
     public boolean removeFromList(Item item){
         // remove an item from the list if it exists
-        if (this.getItems().contains(item)){
-            List<Item> tempList = this.getItems();
-            tempList.remove(item);
-            this.setItems(tempList);
-            return true;
-        }else{
-            return false;
+
+        for (int i = 0; i < this.getItems().size(); i++) {
+            if (Objects.equals(this.getItems().get(i).getItemId(), item.getItemId())){
+                this.getItems().remove(i);
+                return true;
+            }
         }
+        return false;
     }
 
 

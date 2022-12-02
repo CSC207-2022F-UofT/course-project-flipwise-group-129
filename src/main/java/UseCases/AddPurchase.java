@@ -46,6 +46,8 @@ public class AddPurchase implements AddPurchaseBoundaryIn {
         // from the purchaseInfo data structure
         extractInformation(purchaseInfo);
 
+        System.out.println(this.purchasedItem);
+
         // Obtain the planning list from the group and then remove the item that's being purchased from it to
         // move it to the purchased list
         PlanningList planningList = this.purchaseGroup.getPlanningList();
