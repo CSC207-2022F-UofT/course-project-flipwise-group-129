@@ -68,7 +68,7 @@ public class AddPurchaseView extends JOptionPane{
         List<String> selectedMembers = new ArrayList<String>();
         for (int i = 0; i < contributing_members.length; i++) {
             if (contributing_members[i].isSelected()) {
-                selectedMembers.add(contributing_members[i].getName());
+                selectedMembers.add(contributing_members[i].getText());
             }
         }
         return selectedMembers;

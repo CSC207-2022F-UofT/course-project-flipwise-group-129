@@ -193,6 +193,7 @@ public class GroupSummaryView extends JPanel implements ActionListener {
                         this.username, this.groupID, this.groupUserNames);
 
                 if ((addPurchaseView.getItemPrice().matches("[0-9]+")) && (addPurchaseView.getSelectedMembers().size() > 0)) {
+                    System.out.println("AP" + addPurchaseView.getSelectedMembers());
                     UpdatedLists updatedList = controllerAddPurchase.controlAddPurchaseUseCase(itemID,
                             addPurchaseView.getSelectedMembers(), this.username,
                             Float.parseFloat(addPurchaseView.getItemPrice()), this.groupID);
