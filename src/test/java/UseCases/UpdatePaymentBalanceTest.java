@@ -119,15 +119,31 @@ class UpdatePaymentBalanceTest {
             public UpdatedDebts prepareSuccessView(UpdatedDebts updatedDebts) throws IOException, ParseException {
                 Map<String, List<List<Object>>> groupInfoBefore = getGroupInfo();
                 List<String> users = Arrays.asList("rcordi", "randomC", "sopleee");
-
-                assert updatedDebts.getUpdatedBalances().containsKey("mishaalk");
-                for (List<Object> userOwed : updatedDebts.getUpdatedBalances().get("mishaalk")) {
-                    int indexOfUserOwing = groupInfoBefore.get("mishaalk").indexOf(userOwed);
-                    Object previousDebt = groupInfoBefore.get("mishaalk").get(indexOfUserOwing).get(1);
-                    if(users.contains((String) userOwed.get(0))) {
-                        assert (double) userOwed.get(1) == ((double) previousDebt) + 19.99/3;
+                boolean containsUser = false;
+                for(List<Object> debt : updatedDebts.getUpdatedBalances()){
+                    if (debt.get(0).equals("mishaalk")) {
+                        containsUser = true;
+                        break;
                     }
                 }
+                assert containsUser;
+                boolean allUpdated = false;
+                for(List<Object> debt : updatedDebts.getUpdatedBalances()){
+                    if (debt.get(0).equals("mishaalk")) {
+                        int indexOfUserOwing = groupInfoBefore.get("mishaalk").indexOf((String) debt.get(1));
+                        double previousDebt = (double) groupInfoBefore.get("mishaalk").get(indexOfUserOwing).get(1);
+                        if(users.contains((String) debt.get(1))) {
+                            assert (double) debt.get(3) == ((double) previousDebt) + 19.99/3;
+                        }
+                    }
+                }
+//                for (List<Object> userOwed : updatedDebts.getUpdatedBalances().get("mishaalk")) {
+//                    int indexOfUserOwing = groupInfoBefore.get("mishaalk").indexOf(userOwed);
+//                    Object previousDebt = groupInfoBefore.get("mishaalk").get(indexOfUserOwing).get(1);
+//                    if(users.contains((String) userOwed.get(0))) {
+//                        assert (double) userOwed.get(1) == ((double) previousDebt) + 19.99/3;
+//                    }
+//                }
                 assert updatedDebts.getOutcomeMessage() == null;
                 return null;
             }
@@ -168,9 +184,9 @@ class UpdatePaymentBalanceTest {
             }
 
             @Override
-            public UpdatedDebts prepareFailView(UpdatedDebts updatedDebts) throws IOException, ParseException {
-                assert !updatedDebts.getUpdatedBalances().containsKey("mishaalk");
-                assert updatedDebts.getOutcomeMessage() == null;
+            public UpdatedDebts prepareFailView(UpdatedDebts updatedDebts) {
+                assert updatedDebts.getUpdatedBalances() == null;
+                assert updatedDebts.getOutcomeMessage() != null;
                 return null;
             }
         };

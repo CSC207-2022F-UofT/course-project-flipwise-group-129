@@ -11,7 +11,7 @@ public interface UpdatePaymentBalanceBoundaryOut {
      * @param updatedDebts the data structure with the updated list of debts for the group.
      * @return an UpdatedDebts object containing the updated information of the list of debts.
      */
-    UpdatedDebts prepareSuccessView(UpdatedDebts updatedDebts);
+    UpdatedDebts prepareSuccessView(UpdatedDebts updatedDebts) throws IOException, ParseException;
 
     /**
      * Returns the information from an error in the form of an error message to the view.

@@ -12,7 +12,7 @@ import org.json.simple.parser.ParseException;
 import java.io.IOException;
 import java.util.*;
 
-public class UpdatePaymentBalance implements UpdatePaymentBalanceBoundaryIn {
+public class UpdatePaymentBalance implements UpdatePaymentBalanceBoundaryIn{
 
     final GroupDataInterface groupDataInterface;
     final ItemDataInterface itemDataInterface;
@@ -125,20 +125,47 @@ public class UpdatePaymentBalance implements UpdatePaymentBalanceBoundaryIn {
         owed money, and at index[0], the List contains the name of the user who owes money as a String, and at index[1],
         the List contains the amount the user owes as a double.
          */
-        Map<String, List<List<Object>>> updatedDebtsList = new HashMap<>();
-        for(Debt d : currentDebtList) {
-            List<List<Object>> userOwingAndDebtValue = new ArrayList<>();
-            List<Object> current = new ArrayList<>();
-            current.add(d.getUserOwing().getUsername());
-            current.add(d.getDebtValue());
-            userOwingAndDebtValue.add(current);
-            updatedDebtsList.put(d.getUserOwed().getUsername(), userOwingAndDebtValue);
-        }
+
+//        Map<String, List<List<Object>>> updatedDebtsList = new HashMap<>();
+//        for(Debt d : currentDebtList) {
+//            List<List<Object>> userOwingAndDebtValue = new ArrayList<>();
+//            List<Object> current = new ArrayList<>();
+//            current.add(d.getUserOwing().getUsername());
+//            current.add(d.getDebtValue());
+//            userOwingAndDebtValue.add(current);
+//            updatedDebtsList.put(d.getUserOwed().getUsername(), userOwingAndDebtValue);
+//        }
+        List<List<Object>> updatedDebtsList = getOutputtedDebts(groupInvolvedInPurchase.getPurchaseBalance(), groupInvolvedInPurchase.getGroupId());
 
         /*
         Now we can take the Map use it in the constructor for UpdatedDebts to create our final returned value.
          */
-        return this.updatePaymentBalancePresenter.prepareSuccessView(new UpdatedDebts(updatedDebtsList));
+        try {
+            return this.updatePaymentBalancePresenter.prepareSuccessView(new UpdatedDebts(updatedDebtsList));
+        } catch (IOException | ParseException e) {
+            return this.updatePaymentBalancePresenter.prepareFailView(
+                    new UpdatedDebts("failed due to unreadable database"));
+        }
+    }
+
+    /**
+     * This function gets a list of all the new debts in the group
+     *
+     * @param purchaseBalance the list of Debts in the group
+     * @param groupId the current groupId
+     * @return This returns a list of debts formatted as a nested list of strings
+     */
+    private List<List<Object>> getOutputtedDebts(PurchaseBalance purchaseBalance, String groupId) {
+        List<List<Object>> returnedDebts = new ArrayList<>();
+        for(Debt curDebt : purchaseBalance.getAllDebts()){
+            ArrayList<Object> currentDebt = new ArrayList<>();
+            currentDebt.add(curDebt.getUserOwed());
+            currentDebt.add(curDebt.getUserOwing());
+            currentDebt.add(groupId);
+            currentDebt.add(curDebt.getDebtValue());
+            returnedDebts.add(currentDebt);
+        }
+        return returnedDebts;
     }
 
     /**
