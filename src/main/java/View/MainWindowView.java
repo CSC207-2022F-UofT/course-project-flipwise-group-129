@@ -100,6 +100,8 @@ public class MainWindowView extends JFrame implements ActionListener {
             if (isAlpha(loginView.getUsername()) && isAlpha(loginView.getPassword())) {
                 this.userInfo = this.userLoginController.controlUseCase(loginView.getUsername(),
                         loginView.getPassword());
+                System.out.println("username " + userInfo.getUsername());
+                System.out.println("password " + userInfo.getUserAllGroups());
                 this.userGroups = userInfo.getUserAllGroups();
                 if (userInfo.statusBool()) {
                     setHomePage(userInfo.getUsername(), getGroupNames(userGroups));
@@ -128,7 +130,7 @@ public class MainWindowView extends JFrame implements ActionListener {
 
             if (groupName == null || !(groupName.matches("[A-Za-z0-9 ]+"))) {
                 showMessage("Error with input!");
-            } else { CreatedGroupInfo createdGroupInfo = this.controllerCreate.create(userInfo.getUsername(), groupName);
+            } else { CreatedGroupInfo createdGroupInfo = this.controllerCreate.create(groupName, userInfo.getUsername());
 
                 if (createdGroupInfo.getError() == null) {
                     setHomePage(userInfo.getUsername(), createdGroupInfo.getAllGroupNames());

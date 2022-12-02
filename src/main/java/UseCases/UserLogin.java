@@ -106,7 +106,7 @@ public class UserLogin implements UserLoginBoundaryIn {
             // Add all the group details to outer list.
             allGroups.add(eachGroup);
         }
-        return new LoggedInInfo(user.getPassword(), allGroups);
+        return new LoggedInInfo(user.getUsername(), allGroups);
     }
 
     /**
