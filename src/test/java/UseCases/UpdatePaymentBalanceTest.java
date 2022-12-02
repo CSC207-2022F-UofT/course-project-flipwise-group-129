@@ -227,7 +227,11 @@ class UpdatePaymentBalanceTest {
 
         try {
             List<String> userInfoAfter = getUserInfo();
-            assert userInfoAfter.contains("mishaalk");
+            for(String group : userInfoAfter) {
+                Group current = Group.fromString(group);
+                assert current.getUsers().contains("mishaalk");
+            }
+
         } catch (IOException | ParseException e) {
             throw new RuntimeException(e);
         }

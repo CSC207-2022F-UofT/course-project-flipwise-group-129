@@ -6,7 +6,6 @@ import Entities.*;
 import InputBoundary.UpdatePaymentBalanceBoundaryIn;
 import OutputBoundary.UpdatePaymentBalanceBoundaryOut;
 import DataAccessInterface.*;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.json.simple.parser.ParseException;
 
 import java.io.IOException;
@@ -17,14 +16,11 @@ public class UpdatePaymentBalance implements UpdatePaymentBalanceBoundaryIn {
     final GroupDataInterface groupDataInterface;
     final ItemDataInterface itemDataInterface;
     final UpdatePaymentBalanceBoundaryOut updatePaymentBalancePresenter;
-    final PaymentInformation paymentDetails;
 
-    public UpdatePaymentBalance(GroupDataInterface gdi, ItemDataInterface idi, UpdatePaymentBalanceBoundaryOut upbp,
-                                PaymentInformation pd) {
+    public UpdatePaymentBalance(GroupDataInterface gdi, ItemDataInterface idi, UpdatePaymentBalanceBoundaryOut upbp) {
         this.groupDataInterface = gdi;
         this.itemDataInterface = idi;
         this.updatePaymentBalancePresenter = upbp;
-        this.paymentDetails = pd;
     }
 
     /**
