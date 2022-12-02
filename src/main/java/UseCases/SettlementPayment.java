@@ -61,7 +61,7 @@ public class SettlementPayment implements SettlementBoundaryIn {
             return raiseError("unable to save debt changes");
         }
 
-        Map<String, List<List<Object>>> stringDebtList = getUpdatedDebts(currGroup.getPurchaseBalance(), currGroup.getUsers());
+        List<List<Object>> stringDebtList = getUpdatedDebts(currGroup.getPurchaseBalance(), currGroup.getGroupId());
         UpdatedDebts updatedDebts = new UpdatedDebts(stringDebtList);
         return outputBoundary.displayDebts(updatedDebts);
     }
@@ -74,21 +74,30 @@ public class SettlementPayment implements SettlementBoundaryIn {
      * This function gets a list of all the new debts in the group
      *
      * @param purchaseBalance the list of Debts in the group
-     * @return This returns a list of debts formatted as a nested list of strings [userOwedUsername, userOwingUsername, debtValue]
+     * @param groupId the current groupId
+     * @return This returns a list of debts formatted as a nested list of strings
      */
-    private Map<String, List<List<Object>>> getUpdatedDebts(PurchaseBalance purchaseBalance, Set<String> users) {
-        Map<String, List<List<Object>>> stringPurchaseBalance = new HashMap<>();
-        for(String curUser : users) {
-            List<Debt> debtList = purchaseBalance.getUserOwed(curUser);
-            List<List<Object>> stringUserOwedDebtList = new ArrayList<>();
-            for (Debt curDebt : debtList) {
-                List<Object> currentDebt = new ArrayList<>();
-                currentDebt.add(curDebt.getUserOwing().getUsername());
-                currentDebt.add(curDebt.getDebtValue());
-                stringUserOwedDebtList.add(currentDebt);
-            }
-            stringPurchaseBalance.put(curUser, stringUserOwedDebtList);
+    private List<List<Object>> getUpdatedDebts(PurchaseBalance purchaseBalance, String groupId) {
+        List<List<Object>> stringPurchaseBalance = new ArrayList<>();
+        for(Debt curDebt : purchaseBalance.getAllDebts()){
+            List<Object> currentDebt = new ArrayList<>();
+            currentDebt.add(curDebt.getUserOwed());
+            currentDebt.add(curDebt.getUserOwing());
+            currentDebt.add(groupId);
+            currentDebt.add(curDebt.getDebtValue());
+            stringPurchaseBalance.add(currentDebt);
         }
+//        for(String curUser : users) {
+//            List<Debt> debtList = purchaseBalance.getUserOwed(curUser);
+//            List<List<Object>> stringUserOwedDebtList = new ArrayList<>();
+//            for (Debt curDebt : debtList) {
+//                List<Object> currentDebt = new ArrayList<>();
+//                currentDebt.add(curDebt.getUserOwing().getUsername());
+//                currentDebt.add(curDebt.getDebtValue());
+//                stringUserOwedDebtList.add(currentDebt);
+//            }
+//            stringPurchaseBalance.put(curUser, stringUserOwedDebtList);
+//        }
         return stringPurchaseBalance;
     }
 

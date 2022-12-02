@@ -17,7 +17,7 @@ public class UpdatePaymentBalancePresenter implements UpdatePaymentBalanceBounda
      * @return an UpdatedDebts object containing the updated information of the debts in the group between users.
      */
     @Override
-    public UpdatedDebts prepareSuccessView(UpdatedDebts updatedDebts) {
+    public UpdatedDebts prepareSuccessView(UpdatedDebts updatedDebts) throws IOException, ParseException {
         return updatedDebts;
     }
 
