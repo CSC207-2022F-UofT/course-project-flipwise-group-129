@@ -213,7 +213,10 @@ public class GroupJoin implements GroupJoinBoundaryIn{
             List<String> subList = new ArrayList<>();
             subList.add(item.getItemId());
             subList.add(item.getItemName());
-            subList.add(item.getBuyer());
+            if (itemList instanceof PurchaseList){
+                subList.add(String.valueOf(item.getPrice()));
+                subList.add(item.getBuyer());
+            }
             newList.add(subList);
         }
 

@@ -17,7 +17,7 @@ JoinedGroupInfo {
 
     private final List<List<String>> planningList; //all the [itemids,itemnames] in the planninng list of this group
 
-    private final List<List<String>> purchasedList; // all the [itemids, itemnames,  buyer username] in the purchase list of this group
+    private final List<List<String>> purchasedList; // all the [itemids, itemnames, item price, buyer username] in the purchase list of this group
 
     private final String error; //any error if arises will contain a description here
 

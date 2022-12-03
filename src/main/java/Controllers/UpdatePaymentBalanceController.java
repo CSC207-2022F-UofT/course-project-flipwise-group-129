@@ -29,7 +29,7 @@ public class UpdatePaymentBalanceController {
      * @return the information sent back by the presenter through the use case to go to the view layer as an
      * UpdatedDebts object.
      */
-    UpdatedDebts create(String groupID, String user, float price, String itemID, List<String> usersInPurchase) {
+    public UpdatedDebts create(String groupID, String user, float price, String itemID, List<String> usersInPurchase) {
         PaymentInformation proposedInfo = new PaymentInformation(groupID, user, price, itemID, usersInPurchase);
 
         return userInput.updatePaymentBalance(proposedInfo);

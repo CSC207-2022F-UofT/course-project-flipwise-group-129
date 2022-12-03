@@ -54,8 +54,8 @@ public class GroupSummaryView extends JPanel implements ActionListener {
     public JButton purchaseItem = new JButton("Purchase Item");
     private final AddToPlanningController controllerAddPlanning;
     private final SettlementController controllerSettlementPayment;
-
     private final UpdatePaymentBalanceController updatePaymentBalanceController;
+
 
     /**
      * Builds the gui for the group summery page and initializes controller.
@@ -189,11 +189,12 @@ public class GroupSummaryView extends JPanel implements ActionListener {
             }
             else {
                 UpdatedLists updatedLists = this.controllerAddPlanning.performPlanningAdd(item, this.groupID);
-                System.out.println("Item is " + item);
 
                 if (updatedLists.getResultMessage().equals("Success") && isAlpha(item)) {
                     resetGroupSummary(this.group_name, this.groupID, this.username, this.purchaseListData,
                             updatedLists.getNewPlanningList(), this.debtData, this.groupUserNames, this.mainWindowView);
+                    updateUserGroups(mainWindowView.getUserGroups(), this.groupID, updatedLists.getNewPlanningList(),
+                            this.purchaseListData, this.debtData);
                 } else {
                     showMessage("Not Successful :(");
                 }
@@ -214,6 +215,8 @@ public class GroupSummaryView extends JPanel implements ActionListener {
                     resetGroupSummary(this.group_name, this.groupID, this.username, this.purchaseListData,
                             this.planningListData, updatedDebts.getUpdatedBalances(), this.groupUserNames,
                             this.mainWindowView);
+                    updateUserGroups(mainWindowView.getUserGroups(), this.groupID, this.planningListData,
+                            this.purchaseListData, updatedDebts.getUpdatedBalances());
                 }else { showMessage(updatedDebts.getOutcomeMessage());}
             }
         }
@@ -223,7 +226,7 @@ public class GroupSummaryView extends JPanel implements ActionListener {
 
             DefaultTableModel model = (DefaultTableModel) table.getModel();
 
-            if (table.getSelectedRowCount() == 1 && !(this.groupUserNames == null)) {
+            if (table.getSelectedRowCount() == 1) {
                 String item = (String) table.getValueAt(table.getSelectedRow(), 0);
 
                 String itemID = getItemID(planningListData, item);
@@ -233,15 +236,16 @@ public class GroupSummaryView extends JPanel implements ActionListener {
                 if ((addPurchaseView.getItemPrice().matches("[0-9]+")) && (addPurchaseView.getSelectedMembers().size() > 0)) {
                     Float item_price = Float.parseFloat(addPurchaseView.getItemPrice());
                     UpdatedLists updatedList = controllerAddPurchase.controlAddPurchaseUseCase(itemID,
-                            addPurchaseView.getSelectedMembers(), this.username,
-                            , this.groupID);
+                            addPurchaseView.getSelectedMembers(), this.username, item_price, this.groupID);
                     UpdatedDebts updatedDebts = this.updatePaymentBalanceController.create(this.groupID,
                             this.username, item_price, itemID, addPurchaseView.getSelectedMembers());
 
                     if (updatedList.getResultMessage().equals("Success") && updatedDebts.getOutcomeMessage().equals("Success")) {
                         resetGroupSummary(this.group_name, this.groupID, this.username, updatedList.getNewPurchasedList(),
-                                updatedList.getNewPlanningList(), this.debtData, this.groupUserNames,
+                                updatedList.getNewPlanningList(), updatedDebts.getUpdatedBalances(), this.groupUserNames,
                                 this.mainWindowView);
+                        updateUserGroups(mainWindowView.getUserGroups(), this.groupID, updatedList.getNewPlanningList(),
+                                updatedList.getNewPurchasedList(), updatedDebts.getUpdatedBalances());
                     } else {
                         showMessage(updatedList.getResultMessage());
                     }
@@ -261,7 +265,15 @@ public class GroupSummaryView extends JPanel implements ActionListener {
         GroupSummaryView groupSummaryView = new GroupSummaryView(groupname, groupid, username,
                 purchaseListData,  planningListData, debtData, groupUserNames, mainWindowView);
         mainWindowView.setContentPane(groupSummaryView);
+        groupSummaryView.getToHomepage().addActionListener(mainWindowView);
         setVisible(true);
+        System.out.println("This is group " + groupname);
+        System.out.println("This is groupID " + groupid);
+        System.out.println("This is username " + username);
+        System.out.println("This is planning " + planningListData);
+        System.out.println("This is purchase " + purchaseListData);
+        System.out.println("This is debt " + debtData);
+        System.out.println("This is members " + groupUserNames);
     }
 
     public void showMessage(String message) { JOptionPane.showMessageDialog(this, message); }
@@ -282,6 +294,18 @@ public class GroupSummaryView extends JPanel implements ActionListener {
         return name.matches("[a-zA-Z0-9]+");
     }
 
+    public void updateUserGroups(List<List<Object>> userGroups, String groupID,
+                                 List<List<String>> newPlanningList, List<List<String>>
+                                 newPurchaseList, List<List<Object>> newDebtData){
+        for (List<Object> group : userGroups){
+            if (group.get(0).equals(groupID)){
+                group.set(2, newPlanningList);
+                group.set(3, newPurchaseList);
+                group.set(5, newDebtData);
+
+            }
+        }
+    }
 }
 
 

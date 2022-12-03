@@ -46,14 +46,11 @@ public class GroupCreate implements GroupCreateBoundaryIn{
         //obtain the user from the database
         User createdUser;
         try{
-            System.out.println(newGroupInfo.getUsername());
             createdUser = this.getUserFromDb(newGroupInfo.getUsername());
         }catch (RuntimeException e) {
-            System.out.println("error sdf: " + e.toString());
             CreatedGroupInfo createdGroupInfo = new CreatedGroupInfo(e.toString());
             return this.groupCreatePresenter.prepareFailView(createdGroupInfo);
         }
-        System.out.println(createdUser);
 
         //creating a new group
         Group group = this.createGroup(createdUser, newGroupInfo.getGroupName());
