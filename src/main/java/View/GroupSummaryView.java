@@ -3,23 +3,29 @@ package View;
 import Controllers.AddPurchaseController;
 import Controllers.AddToPlanningController;
 import Controllers.SettlementController;
+import Controllers.UpdatePaymentBalanceController;
 import DataAccess.GroupDataAccess;
 import DataAccess.ItemDataAccess;
 import DataAccess.UserDataAccess;
 import DataAccessInterface.GroupDataInterface;
 import DataAccessInterface.ItemDataInterface;
 import DataAccessInterface.UserDataInterface;
+import DataStructures.PaymentInformation;
+import DataStructures.UpdatedDebts;
 import DataStructures.UpdatedLists;
 import InputBoundary.AddPurchaseBoundaryIn;
 import InputBoundary.AddToPlanningBoundaryIn;
 import InputBoundary.SettlementBoundaryIn;
+import InputBoundary.UpdatePaymentBalanceBoundaryIn;
 import OutputBoundary.AddPurchaseBoundaryOut;
 import Presenters.AddPurchasePresenter;
 import Presenters.AddToPlanningPresenter;
 import Presenters.SettlementPresenter;
+import Presenters.UpdatePaymentBalancePresenter;
 import UseCases.AddPurchase;
 import UseCases.AddToPlanningList;
 import UseCases.SettlementPayment;
+import UseCases.UpdatePaymentBalance;
 import org.json.simple.parser.ParseException;
 
 import javax.swing.*;
@@ -39,7 +45,7 @@ public class GroupSummaryView extends JPanel implements ActionListener {
     private List<List<String>> purchaseListData;
     private MainWindowView mainWindowView;
     List<List<String>> planningListData;
-    List<List<String>> debtData;
+    List<List<Object>> debtData;
     List<String> groupUserNames;
     PlanningListView planningListView;
     public JButton addItem = new JButton("Add Item");
@@ -48,13 +54,15 @@ public class GroupSummaryView extends JPanel implements ActionListener {
     public JButton purchaseItem = new JButton("Purchase Item");
     private final AddToPlanningController controllerAddPlanning;
     private final SettlementController controllerSettlementPayment;
+    private final UpdatePaymentBalanceController updatePaymentBalanceController;
+
 
     /**
      * Builds the gui for the group summery page and initializes controller.
      */
     public GroupSummaryView(String groupname, String groupid, String username,
                             List<List<String>> purchaseListData, List<List<String>> planningListData,
-                            List<List<String>> debtData, List<String> groupUserNames,
+                            List<List<Object>> debtData, List<String> groupUserNames,
                             MainWindowView mainWindowView) {
 
         this.groupID = groupid;
@@ -92,6 +100,12 @@ public class GroupSummaryView extends JPanel implements ActionListener {
         SettlementBoundaryIn settleUseCase = new SettlementPayment(settlementPresenter, groupData);
 
         this.controllerSettlementPayment = new SettlementController(settleUseCase);
+
+        UpdatePaymentBalancePresenter updatePaymentBalancePresenter = new UpdatePaymentBalancePresenter();
+        UpdatePaymentBalanceBoundaryIn updatePaymentUseCase = new UpdatePaymentBalance(groupData, itemData,
+                updatePaymentBalancePresenter);
+
+        this.updatePaymentBalanceController = new UpdatePaymentBalanceController(updatePaymentUseCase);
 
         // SetUp JFrame
         setSize(1500, 820);
@@ -175,11 +189,12 @@ public class GroupSummaryView extends JPanel implements ActionListener {
             }
             else {
                 UpdatedLists updatedLists = this.controllerAddPlanning.performPlanningAdd(item, this.groupID);
-                System.out.println("Item is " + item);
 
                 if (updatedLists.getResultMessage().equals("Success") && isAlpha(item)) {
                     resetGroupSummary(this.group_name, this.groupID, this.username, this.purchaseListData,
                             updatedLists.getNewPlanningList(), this.debtData, this.groupUserNames, this.mainWindowView);
+                    updateUserGroups(mainWindowView.getUserGroups(), this.groupID, updatedLists.getNewPlanningList(),
+                            this.purchaseListData, this.debtData);
                 } else {
                     showMessage("Not Successful :(");
                 }
@@ -190,7 +205,20 @@ public class GroupSummaryView extends JPanel implements ActionListener {
         if (evt.getActionCommand().equals("Settle Debt")){
             ClearDebtView clearDebtView = new ClearDebtView(this.username, this.groupID,
                     this.groupUserNames);
-            
+
+            if (clearDebtView.getSelectedMember() == null) {
+                showMessage("Error with input.");
+            } else {
+                UpdatedDebts updatedDebts = this.controllerSettlementPayment.settleDebt(this.username,
+                        clearDebtView.getSelectedMember(), this.groupID);
+                if (updatedDebts.getOutcomeMessage().equals("Success")){
+                    resetGroupSummary(this.group_name, this.groupID, this.username, this.purchaseListData,
+                            this.planningListData, updatedDebts.getUpdatedBalances(), this.groupUserNames,
+                            this.mainWindowView);
+                    updateUserGroups(mainWindowView.getUserGroups(), this.groupID, this.planningListData,
+                            this.purchaseListData, updatedDebts.getUpdatedBalances());
+                }else { showMessage(updatedDebts.getOutcomeMessage());}
+            }
         }
 
         if (evt.getActionCommand().equals("Purchase Item")){
@@ -198,7 +226,7 @@ public class GroupSummaryView extends JPanel implements ActionListener {
 
             DefaultTableModel model = (DefaultTableModel) table.getModel();
 
-            if (table.getSelectedRowCount() == 1 && !(this.groupUserNames == null)) {
+            if (table.getSelectedRowCount() == 1) {
                 String item = (String) table.getValueAt(table.getSelectedRow(), 0);
 
                 String itemID = getItemID(planningListData, item);
@@ -206,13 +234,18 @@ public class GroupSummaryView extends JPanel implements ActionListener {
                         this.username, this.groupID, this.groupUserNames);
 
                 if ((addPurchaseView.getItemPrice().matches("[0-9]+")) && (addPurchaseView.getSelectedMembers().size() > 0)) {
+                    Float item_price = Float.parseFloat(addPurchaseView.getItemPrice());
                     UpdatedLists updatedList = controllerAddPurchase.controlAddPurchaseUseCase(itemID,
-                            addPurchaseView.getSelectedMembers(), this.username,
-                            Float.parseFloat(addPurchaseView.getItemPrice()), this.groupID);
-                    if (updatedList.getResultMessage().equals("Success")) {
+                            addPurchaseView.getSelectedMembers(), this.username, item_price, this.groupID);
+                    UpdatedDebts updatedDebts = this.updatePaymentBalanceController.create(this.groupID,
+                            this.username, item_price, itemID, addPurchaseView.getSelectedMembers());
+
+                    if (updatedList.getResultMessage().equals("Success") && updatedDebts.getOutcomeMessage().equals("Success")) {
                         resetGroupSummary(this.group_name, this.groupID, this.username, updatedList.getNewPurchasedList(),
-                                updatedList.getNewPlanningList(), this.debtData, this.groupUserNames,
+                                updatedList.getNewPlanningList(), updatedDebts.getUpdatedBalances(), this.groupUserNames,
                                 this.mainWindowView);
+                        updateUserGroups(mainWindowView.getUserGroups(), this.groupID, updatedList.getNewPlanningList(),
+                                updatedList.getNewPurchasedList(), updatedDebts.getUpdatedBalances());
                     } else {
                         showMessage(updatedList.getResultMessage());
                     }
@@ -228,11 +261,19 @@ public class GroupSummaryView extends JPanel implements ActionListener {
 
     public void resetGroupSummary(String groupname, String groupid, String username,
                                   List<List<String>> purchaseListData, List<List<String>> planningListData,
-                                  List<List<String>> debtData, List<String> groupUserNames, MainWindowView mainWindowView){
+                                  List<List<Object>> debtData, List<String> groupUserNames, MainWindowView mainWindowView){
         GroupSummaryView groupSummaryView = new GroupSummaryView(groupname, groupid, username,
                 purchaseListData,  planningListData, debtData, groupUserNames, mainWindowView);
         mainWindowView.setContentPane(groupSummaryView);
+        groupSummaryView.getToHomepage().addActionListener(mainWindowView);
         setVisible(true);
+        System.out.println("This is group " + groupname);
+        System.out.println("This is groupID " + groupid);
+        System.out.println("This is username " + username);
+        System.out.println("This is planning " + planningListData);
+        System.out.println("This is purchase " + purchaseListData);
+        System.out.println("This is debt " + debtData);
+        System.out.println("This is members " + groupUserNames);
     }
 
     public void showMessage(String message) { JOptionPane.showMessageDialog(this, message); }
@@ -253,6 +294,18 @@ public class GroupSummaryView extends JPanel implements ActionListener {
         return name.matches("[a-zA-Z0-9]+");
     }
 
+    public void updateUserGroups(List<List<Object>> userGroups, String groupID,
+                                 List<List<String>> newPlanningList, List<List<String>>
+                                 newPurchaseList, List<List<Object>> newDebtData){
+        for (List<Object> group : userGroups){
+            if (group.get(0).equals(groupID)){
+                group.set(2, newPlanningList);
+                group.set(3, newPurchaseList);
+                group.set(5, newDebtData);
+
+            }
+        }
+    }
 }
 
 

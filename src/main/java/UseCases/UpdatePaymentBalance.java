@@ -17,14 +17,11 @@ public class UpdatePaymentBalance implements UpdatePaymentBalanceBoundaryIn{
     final GroupDataInterface groupDataInterface;
     final ItemDataInterface itemDataInterface;
     final UpdatePaymentBalanceBoundaryOut updatePaymentBalancePresenter;
-    final PaymentInformation paymentDetails;
 
-    public UpdatePaymentBalance(GroupDataInterface gdi, ItemDataInterface idi, UpdatePaymentBalanceBoundaryOut upbp,
-                                PaymentInformation pd) {
+    public UpdatePaymentBalance(GroupDataInterface gdi, ItemDataInterface idi, UpdatePaymentBalanceBoundaryOut upbp) {
         this.groupDataInterface = gdi;
         this.itemDataInterface = idi;
         this.updatePaymentBalancePresenter = upbp;
-        this.paymentDetails = pd;
     }
 
     /**

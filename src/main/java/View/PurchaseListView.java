@@ -13,7 +13,7 @@ public class PurchaseListView extends JPanel {
 
     private JTable table;
     Object[][] rows;
-    String[] columns = new String[]{"Item Name", "Cost", "Who brought it"};
+    String[] columns = new String[]{"Item Name", "Cost", "Who bought it"};
     public PurchaseListView(List<List<String>> purchasedListView) {
 
         setVisible(true);
