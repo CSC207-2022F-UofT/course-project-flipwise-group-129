@@ -51,6 +51,9 @@ class AddToPlanningListTest {
 
         File userFile = new File("src/test/resources/testusersCopy.json");
         userFile.delete();
+
+        File itemFile = new File("src/test/resources/testitemsCopy.json");
+        itemFile.delete();
     }
     
     @Test
