@@ -129,7 +129,7 @@ class SettlementPaymentTest {
         SettlementBoundaryIn usecase = new SettlementPayment(presenter, groupData);
 
         // 2) Input data we can make this up for the test. Normally it would be created by the Controller.
-        PaymentDetails inputData = new PaymentDetails("mishaalk", "sopleee", "grpOne11");
+        PaymentDetails inputData = new PaymentDetails("sopleee", "mishaalk", "grpOne11");
         // 3) Run the use case
         usecase.executeDebtSettlement(inputData);
 
@@ -138,7 +138,7 @@ class SettlementPaymentTest {
             Group groupAfter = getGroupInfo();
             assert !(groupAfter == null);
             assert (groupAfter.getGroupId().equals("grpOne11"));
-            assert groupAfter.getPurchaseBalance().getDebtPair("sopleee", "mishaal").getDebtValue() == 0.0;
+            assert groupAfter.getPurchaseBalance().getDebtPair("sopleee", "mishaalk").getDebtValue() == 0.0;
         } catch (IOException | ParseException e) {
             throw new RuntimeException(e);
         }

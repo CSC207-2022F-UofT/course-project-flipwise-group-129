@@ -105,67 +105,6 @@ class AddPurchaseControllerTest {
     }
 
     @Test
-    void testPurchaseFail() throws IOException, ParseException {
-        // To test the use case:
-        // 1) Create a AddPurchaseController and prerequisite objects
-        //    (arguments for the AddPurchaseController constructor parameters)
-        // 2) create the Input Data in the form of the group, lists, and item
-        // 3) Call the use case AddPurchase input boundary method to run the use case
-        // 4) Check that the Output Data passed to the Presenter is correct
-        // 5) Check that the expected changes to the data layer are there.
-
-        setUp();
-        // 1) Instantiate
-        AddPurchasePresenter presenter = new AddPurchasePresenter() {
-            /**
-             * Prepares and returns the information changed by the use case to the view
-             *
-             * @param updatedLists the data structure with the new planning and purchased lists
-             * @return a UpdatedLists object containing the updated information of the lists
-             */
-            @Override
-            public UpdatedLists prepareSuccessViewInformation(UpdatedLists updatedLists) {
-                fail("Use case success is unprecedented");
-                return null;
-            }
-
-            /**
-             * Returns the information from an error in the form of an error message to the view
-             *
-             * @param errorInformation contains the error message raised
-             * @return the data structure containing the error information
-             */
-            @Override
-            public UpdatedLists prepareFailViewInformation(UpdatedLists errorInformation) {
-                assert errorInformation.getNewPurchasedList() == null;
-                assert errorInformation.getNewPlanningList() == null;
-                assert !Objects.equals(errorInformation.getResultMessage(), "Success");
-                return null;
-            }
-        };
-        AddPurchaseBoundaryIn usecase = new AddPurchase();
-        GroupDataInterface groupData = new GroupDataAccess("test");
-        UserDataInterface userData = new UserDataAccess("test");
-        ItemDataInterface itemData = new ItemDataAccess("test");
-
-
-        // 2) Input data — we can make this up for the test. Normally it would
-        // be created by the Controller.
-        List<String> participatingUsers = new ArrayList<>();
-        participatingUsers.add("sopleee");
-        participatingUsers.add("mishaalk");
-        PurchaseInfo inputData = new PurchaseInfo("itemApple", participatingUsers,
-                "sopleee", 10.0f, "grpOne11", presenter, groupData, itemData, userData);
-
-        // 3) Run the use case
-        UpdatedLists outputData = usecase.executeUseCase(inputData);
-        
-        tearDown();
-
-
-    }
-
-    @Test
     void updateDbTest() throws IOException, ParseException {
         setUp();
         

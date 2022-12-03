@@ -87,10 +87,10 @@ class UpdatePaymentBalanceTest {
         Map<String, List<List<Object>>> debtsList = new HashMap<>();
         // get the user from the database
         // check if the user exists
-        if (!groupDsInterface.groupIdExists("0001")){
+        if (!groupDsInterface.groupIdExists("grpOne11")){
             throw new RuntimeException("Group Id does not exist");
         }
-        String groupString = groupDsInterface.groupAsString("0001");
+        String groupString = groupDsInterface.groupAsString("grpOne11");
 
         try {
             Group group = Group.fromString(groupString);
@@ -126,7 +126,7 @@ class UpdatePaymentBalanceTest {
                 List<String> users = Arrays.asList("rcordi", "randomC", "sopleee");
                 boolean containsOwed = false;
                 for(List<Object> curDebt : updatedDebts.getUpdatedBalances()){
-                    if((curDebt.get(0)).equals("mishaalk")){
+                    if((curDebt.get(0)).toString().equals("mishaalk")){
                         containsOwed = true;
                         break;
                     }
@@ -246,7 +246,10 @@ class UpdatePaymentBalanceTest {
 
         try {
             List<String> userInfoAfter = getUserInfo();
-            assert userInfoAfter.contains("mishaalk");
+            for(String group : userInfoAfter) {
+                Group current = Group.fromString(groupData.groupAsString(group));
+                assert current.getUsers().contains("mishaalk");
+            }
         } catch (IOException | ParseException e) {
             throw new RuntimeException(e);
         }
@@ -254,15 +257,23 @@ class UpdatePaymentBalanceTest {
             Map<String, List<List<Object>>> groupInfoAfter = getGroupInfo();
             for(int x = 0; x < groupInfoAfter.size(); ++x) {
                 List<List<Object>> currentAfterSublist = groupInfoAfter.get("mishaalk");
+                List<String> currentAfterUsernames = new ArrayList<>();
                 List<List<Object>> currentBeforeSublist = groupInfoBefore.get("mishaalk");
 
-                assert currentAfterSublist.get(x).get(0).equals(currentBeforeSublist.get(x).get(0));
-                if(inputData.getUsersInvolvedInPurchase().contains(currentBeforeSublist.get(x).get(0))) {
-                    assert (double) currentAfterSublist.get(x).get(1) == (double) currentBeforeSublist.get(x).get(1) + 19.99/3;
+                for (int y = 0; y < currentAfterSublist.size(); ++y) {
+                    String current = (String) currentAfterSublist.get(y).get(0);
+                    currentAfterUsernames.add(current);
                 }
-                else {
+                assert currentAfterUsernames.contains((String) currentBeforeSublist.get(x).get(0));
+
+                String currentBeforeUser = (String) currentBeforeSublist.get(x).get(0);
+                if (inputData.getUsersInvolvedInPurchase().contains(currentBeforeUser)) {
+                    assert (double) currentAfterSublist.get(x).get(1) == (double) currentBeforeSublist.get(x).get(1) + 19.99 / 3;
+                } else {
                     assert (double) currentAfterSublist.get(x).get(1) == (double) currentBeforeSublist.get(x).get(1);
                 }
+
+
             }
         } catch (IOException | ParseException e) {
             throw new RuntimeException(e);

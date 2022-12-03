@@ -88,7 +88,7 @@ class GroupJoinTest {
 
         // 2) Input data — we can make this up for the test. Normally it would
         // be created by the Controller.
-        JoinGroupRequest inputData = new JoinGroupRequest("group1", "rcordi");
+        JoinGroupRequest inputData = new JoinGroupRequest("grpOne11", "rcordi");
 
         // 3) Run the use case
         useCase.joinGroup(inputData);
@@ -117,7 +117,8 @@ class GroupJoinTest {
                 assert joinedGroupInfo.getGroupNames() == null;
                 assert joinedGroupInfo.getPlanningList() == null;
                 assert joinedGroupInfo.getPurchasedList() == null;
-                assert Objects.equals(joinedGroupInfo.getError(), "Invalid GroupID provided");
+                System.out.println(joinedGroupInfo.getError());
+                assert joinedGroupInfo.getError().equals("java.lang.RuntimeException: Invalid GroupID provided");
                 return null;
             }
         };
@@ -128,7 +129,7 @@ class GroupJoinTest {
 
         // 2) Input data — we can make this up for the test. Normally it would
         // be created by the Controller.
-        JoinGroupRequest inputData = new JoinGroupRequest("mishaalk", "groupDarcy1");
+        JoinGroupRequest inputData = new JoinGroupRequest("groupDarcy1", "mishaalk");
 
         // 3) Run the use case
         useCase.joinGroup(inputData);
@@ -168,7 +169,7 @@ class GroupJoinTest {
 
         // 2) Input data — we can make this up for the test. Normally it would
         // be created by the Controller.
-        JoinGroupRequest inputData = new JoinGroupRequest("rcordi", "group1");
+        JoinGroupRequest inputData = new JoinGroupRequest("grpOne11", "mishaalk");
 
         // 3) Run the use case
         useCase.joinGroup(inputData);
@@ -201,10 +202,10 @@ class GroupJoinTest {
         List<String> stringPlanned = new ArrayList<>();
         // get the user from the database
         //check if the user exists
-        if (!groupDsInterface.groupIdExists("groupOne11")){
+        if (!groupDsInterface.groupIdExists("grpOne11")){
             throw new RuntimeException("Group Id does not exist");
         }
-        String groupString = groupDsInterface.groupAsString("groupOne11");
+        String groupString = groupDsInterface.groupAsString("grpOne11");
 
         try {
             Group group = Group.fromString(groupString);
@@ -230,7 +231,7 @@ class GroupJoinTest {
             @Override
             public JoinedGroupInfo prepareSuccessView(JoinedGroupInfo outputData){
 
-                assert outputData.getError() != null;
+                assert outputData.getError() == null;
                 return null;
             }
 
@@ -247,7 +248,7 @@ class GroupJoinTest {
 
         // 2) Input data — we can make this up for the test. Normally it would
         // be created by the Controller.
-        JoinGroupRequest inputData = new JoinGroupRequest("groupOne11", "rcordi");
+        JoinGroupRequest inputData = new JoinGroupRequest("grpOne11", "rcordi");
 
         //setting the data from the database as a constant to check later
         List<String> userInfoBefore = getUserInfo();
@@ -261,14 +262,14 @@ class GroupJoinTest {
             for (String s : userInfoBefore) {
                 assert userInfoAfter.contains(s);
             }
-            assert userInfoAfter.contains("groupOne11");
+            assert userInfoAfter.contains("grpOne11");
         } catch (IOException | ParseException e) {
             throw new RuntimeException(e);
         }
         try {
             List<List<String>> groupInfoAfter = getGroupInfo();
-            assert groupInfoAfter.get(0) == groupInfoBefore.get(0);
-            assert groupInfoAfter.get(1) == groupInfoBefore.get(1);
+            assert groupInfoAfter.get(0).equals(groupInfoBefore.get(0));
+            assert groupInfoAfter.get(1).equals(groupInfoBefore.get(1));
 
             for (String s : groupInfoBefore.get(2)) {
                 assert groupInfoAfter.get(2).contains(s);

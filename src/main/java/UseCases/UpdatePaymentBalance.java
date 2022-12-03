@@ -64,17 +64,18 @@ public class UpdatePaymentBalance implements UpdatePaymentBalanceBoundaryIn{
          the getUsers() method to get the Set of Users in the group (not all of them are necessarily involved in
          the purchase).
          */
-        int count = 0;
+
         for(String userInvolvedInPurchase : usersInvolvedInPurcase) {
+            int count = 0;
             for(String u : usersInvolvedInPurcase) {
                 if(userInvolvedInPurchase.equals(u)) {
                     count++;
                 }
             }
-        }
-        if(count >= 2) {
-            return this.updatePaymentBalancePresenter.prepareFailView(
-                    new UpdatedDebts("The list containing users involved in the purchase contain duplicates."));
+            if (count >= 2) {
+                return this.updatePaymentBalancePresenter.prepareFailView(
+                        new UpdatedDebts("The list containing users involved in the purchase contain duplicates."));
+            }
         }
 
         Group groupInvolvedInPurchase;

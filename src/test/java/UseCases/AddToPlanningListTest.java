@@ -169,7 +169,7 @@ class AddToPlanningListTest {
             Group groupAfter = getGroupInfo();
             assert !(groupAfter == null | groupBefore == null);
             assert (groupBefore.getPlanningList().getItems().size() + 1) == groupAfter.getPlanningList().getItems().size();
-            assert itemInfoBefore.get(0).equals("itemId does not exist");
+            assert itemInfoBefore.get(0).equals("item does not exist");
             assert itemInfoAfter.get(1).equals("paneer");
         } catch (IOException | ParseException e) {
             throw new RuntimeException(e);

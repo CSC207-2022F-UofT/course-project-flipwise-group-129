@@ -180,7 +180,7 @@ class GroupCreateTest {
         GroupCreatePresenter presenter = new GroupCreatePresenter() {
             @Override
             public CreatedGroupInfo prepareSuccessView(CreatedGroupInfo outputData){
-                assert outputData.getError() != null;
+                assert outputData.getError() == null;
                 return null;
             }
 
@@ -212,7 +212,12 @@ class GroupCreateTest {
             for (String s : userInfoBefore) {
                 assert userInfoAfter.contains(s);
             }
-            assert userInfoAfter.contains("groupDarcy");
+            List<String> groupNames = new ArrayList<>();
+            for (String s : userInfoAfter) {
+                Group group = Group.fromString(groupData.groupAsString(s));
+                groupNames.add(group.getGroupName());
+            }
+            assert groupNames.contains("groupDarcy");
         } catch (IOException | ParseException e) {
             throw new RuntimeException(e);
         }
