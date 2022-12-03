@@ -133,6 +133,7 @@ class UpdatePaymentBalanceTest {
 //                        int indexOfUserOwing = groupInfoBefore.get("mishaalk").indexOf((String) curDebt.get(1));
                         double prevDebtVal = 0.0;
 //                        Object previousDebt = groupInfoBefore.get("mishaalk").get(indexOfUserOwing).get(1);
+                        System.out.println(groupInfoBefore);
                         for(Debt prevDebt : groupInfoBefore){
                             if(prevDebt.getUserOwing().equals(curDebt.get(1))){
                                 prevDebtVal = prevDebt.getDebtValue();
@@ -165,7 +166,7 @@ class UpdatePaymentBalanceTest {
         // 2. Input Data - we can make this up for the test, but normally it would be created from the controller.
         PaymentInformation inputData = new PaymentInformation("grpOne11", "mishaalk", (float) 19.99,
                 "itemApple", Arrays.asList("rcordi", "randomC", "sopleee"));
-        UpdatePaymentBalanceBoundaryIn useCase = new UpdatePaymentBalance(groupData, itemData, presenter, inputData);
+        UpdatePaymentBalanceBoundaryIn useCase = new UpdatePaymentBalance(groupData, itemData, presenter);
 
         // 3. Run the use case.
         useCase.updatePaymentBalance(inputData);
@@ -201,7 +202,7 @@ class UpdatePaymentBalanceTest {
         // 2. Input Data - we can make this up for the test, but normally it would be created from the controller.
         PaymentInformation inputData = new PaymentInformation("grpOne11", "mishaalk", (float) 19.99,
                 "itemApple", Arrays.asList("rcordi", "rcordi", "sopleee"));
-        UpdatePaymentBalanceBoundaryIn useCase = new UpdatePaymentBalance(groupData, itemData, presenter, inputData);
+        UpdatePaymentBalanceBoundaryIn useCase = new UpdatePaymentBalance(groupData, itemData, presenter);
 
         // 3. Run the use case.
         useCase.updatePaymentBalance(inputData);
@@ -236,7 +237,7 @@ class UpdatePaymentBalanceTest {
         // 2. Input Data - we can make this up for the test, but normally it would be created from the controller.
         PaymentInformation inputData = new PaymentInformation("grpOne11", "mishaalk", (float) 19.99,
                 "itemApple", Arrays.asList("rcordi", "randomC", "sopleee"));
-        UpdatePaymentBalanceBoundaryIn useCase = new UpdatePaymentBalance(groupData, itemData, presenter, inputData);
+        UpdatePaymentBalanceBoundaryIn useCase = new UpdatePaymentBalance(groupData, itemData, presenter);
 
         // We now set the data from the database as a constant to check against our use case.
         List<String> userInfoBefore = getUserInfo();
