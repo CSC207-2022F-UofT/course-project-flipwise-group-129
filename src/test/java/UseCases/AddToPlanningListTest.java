@@ -169,8 +169,8 @@ class AddToPlanningListTest {
             Group groupAfter = getGroupInfo();
             assert !(groupAfter == null | groupBefore == null);
             assert (groupBefore.getPlanningList().getItems().size() + 1) == groupAfter.getPlanningList().getItems().size();
-            assert itemInfoBefore.get(0).equals("item does not exist");
-            assert itemInfoAfter.get(1).equals("paneer");
+            assert !itemInfoBefore.get(0).equals("paneer");
+            assert itemInfoAfter.get(0).equals("paneer");
         } catch (IOException | ParseException e) {
             throw new RuntimeException(e);
         }
@@ -186,7 +186,7 @@ class AddToPlanningListTest {
             try {
                 String curItemName = Item.fromString(curItem.getValue()).getItemName();
                 if(curItemName.equals("paneer")){
-                    itemInfo.add(curItem.getKey());
+//                    itemInfo.add(curItem.getKey());
                     itemInfo.add(curItemName);
                     return itemInfo;
                 }

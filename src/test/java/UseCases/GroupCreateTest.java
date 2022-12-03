@@ -104,9 +104,6 @@ class GroupCreateTest {
         UserDataInterface userData = new UserDataAccess("test");
         GroupCreateBoundaryIn useCase = new GroupCreate(presenter, groupData, userData);
 
-        System.out.print(groupData.getGroupMap());
-        System.out.print(Group.fromString(groupData.groupAsString("grpOne11")));
-
         // 2) Input data — we can make this up for the test. Normally it would
         // be created by the Controller.
         ProposedGroupInfo inputData = new ProposedGroupInfo("mishaalk", "groupDarcy");
