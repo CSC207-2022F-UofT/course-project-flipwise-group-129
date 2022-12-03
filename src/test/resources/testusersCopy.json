@@ -1,0 +1,13 @@
+[{
+  "entityId": "mishaalk",
+  "entityInfo" : "{\"username\":\"mishaalk\",\"password\":\"2222\",\"groups\":[\"grpOne11\"]}"
+},{
+  "entityId" : "rcordi",
+  "entityInfo" : "{\"username\":\"rcordi\",\"password\":\"4444\",\"groups\":[]}"
+},{
+  "entityId": "randomC",
+  "entityInfo" : "{\"username\":\"randomC\",\"password\":\"1111\",\"groups\":[\"grpOne11\"]}"
+},{
+  "entityId": "sopleee",
+  "entityInfo" : "{\"username\":\"sopleee\",\"password\":\"3333\",\"groups\":[\"grpOne11\"]}"
+}]
