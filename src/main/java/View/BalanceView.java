@@ -25,8 +25,6 @@ public class BalanceView extends JPanel {
         JScrollPane scrollPane = new JScrollPane(table);
 
         add(scrollPane);
-        System.out.println("debtdata from balanceview" + debtData);
-        System.out.println("members from balance" + groupUsernames);
 
     }
 
