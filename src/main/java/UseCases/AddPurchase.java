@@ -8,6 +8,7 @@ import DataStructures.UpdatedLists;
 import Entities.*;
 import InputBoundary.AddPurchaseBoundaryIn;
 import OutputBoundary.AddPurchaseBoundaryOut;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.json.simple.parser.ParseException;
 
 import java.io.IOException;
@@ -43,10 +44,7 @@ public class AddPurchase implements AddPurchaseBoundaryIn {
         this.purchaseInfo = purchaseInfo;
         // Calling the helper method which instantiates values for the attribute variables which is extracted
         // from the purchaseInfo data structure
-        boolean success = extractInformation(purchaseInfo);
-        if (!success) {
-            return this.presentInformation();
-        }
+        extractInformation(purchaseInfo);
 
         System.out.println(this.purchasedItem);
 
@@ -54,10 +52,11 @@ public class AddPurchase implements AddPurchaseBoundaryIn {
         // move it to the purchased list
         PlanningList planningList = this.purchaseGroup.getPlanningList();
         boolean removeCheck = planningList.removeFromList(this.purchasedItem);
+        System.out.println(planningList);
+        System.out.println(removeCheck);
         if (!removeCheck) {
             raiseError("Item could not be removed from planning list, either the information " +
                     "was incorrect or the item did not exist in the list");
-            return this.presentInformation();
         }
 
         // Obtain the purchase list from the group and then update it using the addToPurchase helper function,
@@ -73,7 +72,9 @@ public class AddPurchase implements AddPurchaseBoundaryIn {
         newLists = new UpdatedLists(planningListItemIds, purchasedListItemIds);
 
         // Call a helper function to write the updated data in to the database using the interfaces
-         writeData();
+        writeData();
+
+        raiseError("Success");
 
         // Call the presenter through the output boundary with the updated lists data structure
         return this.presentInformation();
@@ -142,7 +143,7 @@ public class AddPurchase implements AddPurchaseBoundaryIn {
      * Extract the information from the purchase info data structure into the appropriate variables
      * @param purchaseInfo the data structure package containing the required information
      */
-    private boolean extractInformation(PurchaseInfo purchaseInfo) {
+    private void extractInformation(PurchaseInfo purchaseInfo) {
         //grab and instantiate the data access boundaries because they are needed for the rest of the extraction process
         this.groupData = purchaseInfo.getGroupData();
         this.itemData = purchaseInfo.getItemData();
@@ -157,31 +158,25 @@ public class AddPurchase implements AddPurchaseBoundaryIn {
             this.purchasedItem = Item.fromString(this.itemData.itemAsString(this.purchaseInfo.getItemId()));
         } catch (IOException | ParseException e) {
             raiseError("JSON Processing Exception");
-            return false;
         }
 
-        // need another helper function to extract the users lsol, helper for a helper
-        boolean success = extractUsers(purchaseInfo);
-        if (!success) {
-            return false;
-        }
+        // need another helper function to extract the users lol, helper for a helper
+        extractUsers(purchaseInfo);
         this.price = purchaseInfo.getPrice();
         try {
             this.purchaseGroup = Group.fromString(this.groupData.groupAsString(purchaseInfo.getPurchaseGroup()));
         } catch (IOException | ParseException e) {
             raiseError("JSON Processing Exception");
-            return false;
         }
         try {
             this.buyer = User.fromString(this.userData.userAsString(purchaseInfo.getBuyer()));
         } catch (IOException | ParseException e) {
             raiseError("JSON Processing Exception");
-            return false;
         }
 
         // grab the presenter from the input data structure
         this.presenter = purchaseInfo.getPresenter();
-        return true;
+
     }
 
     /**
@@ -189,15 +184,17 @@ public class AddPurchase implements AddPurchaseBoundaryIn {
      * @param errorMessage the message to pass back to the user through the view
      */
     private void raiseError(String errorMessage) {
-        this.newLists = new UpdatedLists(errorMessage);
-        this.presenter.prepareFailViewInformation(newLists);
+        if (!Objects.equals(errorMessage, "Success")) {
+            this.newLists = new UpdatedLists(errorMessage);
+            this.presenter.prepareFailViewInformation(newLists);
+        }
     }
 
     /**
      * Helper function for extractInformation to grab the users from the database using the usernames
      * @param purchaseInfo the data structure package containing the required information
      */
-    private boolean extractUsers(PurchaseInfo purchaseInfo) {
+    private void extractUsers(PurchaseInfo purchaseInfo) {
         // this function needs to iterate through the usernames passed in from the controller and boundary
         // then use the data access boundary and User static functions to get a list of user entity objects from that
         List<String> usernames = purchaseInfo.getUsers();
@@ -207,11 +204,9 @@ public class AddPurchase implements AddPurchaseBoundaryIn {
                 this.participatingUsers.add(User.fromString(this.userData.userAsString(username)));
             } catch (IOException | ParseException e) {
                 raiseError(e.toString());
-                return false;
             }
             // yay O(n) time
         }
-        return true;
     }
 
     /**

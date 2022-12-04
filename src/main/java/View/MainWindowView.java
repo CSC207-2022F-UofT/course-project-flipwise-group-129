@@ -100,6 +100,7 @@ public class MainWindowView extends JFrame implements ActionListener {
                 this.userInfo = this.userLoginController.controlUseCase(loginView.getUsername(),
                         loginView.getPassword());
                 this.userGroups = userInfo.getUserAllGroups();
+                System.out.println("userInfo from login " + userGroups);
                 if (userInfo.statusBool()) {
                     setHomePage(userInfo.getUsername(), getGroupNames(userGroups));
                 }
@@ -285,9 +286,8 @@ public class MainWindowView extends JFrame implements ActionListener {
     public List<List<Object>> getGroupDebtData(List<List<Object>> allGroups, String groupID) {
         List<List<Object>> output = new ArrayList<>();
         for (List<Object> currentGroup : allGroups) {
-            if (currentGroup.get(2) == groupID) {
-                output = (List<List<Object>>) currentGroup.get(5);
-            }
+            output = (List<List<Object>>) currentGroup.get(5);
+
         }
         return output;
     }

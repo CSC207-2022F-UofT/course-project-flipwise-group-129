@@ -4,58 +4,60 @@ import Entities.Group;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.util.ArrayList;
 import java.util.List;
 
-public class BalanceView extends JPanel{
+public class BalanceView extends JPanel {
 
     private final JTable table;
     Object[][] rows;
-    String[] columns = new String[]{"Member", "Debt owed", "Debt deserved"};
+    String[] columns = new String[]{"Member", "Debt Owed", "Debt Deserved"};
 
     public BalanceView(List<List<Object>> debtData, String username, List<String> groupUsernames) {
 
         setSize(1000, 600);
         setVisible(true);
 
-        setRows(debtData, username, groupUsernames);
+        setRows(debtData, username, getMembers(groupUsernames, username));
         DefaultTableModel model = new DefaultTableModel(rows, columns);
         table = new JTable(model);
         table.setEnabled(false);
         JScrollPane scrollPane = new JScrollPane(table);
 
         add(scrollPane);
-        System.out.println("debtdata " + debtData);
-                System.out.println("members " + groupUsernames);
 
     }
 
-    public void setRows(List<List<Object>> debtData, String username, List<String> groupUsernames) {
-            this.rows = new Object[groupUsernames.size()][3];
-            int j = 0;
-            for (int i = 0; i < debtData.size(); i++) {
-                List<Object> currentDebt = debtData.get(i);
-                if (currentDebt.get(0) == username) {
-                    this.rows[j][0] = currentDebt.get(1);
-                    this.rows[j][1] = currentDebt.get(3);
-                    j++;
+    public void setRows(List<List<Object>> debtData, String username, List<String> members) {
+        this.rows = new Object[members.size()][3];
+        for (int i = 0; i < members.size(); i++) {
+            this.rows[i][0] = members.get(i);
+            for (List<Object> debt : debtData) {
+                if (debt.get(0).equals(members.get(i)) || debt.get(1).equals(members.get(i))) {
+                    if (debt.get(0).equals(username)) { this.rows[i][2] = debt.get(2); }
+                    else { this.rows[i][1] = debt.get(2);}
                 }
             }
-            j = 0;
-            for (int i = 0; i < debtData.size(); i++) {
-                List<Object> currentDebt = debtData.get(i);
-                if (this.rows[j][0] == currentDebt.get(0) && currentDebt.get(1) == username && j < groupUsernames.size()) {
-                    this.rows[j][2] = currentDebt.get(3);
-                    i = 0;
-                    j++;
+        }
+    }
+        public List<String> getMembers (List < String > groupUsernames, String username){
+            List<String> members = new ArrayList<>();
+            for (int i = 0; i < groupUsernames.size(); i++) {
+                if (!(groupUsernames.get(i).equals(username))) {
+                    members.add(groupUsernames.get(i));
                 }
             }
+            return members;
+        }
     }
 
 
 
 
 
-}
+
+
+
 
 
 

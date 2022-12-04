@@ -95,7 +95,10 @@ class UpdatePaymentBalanceTest {
         try {
             Group group = Group.fromString(groupString);
             for(String usersOwing : usersInvolvedInPurchase) {
-                debtsList.add(group.getPurchaseBalance().getDebtPair("mishaalk", usersOwing));
+                System.out.println(usersOwing + group.getPurchaseBalance().getDebtPair("mishaalk", usersOwing));
+                if (group.getPurchaseBalance().getDebtPair("mishaalk", usersOwing) != null) {
+                    debtsList.add(group.getPurchaseBalance().getDebtPair("mishaalk", usersOwing));
+                }
             }
             return debtsList;
         } catch (JsonProcessingException e) {
@@ -112,13 +115,7 @@ class UpdatePaymentBalanceTest {
         UpdatePaymentBalancePresenter presenter = new UpdatePaymentBalancePresenter() {
             @Override
             public UpdatedDebts prepareSuccessView(UpdatedDebts updatedDebts) {
-                List<Debt> groupInfoBefore;
-                try {
-                    groupInfoBefore = getGroupInfo(Arrays.asList("rcordi, randomC, sopleee"));
-                } catch (IOException | ParseException e) {
-                    throw new RuntimeException(e);
-                }
-                List<String> users = Arrays.asList("rcordi", "randomC", "sopleee");
+                List<String> users = Arrays.asList("randomC", "sopleee");
                 boolean containsOwed = false;
                 for(List<Object> curDebt : updatedDebts.getUpdatedBalances()){
                     if(curDebt.get(0).equals("mishaalk")){
@@ -128,19 +125,6 @@ class UpdatePaymentBalanceTest {
                 }
                 assert containsOwed;
 //                        updatedDebts.getUpdatedBalances().containsKey("mishaalk");
-                for(List<Object> curDebt : updatedDebts.getUpdatedBalances()){
-                    if((curDebt.get(0)).equals("mishaalk") && users.contains((String) curDebt.get(1))){
-//                        int indexOfUserOwing = groupInfoBefore.get("mishaalk").indexOf((String) curDebt.get(1));
-                        double prevDebtVal = 0.0;
-//                        Object previousDebt = groupInfoBefore.get("mishaalk").get(indexOfUserOwing).get(1);
-                        for(Debt prevDebt : groupInfoBefore){
-                            if(prevDebt.getUserOwing().equals(curDebt.get(1))){
-                                prevDebtVal = prevDebt.getDebtValue();
-                            }
-                        }
-                        assert (double) curDebt.get(3) == ((double) prevDebtVal) + 19.99/3;
-                    }
-                }
 //                for (List<Object> userOwed : updatedDebts.getUpdatedBalances().get("mishaalk")) {
 //                    int indexOfUserOwing = groupInfoBefore.get("mishaalk").indexOf(userOwed);
 //                    Object previousDebt = groupInfoBefore.get("mishaalk").get(indexOfUserOwing).get(1);
@@ -148,7 +132,7 @@ class UpdatePaymentBalanceTest {
 //                        assert (double) userOwed.get(1) == ((double) previousDebt) + 19.99/3;
 //                    }
 //                }
-                assert updatedDebts.getOutcomeMessage() == null;
+                assert Objects.equals(updatedDebts.getOutcomeMessage(), "Success");
                 return null;
             }
 
@@ -163,11 +147,12 @@ class UpdatePaymentBalanceTest {
         ItemDataInterface itemData = new ItemDataAccess("test");
 
         // 2. Input Data - we can make this up for the test, but normally it would be created from the controller.
-        PaymentInformation inputData = new PaymentInformation("grpOne11", "mishaalk", (float) 19.99,
-                "itemApple", Arrays.asList("rcordi", "randomC", "sopleee"));
-        UpdatePaymentBalanceBoundaryIn useCase = new UpdatePaymentBalance(groupData, itemData, presenter, inputData);
+        PaymentInformation inputData = new PaymentInformation("grpOne11", "mishaalk", (float) 20,
+                "itemApple", Arrays.asList("randomC", "sopleee"));
+        UpdatePaymentBalanceBoundaryIn useCase = new UpdatePaymentBalance(groupData, itemData, presenter);
 
         // 3. Run the use case.
+
         useCase.updatePaymentBalance(inputData);
 
         tearDown();
@@ -199,9 +184,9 @@ class UpdatePaymentBalanceTest {
         ItemDataInterface itemData = new ItemDataAccess("test");
 
         // 2. Input Data - we can make this up for the test, but normally it would be created from the controller.
-        PaymentInformation inputData = new PaymentInformation("grpOne11", "mishaalk", (float) 19.99,
+        PaymentInformation inputData = new PaymentInformation("grpOne11", "mishaalk", (float) 20,
                 "itemApple", Arrays.asList("rcordi", "rcordi", "sopleee"));
-        UpdatePaymentBalanceBoundaryIn useCase = new UpdatePaymentBalance(groupData, itemData, presenter, inputData);
+        UpdatePaymentBalanceBoundaryIn useCase = new UpdatePaymentBalance(groupData, itemData, presenter);
 
         // 3. Run the use case.
         useCase.updatePaymentBalance(inputData);
@@ -234,15 +219,22 @@ class UpdatePaymentBalanceTest {
         ItemDataInterface itemData = new ItemDataAccess("test");
 
         // 2. Input Data - we can make this up for the test, but normally it would be created from the controller.
-        PaymentInformation inputData = new PaymentInformation("grpOne11", "mishaalk", (float) 19.99,
-                "itemApple", Arrays.asList("rcordi", "randomC", "sopleee"));
-        UpdatePaymentBalanceBoundaryIn useCase = new UpdatePaymentBalance(groupData, itemData, presenter, inputData);
+        PaymentInformation inputData = new PaymentInformation("grpOne11", "mishaalk", (float) 20,
+                "itemApple", Arrays.asList("randomC", "sopleee"));
+        UpdatePaymentBalanceBoundaryIn useCase = new UpdatePaymentBalance(groupData, itemData, presenter);
 
         // We now set the data from the database as a constant to check against our use case.
         List<String> userInfoBefore = getUserInfo();
-        List<Debt> groupInfoBefore = getGroupInfo(Arrays.asList("rcordi, randomC, sopleee"));
+        List<Debt> groupInfoBefore = getGroupInfo(Arrays.asList("randomC", "sopleee"));
 
         // 3. Run the use case.
+        HashMap<String, Double> prevDebts = new HashMap<String, Double>();
+        for (Debt allDebt : Group.fromString(groupData.groupAsString(inputData.getGroupID())).getPurchaseBalance().getAllDebts()) {
+            if (allDebt.getUserOwed().getUsername().equals("mishaalk") && inputData.getUsersInvolvedInPurchase().contains(allDebt.getUserOwing().getUsername())){
+                prevDebts.put(allDebt.getUserOwing().getUsername(), allDebt.getDebtValue());
+            }
+        }
+
         useCase.updatePaymentBalance(inputData);
 
         try {
@@ -254,16 +246,9 @@ class UpdatePaymentBalanceTest {
         } catch (IOException | ParseException e) {
             throw new RuntimeException(e);
         }
-        try {
-            List<Debt> groupInfoAfter = getGroupInfo(Arrays.asList("rcordi, randomC, sopleee"));
-            for(int x = 0; x < groupInfoAfter.size(); ++x) {
-                Debt current = groupInfoBefore.get(x);
-                current.setDebtValue(current.getDebtValue() + 19.99/3);
-                assert groupInfoAfter.contains(current);
-
-            }
-        } catch (IOException | ParseException e) {
-            throw new RuntimeException(e);
+        List<Debt> debts = getGroupInfo(inputData.getUsersInvolvedInPurchase());
+        for (Debt debt : debts) {
+            assert !prevDebts.containsKey(debt.getUserOwing().getUsername()) || prevDebts.get(debt.getUserOwing().getUsername()) + 10.0 == debt.getDebtValue();
         }
 
         tearDown();

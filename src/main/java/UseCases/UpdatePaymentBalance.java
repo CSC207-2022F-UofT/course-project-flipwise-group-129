@@ -157,9 +157,8 @@ public class UpdatePaymentBalance implements UpdatePaymentBalanceBoundaryIn{
         List<List<Object>> returnedDebts = new ArrayList<>();
         for(Debt curDebt : purchaseBalance.getAllDebts()){
             ArrayList<Object> currentDebt = new ArrayList<>();
-            currentDebt.add(curDebt.getUserOwed());
-            currentDebt.add(curDebt.getUserOwing());
-            currentDebt.add(groupId);
+            currentDebt.add(curDebt.getUserOwed().getUsername());
+            currentDebt.add(curDebt.getUserOwing().getUsername());
             currentDebt.add(curDebt.getDebtValue());
             returnedDebts.add(currentDebt);
         }

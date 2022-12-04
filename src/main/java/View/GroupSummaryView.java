@@ -239,8 +239,9 @@ public class GroupSummaryView extends JPanel implements ActionListener {
                             addPurchaseView.getSelectedMembers(), this.username, item_price, this.groupID);
                     UpdatedDebts updatedDebts = this.updatePaymentBalanceController.create(this.groupID,
                             this.username, item_price, itemID, addPurchaseView.getSelectedMembers());
-
+                        System.out.println("updated debts lists " + updatedDebts.getUpdatedBalances());
                     if (updatedList.getResultMessage().equals("Success") && updatedDebts.getOutcomeMessage().equals("Success")) {
+                        System.out.println("Reseting group summary from purchase item");
                         resetGroupSummary(this.group_name, this.groupID, this.username, updatedList.getNewPurchasedList(),
                                 updatedList.getNewPlanningList(), updatedDebts.getUpdatedBalances(), this.groupUserNames,
                                 this.mainWindowView);
@@ -305,6 +306,8 @@ public class GroupSummaryView extends JPanel implements ActionListener {
 
             }
         }
+
+        System.out.println("updated usergroups " + userGroups);
     }
 }
 

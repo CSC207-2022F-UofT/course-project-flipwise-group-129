@@ -30,7 +30,7 @@ public class PurchaseListView extends JPanel {
     }
 
     public void setRows(List<List<String>> purchasedListData) {
-        if (purchasedListData != null) {
+
             List<String> data = new ArrayList<>();
             this.rows = new Object[purchasedListData.size()][3];
             for (int i = 0; i < purchasedListData.size(); i++) {
@@ -41,6 +41,6 @@ public class PurchaseListView extends JPanel {
                 data = new ArrayList<>();
             }
         }
-    }
+
 }
 
