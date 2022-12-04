@@ -159,7 +159,6 @@ public class UpdatePaymentBalance implements UpdatePaymentBalanceBoundaryIn{
             ArrayList<Object> currentDebt = new ArrayList<>();
             currentDebt.add(curDebt.getUserOwed().getUsername());
             currentDebt.add(curDebt.getUserOwing().getUsername());
-            currentDebt.add(groupId);
             currentDebt.add(curDebt.getDebtValue());
             returnedDebts.add(currentDebt);
         }
