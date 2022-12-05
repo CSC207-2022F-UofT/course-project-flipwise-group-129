@@ -42,6 +42,10 @@ class AddPurchaseControllerTest {
         Path copiedUsers = Paths.get("src/test/resources/testusersCopy.json");
         Path originalPathUsers = Paths.get("src/test/resources/testusers.json");
         Files.copy(originalPathUsers, copiedUsers, StandardCopyOption.REPLACE_EXISTING);
+
+        Path copiedItems = Paths.get("src/test/resources/testitemsCopy.json");
+        Path originalPathItems = Paths.get("src/test/resources/testitems.json");
+        Files.copy(originalPathItems, copiedItems, StandardCopyOption.REPLACE_EXISTING);
     }
 
     @After
@@ -51,6 +55,9 @@ class AddPurchaseControllerTest {
 
         File userFile = new File("src/test/resources/testusersCopy.json");
         userFile.delete();
+
+        File itemFile = new File("src/test/resources/testitemsCopy.json");
+        itemFile.delete();
     }
 
     @Test
