@@ -151,7 +151,7 @@ public class GroupSummaryView extends JPanel implements ActionListener {
         right_hand_side.add(btn_group);
         right_hand_side.add(toHomepage);
 
-        this.planningListView = new PlanningListView(planningListData, username, groupID);
+        this.planningListView = new PlanningListView(planningListData);
         PurchaseListView p = new PurchaseListView(purchaseListData);
         BalanceView b = new BalanceView(debtData, username, groupUserNames);
         p2.add(p);
@@ -201,7 +201,7 @@ public class GroupSummaryView extends JPanel implements ActionListener {
         }
 
         if (evt.getActionCommand().equals("Settle Debt")){
-            ClearDebtView clearDebtView = new ClearDebtView(this.username, this.groupID,
+            ClearDebtView clearDebtView = new ClearDebtView(
                     this.groupUserNames);
 
             if (clearDebtView.getSelectedMember() == null) {
@@ -225,8 +225,8 @@ public class GroupSummaryView extends JPanel implements ActionListener {
                 String item = (String) table.getValueAt(table.getSelectedRow(), 0);
 
                 String itemID = getItemID(planningListData, item);
-                AddPurchaseView addPurchaseView = new AddPurchaseView(itemID,
-                        this.username, this.groupID, this.groupUserNames);
+                AddPurchaseView addPurchaseView = new AddPurchaseView(
+                        this.groupUserNames);
 
                 if ((addPurchaseView.getItemPrice().matches("[0-9]+")) && (addPurchaseView.getSelectedMembers().size() > 0)) {
                     float item_price = Float.parseFloat(addPurchaseView.getItemPrice());

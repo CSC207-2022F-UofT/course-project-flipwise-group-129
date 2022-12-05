@@ -10,7 +10,7 @@ public class AddPurchaseView extends JOptionPane{
     JTextField item_price;
     JTextArea text_contributing_members;
     JCheckBox[] contributing_members;
-    public AddPurchaseView(String itemID, String username, String groupID, List<String> groupUserNames) {
+    public AddPurchaseView(List<String> groupUserNames) {
 
 
         JPanel p = new JPanel();
