@@ -95,7 +95,7 @@ public class AddToPlanningList implements AddToPlanningBoundaryIn{
      */
     private Group retreiveGroup(String groupId) {
         try {
-            if(!groupAccess.groupIdExists(groupId)){
+            if(groupAccess.groupIdExists(groupId)){
                 return null;
             }
         } catch (IOException | ParseException e) {

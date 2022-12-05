@@ -52,7 +52,7 @@ public class GroupDataAccess extends DataAccess implements GroupDataInterface {
     @Override
     public boolean groupIdExists(String groupId) throws IOException, ParseException {
         super.readFile(groupFile, groupMap);
-        return groupMap.containsKey(groupId);
+        return !groupMap.containsKey(groupId);
     }
 
     /**

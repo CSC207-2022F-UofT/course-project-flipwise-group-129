@@ -13,8 +13,8 @@ import java.io.IOException;
 import java.util.*;
 
 public class SettlementPayment implements SettlementBoundaryIn {
-    SettlementBoundaryOut outputBoundary;
-    GroupDataInterface groupAccess;
+    final SettlementBoundaryOut outputBoundary;
+    final GroupDataInterface groupAccess;
 
     /**
      * Creates a new SettlementPaymenbt use case instance to implement the use case

@@ -9,7 +9,7 @@ import DataStructures.UpdatedLists;
  * input boundary to perform the use case.
  */
 public class AddToPlanningController {
-    public AddToPlanningBoundaryIn inputBoundary;
+    public final AddToPlanningBoundaryIn inputBoundary;
     /**
      * Creates a new AddToPlanningController to execute the AddtoPlanning use case
      * @param inputBoundary an instance of the input boundary passed in from the main/view to execute the use case

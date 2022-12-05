@@ -169,7 +169,7 @@ public class UpdatePaymentBalance implements UpdatePaymentBalanceBoundaryIn{
         //check if the user exists
 
         try {
-            if (!this.groupDataInterface.groupIdExists(groupID)){
+            if (this.groupDataInterface.groupIdExists(groupID)){
                 throw new RuntimeException("Group Id does not exist");
             }
             String groupString = this.groupDataInterface.groupAsString(groupID);

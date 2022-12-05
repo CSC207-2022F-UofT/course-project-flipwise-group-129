@@ -43,7 +43,7 @@ class SettlementPaymentTest {
         assert groupFile.delete();
         System.gc();
         File userFile = new File("src/test/resources/testusersCopy.json");
-        userFile.delete();
+        assert userFile.delete();
     }
 
     @Test
