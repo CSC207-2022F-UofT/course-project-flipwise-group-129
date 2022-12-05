@@ -38,11 +38,12 @@ class SettlementPaymentTest {
 
     @After
     public void tearDown(){
+        System.gc();
         File groupFile = new File("src/test/resources/testgroupsCopy.json");
-        assert groupFile.delete();
-
+        groupFile.delete();
+        System.gc();
         File userFile = new File("src/test/resources/testusersCopy.json");
-        assert userFile.delete();
+        userFile.delete();
     }
 
     @Test
@@ -68,7 +69,6 @@ class SettlementPaymentTest {
 
         // Add an assert statement or multiple to check if the output data is correct
         assert (Objects.equals(outputData.getOutcomeMessage(), "Success") && outputData.getUpdatedBalances() != null);
-        
         tearDown();
     }
 
@@ -128,7 +128,7 @@ class SettlementPaymentTest {
         } catch (IOException | ParseException e) {
             throw new RuntimeException(e);
         }
-        
+
         tearDown();
     }
 
