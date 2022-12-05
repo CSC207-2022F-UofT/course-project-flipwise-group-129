@@ -111,17 +111,4 @@ public class Debt {
             throw new RuntimeException(e);
         }
     }
-
-    /**
-     * returns the instance of class Debt present in the JSONString
-     * if unable to parse, throw exception
-     * @param debtString the JSONString containing all the information
-     * @return returns the instance stored in the JSONString
-     * @throws JsonProcessingException if unable to process the String into a Group instance
-     */
-    public static Debt fromString(String debtString) throws JsonProcessingException {
-        // converts the JSONString into the required object class
-        ObjectMapper mapper = new ObjectMapper();
-        return mapper.readValue(debtString, Debt.class);
-    }
 }
