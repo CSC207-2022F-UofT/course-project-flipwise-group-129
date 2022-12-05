@@ -209,8 +209,8 @@ public class GroupSummaryView extends JPanel implements ActionListener {
             if (clearDebtView.getSelectedMember() == null) {
                 showMessage("Error with input.");
             } else {
-                UpdatedDebts updatedDebts = this.controllerSettlementPayment.settleDebt(this.username,
-                        clearDebtView.getSelectedMember(), this.groupID);
+                UpdatedDebts updatedDebts = this.controllerSettlementPayment.settleDebt(clearDebtView.getSelectedMember(),
+                        this.username, this.groupID);
                 if (updatedDebts.getOutcomeMessage().equals("Success")){
                     resetGroupSummary(this.group_name, this.groupID, this.username, this.purchaseListData,
                             this.planningListData, updatedDebts.getUpdatedBalances(), this.groupUserNames,
