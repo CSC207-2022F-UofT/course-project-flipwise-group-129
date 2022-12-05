@@ -48,6 +48,7 @@ public class DataAccess {
      * @param entityMap the map that stores all entity objects parsed from filepath
      */
     protected void save(File jasonFile, Map<String, String> entityMap) throws IOException {
+
         FileWriter writer = new FileWriter(jasonFile);
         JSONArray entityList = new JSONArray();
         entityMap.forEach((key, data) -> {

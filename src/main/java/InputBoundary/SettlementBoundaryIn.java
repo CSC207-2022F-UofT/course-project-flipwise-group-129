@@ -9,5 +9,5 @@ public interface SettlementBoundaryIn {
      * @param settlement contains informaton on the two users to update debts between
      * @return the output data to be handled by the presenter
      */
-    public UpdatedDebts executeDebtSettlement(PaymentDetails settlement);
+    UpdatedDebts executeDebtSettlement(PaymentDetails settlement);
 }
