@@ -1,4 +1,7 @@
 package Entities;
+import org.json.simple.JSONObject;
+
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -44,12 +47,27 @@ abstract public class ItemList implements Iterable<Item> {
     public Iterator<Item> iterator() {
         return new ItemListIterator<>(this.items);
     }
+
+//    public static void main(String[] args) {
+//        Item item1 = new Item("apple");
+//        Item item2 = new Item("orange");
+//        Item item3 = new Item("pomegranate");
+//        PlanningList planning = new PlanningList();
+//
+//        planning.addItems(item1);
+//        planning.addItems(item2);
+//        planning.addItems(item3);
+//
+//        for (Item item : planning) {
+//            System.out.println(item);
+//        }
+//    }
 }
 
 class ItemListIterator<Item> implements Iterator<Item> {
 
     /**
-     * Class implementing the iterator object for the class itemList.
+     * Class implementing the iterator object for the class itemlist.
      * This class is used to iterate over the list of items in any implementation of ItemList
      */
     Integer current;

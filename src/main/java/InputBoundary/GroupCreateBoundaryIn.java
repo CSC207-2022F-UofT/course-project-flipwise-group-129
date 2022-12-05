@@ -11,7 +11,7 @@ public interface GroupCreateBoundaryIn {
      */
 
     /**
-     * creates the new group requsted by the user
+     * creates the new group requseted by the user
      * adds the user into the group
      * saves the new user and group data into the database
      * returns the output data object to be handled by the presenter

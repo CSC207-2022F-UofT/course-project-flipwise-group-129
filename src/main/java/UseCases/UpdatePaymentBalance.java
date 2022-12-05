@@ -6,6 +6,7 @@ import Entities.*;
 import InputBoundary.UpdatePaymentBalanceBoundaryIn;
 import OutputBoundary.UpdatePaymentBalanceBoundaryOut;
 import DataAccessInterface.*;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.json.simple.parser.ParseException;
 
 import java.io.IOException;
@@ -35,7 +36,6 @@ public class UpdatePaymentBalance implements UpdatePaymentBalanceBoundaryIn{
         String userPurchasedItem = paymentDetails.getUsername();
         float itemPrice = paymentDetails.getItemPrice();
         List<String> usersInvolvedInPurcase = paymentDetails.getUsersInvolvedInPurchase();
-        int amountOfUsersInvolvedInPurchase = usersInvolvedInPurcase.size();
 
         /*
         There are going to be three steps, I can only implement step 2 right now, and then I can
@@ -81,6 +81,13 @@ public class UpdatePaymentBalance implements UpdatePaymentBalanceBoundaryIn{
         }
         catch (RuntimeException e) {
             return raiseError(e);
+        }
+        Set<String> usersInGroup = groupInvolvedInPurchase.getUsers();
+
+        int amountOfUsersInvolvedInPurchase = usersInvolvedInPurcase.size();
+        List<String> groupUsernames = new ArrayList<>();
+        for(String user : usersInGroup) {
+            groupUsernames.add(user);
         }
 
         /*

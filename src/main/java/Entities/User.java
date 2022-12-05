@@ -2,6 +2,7 @@ package Entities;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.util.Comparator;
 import java.util.List;
 
 public class User implements Comparable<User> {
@@ -16,9 +17,9 @@ public class User implements Comparable<User> {
 
     /**
      * Constructor to create a new user object
-     * @param username of the user
-     * @param password of the user
-     * @param groups that the user is a part of
+     * @param username
+     * @param password
+     * @param groups
      */
 
     public User(String username, String password, List<String> groups){
@@ -61,6 +62,14 @@ public class User implements Comparable<User> {
         return groups;
     }
 
+//    public List<User> getUsers(){
+//        return allUsers;
+//    }
+//
+//    public void addUser(User newUser){
+//        allUsers.add(newUser);
+//    }
+
     /**
      * add a group to the list of groups the user is in
      * @param group the group to add to list of groups the user is in
@@ -77,13 +86,23 @@ public class User implements Comparable<User> {
      */
     public boolean removeFromGroup(Group group){
         // remove group from the list of groups the user is part of
-        if (this.groups.contains(group.getGroupId())){
-            this.groups.remove(group.getGroupId());
+        if (this.groups.contains(group)){
+            this.groups.remove(group);
             return true;
         }
         return false;
     }
 
+//    public JSONObject toJSON(){
+//        JSONObject obj = new JSONObject();
+//        obj.put("username", this.username);
+//        obj.put("password", this.password);
+//        List<String> groupStrings = new ArrayList<>();
+//        this.groups.forEach(group -> groupStrings.add(group.toString()));
+//        obj.put("groups", groupStrings);
+//
+//        return obj;
+//    }
     /**
      * method to return a JSONString representation of an instance of this class User
      * @return a JSONString representation of an instance of this class User
@@ -116,7 +135,7 @@ public class User implements Comparable<User> {
      * compare two User objects
      * if their usernames match, they're the same user
      * @param o the object to be compared.
-     * @return 0 if they're equal else 1
+     * @return
      */
     @Override
     public int compareTo(User o) {

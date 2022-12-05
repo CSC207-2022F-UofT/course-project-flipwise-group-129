@@ -1,6 +1,7 @@
 package DataStructures;
 
 import java.util.List;
+import java.util.Map;
 
 public class
 JoinedGroupInfo {
@@ -14,9 +15,9 @@ JoinedGroupInfo {
     private final List<String> groupIds; // the ids of all the groups the current user is a part of
     private final List<String> groupNames; // the names of all the groups that the current user is a part of
 
-    private final List<List<String>> planningList; //all the [itemIds, itemNames] in the planning list of this group
+    private final List<List<String>> planningList; //all the [itemids,itemnames] in the planninng list of this group
 
-    private final List<List<String>> purchasedList; // all the [itemIds, itemNames, item price, buyer username] in the purchase list of this group
+    private final List<List<String>> purchasedList; // all the [itemids, itemnames, item price, buyer username] in the purchase list of this group
 
     private final String error; //any error if arises will contain a description here
 

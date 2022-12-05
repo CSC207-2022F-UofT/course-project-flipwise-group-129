@@ -1,14 +1,18 @@
 package Entities;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Debt {
 
     /**
-     * This class represents a single debt pair between a user owing money and user that is owed money
+     * This class reprsents a single debt pair between a user owing money and user that is owed money
      */
 
     private User userOwed; //the user that is being owed money
@@ -50,7 +54,7 @@ public class Debt {
 
     /**
      * get the user owing money
-     * @return the userOwing money
+     * @return the userowing money
      */
 
     public User getUserOwing() {
@@ -94,6 +98,14 @@ public class Debt {
         return this.groupId;
     }
 
+//    public JSONObject toJSON(){
+//        JSONObject obj = new JSONObject();
+//        obj.put("userOwed", this.userOwed.toString());
+//        obj.put("userOwing", this.userOwing.toString());
+//        obj.put("groupId", this.groupId);
+//        obj.put("debtValue", this.debtValue);
+//        return obj;
+//    }
     /**
      * method to return a JSONString representation of an instance of this class Debt
      * @return a JSONString representation of an instance of this class Debt

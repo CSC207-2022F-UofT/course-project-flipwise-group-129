@@ -1,5 +1,7 @@
 package View;
 
+import Entities.Group;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.util.ArrayList;
@@ -7,6 +9,7 @@ import java.util.List;
 
 public class BalanceView extends JPanel {
 
+    private final JTable table;
     Object[][] rows;
     String[] columns = new String[]{"Member", "Debt Owed", "Debt Deserved"};
 
@@ -17,7 +20,7 @@ public class BalanceView extends JPanel {
 
         setRows(debtData, username, getMembers(groupUsernames, username));
         DefaultTableModel model = new DefaultTableModel(rows, columns);
-        JTable table = new JTable(model);
+        table = new JTable(model);
         table.setEnabled(false);
         JScrollPane scrollPane = new JScrollPane(table);
 
@@ -25,13 +28,6 @@ public class BalanceView extends JPanel {
 
     }
 
-    /**
-     * this is a helper function that puts the given debt data, username and parameters into a form of
-     * "List<List<String>>" for the rows of the table to be printed
-     * @param debtData  debt data taken from a controller
-     * @param username  username of the user currently logged in
-     * @param members   other members of the group
-     */
     public void setRows(List<List<Object>> debtData, String username, List<String> members) {
         this.rows = new Object[members.size()][3];
         for (int i = 0; i < members.size(); i++) {
@@ -46,9 +42,9 @@ public class BalanceView extends JPanel {
     }
         public List<String> getMembers (List < String > groupUsernames, String username){
             List<String> members = new ArrayList<>();
-            for (String groupUsername : groupUsernames) {
-                if (!(groupUsername.equals(username))) {
-                    members.add(groupUsername);
+            for (int i = 0; i < groupUsernames.size(); i++) {
+                if (!(groupUsernames.get(i).equals(username))) {
+                    members.add(groupUsernames.get(i));
                 }
             }
             return members;

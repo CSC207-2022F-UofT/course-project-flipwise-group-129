@@ -6,9 +6,9 @@ public class JoinGroupRequest {
      Represents all the information passed in by the user to join a group
      */
 
-    private final String groupId; // the id of the group that you need to join
+    private String groupId; // the id of the group that you need to join
 
-    private final String username; // the username of the user that wants to join a group
+    private String username; // the username of the user that wants to join a group
 
     /**
      * Create an object representing all the information to join this group

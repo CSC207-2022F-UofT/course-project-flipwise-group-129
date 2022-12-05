@@ -45,23 +45,23 @@ public class HomePageView extends JPanel {
 
         // Generating group buttons
         button_array = createGroupButtons(group_names);
-        JPanel groupOfButtons = new JPanel();
+        JPanel group_btns = new JPanel();
 
         for (int i = 0; i < group_names.size(); i++) {
             button_array[i].addActionListener(mainWindowView);
-            groupOfButtons.add(button_array[i]);
+            group_btns.add(button_array[i]);
         }
 
         this.add(homePage);
         this.add(Box.createRigidArea(new Dimension(0, 5)));
         this.add(groupButtons);
-        this.add(groupOfButtons);
+        this.add(group_btns);
 
     }
 
     /**.
      * Generates a list of JButtons of all the groups that include the user to display
-     * on the home page
+     * on the home page.
      * @param Current_Groups the list of all groups that include the user
      * @return list including all inputted groups converted into JButtons
      */

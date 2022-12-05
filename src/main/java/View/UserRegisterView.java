@@ -1,5 +1,7 @@
 package View;
 
+import DataStructures.AccountStatus;
+import View.ViewInterface;
 import Controllers.UserRegisterController;
 import DataAccess.UserDataAccess;
 import DataAccessInterface.UserDataInterface;
@@ -91,7 +93,7 @@ public class UserRegisterView extends JPanel implements ActionListener {
      */
     public void actionPerformed (ActionEvent e){
         if (e.getActionCommand().equals("Sign Up")){
-            if (isAlpha(getUsername()) && isPassword(getPassword())) {
+            if (isAlpha(getUsername()) && isAlpha(getPassword())) {
                 this.final_output = controller.controlUseCase(username.getText(),
                         String.valueOf(password.getPassword()),
                     String.valueOf(repeatPassword.getPassword()));
@@ -131,20 +133,12 @@ public class UserRegisterView extends JPanel implements ActionListener {
      */
     public String getUsername() { return this.username.getText(); }
 
-    /**
-     * helper function to confirm whether input added is valid
-     * @param name string to be tested
-     * @return  whether the string was successful
-     */
+    public boolean getFinalOutput() { return this.final_output; }
+
     public boolean isAlpha(String name) {
         return name.matches("[a-zA-Z0-9]+");
     }
 
-    /**
-     * helper function to confirm whether password added is valid
-     * @param password string to be added
-     * @return whether password was successful
-     */
     public boolean isPassword(String password) {
         return password.matches("[a-zA-Z0-9@ ]+");
     }

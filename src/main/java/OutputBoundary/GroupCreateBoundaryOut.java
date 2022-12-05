@@ -21,7 +21,7 @@ public interface GroupCreateBoundaryOut {
     /**
      * Alerts the view in case of a failure
      * @param createdGroupInfo contains the error message
-     * @return the error messaged wrapped in an output data structure
+     * @return the error messaged wrapped in an output datastrcture
      */
     CreatedGroupInfo prepareFailView(CreatedGroupInfo createdGroupInfo);
 }

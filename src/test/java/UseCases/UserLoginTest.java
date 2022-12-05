@@ -38,10 +38,10 @@ class UserLoginTest {
     @After
     public void tearDown(){
         File groupFile = new File("src/test/resources/testgroupsCopy.json");
-        assert groupFile.delete();
+        groupFile.delete();
 
         File userFile = new File("src/test/resources/testusersCopy.json");
-        assert userFile.delete();
+        userFile.delete();
     }
 
     /**

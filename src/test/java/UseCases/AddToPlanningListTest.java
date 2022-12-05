@@ -2,7 +2,6 @@ package UseCases;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import Controllers.AddToPlanningController;
 import DataAccess.GroupDataAccess;
 import DataAccess.ItemDataAccess;
 import DataAccessInterface.GroupDataInterface;
@@ -46,15 +45,13 @@ class AddToPlanningListTest {
     @After
     public void tearDown(){
         File groupFile = new File("src/test/resources/testgroupsCopy.json");
-        assert groupFile.delete();
+        groupFile.delete();
 
         File userFile = new File("src/test/resources/testusersCopy.json");
-        assert userFile.delete();
+        userFile.delete();
 
         File itemFile = new File("src/test/resources/testitemsCopy.json");
-        if (itemFile.delete()){
-            System.out.println("successfully deleted items file");
-        }
+        itemFile.delete();
     }
     
     @Test
@@ -78,11 +75,14 @@ class AddToPlanningListTest {
         }
 
         AddToPlanningPresenter presenter = new AddToPlanningPresenter();
-        AddToPlanningBoundaryIn useCase = new AddToPlanningList(presenter, groupData, itemData);
-        AddToPlanningController controller = new AddToPlanningController(useCase);
+        AddToPlanningBoundaryIn usecase = new AddToPlanningList(presenter, groupData, itemData);
+
+        // 2) Input data — we can make this up for the test. Normally it would
+        // be created by the Controller.
+        PlannedItemInfo newItem = new PlannedItemInfo("maggi", "grpOne11");
 
         // 3) Run the use case
-        UpdatedLists outputData = controller.performPlanningAdd("maggi", "grpOne11");
+        UpdatedLists outputData = usecase.addPlanning(newItem);
 
         if(outputData.getNewPlanningList() != null){
             for (List<String> temp: outputData.getNewPlanningList()) {
@@ -122,11 +122,14 @@ class AddToPlanningListTest {
         }
 
         AddToPlanningPresenter presenter = new AddToPlanningPresenter();
-        AddToPlanningBoundaryIn useCase = new AddToPlanningList(presenter, groupData, itemData);
-        AddToPlanningController controller = new AddToPlanningController(useCase);
+        AddToPlanningBoundaryIn usecase = new AddToPlanningList(presenter, groupData, itemData);
+
+        // 2) Input data — we can make this up for the test. Normally it would
+        // be created by the Controller.
+        PlannedItemInfo newItem = new PlannedItemInfo("maggi", "noGroup");
 
         // 3) Run the use case
-        UpdatedLists outputData = controller.performPlanningAdd("maggi", "noGroup");
+        UpdatedLists outputData = usecase.addPlanning(newItem);
 
         if(outputData.getNewPlanningList() == null && outputData.getResultMessage().equals("Group cannot be found")){
             flagExists = true;
