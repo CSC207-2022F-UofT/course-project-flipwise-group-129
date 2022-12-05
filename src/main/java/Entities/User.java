@@ -1,12 +1,14 @@
-/**
- * Represents a user in the application
- */
 package Entities;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.util.List;
 
 public class User implements Comparable<User> {
+
+    /*
+    Represents a User in this applications
+     */
 
     private String username;
     private String password;
@@ -71,10 +73,15 @@ public class User implements Comparable<User> {
     /**
      * remove user from a group
      * @param group the group to remove the user from
+     * @return whether removal was successful
      */
-    public void removeFromGroup(Group group){
+    public boolean removeFromGroup(Group group){
         // remove group from the list of groups the user is part of
-        this.groups.remove(group);
+        if (this.groups.contains(group.getGroupId())){
+            this.groups.remove(group.getGroupId());
+            return true;
+        }
+        return false;
     }
 
     /**
