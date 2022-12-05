@@ -1,12 +1,6 @@
 package View;
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.IOException;
 
 import Controllers.UserLoginController;
-import Controllers.UserRegisterController;
 import DataAccess.GroupDataAccess;
 import DataAccess.UserDataAccess;
 import DataAccessInterface.GroupDataInterface;
@@ -15,8 +9,11 @@ import DataStructures.LoggedInInfo;
 import InputBoundary.UserLoginBoundaryIn;
 import Presenters.UserLoginPresenter;
 import UseCases.UserLogin;
-import View.ViewInterface;
 import org.json.simple.parser.ParseException;
+
+import javax.swing.*;
+import java.awt.*;
+import java.io.IOException;
 
 
 public class UserLoginView extends JPanel {
@@ -26,8 +23,6 @@ public class UserLoginView extends JPanel {
     private final JPasswordField password = new JPasswordField(15);
     public JButton login;
     public JButton toRegister;
-    private final UserLoginController controller;
-    private final UserLoginPresenter presenter;
     private LoggedInInfo userInfo;
 
     /**
@@ -44,10 +39,10 @@ public class UserLoginView extends JPanel {
             throw new RuntimeException(e2); // Display popup
         }
 
-        this.presenter = new UserLoginPresenter();
+        UserLoginPresenter presenter = new UserLoginPresenter();
         UserLoginBoundaryIn useCase = new UserLogin(presenter, userData, groupData);
 
-        this.controller = new UserLoginController(useCase);
+        UserLoginController controller = new UserLoginController(useCase);
 
         // Defining JComponents
         title = new JLabel("Welcome Back!");
@@ -81,21 +76,8 @@ public class UserLoginView extends JPanel {
         this.setLayout(null);
         setSize(1500, 820);
         setVisible(true);
-
-//        login.addActionListener(this);
-//        toRegister.addActionListener(this);
-
     }
 
-//    /**
-//     * Calls the controller with the entered username and password as arguments.
-//     * @param evt the event to be processed
-//     */
-//    public void actionPerformed(ActionEvent evt) {
-//        if (evt.getActionCommand().equals("Log In")) {
-//
-//        }
-//    }
 
     /**
      * @return the username of the user that logged in.
