@@ -1,7 +1,5 @@
 package View;
 
-import Entities.Group;
-
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.util.ArrayList;
@@ -9,7 +7,6 @@ import java.util.List;
 
 public class BalanceView extends JPanel {
 
-    private final JTable table;
     Object[][] rows;
     String[] columns = new String[]{"Member", "Debt Owed", "Debt Deserved"};
 
@@ -20,7 +17,7 @@ public class BalanceView extends JPanel {
 
         setRows(debtData, username, getMembers(groupUsernames, username));
         DefaultTableModel model = new DefaultTableModel(rows, columns);
-        table = new JTable(model);
+        JTable table = new JTable(model);
         table.setEnabled(false);
         JScrollPane scrollPane = new JScrollPane(table);
 
@@ -49,9 +46,9 @@ public class BalanceView extends JPanel {
     }
         public List<String> getMembers (List < String > groupUsernames, String username){
             List<String> members = new ArrayList<>();
-            for (int i = 0; i < groupUsernames.size(); i++) {
-                if (!(groupUsernames.get(i).equals(username))) {
-                    members.add(groupUsernames.get(i));
+            for (String groupUsername : groupUsernames) {
+                if (!(groupUsername.equals(username))) {
+                    members.add(groupUsername);
                 }
             }
             return members;
