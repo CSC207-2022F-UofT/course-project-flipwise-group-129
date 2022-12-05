@@ -49,8 +49,8 @@ class AddPurchaseControllerTest {
 
     @After
     public void tearDown(){
-        File groupFile = new File("src/test/resources/testgroupsCopy.json");
         System.gc();
+        File groupFile = new File("src/test/resources/testgroupsCopy.json");
         assert groupFile.delete();
 
         System.gc();
