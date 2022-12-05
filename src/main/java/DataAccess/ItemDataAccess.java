@@ -2,6 +2,7 @@ package DataAccess;
 
 import DataAccessInterface.ItemDataInterface;
 
+import java.io.File;
 
 import org.json.simple.parser.ParseException;
 import java.util.*;
@@ -27,10 +28,8 @@ public class ItemDataAccess extends DataAccess implements ItemDataInterface {
      * @param testString a string confirming database to access is test
      */
     public ItemDataAccess(String testString) throws IOException, ParseException {
-        if(!Objects.equals(testString, "")){
-            this.itemFile = new File("././src/test/resources/testitemsCopy.json");
-            super.readFile(new File("././src/test/resources/testitemsCopy.json"), itemMap);
-        }
+        this.itemFile = new File("././src/test/resources/testitemsCopy.json");
+        super.readFile(new File("././src/test/resources/testitemsCopy.json"), itemMap);
     }
 
     /**

@@ -26,10 +26,8 @@ public class GroupDataAccess extends DataAccess implements GroupDataInterface {
      * @param testString a string confirming database to access is test
      */
     public GroupDataAccess(String testString) throws IOException, ParseException {
-        if(!Objects.equals(testString, "")){
-            this.groupFile = new File("././src/test/resources/testgroupsCopy.json");
-            super.readFile(new File("././src/test/resources/testgroupsCopy.json"), groupMap);
-        }
+        this.groupFile = new File("././src/test/resources/testgroupsCopy.json");
+        super.readFile(new File("././src/test/resources/testgroupsCopy.json"), groupMap);
     }
 
     /**
