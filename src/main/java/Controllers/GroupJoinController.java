@@ -8,7 +8,7 @@ public class GroupJoinController {
     /*
     The controller that provides the inputs the user provided to join a group
      */
-    final GroupJoinBoundaryIn userInput; // the interface that enables us to call the usecase interactor
+    final GroupJoinBoundaryIn userInput; // the interface that enables us to call the UseCase
 
     /**
      * takes the input boundary that enables the controller to execute the use case
@@ -19,8 +19,8 @@ public class GroupJoinController {
     }
 
     /**
-     * method to join a group to be executed by the use case interactor by calling the method in the input boundary
-     * parses input data into a JoinGroupRequest object which is passed to the use case interactor
+     * method to join a group to be executed by the use case by calling the method in the input boundary
+     * parses input data into a JoinGroupRequest object which is passed to the use case
      * @param groupId the id of the group to join
      * @param userId the username of the user requesting group creation
      * @return the output data structure with all the information to display to the view

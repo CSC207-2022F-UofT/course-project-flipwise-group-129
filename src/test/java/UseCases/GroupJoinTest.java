@@ -1,18 +1,14 @@
 package UseCases;
 
+import Controllers.GroupJoinController;
 import DataAccess.GroupDataAccess;
 import DataAccess.UserDataAccess;
 import DataAccessInterface.GroupDataInterface;
 import DataAccessInterface.UserDataInterface;
-import DataStructures.CreatedGroupInfo;
-import DataStructures.JoinGroupRequest;
 import DataStructures.JoinedGroupInfo;
-import DataStructures.ProposedGroupInfo;
 import Entities.Group;
 import Entities.User;
-import InputBoundary.GroupCreateBoundaryIn;
 import InputBoundary.GroupJoinBoundaryIn;
-import Presenters.GroupCreatePresenter;
 import Presenters.GroupJoinPresenter;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.json.simple.parser.ParseException;
@@ -55,10 +51,10 @@ class GroupJoinTest {
     @After
     public void tearDown(){
         File groupFile = new File("././src/test/resources/testgroupsCopy.json");
-        groupFile.delete();
+        assert groupFile.delete();
 
         File userFile = new File("././src/test/resources/testusersCopy.json");
-        userFile.delete();
+        assert userFile.delete();
     }
     @Test
     void joinGroupSuccess() throws IOException, ParseException {
@@ -85,13 +81,10 @@ class GroupJoinTest {
         GroupDataInterface groupData = new GroupDataAccess("test");
         UserDataInterface userData = new UserDataAccess("test");
         GroupJoinBoundaryIn useCase = new GroupJoin(presenter, groupData, userData);
+        GroupJoinController controller = new GroupJoinController(useCase);
 
-        // 2) Input data — we can make this up for the test. Normally it would
-        // be created by the Controller.
-        JoinGroupRequest inputData = new JoinGroupRequest("grpOne11", "rcordi");
-
-        // 3) Run the use case
-        useCase.joinGroup(inputData);
+        // 3) Run the use case through the controller
+        controller.create("grpOne11", "rcordi");
 
         tearDown();
 
@@ -126,13 +119,10 @@ class GroupJoinTest {
         GroupDataInterface groupData = new GroupDataAccess("test");
         UserDataInterface userData = new UserDataAccess("test");
         GroupJoinBoundaryIn useCase = new GroupJoin(presenter, groupData, userData);
+        GroupJoinController controller = new GroupJoinController(useCase);
 
-        // 2) Input data — we can make this up for the test. Normally it would
-        // be created by the Controller.
-        JoinGroupRequest inputData = new JoinGroupRequest("groupDarcy1", "mishaalk");
-
-        // 3) Run the use case
-        useCase.joinGroup(inputData);
+        // 3) Run the use case through the controller
+        controller.create("groupDarcy1", "mishaalk");
 
         tearDown();
 
@@ -166,13 +156,10 @@ class GroupJoinTest {
         GroupDataInterface groupData = new GroupDataAccess("test");
         UserDataInterface userData = new UserDataAccess("test");
         GroupJoinBoundaryIn useCase = new GroupJoin(presenter, groupData, userData);
+        GroupJoinController controller = new GroupJoinController(useCase);
 
-        // 2) Input data — we can make this up for the test. Normally it would
-        // be created by the Controller.
-        JoinGroupRequest inputData = new JoinGroupRequest("grpOne11", "mishaalk");
-
-        // 3) Run the use case
-        useCase.joinGroup(inputData);
+        // 3) Run the use case through the controller
+        controller.create("grpOne11", "mishaalk");
 
         tearDown();
 
@@ -245,17 +232,14 @@ class GroupJoinTest {
         GroupDataInterface groupData = new GroupDataAccess("test");
         UserDataInterface userData = new UserDataAccess("test");
         GroupJoinBoundaryIn useCase = new GroupJoin(presenter, groupData, userData);
-
-        // 2) Input data — we can make this up for the test. Normally it would
-        // be created by the Controller.
-        JoinGroupRequest inputData = new JoinGroupRequest("grpOne11", "rcordi");
+        GroupJoinController controller = new GroupJoinController(useCase);
 
         //setting the data from the database as a constant to check later
         List<String> userInfoBefore = getUserInfo();
         List<List<String>> groupInfoBefore = getGroupInfo();
 
-        // 3) Run the use case
-        useCase.joinGroup(inputData);
+        // 2) Run the use case through the controller
+        controller.create("grpOne11", "rcordi");
 
         try {
             List<String> userInfoAfter = getUserInfo();

@@ -1,7 +1,6 @@
 package Entities;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.json.simple.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -86,15 +85,6 @@ public class PurchaseBalance implements Iterable<Debt>{
         }
         return false;
     }
-
-//    public JSONObject toJSON(){
-//        JSONObject obj = new JSONObject();
-//        List<String> allDebts = new ArrayList<>();
-//        this.allDebts.forEach(debt -> allDebts.add(debt.toString()));
-//        obj.put("allDebts", allDebts);
-//
-//        return obj;
-//    }
 
     /**
      * iterator function for iteration

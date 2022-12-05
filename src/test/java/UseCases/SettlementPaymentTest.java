@@ -1,21 +1,21 @@
 package UseCases;
 
+import Controllers.SettlementController;
 import DataAccess.GroupDataAccess;
 import DataAccessInterface.GroupDataInterface;
-import DataStructures.PaymentDetails;
 import DataStructures.UpdatedDebts;
 import Entities.Group;
 import InputBoundary.SettlementBoundaryIn;
 import Presenters.SettlementPresenter;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.json.simple.parser.ParseException;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.jupiter.api.Test;
 
-import java.io.File;
 import java.io.IOException;
+import org.junit.After;
+import org.junit.Before;
+
+import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -39,10 +39,10 @@ class SettlementPaymentTest {
     @After
     public void tearDown(){
         File groupFile = new File("src/test/resources/testgroupsCopy.json");
-        groupFile.delete();
+        assert groupFile.delete();
 
         File userFile = new File("src/test/resources/testusersCopy.json");
-        userFile.delete();
+        assert userFile.delete();
     }
 
     @Test
@@ -60,13 +60,11 @@ class SettlementPaymentTest {
         }
 
         SettlementPresenter presenter = new SettlementPresenter();
-        SettlementBoundaryIn usecase = new SettlementPayment(presenter, groupData);
+        SettlementBoundaryIn useCase = new SettlementPayment(presenter, groupData);
+        SettlementController controller = new SettlementController(useCase);
 
-        // 2) Input data we can make this up for the test. Normally it would be created by the Controller.
-        PaymentDetails inputData = new PaymentDetails("mishaalk", "randomC", "grpOne11");
-
-        // 3) Run the use case
-        UpdatedDebts outputData = usecase.executeDebtSettlement(inputData);
+        // 3) Run the use case through the controller
+        UpdatedDebts outputData = controller.settleDebt("mishaalk","randomC","grpOne11");
 
         // Add an assert statement or multiple to check if the output data is correct
         assert (Objects.equals(outputData.getOutcomeMessage(), "Success") && outputData.getUpdatedBalances() != null);
@@ -89,13 +87,11 @@ class SettlementPaymentTest {
         }
 
         SettlementPresenter presenter = new SettlementPresenter();
-        SettlementBoundaryIn usecase = new SettlementPayment(presenter, groupData);
-
-        // 2) Input data we can make this up for the test. Normally it would be created by the Controller.
-        PaymentDetails inputData = new PaymentDetails("mishaalk", "userDne", "grpOne11");
+        SettlementBoundaryIn useCase = new SettlementPayment(presenter, groupData);
+        SettlementController controller = new SettlementController(useCase);
 
         // 3) Run the use case
-        UpdatedDebts outputData = usecase.executeDebtSettlement(inputData);
+        UpdatedDebts outputData = controller.settleDebt("mishaalk", "userDne", "grpOne11");
 
         // Add an assert statement or multiple to check if the output data is correct
         assert (Objects.equals(outputData.getOutcomeMessage(), "debt between selected users does not exist") && outputData.getUpdatedBalances() == null);
@@ -104,7 +100,7 @@ class SettlementPaymentTest {
     }
 
     @Test
-    void createDebtDbCheck() throws IOException, org.json.simple.parser.ParseException {
+    void createDebtDbCheck() throws IOException{
         
         setUp();
         GroupDataInterface groupData;
@@ -117,12 +113,11 @@ class SettlementPaymentTest {
         }
 
         SettlementPresenter presenter = new SettlementPresenter();
-        SettlementBoundaryIn usecase = new SettlementPayment(presenter, groupData);
+        SettlementBoundaryIn useCase = new SettlementPayment(presenter, groupData);
+        SettlementController controller = new SettlementController(useCase);
 
-        // 2) Input data we can make this up for the test. Normally it would be created by the Controller.
-        PaymentDetails inputData = new PaymentDetails("sopleee", "mishaalk", "grpOne11");
         // 3) Run the use case
-        usecase.executeDebtSettlement(inputData);
+        controller.settleDebt("sopleee", "mishaalk", "grpOne11");
 
         // 4) Check against the resulting database for the updated debt information.
         try {
