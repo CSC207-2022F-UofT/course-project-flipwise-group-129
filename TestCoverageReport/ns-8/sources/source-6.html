@@ -1,0 +1,445 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > MainWindowView</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">View</a>
+</div>
+
+<h1>Coverage Summary for Class: MainWindowView (View)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">MainWindowView</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/19)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/141)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package View;
+&nbsp;
+&nbsp;import Controllers.GroupCreateController;
+&nbsp;import Controllers.GroupJoinController;
+&nbsp;import Controllers.UserLoginController;
+&nbsp;import DataAccess.GroupDataAccess;
+&nbsp;import DataAccess.UserDataAccess;
+&nbsp;import DataAccessInterface.GroupDataInterface;
+&nbsp;import DataAccessInterface.UserDataInterface;
+&nbsp;import DataStructures.CreatedGroupInfo;
+&nbsp;import DataStructures.JoinedGroupInfo;
+&nbsp;import DataStructures.LoggedInInfo;
+&nbsp;import InputBoundary.GroupCreateBoundaryIn;
+&nbsp;import InputBoundary.GroupJoinBoundaryIn;
+&nbsp;import InputBoundary.UserLoginBoundaryIn;
+&nbsp;import Presenters.GroupCreatePresenter;
+&nbsp;import Presenters.GroupJoinPresenter;
+&nbsp;import Presenters.UserLoginPresenter;
+&nbsp;import UseCases.GroupCreate;
+&nbsp;import UseCases.GroupJoin;
+&nbsp;import UseCases.UserLogin;
+&nbsp;import org.json.simple.parser.ParseException;
+&nbsp;
+&nbsp;import javax.swing.*;
+&nbsp;import java.awt.event.ActionEvent;
+&nbsp;import java.awt.event.ActionListener;
+&nbsp;import java.io.IOException;
+&nbsp;import java.util.ArrayList;
+&nbsp;import java.util.Arrays;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;public class MainWindowView extends JFrame implements ActionListener {
+&nbsp;    private final UserLoginView loginView;
+&nbsp;    private final UserRegisterView registerView;
+&nbsp;    private final GroupCreateController controllerCreate;
+&nbsp;    private final GroupJoinController controllerJoin;
+&nbsp;
+&nbsp;    private LoggedInInfo userInfo;
+&nbsp;
+&nbsp;    private List&lt;List&lt;Object&gt;&gt; userGroups;
+&nbsp;    private final UserLoginController userLoginController;
+&nbsp;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Generates a window to switch between log in and registration pages.
+&nbsp;     */
+<b class="nc">&nbsp;    public MainWindowView() {</b>
+&nbsp;
+&nbsp;        UserDataInterface UserInterface;
+&nbsp;
+&nbsp;        GroupDataInterface GroupInterface;
+&nbsp;        try {
+<b class="nc">&nbsp;            GroupInterface = new GroupDataAccess();</b>
+<b class="nc">&nbsp;            UserInterface = new UserDataAccess();</b>
+<b class="nc">&nbsp;        } catch (IOException | ParseException e) {</b>
+<b class="nc">&nbsp;            throw new RuntimeException(e);</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+&nbsp;        //GroupCreate
+<b class="nc">&nbsp;        GroupCreatePresenter presenterCreate = new GroupCreatePresenter();</b>
+<b class="nc">&nbsp;        GroupCreateBoundaryIn useCaseCreate = new GroupCreate(presenterCreate, GroupInterface, UserInterface);</b>
+&nbsp;
+<b class="nc">&nbsp;        this.controllerCreate = new GroupCreateController(useCaseCreate);</b>
+&nbsp;
+&nbsp;        //GroupJoin
+<b class="nc">&nbsp;        GroupJoinPresenter presenterJoin = new GroupJoinPresenter();</b>
+<b class="nc">&nbsp;        GroupJoinBoundaryIn useCaseJoin = new GroupJoin(presenterJoin, GroupInterface, UserInterface);</b>
+&nbsp;
+<b class="nc">&nbsp;        this.controllerJoin = new GroupJoinController(useCaseJoin);</b>
+&nbsp;
+<b class="nc">&nbsp;        UserLoginPresenter userLoginPresenter = new UserLoginPresenter();</b>
+<b class="nc">&nbsp;        UserLoginBoundaryIn useCase = new UserLogin(userLoginPresenter, UserInterface, GroupInterface);</b>
+&nbsp;
+<b class="nc">&nbsp;        this.userLoginController = new UserLoginController(useCase);</b>
+&nbsp;
+<b class="nc">&nbsp;        this.loginView = new UserLoginView();</b>
+<b class="nc">&nbsp;        this.registerView = new UserRegisterView();</b>
+&nbsp;
+&nbsp;        // SetUp main window
+<b class="nc">&nbsp;        setSize(1500, 820);</b>
+<b class="nc">&nbsp;        setVisible(true);</b>
+<b class="nc">&nbsp;        this.setContentPane(loginView);</b>
+<b class="nc">&nbsp;        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);</b>
+&nbsp;
+<b class="nc">&nbsp;        loginView.getLogin().addActionListener(this);</b>
+<b class="nc">&nbsp;        loginView.getToRegister().addActionListener(this);</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * @param evt the event to be processed
+&nbsp;     * React to a certain button click that results in evt.
+&nbsp;     */
+&nbsp;    public void actionPerformed(ActionEvent evt) {
+&nbsp;
+<b class="nc">&nbsp;        if (evt.getActionCommand().equals(&quot;Log In&quot;)) {</b>
+<b class="nc">&nbsp;            if (isAlpha(loginView.getUsername()) &amp;&amp; isAlpha(loginView.getPassword())) {</b>
+<b class="nc">&nbsp;                this.userInfo = this.userLoginController.controlUseCase(loginView.getUsername(),</b>
+<b class="nc">&nbsp;                        loginView.getPassword());</b>
+<b class="nc">&nbsp;                this.userGroups = userInfo.getUserAllGroups();</b>
+<b class="nc">&nbsp;                System.out.println(&quot;userInfo from login &quot; + userGroups);</b>
+<b class="nc">&nbsp;                if (userInfo.statusBool()) {</b>
+<b class="nc">&nbsp;                    setHomePage(userInfo.getUsername(), getGroupNames(userGroups));</b>
+&nbsp;                }
+<b class="nc">&nbsp;                else { showMessage(&quot;Not Successful :(&quot;); }</b>
+&nbsp;            }
+<b class="nc">&nbsp;            else { showMessage(&quot;Error with inputs!&quot;); }</b>
+&nbsp;        }
+<b class="nc">&nbsp;        else if (evt.getActionCommand().equals(&quot;New to Flipwise?&quot;)) {</b>
+<b class="nc">&nbsp;            setUserRegisterView(this.registerView);</b>
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        else if (evt.getActionCommand().equals(&quot;Exit&quot;)) {</b>
+<b class="nc">&nbsp;            this.setContentPane(loginView);</b>
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        else if (evt.getActionCommand().equals(&quot;Sign Up&quot;)){</b>
+<b class="nc">&nbsp;           setContentPane(loginView);</b>
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        else if (evt.getActionCommand().equals(&quot;Create Group&quot;)) {</b>
+&nbsp;
+<b class="nc">&nbsp;            String groupName = JOptionPane.showInputDialog(&quot;Please enter in Group Name:&quot;);</b>
+<b class="nc">&nbsp;            showMessage(&quot;The name of the group is &quot; + groupName + &quot;.&quot;);</b>
+&nbsp;
+<b class="nc">&nbsp;            if (groupName == null || !(groupName.matches(&quot;[A-Za-z0-9 ]+&quot;))) {</b>
+<b class="nc">&nbsp;                showMessage(&quot;Error with input!&quot;);</b>
+<b class="nc">&nbsp;            } else { CreatedGroupInfo createdGroupInfo = this.controllerCreate.create(groupName, userInfo.getUsername());</b>
+&nbsp;
+<b class="nc">&nbsp;                if (createdGroupInfo.getError() == null) {</b>
+<b class="nc">&nbsp;                    setHomePage(userInfo.getUsername(), createdGroupInfo.getAllGroupNames());</b>
+<b class="nc">&nbsp;                    addCreateGroup(this.userGroups, createdGroupInfo);</b>
+<b class="nc">&nbsp;                } else { showMessage(createdGroupInfo.getError()); } }</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+<b class="nc">&nbsp;        else if (evt.getActionCommand().equals(&quot;Join Group&quot;)) {</b>
+&nbsp;
+<b class="nc">&nbsp;            String groupID = JOptionPane.showInputDialog(&quot;Please enter in Group ID:&quot;);</b>
+<b class="nc">&nbsp;            JOptionPane.showMessageDialog(null, &quot;The ID of the group is &quot;</b>
+&nbsp;                    + groupID + &quot;.&quot;);
+&nbsp;
+<b class="nc">&nbsp;            JoinedGroupInfo joinedGroupInfo = this.controllerJoin.create(groupID, userInfo.getUsername());</b>
+<b class="nc">&nbsp;            if (joinedGroupInfo.getError() == null) {</b>
+<b class="nc">&nbsp;                setHomePage(userInfo.getUsername(), joinedGroupInfo.getGroupNames());</b>
+<b class="nc">&nbsp;                addJoinGroup(this.userGroups, joinedGroupInfo, groupID);</b>
+<b class="nc">&nbsp;            } else { showMessage(joinedGroupInfo.getError()); }</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+<b class="nc">&nbsp;        else if (evt.getActionCommand().equals(&quot;Return to Groups&quot;)) {</b>
+<b class="nc">&nbsp;            setHomePage(userInfo.getUsername(), getGroupNames(userGroups));</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        else {
+<b class="nc">&nbsp;                String groupname = filterGroupName( evt.getActionCommand());</b>
+<b class="nc">&nbsp;                String groupID = getGroupID(getGroupIDs(userGroups), getGroupNames(userGroups), groupname);</b>
+<b class="nc">&nbsp;                setGroupSummary(groupname, groupID, userInfo.getUsername(), getPurchaseListData(userGroups, groupID),</b>
+<b class="nc">&nbsp;                        getPlanningListData(userGroups, groupID), getGroupDebtData(userGroups, groupID),</b>
+<b class="nc">&nbsp;                        getAllUserNames(userGroups, groupID));</b>
+&nbsp;            }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Switches to registration page on the main window.
+&nbsp;     * @param registerView the screen in which the user signs up.
+&nbsp;     */
+&nbsp;    private void setUserRegisterView(UserRegisterView registerView){
+<b class="nc">&nbsp;        this.setContentPane(registerView);</b>
+<b class="nc">&nbsp;        registerView.getSignup().addActionListener(this);</b>
+<b class="nc">&nbsp;        registerView.getExitSignUp().addActionListener(this);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Switches to homepage on the main window.
+&nbsp;     * @param user the name of the user that logged in.
+&nbsp;     * @param groupnames the list of groups the user is involved in.
+&nbsp;     */
+&nbsp;    private void setHomePage(String user, List&lt;String&gt; groupnames){
+<b class="nc">&nbsp;        HomePageView homePageView = new HomePageView(user, groupnames, this);</b>
+<b class="nc">&nbsp;        this.setContentPane(homePageView);</b>
+<b class="nc">&nbsp;        homePageView.getJoinGroup().addActionListener(this);</b>
+<b class="nc">&nbsp;        homePageView.getCreateGroup().addActionListener(this);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Switches to group summery page on the main window.
+&nbsp;     * @param group the name of the group.
+&nbsp;     */
+&nbsp;    public void setGroupSummary(String group, String groupid, String username,
+&nbsp;                                List&lt;List&lt;String&gt;&gt; purchaseListData, List&lt;List&lt;String&gt;&gt; planningListData,
+&nbsp;                                List&lt;List&lt;Object&gt;&gt; debtData, List&lt;String&gt; groupUserNames) {
+<b class="nc">&nbsp;        GroupSummaryView selectedGroup = new GroupSummaryView(group, groupid, username,</b>
+&nbsp;                purchaseListData, planningListData, debtData, groupUserNames, this);
+<b class="nc">&nbsp;        setContentPane(selectedGroup);</b>
+<b class="nc">&nbsp;        selectedGroup.getToHomepage().addActionListener(this);</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * @return the name of the user that logged in.
+&nbsp;     */
+&nbsp;    public String getUsername(LoggedInInfo userInfo){
+<b class="nc">&nbsp;        return userInfo.getUsername();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * @return the ID of the group the user selected.
+&nbsp;     */
+&nbsp;    public String getGroupID(List&lt;String&gt; groupIDs, List&lt;String&gt; groupnames, String group){
+<b class="nc">&nbsp;        int index = groupnames.indexOf(group);</b>
+<b class="nc">&nbsp;        return groupIDs.get(index);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * @return the list of names of the groups the user is included in.
+&nbsp;     */
+&nbsp;    public List&lt;String&gt; getGroupNames(List&lt;List&lt;Object&gt;&gt; allGroups) {
+<b class="nc">&nbsp;        List&lt;String&gt; output = new ArrayList&lt;&gt;();</b>
+<b class="nc">&nbsp;        for (List&lt;Object&gt; currentGroup : allGroups) {</b>
+<b class="nc">&nbsp;            output.add((String) currentGroup.get(1));</b>
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;        return output;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * @return the list of IDs of the groups the user is included in.
+&nbsp;     */
+&nbsp;    public List&lt;String&gt; getGroupIDs(List&lt;List&lt;Object&gt;&gt; allGroups) {
+<b class="nc">&nbsp;        List&lt;String&gt; output = new ArrayList&lt;&gt;();</b>
+<b class="nc">&nbsp;        for (List&lt;Object&gt; currentGroup : allGroups) {</b>
+<b class="nc">&nbsp;            output.add((String) currentGroup.get(0));</b>
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;        return output;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * @return the list of all purchased items of a group.
+&nbsp;     */
+&nbsp;    public List&lt;List&lt;String&gt;&gt; getPurchaseListData(List&lt;List&lt;Object&gt;&gt; allGroups, String groupID) {
+<b class="nc">&nbsp;        List&lt;List&lt;String&gt;&gt; output = new ArrayList&lt;&gt;();</b>
+<b class="nc">&nbsp;        for (List&lt;Object&gt; currentGroup : allGroups) {</b>
+<b class="nc">&nbsp;            if (currentGroup.get(0) == groupID) {</b>
+<b class="nc">&nbsp;                output = (List&lt;List&lt;String&gt;&gt;) currentGroup.get(3);</b>
+&nbsp;            }
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;        return output;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * @return the list of all planning items of a group.
+&nbsp;     */
+&nbsp;    public List&lt;List&lt;String&gt;&gt; getPlanningListData(List&lt;List&lt;Object&gt;&gt; allGroups, String groupID) {
+<b class="nc">&nbsp;        List&lt;List&lt;String&gt;&gt; output = new ArrayList&lt;&gt;();</b>
+<b class="nc">&nbsp;        for (List&lt;Object&gt; currentGroup : allGroups) {</b>
+<b class="nc">&nbsp;            if (currentGroup.get(0) == groupID) {</b>
+<b class="nc">&nbsp;                output = (List&lt;List&lt;String&gt;&gt;) currentGroup.get(2);</b>
+&nbsp;            }
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;        return output;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * @return the list of all users a part of a group.
+&nbsp;     */
+&nbsp;    public List&lt;String&gt; getAllUserNames(List&lt;List&lt;Object&gt;&gt; allGroups, String groupID) {
+<b class="nc">&nbsp;        List&lt;String&gt; output = new ArrayList&lt;&gt;();</b>
+<b class="nc">&nbsp;        for (List&lt;Object&gt; currentGroup : allGroups) {</b>
+<b class="nc">&nbsp;            if (currentGroup.get(0) == groupID) {</b>
+<b class="nc">&nbsp;                output = (List&lt;String&gt;) currentGroup.get(4);</b>
+&nbsp;            }
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;        return output;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * @return the list of debt information between members of a group.
+&nbsp;     */
+&nbsp;    public List&lt;List&lt;Object&gt;&gt; getGroupDebtData(List&lt;List&lt;Object&gt;&gt; allGroups, String groupID) {
+<b class="nc">&nbsp;        List&lt;List&lt;Object&gt;&gt; output = new ArrayList&lt;&gt;();</b>
+<b class="nc">&nbsp;        for (List&lt;Object&gt; currentGroup : allGroups) {</b>
+<b class="nc">&nbsp;            output = (List&lt;List&lt;Object&gt;&gt;) currentGroup.get(5);</b>
+&nbsp;
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;        return output;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void addJoinGroup(List&lt;List&lt;Object&gt;&gt; userGroups, JoinedGroupInfo joinedGroupInfo, String groupID) {
+<b class="nc">&nbsp;        List&lt;Object&gt; newGroup = new ArrayList&lt;&gt;();</b>
+<b class="nc">&nbsp;        List&lt;List&lt;Object&gt;&gt; newDebtData = new ArrayList&lt;&gt;();</b>
+<b class="nc">&nbsp;        String groupname = joinedGroupInfo.getGroupNames().get((joinedGroupInfo.getGroupNames().size() - 1));</b>
+&nbsp;
+<b class="nc">&nbsp;        newGroup.add(groupID);</b>
+<b class="nc">&nbsp;        newGroup.add(groupname);</b>
+<b class="nc">&nbsp;        newGroup.add(joinedGroupInfo.getPlanningList());</b>
+<b class="nc">&nbsp;        newGroup.add(joinedGroupInfo.getPurchasedList());</b>
+<b class="nc">&nbsp;        newGroup.add(joinedGroupInfo.getUsersInGroup());</b>
+<b class="nc">&nbsp;        newGroup.add(newDebtData);</b>
+&nbsp;
+<b class="nc">&nbsp;        userGroups.add(newGroup);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void addCreateGroup(List&lt;List&lt;Object&gt;&gt; userGroups, CreatedGroupInfo createdGroupInfo){
+<b class="nc">&nbsp;        List&lt;Object&gt; newGroup = new ArrayList&lt;&gt;();</b>
+<b class="nc">&nbsp;        List&lt;List&lt;String&gt;&gt; newPlanningList = new ArrayList&lt;&gt;();</b>
+<b class="nc">&nbsp;        List&lt;List&lt;String&gt;&gt; newPurchaseList = new ArrayList&lt;&gt;();</b>
+<b class="nc">&nbsp;        List&lt;List&lt;Object&gt;&gt; newDebtData = new ArrayList&lt;&gt;();</b>
+<b class="nc">&nbsp;        List&lt;String&gt; members = new ArrayList&lt;&gt;();</b>
+<b class="nc">&nbsp;        members.add(createdGroupInfo.getUsers());</b>
+&nbsp;
+<b class="nc">&nbsp;        newGroup.add(createdGroupInfo.getId());</b>
+<b class="nc">&nbsp;        newGroup.add(createdGroupInfo.getGroupName());</b>
+<b class="nc">&nbsp;        newGroup.add(newPlanningList);</b>
+<b class="nc">&nbsp;        newGroup.add(newPurchaseList);</b>
+<b class="nc">&nbsp;        newGroup.add(members);</b>
+<b class="nc">&nbsp;        newGroup.add(newDebtData);</b>
+&nbsp;
+<b class="nc">&nbsp;        userGroups.add(newGroup);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * displays message dialog when input fails.
+&nbsp;     * @param message the message to be displayed to the user after the user inputs.
+&nbsp;     */
+&nbsp;    public void showMessage(String message) {
+<b class="nc">&nbsp;        JOptionPane.showMessageDialog(this, message);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public String filterGroupName(String groupButton){
+<b class="nc">&nbsp;        String[] name = groupButton.split(&quot;_&quot;);</b>
+<b class="nc">&nbsp;        List&lt;Object&gt; temp = List.of(Arrays.stream(name).toArray());</b>
+<b class="nc">&nbsp;        return (String) temp.get(1);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public boolean isAlpha(String name) {
+<b class="nc">&nbsp;        return name.matches(&quot;[a-zA-Z0-9]+&quot;);</b>
+&nbsp;    }
+&nbsp;
+<b class="nc">&nbsp;    public List&lt;List&lt;Object&gt;&gt; getUserGroups(){ return this.userGroups;}</b>
+&nbsp;
+&nbsp;
+&nbsp;}
+&nbsp;
+&nbsp;
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2022-12-05 00:39</div>
+</div>
+</body>
+</html>

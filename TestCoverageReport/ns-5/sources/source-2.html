@@ -1,0 +1,236 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > Group</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">Entities</a>
+</div>
+
+<h1>Coverage Summary for Class: Group (Entities)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Group</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (11/11)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    90.9%
+  </span>
+  <span class="absValue">
+    (20/22)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package Entities;
+&nbsp;import com.fasterxml.jackson.core.JsonProcessingException;
+&nbsp;import com.fasterxml.jackson.databind.ObjectMapper;
+&nbsp;
+&nbsp;import java.sql.Timestamp;
+&nbsp;import java.util.Set;
+&nbsp;public class Group {
+&nbsp;    /**
+&nbsp;    This class represents a Group of users that have decided to conduct purchases together
+&nbsp;     */
+&nbsp;    private Set&lt;String&gt; users; // all the ids of users that are involved the group
+&nbsp;    private PurchaseList purchaseList; // the list of things to purchase
+&nbsp;    private PlanningList planningList; // the list of all the things that are planned to purchase
+&nbsp;    private PurchaseBalance purchaseBalance; // has all the debts in the group
+&nbsp;
+&nbsp;    private String groupName; // name of the group
+&nbsp;
+&nbsp;    private String groupId; // id of the group, generated from the timestamp
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Constructor to create a new group object
+&nbsp;     * @param name the name of the group to be created
+&nbsp;     * @param users all the users in the group
+&nbsp;     */
+<b class="fc">&nbsp;    public Group(String name, Set&lt;String&gt; users){</b>
+<b class="fc">&nbsp;        Timestamp ts = new Timestamp(System.currentTimeMillis());</b>
+<b class="fc">&nbsp;        this.groupId = &quot;Group&quot; + name + ts.toInstant().toString();</b>
+<b class="fc">&nbsp;        this.groupName = name;</b>
+<b class="fc">&nbsp;        this.users = users;</b>
+<b class="fc">&nbsp;        this.purchaseList = new PurchaseList();</b>
+<b class="fc">&nbsp;        this.planningList = new PlanningList();</b>
+<b class="fc">&nbsp;        this.purchaseBalance = new PurchaseBalance();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Empty Constructor for JSON parsing
+&nbsp;     */
+&nbsp;    public Group(){
+<b class="fc">&nbsp;        super();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Get all the users in the group
+&nbsp;     * @return the set of all users in the group
+&nbsp;     */
+&nbsp;    public Set&lt;String&gt; getUsers(){
+&nbsp;        // return all the users in this group
+<b class="fc">&nbsp;        return this.users;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * get the list of all things purchased in the group
+&nbsp;     * @return the list of all things purchased in the group
+&nbsp;     */
+&nbsp;    public PurchaseList getPurchaseList(){
+&nbsp;        // return the list of all the things that have been purchased
+<b class="fc">&nbsp;        return this.purchaseList;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * get the list of all things planned to be purchased in the group
+&nbsp;     * @return get the list of all things planned to be purchased in the group
+&nbsp;     */
+&nbsp;    public PlanningList getPlanningList() {
+&nbsp;        // return the list of all the things that have been planned to be purchased
+<b class="fc">&nbsp;        return planningList;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * get all the debts in the group
+&nbsp;     * @return all the debts in the group
+&nbsp;     */
+&nbsp;    public PurchaseBalance getPurchaseBalance() {
+&nbsp;        // return all the debts in this group
+<b class="fc">&nbsp;        return purchaseBalance;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * get the id of the group
+&nbsp;     * @return the id of the group
+&nbsp;     */
+&nbsp;    public String getGroupId() {
+&nbsp;    // return the groupId
+<b class="fc">&nbsp;        return this.groupId;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * get the name of the group
+&nbsp;     * @return the name of the group
+&nbsp;     */
+&nbsp;    public String getGroupName() {
+&nbsp;        // return the name of the group
+<b class="fc">&nbsp;        return this.groupName;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * add a user to the group
+&nbsp;     * adds the user to the set of users in the group
+&nbsp;     * @param user the user to add to the set of users in the group
+&nbsp;     */
+&nbsp;    public void addUser(String user){
+&nbsp;        // add a user into the group
+<b class="fc">&nbsp;        this.users.add(user);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * method to return a JSONString representation of an instance of this class Group
+&nbsp;     * @return a JSONString representation of an instance of this class Group
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public String toString() {
+&nbsp;        //converts the current instance into a JSONString for data storage purposes
+<b class="fc">&nbsp;        ObjectMapper mapper = new ObjectMapper();</b>
+&nbsp;        try {
+<b class="fc">&nbsp;            return mapper.writeValueAsString(this);</b>
+<b class="nc">&nbsp;        } catch (JsonProcessingException e) {</b>
+<b class="nc">&nbsp;            throw new RuntimeException(e);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * returns the instance of class Group present in the JSONString
+&nbsp;     * if unable to parse, throw exception
+&nbsp;     * @param groupString the JSONString containing all the information
+&nbsp;     * @return returns the instance stored in the JSONString
+&nbsp;     * @throws JsonProcessingException if unable to process the String into a Group instance
+&nbsp;     */
+&nbsp;    public static Group fromString(String groupString) throws JsonProcessingException {
+&nbsp;        // converts the JSONString into an instance of Group
+<b class="fc">&nbsp;        ObjectMapper mapper = new ObjectMapper();</b>
+<b class="fc">&nbsp;        return mapper.readValue(groupString, Group.class);</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2022-12-05 00:39</div>
+</div>
+</body>
+</html>

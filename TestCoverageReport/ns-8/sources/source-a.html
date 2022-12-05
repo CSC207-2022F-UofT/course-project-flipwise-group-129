@@ -1,0 +1,259 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > UserRegisterView</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">View</a>
+</div>
+
+<h1>Coverage Summary for Class: UserRegisterView (View)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">UserRegisterView</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/9)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/58)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package View;
+&nbsp;
+&nbsp;import Controllers.UserRegisterController;
+&nbsp;import DataAccess.UserDataAccess;
+&nbsp;import DataAccessInterface.UserDataInterface;
+&nbsp;import InputBoundary.UserRegisterBoundaryIn;
+&nbsp;import Presenters.UserRegisterPresenter;
+&nbsp;import UseCases.UserRegister;
+&nbsp;import org.json.simple.parser.ParseException;
+&nbsp;
+&nbsp;import javax.swing.*;
+&nbsp;import java.awt.*;
+&nbsp;import java.awt.event.ActionEvent;
+&nbsp;import java.awt.event.ActionListener;
+&nbsp;import java.io.IOException;
+&nbsp;
+&nbsp;public class UserRegisterView extends JPanel implements ActionListener {
+&nbsp;    JLabel title, t1, t2, t3;
+<b class="nc">&nbsp;    JTextField username = new JTextField(25);</b>
+<b class="nc">&nbsp;    JPasswordField password = new JPasswordField(15);</b>
+<b class="nc">&nbsp;    JPasswordField repeatPassword = new JPasswordField(15);</b>
+&nbsp;
+&nbsp;    public JButton signup;
+&nbsp;    public JButton exitSignUp;
+&nbsp;
+&nbsp;    UserRegisterController controller;
+&nbsp;    public boolean final_output;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Builds the gui for the registration page.
+&nbsp;     */
+<b class="nc">&nbsp;    public UserRegisterView() {</b>
+&nbsp;
+&nbsp;        UserDataInterface userData;
+&nbsp;        try {
+<b class="nc">&nbsp;            userData = new UserDataAccess();</b>
+<b class="nc">&nbsp;        } catch (IOException | ParseException e) {</b>
+<b class="nc">&nbsp;            throw new RuntimeException(e); // Display popup</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+<b class="nc">&nbsp;        UserRegisterPresenter presenter = new UserRegisterPresenter();</b>
+<b class="nc">&nbsp;        UserRegisterBoundaryIn useCase = new UserRegister(presenter, userData);</b>
+&nbsp;
+<b class="nc">&nbsp;        this.controller = new UserRegisterController(useCase);</b>
+&nbsp;
+&nbsp;        // Defining JComponents
+<b class="nc">&nbsp;        title = new JLabel(&quot;Create an Account&quot;);</b>
+<b class="nc">&nbsp;        Font f = new Font(&quot;Arial&quot;, Font.BOLD, 20);</b>
+<b class="nc">&nbsp;        title.setFont(f);</b>
+<b class="nc">&nbsp;        t1 = new JLabel(&quot;Username&quot;);</b>
+<b class="nc">&nbsp;        t2 = new JLabel(&quot;Password&quot;);</b>
+<b class="nc">&nbsp;        t3 = new JLabel(&quot;Re-enter Password&quot;);</b>
+<b class="nc">&nbsp;        signup = new JButton(&quot;Sign Up&quot;);</b>
+<b class="nc">&nbsp;        exitSignUp = new JButton(&quot;Exit&quot;);</b>
+&nbsp;
+&nbsp;        // Setting positions of JComponents
+<b class="nc">&nbsp;        title.setBounds(70, 40, 300, 40);</b>
+<b class="nc">&nbsp;        t1.setBounds(70, 100, 200, 20);</b>
+<b class="nc">&nbsp;        username.setBounds(70, 120, 300, 30);</b>
+<b class="nc">&nbsp;        t2.setBounds(70, 170, 200, 20);</b>
+<b class="nc">&nbsp;        password.setBounds(70, 190, 300, 30);</b>
+<b class="nc">&nbsp;        t3.setBounds(70, 220, 200, 20);</b>
+<b class="nc">&nbsp;        repeatPassword.setBounds(70, 240, 300, 30);</b>
+<b class="nc">&nbsp;        signup.setBounds(200, 300, 100, 30);</b>
+<b class="nc">&nbsp;        exitSignUp.setBounds(70, 300, 100, 30);</b>
+&nbsp;
+&nbsp;        // Adding JComponents
+<b class="nc">&nbsp;        add(title);</b>
+<b class="nc">&nbsp;        add(t1);</b>
+<b class="nc">&nbsp;        add(username);</b>
+<b class="nc">&nbsp;        add(t2);</b>
+<b class="nc">&nbsp;        add(password);</b>
+<b class="nc">&nbsp;        add(t3);</b>
+<b class="nc">&nbsp;        add(repeatPassword);</b>
+<b class="nc">&nbsp;        add(signup);</b>
+<b class="nc">&nbsp;        add(exitSignUp);</b>
+&nbsp;
+&nbsp;        // JPanel Setup
+<b class="nc">&nbsp;        setLayout(null);</b>
+<b class="nc">&nbsp;        setSize(1500, 820);</b>
+<b class="nc">&nbsp;        setVisible(true);</b>
+&nbsp;
+<b class="nc">&nbsp;        signup.addActionListener(this);</b>
+<b class="nc">&nbsp;        exitSignUp.addActionListener(this);</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Calls the controller with the entered username, password, and repeated password as arguments.
+&nbsp;     * @param e the event to be processed
+&nbsp;     */
+&nbsp;    public void actionPerformed (ActionEvent e){
+<b class="nc">&nbsp;        if (e.getActionCommand().equals(&quot;Sign Up&quot;)){</b>
+<b class="nc">&nbsp;            if (isAlpha(getUsername()) &amp;&amp; isPassword(getPassword())) {</b>
+<b class="nc">&nbsp;                this.final_output = controller.controlUseCase(username.getText(),</b>
+<b class="nc">&nbsp;                        String.valueOf(password.getPassword()),</b>
+<b class="nc">&nbsp;                    String.valueOf(repeatPassword.getPassword()));</b>
+&nbsp;
+<b class="nc">&nbsp;                if (this.final_output) {</b>
+<b class="nc">&nbsp;                JOptionPane.showMessageDialog(this,</b>
+&nbsp;                        &quot;Registration successful! Log in to your new account.&quot;);
+&nbsp;                }
+&nbsp;
+<b class="nc">&nbsp;                else { JOptionPane.showMessageDialog(this, &quot;Not Successful :(&quot;); }</b>
+&nbsp;            }
+<b class="nc">&nbsp;            else { showMessage(&quot;Error with inputs!&quot;); }</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    public void showMessage(String message) {
+<b class="nc">&nbsp;        JOptionPane.showMessageDialog(this, message);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * @return the button that allows user to sign up for an account.
+&nbsp;     */
+<b class="nc">&nbsp;    public JButton getSignup() { return signup; }</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * @return the exit button that brings user back to log in.
+&nbsp;     */
+<b class="nc">&nbsp;    public JButton getExitSignUp() { return exitSignUp; }</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * @return the password of the user that logged in.
+&nbsp;     */
+<b class="nc">&nbsp;    public String getPassword() { return String.valueOf(this.password.getPassword());}</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * @return the username of the user that logged in.
+&nbsp;     */
+<b class="nc">&nbsp;    public String getUsername() { return this.username.getText(); }</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * helper function to confirm whether input added is valid
+&nbsp;     * @param name string to be tested
+&nbsp;     * @return  whether the string was successful
+&nbsp;     */
+&nbsp;    public boolean isAlpha(String name) {
+<b class="nc">&nbsp;        return name.matches(&quot;[a-zA-Z0-9]+&quot;);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * helper function to confirm whether password added is valid
+&nbsp;     * @param password string to be added
+&nbsp;     * @return whether password was successful
+&nbsp;     */
+&nbsp;    public boolean isPassword(String password) {
+<b class="nc">&nbsp;        return password.matches(&quot;[a-zA-Z0-9@ ]+&quot;);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2022-12-05 00:39</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,283 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > UserLogin</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">UseCases</a>
+</div>
+
+<h1>Coverage Summary for Class: UserLogin (UseCases)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">UserLogin</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (8/8)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    90.6%
+  </span>
+  <span class="absValue">
+    (58/64)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;/**
+&nbsp; * Use case for login a user who already has an account.
+&nbsp; */
+&nbsp;package UseCases;
+&nbsp;import DataAccessInterface.GroupDataInterface;
+&nbsp;import DataAccessInterface.UserDataInterface;
+&nbsp;import DataStructures.LoggedInInfo;
+&nbsp;import DataStructures.LoginCredentials;
+&nbsp;import Entities.*;
+&nbsp;import InputBoundary.UserLoginBoundaryIn;
+&nbsp;import OutputBoundary.UserLoginBoundaryOut;
+&nbsp;import com.fasterxml.jackson.core.JsonProcessingException;
+&nbsp;import org.json.simple.parser.ParseException;
+&nbsp;
+&nbsp;import java.io.IOException;
+&nbsp;import java.util.ArrayList;
+&nbsp;import java.util.List;
+&nbsp;import java.util.Objects;
+&nbsp;
+&nbsp;public class UserLogin implements UserLoginBoundaryIn {
+&nbsp;    final UserLoginBoundaryOut outputBoundary;
+&nbsp;    final UserDataInterface userDataInterface;
+&nbsp;    final GroupDataInterface groupDataInterface;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * @param outputBoundary output boundary to display result of login
+&nbsp;     * @param userDataAccess data access layer allowing query of user database
+&nbsp;     * @param groupDataAccess data access layer allowing query of group database
+&nbsp;     */
+<b class="fc">&nbsp;    public UserLogin(UserLoginBoundaryOut outputBoundary, UserDataInterface userDataAccess, GroupDataInterface groupDataAccess) {</b>
+<b class="fc">&nbsp;        this.outputBoundary = outputBoundary;</b>
+<b class="fc">&nbsp;        this.userDataInterface = userDataAccess;</b>
+<b class="fc">&nbsp;        this.groupDataInterface = groupDataAccess;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Updates the outputBoundary as to the success for failure of a login attempt.
+&nbsp;     *
+&nbsp;     * @param credentials the login credentials that the user entered
+&nbsp;     * @return the info to display after the login
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public LoggedInInfo executeUserLogin(LoginCredentials credentials) {
+&nbsp;        try {
+<b class="fc">&nbsp;            String username = credentials.getUsername();</b>
+<b class="fc">&nbsp;            String password = credentials.getPassword();</b>
+<b class="fc">&nbsp;            return(outputBoundary.successfulLogin(usernamePasswordMatch(username, password)));</b>
+<b class="nc">&nbsp;        } catch (JsonProcessingException e) {</b>
+<b class="nc">&nbsp;            return(outputBoundary.failedLogin(new LoggedInInfo(false)));</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Helper method to determine if the user exists and if the passwords match.
+&nbsp;     *
+&nbsp;     * @param username username entered by the user
+&nbsp;     * @param password password entered by the user
+&nbsp;     * @return if the login details are valid
+&nbsp;     * @throws JsonProcessingException if there is an error parsing the JSON
+&nbsp;     */
+&nbsp;    private LoggedInInfo usernamePasswordMatch(String username, String password) throws JsonProcessingException {
+&nbsp;        try {
+<b class="fc">&nbsp;            if (userDataInterface.userIdExists(username)) {</b>
+<b class="fc">&nbsp;                String userDetails = userDataInterface.userAsString(username);</b>
+<b class="fc">&nbsp;                User user = User.fromString(userDetails);</b>
+<b class="fc">&nbsp;                if (Objects.equals(user.getPassword(), password)) {</b>
+<b class="fc">&nbsp;                    return(successDetails(user));</b>
+&nbsp;                }
+&nbsp;            }
+<b class="nc">&nbsp;        } catch (IOException | ParseException e) {</b>
+<b class="nc">&nbsp;            return new LoggedInInfo(false);</b>
+<b class="fc">&nbsp;        }</b>
+<b class="fc">&nbsp;        return new LoggedInInfo(false);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Creates the data structure that reports to outcome of a login
+&nbsp;     *
+&nbsp;     * @param user user object that logged in successfully
+&nbsp;     * @return A LoggedInInfo data structure
+&nbsp;     */
+&nbsp;    private LoggedInInfo successDetails(User user) throws JsonProcessingException {
+<b class="fc">&nbsp;        List&lt;List&lt;Object&gt;&gt; allGroups = new ArrayList&lt;&gt;();</b>
+<b class="fc">&nbsp;        List&lt;String&gt; groups = user.getGroups();</b>
+<b class="fc">&nbsp;        for (String stringGroup : groups) {</b>
+&nbsp;            // Gets a group representation of each group
+&nbsp;            Group group;
+&nbsp;            try {
+<b class="fc">&nbsp;                group = Group.fromString(groupDataInterface.groupAsString(stringGroup));</b>
+<b class="nc">&nbsp;            } catch (IOException | ParseException e) {</b>
+<b class="nc">&nbsp;                return new LoggedInInfo(false);</b>
+<b class="fc">&nbsp;            }</b>
+<b class="fc">&nbsp;            List&lt;Object&gt; eachGroup = new ArrayList&lt;&gt;();</b>
+&nbsp;
+<b class="fc">&nbsp;            eachGroup.add(group.getGroupId());</b>
+<b class="fc">&nbsp;            eachGroup.add(group.getGroupName());</b>
+&nbsp;
+<b class="fc">&nbsp;            eachGroup.add(getPlanning(group.getPlanningList()));</b>
+<b class="fc">&nbsp;            eachGroup.add(getPurchase(group.getPurchaseList()));</b>
+&nbsp;
+<b class="fc">&nbsp;            eachGroup.add(getUsersAsList(group));</b>
+&nbsp;
+<b class="fc">&nbsp;            List&lt;Debt&gt; debtAsDebts = group.getPurchaseBalance().getAllDebts();</b>
+<b class="fc">&nbsp;            eachGroup.add(getDebtAsString(debtAsDebts));</b>
+&nbsp;
+&nbsp;            // Add all the group details to outer list.
+<b class="fc">&nbsp;            allGroups.add(eachGroup);</b>
+<b class="fc">&nbsp;        }</b>
+<b class="fc">&nbsp;        return new LoggedInInfo(user.getUsername(), allGroups);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Converts debt from a debt objects to a Nested List of String, which is displayable by the view.
+&nbsp;     * Helper method for successDetails.
+&nbsp;     *
+&nbsp;     * @param debtAsDebts list of all debts in a group
+&nbsp;     * @return the nested list representation of the debt
+&nbsp;     */
+&nbsp;    private List&lt;List&lt;String&gt;&gt; getDebtAsString(List&lt;Debt&gt; debtAsDebts) {
+<b class="fc">&nbsp;        List&lt;List&lt;String&gt;&gt; debtAsString = new ArrayList&lt;&gt;();</b>
+<b class="fc">&nbsp;        for (Debt debt : debtAsDebts) {</b>
+<b class="fc">&nbsp;            ArrayList&lt;String&gt; debtInfo = new ArrayList&lt;&gt;();</b>
+<b class="fc">&nbsp;            debtInfo.add(debt.getUserOwed().getUsername());</b>
+<b class="fc">&nbsp;            debtInfo.add(debt.getUserOwing().getUsername());</b>
+<b class="fc">&nbsp;            debtInfo.add(debt.getDebtValue().toString());</b>
+<b class="fc">&nbsp;            debtAsString.add(debtInfo);</b>
+<b class="fc">&nbsp;        }</b>
+<b class="fc">&nbsp;        return(debtAsString);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Returns a string of all the usernames in a group as a list of strings.
+&nbsp;     * Helper method for successDetails.
+&nbsp;     *
+&nbsp;     * @param group the group to get all users fomr
+&nbsp;     * @return a list of string of usernames
+&nbsp;     */
+&nbsp;    private List&lt;String&gt; getUsersAsList(Group group) {
+<b class="fc">&nbsp;        return new ArrayList&lt;&gt;(group.getUsers());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Returns a nested list representation of the planning list of a group.
+&nbsp;     * Helper method for successDetails.
+&nbsp;     *
+&nbsp;     * @param planningList a group&#39;s planning list
+&nbsp;     * @return a list representation of a planning list
+&nbsp;     */
+&nbsp;    private List&lt;List&lt;String&gt;&gt; getPlanning(PlanningList planningList){
+<b class="fc">&nbsp;        List&lt;List&lt;String&gt;&gt; stringPlanningList = new ArrayList&lt;&gt;();</b>
+<b class="fc">&nbsp;        for(Item curItem: planningList.getItems()){</b>
+<b class="fc">&nbsp;            List&lt;String&gt; currentItem = new ArrayList&lt;&gt;();</b>
+<b class="fc">&nbsp;            currentItem.add(curItem.getItemId());</b>
+<b class="fc">&nbsp;            currentItem.add(curItem.getItemName());</b>
+<b class="fc">&nbsp;            stringPlanningList.add(currentItem);</b>
+<b class="fc">&nbsp;        }</b>
+<b class="fc">&nbsp;        return stringPlanningList;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Returns a nested list representation of the purchase list of a group.
+&nbsp;     * Helper method for successDetails.
+&nbsp;     *
+&nbsp;     * @param purchaseList purchase list for the group
+&nbsp;     * @return a nested list representation of the purchase list
+&nbsp;     */
+&nbsp;    private List&lt;List&lt;String&gt;&gt; getPurchase(PurchaseList purchaseList){
+<b class="fc">&nbsp;        List&lt;List&lt;String&gt;&gt; stringPurchasedList = new ArrayList&lt;&gt;();</b>
+<b class="fc">&nbsp;        for(Item curItem: purchaseList.getItems()){</b>
+<b class="fc">&nbsp;            List&lt;String&gt; currentItem = new ArrayList&lt;&gt;();</b>
+<b class="fc">&nbsp;            currentItem.add(curItem.getItemId());</b>
+<b class="fc">&nbsp;            currentItem.add(curItem.getItemName());</b>
+<b class="fc">&nbsp;            currentItem.add(String.valueOf(curItem.getPrice()));</b>
+<b class="fc">&nbsp;            currentItem.add(curItem.getBuyer());</b>
+<b class="fc">&nbsp;            stringPurchasedList.add(currentItem);</b>
+<b class="fc">&nbsp;        }</b>
+<b class="fc">&nbsp;        return stringPurchasedList;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2022-12-05 00:39</div>
+</div>
+</body>
+</html>
