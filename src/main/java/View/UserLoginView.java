@@ -6,11 +6,13 @@ import java.awt.*;
 
 public class UserLoginView extends JPanel {
 // implements ActionListener
-    JLabel title, t1, t2;
+final JLabel title;
+    final JLabel t1;
+    final JLabel t2;
     private final JTextField username = new JTextField(25);
     private final JPasswordField password = new JPasswordField(15);
-    public JButton login;
-    public JButton toRegister;
+    public final JButton login;
+    public final JButton toRegister;
 
     /**
      * Builds the gui for the user login page.

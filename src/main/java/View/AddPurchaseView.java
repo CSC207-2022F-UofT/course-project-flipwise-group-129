@@ -6,10 +6,10 @@ import java.util.List;
 
 
 public class AddPurchaseView extends JOptionPane{
-    JLabel item_request;
-    JTextField item_price;
-    JTextArea text_contributing_members;
-    JCheckBox[] contributing_members;
+    final JLabel item_request;
+    final JTextField item_price;
+    final JTextArea text_contributing_members;
+    final JCheckBox[] contributing_members;
     public AddPurchaseView(List<String> groupUserNames) {
 
 

@@ -7,9 +7,9 @@ import java.util.List;
 
 public class PlanningListView extends JPanel {
     private final JTable table;
-    DefaultTableModel model;
+    final DefaultTableModel model;
     Object[][] rows;
-    String[] columns = new String[]{"Item"};
+    final String[] columns = new String[]{"Item"};
 
     /**
      * the constructor to create a planning list view

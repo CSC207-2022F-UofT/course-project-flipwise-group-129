@@ -100,7 +100,7 @@ public class MainWindowView extends JFrame implements ActionListener {
                 this.userGroups = userInfo.getUserAllGroups();
                 System.out.println("userInfo from login " + userGroups);
                 if (userInfo.statusBool()) {
-                    setHomePage(userInfo.getUsername(), getGroupNames(userGroups));
+                    setHomePage(getGroupNames(userGroups));
                 }
                 else { showMessage("Not Successful :("); }
             }
@@ -128,7 +128,7 @@ public class MainWindowView extends JFrame implements ActionListener {
             } else { CreatedGroupInfo createdGroupInfo = this.controllerCreate.create(groupName, userInfo.getUsername());
 
                 if (createdGroupInfo.getError() == null) {
-                    setHomePage(userInfo.getUsername(), createdGroupInfo.getAllGroupNames());
+                    setHomePage(createdGroupInfo.getAllGroupNames());
                     addCreateGroup(this.userGroups, createdGroupInfo);
                 } else { showMessage(createdGroupInfo.getError()); } }
         }
@@ -141,20 +141,20 @@ public class MainWindowView extends JFrame implements ActionListener {
 
             JoinedGroupInfo joinedGroupInfo = this.controllerJoin.create(groupID, userInfo.getUsername());
             if (joinedGroupInfo.getError() == null) {
-                setHomePage(userInfo.getUsername(), joinedGroupInfo.getGroupNames());
+                setHomePage(joinedGroupInfo.getGroupNames());
                 addJoinGroup(this.userGroups, joinedGroupInfo, groupID);
             } else { showMessage(joinedGroupInfo.getError()); }
         }
 
         else if (evt.getActionCommand().equals("Return to Groups")) {
-            setHomePage(userInfo.getUsername(), getGroupNames(userGroups));
+            setHomePage(getGroupNames(userGroups));
         }
 
         else {
                 String groupname = filterGroupName( evt.getActionCommand());
                 String groupID = getGroupID(getGroupIDs(userGroups), getGroupNames(userGroups), groupname);
                 setGroupSummary(groupname, groupID, userInfo.getUsername(), getPurchaseListData(userGroups, groupID),
-                        getPlanningListData(userGroups, groupID), getGroupDebtData(userGroups, groupID),
+                        getPlanningListData(userGroups, groupID), getGroupDebtData(userGroups),
                         getAllUserNames(userGroups, groupID));
             }
     }
@@ -171,11 +171,10 @@ public class MainWindowView extends JFrame implements ActionListener {
 
     /**
      * Switches to homepage on the main window.
-     * @param user the name of the user that logged in.
      * @param groupnames the list of groups the user is involved in.
      */
-    private void setHomePage(String user, List<String> groupnames){
-        HomePageView homePageView = new HomePageView(user, groupnames, this);
+    private void setHomePage(List<String> groupnames){
+        HomePageView homePageView = new HomePageView(groupnames, this);
         this.setContentPane(homePageView);
         homePageView.getJoinGroup().addActionListener(this);
         homePageView.getCreateGroup().addActionListener(this);
@@ -193,13 +192,6 @@ public class MainWindowView extends JFrame implements ActionListener {
         setContentPane(selectedGroup);
         selectedGroup.getToHomepage().addActionListener(this);
 
-    }
-
-    /**
-     * @return the name of the user that logged in.
-     */
-    public String getUsername(LoggedInInfo userInfo){
-        return userInfo.getUsername();
     }
 
     /**
@@ -274,7 +266,7 @@ public class MainWindowView extends JFrame implements ActionListener {
     /**
      * @return the list of debt information between members of a group.
      */
-    public List<List<Object>> getGroupDebtData(List<List<Object>> allGroups, String groupID) {
+    public List<List<Object>> getGroupDebtData(List<List<Object>> allGroups) {
         List<List<Object>> output = new ArrayList<>();
         for (List<Object> currentGroup : allGroups) {
             output = (List<List<Object>>) currentGroup.get(5);

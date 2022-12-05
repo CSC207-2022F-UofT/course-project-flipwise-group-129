@@ -10,7 +10,7 @@ import java.util.List;
 public class PurchaseListView extends JPanel {
 
     Object[][] rows;
-    String[] columns = new String[]{"Item Name", "Cost", "Who bought it"};
+    final String[] columns = new String[]{"Item Name", "Cost", "Who bought it"};
 
     /**
      * constructor that makes a purchase list view

@@ -16,9 +16,9 @@ import java.io.IOException;
 
 public class UserRegisterView extends JPanel implements ActionListener {
     JLabel title, t1, t2, t3;
-    JTextField username = new JTextField(25);
-    JPasswordField password = new JPasswordField(15);
-    JPasswordField repeatPassword = new JPasswordField(15);
+    final JTextField username = new JTextField(25);
+    final JPasswordField password = new JPasswordField(15);
+    final JPasswordField repeatPassword = new JPasswordField(15);
 
     public JButton signup;
     public JButton exitSignUp;

@@ -8,7 +8,7 @@ import java.util.List;
 public class BalanceView extends JPanel {
 
     Object[][] rows;
-    String[] columns = new String[]{"Member", "Debt Owed", "Debt Deserved"};
+    final String[] columns = new String[]{"Member", "Debt Owed", "Debt Deserved"};
 
     public BalanceView(List<List<Object>> debtData, String username, List<String> groupUsernames) {
 

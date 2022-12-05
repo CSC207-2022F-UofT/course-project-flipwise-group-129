@@ -6,25 +6,19 @@ import java.util.List;
 
 public class HomePageView extends JPanel {
 
-    JLabel homePage;
-    public JButton createGroup;
-    public JButton joinGroup;
-
-    String username;
-    List<String> group_names;
-    JButton[] button_array;
-
-    MainWindowView mainWindowView;
+    final JLabel homePage;
+    public final JButton createGroup;
+    public final JButton joinGroup;
+    final List<String> group_names;
+    final JButton[] button_array;
 
 
     /**
      * Builds the gui for the user home page.
      */
-    public HomePageView(String username, List<String> groupNames, MainWindowView mainWindowView) {
+    public HomePageView(List<String> groupNames, MainWindowView mainWindowView) {
 
-        this.username = username;
         this.group_names = groupNames;
-        this.mainWindowView = mainWindowView;
 
         // SetUp JPanel
         setSize(1500, 820);
