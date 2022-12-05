@@ -5,10 +5,10 @@
 - [ ] Right click on the Main and select Run Main.main() 
 
 ## 2. How to run the testing program and generate the test coverage report
-- [ ] Run test configuration by selecting 'Testing Configurations' in the Configuration dropdown
+- [ ] Select 'Testing Configurations' in the Configuration dropdown and click on 'Edit Configurations'
+- [ ] In the pop up under 'Build and Run' make sure the tests read from 'All Directory' and change the path to be your path to the test package within src
 - [ ] Select 'Run Testing Configurations with Coverage' button three buttons left of Configuration dropdown
-- [ ] Unfortunately, for testing purposes, we need a test database. Since we have not generated enough data to run our tests on , our tests do not compile as of now. We will complete our tests and submit for Milestone 5.
-- [ ] Coverage Report will thus indicate that all significant files, are tested to 0%.
+- [ ] Coverage Report will thus indicate that Entity and Controllers are tested to 100%.
 
 ## 3. Generating Javadocs
 - [ ] On the top of Intellij, open the Tools dropdown and select GenerateJavadoc
@@ -16,19 +16,22 @@
 
 ## 4. Design Pattern Used
 ### 1. Dependency Injection:
-- [] Example: (where the code is mention it)
+- [] Example: (where the code mentions it)
 - [] Our project has a lot of potential for further feature extensions beyond our time in this course. Further down, we may have many different instances of Debt in our program
 - [] As a result we do not want a hard dependency on the Debt class within the PurchaseBalances Class.
 - [] Thus, when we want to add a Debt pair, we create the Debt pair outside the class, and inject it inside.
 - [] This way, we can accomodate for future subclasses of Debt
 ### 2. Observer Dependency Pattern
+ - [] In order to update the views directly whenever the presenter ihas new information, we have the observer dependency pattern implemented in all our presenter classes.
  - [] Example:
  - [] All our presenter classes follow clean architecture and as a result implement their respective outputboundary interfaces.
  - [] The corresponding use case modifies the data and once done utilizes the output boundary which notifies the presenter of the changes that have been made through the output data structures.
   - [] In this way, an object is able to notify other objects without making assumptions about who these objects are. 
-  
 ### 3. Iterator Design Pattern (to be implemented):
-- [] We plan on implementing an iteration design for our classes were we have stored data in List or other Collection objects (such as PurchaseBalance, PurchaseList, PlannedList etc.)
+- [] We have implemented the iteration design for our classes were we have stored data in List or other Collection objects (such as PurchaseBalance, PurchaseList, and PlannedList)
+- [] Example: 
+- [] we have implemented the Iterator design pattern for our ItemList  abstract class, where we have the abstract class implement iterable .
+- [] we also have the same implemented in PurchaseBalance, and thus we can iterate through all the debts in the group without revealing the underlying List datastructure.
 
 ## 5. Github Features Used
 - [] Pull Requests - We have intensively used the pull request feature in Github, along with the faetures to approve, close pushes, reject, and request changes from the author of the pull request.
@@ -44,3 +47,10 @@
 
 ## 7. Pull Requests Document
  - [] https://docs.google.com/document/d/1B5JUseiYhwcYRWCrykhv1qstKCXgi4C8lS-M4P5Y0x8/edit
+ 
+## 8. Updates Since Milestone 4
+- [ ] Implemented iterator design patterns on entities that have list attributes (PlanningList, PurchaseList, PaymentBalance). This simplified use cases that required to iterate through these entities to, for example, return the correct data type. 
+- [ ] Entities now store ids to avoid nested data storage and reduce redundant storage in the json files. Use cases updated implementations to accommodate for this change.
+- [ ] Test database has been created to run the tests. Testing now has full coverage and all tests pass as expected. 
+- [ ] Javadocs have been added for view classes. Everything is now fully documented. 
+- [ ] Fixed connections passing data from the view classes to the controllers. This connected the front-end and back-end of the project. 
