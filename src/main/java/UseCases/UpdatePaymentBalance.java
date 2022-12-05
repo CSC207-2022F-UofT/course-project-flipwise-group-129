@@ -16,14 +16,11 @@ public class UpdatePaymentBalance implements UpdatePaymentBalanceBoundaryIn{
     final GroupDataInterface groupDataInterface;
     final ItemDataInterface itemDataInterface;
     final UpdatePaymentBalanceBoundaryOut updatePaymentBalancePresenter;
-    final PaymentInformation paymentDetails;
 
-    public UpdatePaymentBalance(GroupDataInterface gdi, ItemDataInterface idi, UpdatePaymentBalanceBoundaryOut upbp,
-                                PaymentInformation pd) {
+    public UpdatePaymentBalance(GroupDataInterface gdi, ItemDataInterface idi, UpdatePaymentBalanceBoundaryOut upbp) {
         this.groupDataInterface = gdi;
         this.itemDataInterface = idi;
         this.updatePaymentBalancePresenter = upbp;
-        this.paymentDetails = pd;
     }
 
     /**
@@ -63,17 +60,18 @@ public class UpdatePaymentBalance implements UpdatePaymentBalanceBoundaryIn{
          the getUsers() method to get the Set of Users in the group (not all of them are necessarily involved in
          the purchase).
          */
-        int count = 0;
+
         for(String userInvolvedInPurchase : usersInvolvedInPurcase) {
+            int count = 0;
             for(String u : usersInvolvedInPurcase) {
                 if(userInvolvedInPurchase.equals(u)) {
                     count++;
                 }
             }
-        }
-        if(count >= 2) {
-            return this.updatePaymentBalancePresenter.prepareFailView(
-                    new UpdatedDebts("The list containing users involved in the purchase contain duplicates."));
+            if (count >= 2) {
+                return this.updatePaymentBalancePresenter.prepareFailView(
+                        new UpdatedDebts("The list containing users involved in the purchase contain duplicates."));
+            }
         }
 
         Group groupInvolvedInPurchase;
@@ -125,16 +123,7 @@ public class UpdatePaymentBalance implements UpdatePaymentBalanceBoundaryIn{
         the List contains the amount the user owes as a double.
          */
 
-//        Map<String, List<List<Object>>> updatedDebtsList = new HashMap<>();
-//        for(Debt d : currentDebtList) {
-//            List<List<Object>> userOwingAndDebtValue = new ArrayList<>();
-//            List<Object> current = new ArrayList<>();
-//            current.add(d.getUserOwing().getUsername());
-//            current.add(d.getDebtValue());
-//            userOwingAndDebtValue.add(current);
-//            updatedDebtsList.put(d.getUserOwed().getUsername(), userOwingAndDebtValue);
-//        }
-        List<List<Object>> updatedDebtsList = getOutputtedDebts(groupInvolvedInPurchase.getPurchaseBalance(), groupInvolvedInPurchase.getGroupId());
+        List<List<Object>> updatedDebtsList = getOutputtedDebts(groupInvolvedInPurchase.getPurchaseBalance());
 
         /*
         Now we can take the Map use it in the constructor for UpdatedDebts to create our final returned value.
@@ -151,16 +140,14 @@ public class UpdatePaymentBalance implements UpdatePaymentBalanceBoundaryIn{
      * This function gets a list of all the new debts in the group
      *
      * @param purchaseBalance the list of Debts in the group
-     * @param groupId the current groupId
      * @return This returns a list of debts formatted as a nested list of strings
      */
-    private List<List<Object>> getOutputtedDebts(PurchaseBalance purchaseBalance, String groupId) {
+    private List<List<Object>> getOutputtedDebts(PurchaseBalance purchaseBalance) {
         List<List<Object>> returnedDebts = new ArrayList<>();
         for(Debt curDebt : purchaseBalance.getAllDebts()){
             ArrayList<Object> currentDebt = new ArrayList<>();
-            currentDebt.add(curDebt.getUserOwed());
-            currentDebt.add(curDebt.getUserOwing());
-            currentDebt.add(groupId);
+            currentDebt.add(curDebt.getUserOwed().getUsername());
+            currentDebt.add(curDebt.getUserOwing().getUsername());
             currentDebt.add(curDebt.getDebtValue());
             returnedDebts.add(currentDebt);
         }

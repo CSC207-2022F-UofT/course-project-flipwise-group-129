@@ -106,7 +106,14 @@ public class AddToPlanningList implements AddToPlanningBoundaryIn{
      * @return This returns a group object if found in the database, otherwise, null
      */
     private Group retreiveGroup(String groupId) {
-        String groupInfo = "";
+        try {
+            if(!groupAccess.groupIdExists(groupId)){
+                return null;
+            }
+        } catch (IOException | ParseException e) {
+            return null;
+        }
+        String groupInfo;
         try {
             groupInfo = groupAccess.groupAsString(groupId);
             return Group.fromString(groupInfo);

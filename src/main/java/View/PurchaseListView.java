@@ -4,16 +4,17 @@ package View;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
 public class PurchaseListView extends JPanel {
 
-    private JTable table;
     Object[][] rows;
-    String[] columns = new String[]{"Item Name", "Cost", "Who brought it"};
+    String[] columns = new String[]{"Item Name", "Cost", "Who bought it"};
+
+    /**
+     * constructor that makes a purchase list view
+     */
     public PurchaseListView(List<List<String>> purchasedListView) {
 
         setVisible(true);
@@ -21,7 +22,7 @@ public class PurchaseListView extends JPanel {
 
         setRows(purchasedListView);
         DefaultTableModel model = new DefaultTableModel(rows, columns);
-        table = new JTable(model);
+        JTable table = new JTable(model);
         table.setEnabled(false);
         JScrollPane scrollPane = new JScrollPane(table);
 
@@ -29,8 +30,12 @@ public class PurchaseListView extends JPanel {
 
     }
 
+    /**
+     * helper function that sets rows in an appropriate manner from the available data
+     * @param purchasedListData the purchased list data to be shown
+     */
     public void setRows(List<List<String>> purchasedListData) {
-        if (purchasedListData != null) {
+
             List<String> data = new ArrayList<>();
             this.rows = new Object[purchasedListData.size()][3];
             for (int i = 0; i < purchasedListData.size(); i++) {
@@ -41,6 +46,6 @@ public class PurchaseListView extends JPanel {
                 data = new ArrayList<>();
             }
         }
-    }
+
 }
 

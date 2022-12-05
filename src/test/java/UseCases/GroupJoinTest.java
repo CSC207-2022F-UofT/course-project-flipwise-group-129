@@ -1,5 +1,6 @@
 package UseCases;
 
+import Controllers.GroupJoinController;
 import DataAccess.GroupDataAccess;
 import DataAccess.UserDataAccess;
 import DataAccessInterface.GroupDataInterface;
@@ -85,13 +86,10 @@ class GroupJoinTest {
         GroupDataInterface groupData = new GroupDataAccess("test");
         UserDataInterface userData = new UserDataAccess("test");
         GroupJoinBoundaryIn useCase = new GroupJoin(presenter, groupData, userData);
+        GroupJoinController controller = new GroupJoinController(useCase);
 
-        // 2) Input data — we can make this up for the test. Normally it would
-        // be created by the Controller.
-        JoinGroupRequest inputData = new JoinGroupRequest("group1", "rcordi");
-
-        // 3) Run the use case
-        useCase.joinGroup(inputData);
+        // 3) Run the use case through the controller
+        controller.create("grpOne11", "rcordi");
 
         tearDown();
 
@@ -117,7 +115,8 @@ class GroupJoinTest {
                 assert joinedGroupInfo.getGroupNames() == null;
                 assert joinedGroupInfo.getPlanningList() == null;
                 assert joinedGroupInfo.getPurchasedList() == null;
-                assert Objects.equals(joinedGroupInfo.getError(), "Invalid GroupID provided");
+                System.out.println(joinedGroupInfo.getError());
+                assert joinedGroupInfo.getError().equals("java.lang.RuntimeException: Invalid GroupID provided");
                 return null;
             }
         };
@@ -125,13 +124,10 @@ class GroupJoinTest {
         GroupDataInterface groupData = new GroupDataAccess("test");
         UserDataInterface userData = new UserDataAccess("test");
         GroupJoinBoundaryIn useCase = new GroupJoin(presenter, groupData, userData);
+        GroupJoinController controller = new GroupJoinController(useCase);
 
-        // 2) Input data — we can make this up for the test. Normally it would
-        // be created by the Controller.
-        JoinGroupRequest inputData = new JoinGroupRequest("mishaalk", "groupDarcy1");
-
-        // 3) Run the use case
-        useCase.joinGroup(inputData);
+        // 3) Run the use case through the controller
+        controller.create("groupDarcy1", "mishaalk");
 
         tearDown();
 
@@ -165,13 +161,10 @@ class GroupJoinTest {
         GroupDataInterface groupData = new GroupDataAccess("test");
         UserDataInterface userData = new UserDataAccess("test");
         GroupJoinBoundaryIn useCase = new GroupJoin(presenter, groupData, userData);
+        GroupJoinController controller = new GroupJoinController(useCase);
 
-        // 2) Input data — we can make this up for the test. Normally it would
-        // be created by the Controller.
-        JoinGroupRequest inputData = new JoinGroupRequest("rcordi", "group1");
-
-        // 3) Run the use case
-        useCase.joinGroup(inputData);
+        // 3) Run the use case through the controller
+        controller.create("grpOne11", "mishaalk");
 
         tearDown();
 
@@ -201,10 +194,10 @@ class GroupJoinTest {
         List<String> stringPlanned = new ArrayList<>();
         // get the user from the database
         //check if the user exists
-        if (!groupDsInterface.groupIdExists("groupOne11")){
+        if (!groupDsInterface.groupIdExists("grpOne11")){
             throw new RuntimeException("Group Id does not exist");
         }
-        String groupString = groupDsInterface.groupAsString("groupOne11");
+        String groupString = groupDsInterface.groupAsString("grpOne11");
 
         try {
             Group group = Group.fromString(groupString);
@@ -230,7 +223,7 @@ class GroupJoinTest {
             @Override
             public JoinedGroupInfo prepareSuccessView(JoinedGroupInfo outputData){
 
-                assert outputData.getError() != null;
+                assert outputData.getError() == null;
                 return null;
             }
 
@@ -244,31 +237,28 @@ class GroupJoinTest {
         GroupDataInterface groupData = new GroupDataAccess("test");
         UserDataInterface userData = new UserDataAccess("test");
         GroupJoinBoundaryIn useCase = new GroupJoin(presenter, groupData, userData);
-
-        // 2) Input data — we can make this up for the test. Normally it would
-        // be created by the Controller.
-        JoinGroupRequest inputData = new JoinGroupRequest("groupOne11", "rcordi");
+        GroupJoinController controller = new GroupJoinController(useCase);
 
         //setting the data from the database as a constant to check later
         List<String> userInfoBefore = getUserInfo();
         List<List<String>> groupInfoBefore = getGroupInfo();
 
-        // 3) Run the use case
-        useCase.joinGroup(inputData);
+        // 2) Run the use case through the controller
+        controller.create("grpOne11", "rcordi");
 
         try {
             List<String> userInfoAfter = getUserInfo();
             for (String s : userInfoBefore) {
                 assert userInfoAfter.contains(s);
             }
-            assert userInfoAfter.contains("groupOne11");
+            assert userInfoAfter.contains("grpOne11");
         } catch (IOException | ParseException e) {
             throw new RuntimeException(e);
         }
         try {
             List<List<String>> groupInfoAfter = getGroupInfo();
-            assert groupInfoAfter.get(0) == groupInfoBefore.get(0);
-            assert groupInfoAfter.get(1) == groupInfoBefore.get(1);
+            assert groupInfoAfter.get(0).equals(groupInfoBefore.get(0));
+            assert groupInfoAfter.get(1).equals(groupInfoBefore.get(1));
 
             for (String s : groupInfoBefore.get(2)) {
                 assert groupInfoAfter.get(2).contains(s);

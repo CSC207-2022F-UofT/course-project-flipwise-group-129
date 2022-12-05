@@ -86,8 +86,8 @@ public class User implements Comparable<User> {
      */
     public boolean removeFromGroup(Group group){
         // remove group from the list of groups the user is part of
-        if (this.groups.contains(group)){
-            this.groups.remove(group);
+        if (this.groups.contains(group.getGroupId())){
+            this.groups.remove(group.getGroupId());
             return true;
         }
         return false;

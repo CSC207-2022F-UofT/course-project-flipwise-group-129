@@ -1,26 +1,24 @@
+/**
+ * Test suite for the UserLogin.java use case.
+ */
 package UseCases;
 
 import Controllers.UserLoginController;
 import DataAccess.GroupDataAccess;
 import DataAccess.UserDataAccess;
 import DataStructures.LoggedInInfo;
-import Entities.User;
 import InputBoundary.UserLoginBoundaryIn;
 import Presenters.UserLoginPresenter;
 import org.json.simple.parser.ParseException;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class UserLoginTest {
@@ -46,6 +44,10 @@ class UserLoginTest {
         userFile.delete();
     }
 
+    /**
+     * Test a successful user login, where the user enters the correct username
+     * AND password combination.
+     */
     @Test
     void executeUserLoginSuccess() {
         try {
@@ -74,6 +76,9 @@ class UserLoginTest {
         tearDown();
     }
 
+    /**
+     * Tests a failed user login because the password was incorrect.
+     */
     @Test
     void executeUserLoginWrongPw() {
         try {
@@ -102,6 +107,9 @@ class UserLoginTest {
         tearDown();
     }
 
+    /**
+     * Tests a failed user login because the username doesn't exist in the database.
+     */
     @Test
     void executeUserLoginNoUsername() {
         try {

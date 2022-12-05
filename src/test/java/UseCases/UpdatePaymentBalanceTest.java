@@ -1,5 +1,6 @@
 package UseCases;
 
+import Controllers.UpdatePaymentBalanceController;
 import DataAccess.GroupDataAccess;
 import DataAccess.ItemDataAccess;
 import DataAccess.UserDataAccess;
@@ -82,25 +83,23 @@ class UpdatePaymentBalanceTest {
         }
     }
 
-    Map<String, List<List<Object>>> getGroupInfo() throws IOException, ParseException {
+    List<Debt> getGroupInfo(List<String> usersInvolvedInPurchase) throws IOException, ParseException {
         GroupDataInterface groupDsInterface = new GroupDataAccess("test");
-        Map<String, List<List<Object>>> debtsList = new HashMap<>();
+        List<Debt> debtsList = new ArrayList<>();
         // get the user from the database
         // check if the user exists
-        if (!groupDsInterface.groupIdExists("0001")){
+        if (!groupDsInterface.groupIdExists("grpOne11")){
             throw new RuntimeException("Group Id does not exist");
         }
-        String groupString = groupDsInterface.groupAsString("0001");
+        String groupString = groupDsInterface.groupAsString("grpOne11");
 
         try {
             Group group = Group.fromString(groupString);
-            for (Debt allDebt : group.getPurchaseBalance().getAllDebts()) {
-                List<List<Object>> lst = new ArrayList<>();
-                List<Object> userOwingAndDebtValue = new ArrayList<>();
-                userOwingAndDebtValue.add(allDebt.getUserOwing());
-                userOwingAndDebtValue.add(allDebt.getDebtValue());
-                lst.add(userOwingAndDebtValue);
-                debtsList.put(allDebt.getUserOwed().getUsername(), lst);
+            for(String usersOwing : usersInvolvedInPurchase) {
+                System.out.println(usersOwing + group.getPurchaseBalance().getDebtPair("mishaalk", usersOwing));
+                if (group.getPurchaseBalance().getDebtPair("mishaalk", usersOwing) != null) {
+                    debtsList.add(group.getPurchaseBalance().getDebtPair("mishaalk", usersOwing));
+                }
             }
             return debtsList;
         } catch (JsonProcessingException e) {
@@ -117,29 +116,16 @@ class UpdatePaymentBalanceTest {
         UpdatePaymentBalancePresenter presenter = new UpdatePaymentBalancePresenter() {
             @Override
             public UpdatedDebts prepareSuccessView(UpdatedDebts updatedDebts) {
-                Map<String, List<List<Object>>> groupInfoBefore = null;
-                try {
-                    groupInfoBefore = getGroupInfo();
-                } catch (IOException | ParseException e) {
-                    throw new RuntimeException(e);
-                }
-                List<String> users = Arrays.asList("rcordi", "randomC", "sopleee");
+                List<String> users = Arrays.asList("randomC", "sopleee");
                 boolean containsOwed = false;
                 for(List<Object> curDebt : updatedDebts.getUpdatedBalances()){
-                    if((curDebt.get(0)).equals("mishaalk")){
+                    if(curDebt.get(0).equals("mishaalk")){
                         containsOwed = true;
                         break;
                     }
                 }
                 assert containsOwed;
 //                        updatedDebts.getUpdatedBalances().containsKey("mishaalk");
-                for(List<Object> curDebt : updatedDebts.getUpdatedBalances()){
-                    if((curDebt.get(0)).equals("mishaalk") && users.contains((String) curDebt.get(1))){
-                        int indexOfUserOwing = groupInfoBefore.get("mishaalk").indexOf((String) curDebt.get(1));
-                        Object previousDebt = groupInfoBefore.get("mishaalk").get(indexOfUserOwing).get(1);
-                        assert (double) curDebt.get(3) == ((double) previousDebt) + 19.99/3;
-                    }
-                }
 //                for (List<Object> userOwed : updatedDebts.getUpdatedBalances().get("mishaalk")) {
 //                    int indexOfUserOwing = groupInfoBefore.get("mishaalk").indexOf(userOwed);
 //                    Object previousDebt = groupInfoBefore.get("mishaalk").get(indexOfUserOwing).get(1);
@@ -147,7 +133,7 @@ class UpdatePaymentBalanceTest {
 //                        assert (double) userOwed.get(1) == ((double) previousDebt) + 19.99/3;
 //                    }
 //                }
-                assert updatedDebts.getOutcomeMessage() == null;
+                assert Objects.equals(updatedDebts.getOutcomeMessage(), "Success");
                 return null;
             }
 
@@ -162,12 +148,12 @@ class UpdatePaymentBalanceTest {
         ItemDataInterface itemData = new ItemDataAccess("test");
 
         // 2. Input Data - we can make this up for the test, but normally it would be created from the controller.
-        PaymentInformation inputData = new PaymentInformation("grpOne11", "mishaalk", (float) 19.99,
-                "itemApple", Arrays.asList("rcordi", "randomC", "sopleee"));
-        UpdatePaymentBalanceBoundaryIn useCase = new UpdatePaymentBalance(groupData, itemData, presenter, inputData);
+        UpdatePaymentBalanceBoundaryIn useCase = new UpdatePaymentBalance(groupData, itemData, presenter);
+        UpdatePaymentBalanceController controller = new UpdatePaymentBalanceController(useCase);
 
         // 3. Run the use case.
-        useCase.updatePaymentBalance(inputData);
+
+        controller.create("grpOne11", "mishaalk", 20, "itemApple", Arrays.asList("randomC", "sopleee"));
 
         tearDown();
     }
@@ -197,13 +183,12 @@ class UpdatePaymentBalanceTest {
         GroupDataInterface groupData = new GroupDataAccess("test");
         ItemDataInterface itemData = new ItemDataAccess("test");
 
-        // 2. Input Data - we can make this up for the test, but normally it would be created from the controller.
-        PaymentInformation inputData = new PaymentInformation("grpOne11", "mishaalk", (float) 19.99,
-                "itemApple", Arrays.asList("rcordi", "rcordi", "sopleee"));
-        UpdatePaymentBalanceBoundaryIn useCase = new UpdatePaymentBalance(groupData, itemData, presenter, inputData);
+
+        UpdatePaymentBalanceBoundaryIn useCase = new UpdatePaymentBalance(groupData, itemData, presenter);
+        UpdatePaymentBalanceController controller = new UpdatePaymentBalanceController(useCase);
 
         // 3. Run the use case.
-        useCase.updatePaymentBalance(inputData);
+        controller.create("grpOne11", "mishaalk", 20, "itemApple", Arrays.asList("rcordi", "rcordi", "sopleee"));
 
         tearDown();
     }
@@ -233,39 +218,37 @@ class UpdatePaymentBalanceTest {
         ItemDataInterface itemData = new ItemDataAccess("test");
 
         // 2. Input Data - we can make this up for the test, but normally it would be created from the controller.
-        PaymentInformation inputData = new PaymentInformation("grpOne11", "mishaalk", (float) 19.99,
-                "itemApple", Arrays.asList("rcordi", "randomC", "sopleee"));
-        UpdatePaymentBalanceBoundaryIn useCase = new UpdatePaymentBalance(groupData, itemData, presenter, inputData);
+        PaymentInformation inputData = new PaymentInformation("grpOne11", "mishaalk", (float) 20,
+                "itemApple", Arrays.asList("randomC", "sopleee"));
+        UpdatePaymentBalanceBoundaryIn useCase = new UpdatePaymentBalance(groupData, itemData, presenter);
+        UpdatePaymentBalanceController controller = new UpdatePaymentBalanceController(useCase);
 
         // We now set the data from the database as a constant to check against our use case.
         List<String> userInfoBefore = getUserInfo();
-        Map<String, List<List<Object>>> groupInfoBefore = getGroupInfo();
+        List<Debt> groupInfoBefore = getGroupInfo(Arrays.asList("randomC", "sopleee"));
 
         // 3. Run the use case.
-        useCase.updatePaymentBalance(inputData);
+        HashMap<String, Double> prevDebts = new HashMap<String, Double>();
+        for (Debt allDebt : Group.fromString(groupData.groupAsString(inputData.getGroupID())).getPurchaseBalance().getAllDebts()) {
+            if (allDebt.getUserOwed().getUsername().equals("mishaalk") && inputData.getUsersInvolvedInPurchase().contains(allDebt.getUserOwing().getUsername())){
+                prevDebts.put(allDebt.getUserOwing().getUsername(), allDebt.getDebtValue());
+            }
+        }
+
+        controller.create("grpOne11", "mishaalk", (float) 20, "itemApple", Arrays.asList("randomC", "sopleee"));
 
         try {
             List<String> userInfoAfter = getUserInfo();
-            assert userInfoAfter.contains("mishaalk");
-        } catch (IOException | ParseException e) {
-            throw new RuntimeException(e);
-        }
-        try {
-            Map<String, List<List<Object>>> groupInfoAfter = getGroupInfo();
-            for(int x = 0; x < groupInfoAfter.size(); ++x) {
-                List<List<Object>> currentAfterSublist = groupInfoAfter.get("mishaalk");
-                List<List<Object>> currentBeforeSublist = groupInfoBefore.get("mishaalk");
-
-                assert currentAfterSublist.get(x).get(0).equals(currentBeforeSublist.get(x).get(0));
-                if(inputData.getUsersInvolvedInPurchase().contains(currentBeforeSublist.get(x).get(0))) {
-                    assert (double) currentAfterSublist.get(x).get(1) == (double) currentBeforeSublist.get(x).get(1) + 19.99/3;
-                }
-                else {
-                    assert (double) currentAfterSublist.get(x).get(1) == (double) currentBeforeSublist.get(x).get(1);
-                }
+            for(String group : userInfoAfter) {
+                Group current = Group.fromString(groupData.groupAsString(group));
+                assert current.getUsers().contains("mishaalk");
             }
         } catch (IOException | ParseException e) {
             throw new RuntimeException(e);
+        }
+        List<Debt> debts = getGroupInfo(inputData.getUsersInvolvedInPurchase());
+        for (Debt debt : debts) {
+            assert !prevDebts.containsKey(debt.getUserOwing().getUsername()) || prevDebts.get(debt.getUserOwing().getUsername()) + 10.0 == debt.getDebtValue();
         }
 
         tearDown();

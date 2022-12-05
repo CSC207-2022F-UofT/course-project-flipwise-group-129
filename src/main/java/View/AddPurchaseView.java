@@ -10,8 +10,6 @@ public class AddPurchaseView extends JOptionPane{
     JTextField item_price;
     JTextArea text_contributing_members;
     JCheckBox[] contributing_members;
-
-    int reply;
     public AddPurchaseView(String itemID, String username, String groupID, List<String> groupUserNames) {
 
 
@@ -36,8 +34,8 @@ public class AddPurchaseView extends JOptionPane{
 
         //fetch contributing members
         JPanel check_box_contributing_members = new JPanel();
-        for (int i = 0; i < contributing_members.length; i++) {
-            check_box_contributing_members.add(contributing_members[i]);
+        for (JCheckBox contributing_member : contributing_members) {
+            check_box_contributing_members.add(contributing_member);
         }
 
         p.add(pricing);
@@ -49,6 +47,12 @@ public class AddPurchaseView extends JOptionPane{
                 JOptionPane.QUESTION_MESSAGE, null, null, null);
 
     }
+
+    /**
+     *
+     * @param Current_Members list of current members
+     * @return  returns a list of JCheckboxes with all the group's current members
+     */
     public JCheckBox[] createCheckboxes(List<String> Current_Members) {
         JCheckBox[] output = new JCheckBox[Current_Members.size()];
         for (int i = 0; i < Current_Members.size(); i++) {
@@ -58,16 +62,21 @@ public class AddPurchaseView extends JOptionPane{
         return output;
     }
 
-    public int getReply(){
-        return this.reply;
-    }
+    /**
+     *
+     * @return gets the price of the item
+     */
     public String getItemPrice(){ return item_price.getText();}
 
+    /**
+     *
+     * @return returns a list of selected members for the purchase made
+     */
     public List<String> getSelectedMembers(){
-        List<String> selectedMembers = new ArrayList<String>();
-        for (int i = 0; i < contributing_members.length; i++) {
-            if (contributing_members[i].isSelected()) {
-                selectedMembers.add(contributing_members[i].getText());
+        List<String> selectedMembers = new ArrayList<>();
+        for (JCheckBox contributing_member : contributing_members) {
+            if (contributing_member.isSelected()) {
+                selectedMembers.add(contributing_member.getText());
             }
         }
         return selectedMembers;

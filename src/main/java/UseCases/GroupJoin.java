@@ -141,7 +141,7 @@ public class GroupJoin implements GroupJoinBoundaryIn{
 
     private void addUserToGroup(User user, Group group) throws IOException, ParseException {
         //check if user already in group?
-        if (group.getUsers().contains(user)){
+        if (group.getUsers().contains(user.getUsername())){
             throw new RuntimeException("User already in group");
         }
 
@@ -213,7 +213,10 @@ public class GroupJoin implements GroupJoinBoundaryIn{
             List<String> subList = new ArrayList<>();
             subList.add(item.getItemId());
             subList.add(item.getItemName());
-            subList.add(item.getBuyer());
+            if (itemList instanceof PurchaseList){
+                subList.add(String.valueOf(item.getPrice()));
+                subList.add(item.getBuyer());
+            }
             newList.add(subList);
         }
 

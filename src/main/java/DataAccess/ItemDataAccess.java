@@ -29,7 +29,7 @@ public class ItemDataAccess extends DataAccess implements ItemDataInterface {
      */
     public ItemDataAccess(String testString) throws IOException, ParseException {
         this.itemFile = new File("././src/test/resources/testitemsCopy.json");
-        super.readFile(new File("././src/test/resources/testitems.json"), itemMap);
+        super.readFile(new File("././src/test/resources/testitemsCopy.json"), itemMap);
     }
 
     /**

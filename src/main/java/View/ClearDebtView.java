@@ -7,26 +7,19 @@ import java.util.List;
 
 public class ClearDebtView extends JOptionPane {
 
-    private String username;
-    private String groupID;
-    private List<String> members;
-    private  List<JRadioButton> list_of_members;
-    private ButtonGroup radio_btn_group;
+    private final ButtonGroup radio_btn_group;
 
     public ClearDebtView(String username, String groupID, List<String> members) {
 
-        this.username = username;
-        this.groupID = groupID;
-        this.members = members;
-        this.list_of_members = createRadioButtons(this.members);
+        List<JRadioButton> list_of_members = createRadioButtons(members);
 
         // fetch debt request
         JPanel radio_box_contributing_members = new JPanel();
         this.radio_btn_group = new ButtonGroup();
 
-        for (int i = 0; i < list_of_members.size(); i++) {
-            radio_box_contributing_members.add(list_of_members.get(i));
-            radio_btn_group.add(list_of_members.get(i));
+        for (JRadioButton list_of_member : list_of_members) {
+            radio_box_contributing_members.add(list_of_member);
+            radio_btn_group.add(list_of_member);
         }
 
         showOptionDialog(this, radio_box_contributing_members,
@@ -34,8 +27,13 @@ public class ClearDebtView extends JOptionPane {
                 JOptionPane.QUESTION_MESSAGE, null, null, null);
     }
 
+    /**
+     * Takes in a list of current members and returns a list of Radio Buttons with the same members
+     * @param Current_Members List of members
+     * @return  list of radio buttons
+     */
     public List<JRadioButton> createRadioButtons(List<String> Current_Members) {
-        List<JRadioButton> output = new ArrayList<JRadioButton>();
+        List<JRadioButton> output = new ArrayList<>();
         for (String member : Current_Members) {
             JRadioButton checkbox_member = new JRadioButton(member);
             output.add(checkbox_member);
@@ -43,11 +41,15 @@ public class ClearDebtView extends JOptionPane {
         return output;
     }
 
+    /**
+     *  returns the selected member from the radio buttons chosen
+     * @return  the selected member
+     */
     public String getSelectedMember(){
-        Enumeration elements = this.radio_btn_group.getElements();
+        Enumeration<AbstractButton> elements = this.radio_btn_group.getElements();
         String member = "";
         while (elements.hasMoreElements()) {
-            AbstractButton button = (AbstractButton)elements.nextElement();
+            AbstractButton button = elements.nextElement();
             if (button.isSelected()) {
                 member = button.getText();
             }

@@ -26,7 +26,7 @@ public class UserDataAccess extends DataAccess implements UserDataInterface {
      */
     public UserDataAccess(String testString) throws IOException, ParseException {
         this.userFile = new File("././src/test/resources/testusersCopy.json");
-        super.readFile(new File("././src/test/resources/testusers.json"), userMap);
+        super.readFile(new File("././src/test/resources/testusersCopy.json"), userMap);
     }
 
     /**

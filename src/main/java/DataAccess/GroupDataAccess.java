@@ -27,7 +27,7 @@ public class GroupDataAccess extends DataAccess implements GroupDataInterface {
      */
     public GroupDataAccess(String testString) throws IOException, ParseException {
         this.groupFile = new File("././src/test/resources/testgroupsCopy.json");
-        super.readFile(new File("././src/test/resources/testgroups.json"), groupMap);
+        super.readFile(new File("././src/test/resources/testgroupsCopy.json"), groupMap);
     }
 
     /**

@@ -74,6 +74,8 @@ public class AddPurchase implements AddPurchaseBoundaryIn {
         // Call a helper function to write the updated data in to the database using the interfaces
         writeData();
 
+        raiseError("Success");
+
         // Call the presenter through the output boundary with the updated lists data structure
         return this.presentInformation();
     }
@@ -182,8 +184,10 @@ public class AddPurchase implements AddPurchaseBoundaryIn {
      * @param errorMessage the message to pass back to the user through the view
      */
     private void raiseError(String errorMessage) {
-        this.newLists = new UpdatedLists(errorMessage);
-        this.presenter.prepareFailViewInformation(newLists);
+        if (!Objects.equals(errorMessage, "Success")) {
+            this.newLists = new UpdatedLists(errorMessage);
+            this.presenter.prepareFailViewInformation(newLists);
+        }
     }
 
     /**
