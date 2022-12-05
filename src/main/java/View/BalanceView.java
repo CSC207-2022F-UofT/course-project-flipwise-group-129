@@ -28,6 +28,13 @@ public class BalanceView extends JPanel {
 
     }
 
+    /**
+     * this is a helper function that puts the given debt data, username and parameters into a form of
+     * "List<List<String>>" for the rows of the table to be printed
+     * @param debtData  debt data taken from a controller
+     * @param username  username of the user currently logged in
+     * @param members   other members of the group
+     */
     public void setRows(List<List<Object>> debtData, String username, List<String> members) {
         this.rows = new Object[members.size()][3];
         for (int i = 0; i < members.size(); i++) {
