@@ -2,7 +2,6 @@ package View;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import java.util.ArrayList;
 import java.util.List;
 
 public class BalanceView extends JPanel {
@@ -10,12 +9,12 @@ public class BalanceView extends JPanel {
     Object[][] rows;
     final String[] columns = new String[]{"Member", "Debt Owed", "Debt Deserved"};
 
-    public BalanceView(List<List<Object>> debtData, String username, List<String> groupUsernames) {
+    public BalanceView(List<List<Object>> debtData, String username, List<String> members) {
 
         setSize(1000, 600);
         setVisible(true);
 
-        setRows(debtData, username, getMembers(groupUsernames, username));
+        setRows(debtData, username, members);
         DefaultTableModel model = new DefaultTableModel(rows, columns);
         JTable table = new JTable(model);
         table.setEnabled(false);
@@ -38,22 +37,16 @@ public class BalanceView extends JPanel {
             this.rows[i][0] = members.get(i);
             for (List<Object> debt : debtData) {
                 if (debt.get(0).equals(members.get(i)) || debt.get(1).equals(members.get(i))) {
-                    if (debt.get(0).equals(username)) { this.rows[i][2] = debt.get(2); }
-                    else { this.rows[i][1] = debt.get(2);}
+                    if (debt.get(0).equals(username)) {
+                        this.rows[i][2] = debt.get(2);
+                    } else {
+                        this.rows[i][1] = debt.get(2);
+                    }
                 }
             }
         }
     }
-        public List<String> getMembers (List < String > groupUsernames, String username){
-            List<String> members = new ArrayList<>();
-            for (String groupUsername : groupUsernames) {
-                if (!(groupUsername.equals(username))) {
-                    members.add(groupUsername);
-                }
-            }
-            return members;
-        }
-    }
+}
 
 
 

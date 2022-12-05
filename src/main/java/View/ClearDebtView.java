@@ -57,7 +57,4 @@ public class ClearDebtView extends JOptionPane {
         return member;
 
     }
-
-
-
 }

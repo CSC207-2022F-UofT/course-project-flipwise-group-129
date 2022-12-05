@@ -33,6 +33,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class GroupSummaryView extends JPanel implements ActionListener {
@@ -139,8 +140,8 @@ public class GroupSummaryView extends JPanel implements ActionListener {
         btn_group.add(settleDebt);
         btn_group.add(purchaseItem);
 
-        JPanel toHomepage = new JPanel();
-        toHomepage.add(toHomepage);
+        JPanel toHomepagePanel = new JPanel();
+        toHomepagePanel.add(toHomepage);
 
         JPanel text_group = new JPanel();
         text_group.add(RHS);
@@ -149,11 +150,11 @@ public class GroupSummaryView extends JPanel implements ActionListener {
         right_hand_side.setLayout(new BoxLayout(right_hand_side, BoxLayout.PAGE_AXIS));
         right_hand_side.add(text_group);
         right_hand_side.add(btn_group);
-        right_hand_side.add(toHomepage);
+        right_hand_side.add(toHomepagePanel);
 
         this.planningListView = new PlanningListView(planningListData);
         PurchaseListView p = new PurchaseListView(purchaseListData);
-        BalanceView b = new BalanceView(debtData, username, groupUserNames);
+        BalanceView b = new BalanceView(debtData, username, getMembers(this.groupUserNames, this.username));
         p2.add(p);
         p1.add(planningListView);
 
@@ -202,7 +203,7 @@ public class GroupSummaryView extends JPanel implements ActionListener {
 
         if (evt.getActionCommand().equals("Settle Debt")){
             ClearDebtView clearDebtView = new ClearDebtView(
-                    this.groupUserNames);
+                    getMembers(this.groupUserNames, this.username));
 
             if (clearDebtView.getSelectedMember() == null) {
                 showMessage("Error with input.");
@@ -275,13 +276,6 @@ public class GroupSummaryView extends JPanel implements ActionListener {
         mainWindowView.setContentPane(groupSummaryView);
         groupSummaryView.getToHomepage().addActionListener(mainWindowView);
         setVisible(true);
-        System.out.println("This is group " + groupName);
-        System.out.println("This is groupID " + groupID);
-        System.out.println("This is username " + username);
-        System.out.println("This is planning " + planningListData);
-        System.out.println("This is purchase " + purchaseListData);
-        System.out.println("This is debt " + debtData);
-        System.out.println("This is members " + groupUserNames);
     }
 
     /**
@@ -340,8 +334,21 @@ public class GroupSummaryView extends JPanel implements ActionListener {
 
             }
         }
+    }
 
-        System.out.println("updated user-groups " + userGroups);
+    /**
+     * @param groupUsernames    the current list of groups the user is a part of
+     * @param username       the new group's ID
+     * @return the list of users in the group without the user that is logged in.
+     */
+    public List<String> getMembers (List < String > groupUsernames, String username){
+        List<String> members = new ArrayList<>();
+        for (String groupUsername : groupUsernames) {
+            if (!(groupUsername.equals(username))) {
+                members.add(groupUsername);
+            }
+        }
+        return members;
     }
 }
 

@@ -184,13 +184,20 @@ public class MainWindowView extends JFrame implements ActionListener {
      * Switches to group summery page on the main window.
      * @param group the name of the group.
      */
-    public void setGroupSummary(String group, String groupid, String username,
+    public void setGroupSummary(String group, String groupID, String username,
                                 List<List<String>> purchaseListData, List<List<String>> planningListData,
                                 List<List<Object>> debtData, List<String> groupUserNames) {
-        GroupSummaryView selectedGroup = new GroupSummaryView(group, groupid, username,
+        GroupSummaryView selectedGroup = new GroupSummaryView(group, groupID, username,
                 purchaseListData, planningListData, debtData, groupUserNames, this);
         setContentPane(selectedGroup);
         selectedGroup.getToHomepage().addActionListener(this);
+        System.out.println("Group " + group);
+        System.out.println("GroupID " + groupID);
+        System.out.println("username " + username);
+        System.out.println("planninglistdata " + planningListData);
+        System.out.println("purchase " + purchaseListData);
+        System.out.println("debt " + debtData);
+        System.out.println("users " + groupUserNames);
 
     }
 
