@@ -1,0 +1,163 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > AddPurchaseController</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">Controllers</a>
+</div>
+
+<h1>Coverage Summary for Class: AddPurchaseController (Controllers)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">AddPurchaseController</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (2/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (8/8)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package Controllers;
+&nbsp;
+&nbsp;import DataAccessInterface.GroupDataInterface;
+&nbsp;import DataAccessInterface.ItemDataInterface;
+&nbsp;import DataAccessInterface.UserDataInterface;
+&nbsp;import DataStructures.PurchaseInfo;
+&nbsp;import DataStructures.UpdatedLists;
+&nbsp;import InputBoundary.AddPurchaseBoundaryIn;
+&nbsp;import OutputBoundary.AddPurchaseBoundaryOut;
+&nbsp;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;public class AddPurchaseController {
+&nbsp;
+&nbsp;    private final AddPurchaseBoundaryIn addPurchaseUseCase;
+&nbsp;    private final GroupDataInterface groupDataAccess;
+&nbsp;    private final ItemDataInterface itemDataAccess;
+&nbsp;    private final UserDataInterface userDataAccess;
+&nbsp;    private final AddPurchaseBoundaryOut presenter;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Instantiates the data access and use case boundary
+&nbsp;     * @param addPurchaseUseCase object of the use case
+&nbsp;     * @param groupDataAccess interface for group data access
+&nbsp;     * @param itemDataAccess interface for item data access
+&nbsp;     * @param userDataAccess interface for user data access
+&nbsp;     * @param presenter object of output boundary representing the presenter
+&nbsp;     */
+<b class="fc">&nbsp;    public AddPurchaseController(AddPurchaseBoundaryOut presenter, AddPurchaseBoundaryIn addPurchaseUseCase, GroupDataInterface groupDataAccess, ItemDataInterface itemDataAccess, UserDataInterface userDataAccess) {</b>
+<b class="fc">&nbsp;        this.addPurchaseUseCase = addPurchaseUseCase;</b>
+<b class="fc">&nbsp;        this.groupDataAccess = groupDataAccess;</b>
+<b class="fc">&nbsp;        this.itemDataAccess = itemDataAccess;</b>
+<b class="fc">&nbsp;        this.userDataAccess = userDataAccess;</b>
+<b class="fc">&nbsp;        this.presenter = presenter;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * This function will be called from the main/view in order to control the use case AddPurchase which occurs whenever a user
+&nbsp;     * from a group purchases an item from the planning list. This controller function packages all the required information that
+&nbsp;     * the view sends forward into the PurchaseInfo data structure, instantiates the presenter and passes all of this information
+&nbsp;     * to call the use case through the input boundary.
+&nbsp;     * @param purchasedItemId item id of the item being purchased
+&nbsp;     * @param participatingUsernames usernames of the users involved in the purchase
+&nbsp;     * @param buyerUsername username of the user buying the item
+&nbsp;     * @param price price of the item
+&nbsp;     * @param purchaseGroupId id of the group the purchase is made in
+&nbsp;     * @return the information sent back by the presenter through the use case to go to the view layer as an updated
+&nbsp;     * lists object
+&nbsp;     */
+&nbsp;    public UpdatedLists controlAddPurchaseUseCase(String purchasedItemId, List&lt;String&gt; participatingUsernames, String buyerUsername, float price, String purchaseGroupId) {
+&nbsp;        //Implement the instantiation of the presenter to pass along the pipeline and assign the boundary attribute variable to the use case object
+&nbsp;        // Defining the class attribute variable which will store the use case object as one of the boundary interface
+&nbsp;
+&nbsp;        //Package the information into the data structure to pass to the use case through the boundary
+<b class="fc">&nbsp;        PurchaseInfo purchaseInfo = new PurchaseInfo(purchasedItemId, participatingUsernames, buyerUsername, price, purchaseGroupId, this.presenter, this.groupDataAccess, this.itemDataAccess, this.userDataAccess);</b>
+&nbsp;
+&nbsp;        // Call the use case
+<b class="fc">&nbsp;        return addPurchaseUseCase.executeUseCase(purchaseInfo);</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2022-12-05 00:39</div>
+</div>
+</body>
+</html>

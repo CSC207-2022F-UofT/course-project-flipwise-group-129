@@ -1,0 +1,451 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > GroupSummaryView</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">View</a>
+</div>
+
+<h1>Coverage Summary for Class: GroupSummaryView (View)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">GroupSummaryView</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/8)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/149)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package View;
+&nbsp;
+&nbsp;import Controllers.AddPurchaseController;
+&nbsp;import Controllers.AddToPlanningController;
+&nbsp;import Controllers.SettlementController;
+&nbsp;import Controllers.UpdatePaymentBalanceController;
+&nbsp;import DataAccess.GroupDataAccess;
+&nbsp;import DataAccess.ItemDataAccess;
+&nbsp;import DataAccess.UserDataAccess;
+&nbsp;import DataAccessInterface.GroupDataInterface;
+&nbsp;import DataAccessInterface.ItemDataInterface;
+&nbsp;import DataAccessInterface.UserDataInterface;
+&nbsp;import DataStructures.UpdatedDebts;
+&nbsp;import DataStructures.UpdatedLists;
+&nbsp;import InputBoundary.AddPurchaseBoundaryIn;
+&nbsp;import InputBoundary.AddToPlanningBoundaryIn;
+&nbsp;import InputBoundary.SettlementBoundaryIn;
+&nbsp;import InputBoundary.UpdatePaymentBalanceBoundaryIn;
+&nbsp;import OutputBoundary.AddPurchaseBoundaryOut;
+&nbsp;import Presenters.AddPurchasePresenter;
+&nbsp;import Presenters.AddToPlanningPresenter;
+&nbsp;import Presenters.SettlementPresenter;
+&nbsp;import Presenters.UpdatePaymentBalancePresenter;
+&nbsp;import UseCases.AddPurchase;
+&nbsp;import UseCases.AddToPlanningList;
+&nbsp;import UseCases.SettlementPayment;
+&nbsp;import UseCases.UpdatePaymentBalance;
+&nbsp;import org.json.simple.parser.ParseException;
+&nbsp;
+&nbsp;import javax.swing.*;
+&nbsp;import java.awt.*;
+&nbsp;import java.awt.event.ActionEvent;
+&nbsp;import java.awt.event.ActionListener;
+&nbsp;import java.awt.event.KeyEvent;
+&nbsp;import java.io.IOException;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;public class GroupSummaryView extends JPanel implements ActionListener {
+&nbsp;    private final String username;
+&nbsp;    private final String group_name;
+&nbsp;    private final String groupID;
+&nbsp;    private final AddPurchaseController controllerAddPurchase;
+&nbsp;    private final List&lt;List&lt;String&gt;&gt; purchaseListData;
+&nbsp;    private final MainWindowView mainWindowView;
+&nbsp;    List&lt;List&lt;String&gt;&gt; planningListData;
+&nbsp;    List&lt;List&lt;Object&gt;&gt; debtData;
+&nbsp;    List&lt;String&gt; groupUserNames;
+&nbsp;    PlanningListView planningListView;
+<b class="nc">&nbsp;    public JButton addItem = new JButton(&quot;Add Item&quot;);</b>
+<b class="nc">&nbsp;    public JButton settleDebt = new JButton(&quot;Settle Debt&quot;);</b>
+<b class="nc">&nbsp;    public JButton toHomepage = new JButton(&quot;Return to Groups&quot;);</b>
+<b class="nc">&nbsp;    public JButton purchaseItem = new JButton(&quot;Purchase Item&quot;);</b>
+&nbsp;    private final AddToPlanningController controllerAddPlanning;
+&nbsp;    private final SettlementController controllerSettlementPayment;
+&nbsp;    private final UpdatePaymentBalanceController updatePaymentBalanceController;
+&nbsp;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Builds the gui for the group summery page and initializes controller.
+&nbsp;     */
+&nbsp;    public GroupSummaryView(String groupName, String groupID, String username,
+&nbsp;                            List&lt;List&lt;String&gt;&gt; purchaseListData, List&lt;List&lt;String&gt;&gt; planningListData,
+&nbsp;                            List&lt;List&lt;Object&gt;&gt; debtData, List&lt;String&gt; groupUserNames,
+<b class="nc">&nbsp;                            MainWindowView mainWindowView) {</b>
+&nbsp;
+<b class="nc">&nbsp;        this.groupID = groupID;</b>
+<b class="nc">&nbsp;        this.group_name = groupName;</b>
+<b class="nc">&nbsp;        this.username = username;</b>
+<b class="nc">&nbsp;        this.planningListData = planningListData;</b>
+<b class="nc">&nbsp;        this.purchaseListData = purchaseListData;</b>
+<b class="nc">&nbsp;        this.debtData = debtData;</b>
+<b class="nc">&nbsp;        this.groupUserNames = groupUserNames;</b>
+<b class="nc">&nbsp;        this.mainWindowView = mainWindowView;</b>
+&nbsp;
+&nbsp;        ItemDataInterface itemData;
+&nbsp;        GroupDataInterface groupData;
+&nbsp;        UserDataInterface userData;
+&nbsp;        try {
+<b class="nc">&nbsp;            itemData = new ItemDataAccess();</b>
+<b class="nc">&nbsp;            groupData = new GroupDataAccess();</b>
+<b class="nc">&nbsp;            userData = new UserDataAccess();</b>
+<b class="nc">&nbsp;        } catch (IOException | ParseException e1) {</b>
+<b class="nc">&nbsp;            throw new RuntimeException(e1);</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+<b class="nc">&nbsp;        AddPurchaseBoundaryOut addPurchasePresenter = new AddPurchasePresenter();</b>
+<b class="nc">&nbsp;        AddPurchaseBoundaryIn purchaseUseCase = new AddPurchase();</b>
+&nbsp;
+<b class="nc">&nbsp;        this.controllerAddPurchase = new AddPurchaseController(addPurchasePresenter, purchaseUseCase, groupData,</b>
+&nbsp;                itemData, userData);
+&nbsp;
+<b class="nc">&nbsp;        AddToPlanningPresenter addToPlanningPresenter = new AddToPlanningPresenter();</b>
+<b class="nc">&nbsp;        AddToPlanningBoundaryIn planningUseCase = new AddToPlanningList(addToPlanningPresenter, groupData, itemData);</b>
+&nbsp;
+<b class="nc">&nbsp;        this.controllerAddPlanning = new AddToPlanningController(planningUseCase);</b>
+&nbsp;
+<b class="nc">&nbsp;        SettlementPresenter settlementPresenter = new SettlementPresenter();</b>
+<b class="nc">&nbsp;        SettlementBoundaryIn settleUseCase = new SettlementPayment(settlementPresenter, groupData);</b>
+&nbsp;
+<b class="nc">&nbsp;        this.controllerSettlementPayment = new SettlementController(settleUseCase);</b>
+&nbsp;
+<b class="nc">&nbsp;        UpdatePaymentBalancePresenter updatePaymentBalancePresenter = new UpdatePaymentBalancePresenter();</b>
+<b class="nc">&nbsp;        UpdatePaymentBalanceBoundaryIn updatePaymentUseCase = new UpdatePaymentBalance(groupData, itemData,</b>
+&nbsp;                updatePaymentBalancePresenter);
+&nbsp;
+<b class="nc">&nbsp;        this.updatePaymentBalanceController = new UpdatePaymentBalanceController(updatePaymentUseCase);</b>
+&nbsp;
+&nbsp;        // SetUp JFrame
+<b class="nc">&nbsp;        setSize(1500, 820);</b>
+<b class="nc">&nbsp;        setLayout(null);</b>
+<b class="nc">&nbsp;        setVisible(true);</b>
+&nbsp;
+&nbsp;        // SetUp JPanel
+<b class="nc">&nbsp;        setSize(1500, 820);</b>
+<b class="nc">&nbsp;        setLayout(new BorderLayout());</b>
+&nbsp;
+&nbsp;        // Defining and positioning JComponents
+<b class="nc">&nbsp;        JTabbedPane t = new JTabbedPane();</b>
+<b class="nc">&nbsp;        JComponent p1 = new JPanel();</b>
+<b class="nc">&nbsp;        JComponent p2 = new JPanel();</b>
+<b class="nc">&nbsp;        JComponent p3 = new JPanel();</b>
+&nbsp;
+&nbsp;        // Title
+<b class="nc">&nbsp;        JTextArea temp = new JTextArea(groupName);</b>
+<b class="nc">&nbsp;        temp.setEditable(false);</b>
+<b class="nc">&nbsp;        JPanel temporary_panel = new JPanel();</b>
+<b class="nc">&nbsp;        temporary_panel.add(temp);</b>
+&nbsp;
+&nbsp;        // Group Information
+<b class="nc">&nbsp;        JTextArea RHS = new JTextArea(&quot;This is the group information. \n&quot; +</b>
+&nbsp;                &quot;Group Name: &quot; + this.group_name + &quot;\n&quot; +
+&nbsp;                &quot;Group ID: &quot; + this.groupID + &quot;\n&quot; +
+&nbsp;                &quot;Members: &quot; + this.groupUserNames + &quot;\n&quot;);
+<b class="nc">&nbsp;        RHS.setEditable(false);</b>
+&nbsp;
+&nbsp;        // Buttons
+<b class="nc">&nbsp;        JPanel btn_group = new JPanel();</b>
+<b class="nc">&nbsp;        btn_group.add(addItem);</b>
+<b class="nc">&nbsp;        btn_group.add(settleDebt);</b>
+<b class="nc">&nbsp;        btn_group.add(purchaseItem);</b>
+&nbsp;
+<b class="nc">&nbsp;        JPanel toHomepage = new JPanel();</b>
+<b class="nc">&nbsp;        toHomepage.add(toHomepage);</b>
+&nbsp;
+<b class="nc">&nbsp;        JPanel text_group = new JPanel();</b>
+<b class="nc">&nbsp;        text_group.add(RHS);</b>
+&nbsp;
+<b class="nc">&nbsp;        JPanel right_hand_side = new JPanel();</b>
+<b class="nc">&nbsp;        right_hand_side.setLayout(new BoxLayout(right_hand_side, BoxLayout.PAGE_AXIS));</b>
+<b class="nc">&nbsp;        right_hand_side.add(text_group);</b>
+<b class="nc">&nbsp;        right_hand_side.add(btn_group);</b>
+<b class="nc">&nbsp;        right_hand_side.add(toHomepage);</b>
+&nbsp;
+<b class="nc">&nbsp;        this.planningListView = new PlanningListView(planningListData);</b>
+<b class="nc">&nbsp;        PurchaseListView p = new PurchaseListView(purchaseListData);</b>
+<b class="nc">&nbsp;        BalanceView b = new BalanceView(debtData, username, groupUserNames);</b>
+<b class="nc">&nbsp;        p2.add(p);</b>
+<b class="nc">&nbsp;        p1.add(planningListView);</b>
+&nbsp;
+<b class="nc">&nbsp;        t.addTab(&quot;Planning&quot;, p1);</b>
+<b class="nc">&nbsp;        t.setMnemonicAt(0, KeyEvent.VK_1);</b>
+<b class="nc">&nbsp;        t.addTab(&quot;Purchases&quot;, p2);</b>
+<b class="nc">&nbsp;        t.setMnemonicAt(1, KeyEvent.VK_2);</b>
+<b class="nc">&nbsp;        t.addTab(&quot;Balances&quot;, p3);</b>
+<b class="nc">&nbsp;        t.setMnemonicAt(2, KeyEvent.VK_3);</b>
+&nbsp;
+<b class="nc">&nbsp;        p3.add(b);</b>
+<b class="nc">&nbsp;        add(t, BorderLayout.CENTER);</b>
+<b class="nc">&nbsp;        add(temporary_panel, BorderLayout.NORTH);</b>
+<b class="nc">&nbsp;        add(right_hand_side, BorderLayout.LINE_START);</b>
+&nbsp;
+<b class="nc">&nbsp;        addItem.addActionListener(this);</b>
+<b class="nc">&nbsp;        settleDebt.addActionListener(this);</b>
+<b class="nc">&nbsp;        purchaseItem.addActionListener(this);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**.
+&nbsp;     * @param evt the event to be processed
+&nbsp;     * React to a certain button click that results in evt.
+&nbsp;     */
+&nbsp;    public void actionPerformed(ActionEvent evt) {
+<b class="nc">&nbsp;        if (evt.getActionCommand().equals(&quot;Add Item&quot;)) {</b>
+<b class="nc">&nbsp;            String item = JOptionPane.showInputDialog(&quot;Please enter in Item Name:&quot;);</b>
+&nbsp;
+<b class="nc">&nbsp;            if (item == null || !(isAlpha(item))) {</b>
+<b class="nc">&nbsp;                showMessage(&quot;Error with input!&quot;);</b>
+&nbsp;            }
+&nbsp;            else {
+<b class="nc">&nbsp;                UpdatedLists updatedLists = this.controllerAddPlanning.performPlanningAdd(item, this.groupID);</b>
+&nbsp;
+<b class="nc">&nbsp;                if (updatedLists.getResultMessage().equals(&quot;Success&quot;) &amp;&amp; isAlpha(item)) {</b>
+<b class="nc">&nbsp;                    resetGroupSummary(this.group_name, this.groupID, this.username, this.purchaseListData,</b>
+<b class="nc">&nbsp;                            updatedLists.getNewPlanningList(), this.debtData, this.groupUserNames, this.mainWindowView);</b>
+<b class="nc">&nbsp;                    updateUserGroups(mainWindowView.getUserGroups(), this.groupID, updatedLists.getNewPlanningList(),</b>
+&nbsp;                            this.purchaseListData, this.debtData);
+&nbsp;                } else {
+<b class="nc">&nbsp;                    showMessage(&quot;Not Successful :(&quot;);</b>
+&nbsp;                }
+&nbsp;
+&nbsp;            }
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        if (evt.getActionCommand().equals(&quot;Settle Debt&quot;)){</b>
+<b class="nc">&nbsp;            ClearDebtView clearDebtView = new ClearDebtView(</b>
+&nbsp;                    this.groupUserNames);
+&nbsp;
+<b class="nc">&nbsp;            if (clearDebtView.getSelectedMember() == null) {</b>
+<b class="nc">&nbsp;                showMessage(&quot;Error with input.&quot;);</b>
+&nbsp;            } else {
+<b class="nc">&nbsp;                UpdatedDebts updatedDebts = this.controllerSettlementPayment.settleDebt(clearDebtView.getSelectedMember(),</b>
+&nbsp;                        this.username, this.groupID);
+<b class="nc">&nbsp;                if (updatedDebts.getOutcomeMessage().equals(&quot;Success&quot;)){</b>
+<b class="nc">&nbsp;                    resetGroupSummary(this.group_name, this.groupID, this.username, this.purchaseListData,</b>
+<b class="nc">&nbsp;                            this.planningListData, updatedDebts.getUpdatedBalances(), this.groupUserNames,</b>
+&nbsp;                            this.mainWindowView);
+<b class="nc">&nbsp;                    updateUserGroups(mainWindowView.getUserGroups(), this.groupID, this.planningListData,</b>
+<b class="nc">&nbsp;                            this.purchaseListData, updatedDebts.getUpdatedBalances());</b>
+<b class="nc">&nbsp;                }else { showMessage(updatedDebts.getOutcomeMessage());}</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        if (evt.getActionCommand().equals(&quot;Purchase Item&quot;)){</b>
+<b class="nc">&nbsp;            JTable table = planningListView.getTable();</b>
+<b class="nc">&nbsp;            if (table.getSelectedRowCount() == 1) {</b>
+<b class="nc">&nbsp;                String item = (String) table.getValueAt(table.getSelectedRow(), 0);</b>
+&nbsp;
+<b class="nc">&nbsp;                String itemID = getItemID(planningListData, item);</b>
+<b class="nc">&nbsp;                AddPurchaseView addPurchaseView = new AddPurchaseView(</b>
+&nbsp;                        this.groupUserNames);
+&nbsp;
+<b class="nc">&nbsp;                if ((addPurchaseView.getItemPrice().matches(&quot;[0-9]+&quot;)) &amp;&amp; (addPurchaseView.getSelectedMembers().size() &gt; 0)) {</b>
+<b class="nc">&nbsp;                    float item_price = Float.parseFloat(addPurchaseView.getItemPrice());</b>
+<b class="nc">&nbsp;                    UpdatedLists updatedList = controllerAddPurchase.controlAddPurchaseUseCase(itemID,</b>
+<b class="nc">&nbsp;                            addPurchaseView.getSelectedMembers(), this.username, item_price, this.groupID);</b>
+<b class="nc">&nbsp;                    UpdatedDebts updatedDebts = this.updatePaymentBalanceController.create(this.groupID,</b>
+<b class="nc">&nbsp;                            this.username, item_price, itemID, addPurchaseView.getSelectedMembers());</b>
+<b class="nc">&nbsp;                        System.out.println(&quot;updated debts lists &quot; + updatedDebts.getUpdatedBalances());</b>
+<b class="nc">&nbsp;                    if (updatedList.getResultMessage().equals(&quot;Success&quot;) &amp;&amp; updatedDebts.getOutcomeMessage().equals(&quot;Success&quot;)) {</b>
+<b class="nc">&nbsp;                        System.out.println(&quot;Resetting group summary from purchase item&quot;);</b>
+<b class="nc">&nbsp;                        resetGroupSummary(this.group_name, this.groupID, this.username, updatedList.getNewPurchasedList(),</b>
+<b class="nc">&nbsp;                                updatedList.getNewPlanningList(), updatedDebts.getUpdatedBalances(), this.groupUserNames,</b>
+&nbsp;                                this.mainWindowView);
+<b class="nc">&nbsp;                        updateUserGroups(mainWindowView.getUserGroups(), this.groupID, updatedList.getNewPlanningList(),</b>
+<b class="nc">&nbsp;                                updatedList.getNewPurchasedList(), updatedDebts.getUpdatedBalances());</b>
+&nbsp;                    } else {
+<b class="nc">&nbsp;                        showMessage(updatedList.getResultMessage());</b>
+&nbsp;                    }
+<b class="nc">&nbsp;                }else { showMessage(&quot;Error with inputs!&quot;);}</b>
+<b class="nc">&nbsp;            }</b>
+&nbsp;            else {
+<b class="nc">&nbsp;                if (table.getRowCount() == 0) { showMessage(&quot;The table is empty! &quot; +</b>
+&nbsp;                        &quot;There are no items to purchase.&quot;); }
+<b class="nc">&nbsp;                else { showMessage(&quot;Please select a single item to purchase.&quot;); }</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * this helper function acts to &quot;update&quot; the currently shown GroupSummaryView page by overwriting the current
+&nbsp;     * instance of a GroupSummaryView
+&nbsp;     * @param groupName the group name for the group being shown
+&nbsp;     * @param groupID   specific group ID
+&nbsp;     * @param username  username of the user accessing the group
+&nbsp;     * @param purchaseListData  purchase list data to be shown
+&nbsp;     * @param planningListData  planning list data to be shown
+&nbsp;     * @param debtData          debt data to be shown
+&nbsp;     * @param groupUserNames    all the users in the group
+&nbsp;     * @param mainWindowView    cautious main window view
+&nbsp;     */
+&nbsp;    public void resetGroupSummary(String groupName, String groupID, String username,
+&nbsp;                                  List&lt;List&lt;String&gt;&gt; purchaseListData, List&lt;List&lt;String&gt;&gt; planningListData,
+&nbsp;                                  List&lt;List&lt;Object&gt;&gt; debtData, List&lt;String&gt; groupUserNames, MainWindowView mainWindowView){
+<b class="nc">&nbsp;        GroupSummaryView groupSummaryView = new GroupSummaryView(groupName, groupID, username,</b>
+&nbsp;                purchaseListData,  planningListData, debtData, groupUserNames, mainWindowView);
+<b class="nc">&nbsp;        mainWindowView.setContentPane(groupSummaryView);</b>
+<b class="nc">&nbsp;        groupSummaryView.getToHomepage().addActionListener(mainWindowView);</b>
+<b class="nc">&nbsp;        setVisible(true);</b>
+<b class="nc">&nbsp;        System.out.println(&quot;This is group &quot; + groupName);</b>
+<b class="nc">&nbsp;        System.out.println(&quot;This is groupID &quot; + groupID);</b>
+<b class="nc">&nbsp;        System.out.println(&quot;This is username &quot; + username);</b>
+<b class="nc">&nbsp;        System.out.println(&quot;This is planning &quot; + planningListData);</b>
+<b class="nc">&nbsp;        System.out.println(&quot;This is purchase &quot; + purchaseListData);</b>
+<b class="nc">&nbsp;        System.out.println(&quot;This is debt &quot; + debtData);</b>
+<b class="nc">&nbsp;        System.out.println(&quot;This is members &quot; + groupUserNames);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * a helper function to show a message as a popup
+&nbsp;     * @param message   intended message to be shown
+&nbsp;     */
+<b class="nc">&nbsp;    public void showMessage(String message) { JOptionPane.showMessageDialog(this, message); }</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Button that leads to homepage
+&nbsp;     * @return  returns the button in question
+&nbsp;     */
+<b class="nc">&nbsp;    public JButton getToHomepage() {return toHomepage; }</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * return the ID of an item that is being purchased from the given data
+&nbsp;     * @param planningListData  the planning list data
+&nbsp;     * @param item_name         the item being purchased
+&nbsp;     * @return                  the ID of the item being purchased
+&nbsp;     */
+&nbsp;    public String getItemID(List&lt;List&lt;String&gt;&gt; planningListData, String item_name){
+<b class="nc">&nbsp;        String itemID = &quot;&quot;;</b>
+<b class="nc">&nbsp;        for (List&lt;String&gt; values : planningListData){</b>
+<b class="nc">&nbsp;            if (values.get(1).equals(item_name)){</b>
+<b class="nc">&nbsp;                itemID = values.get(0);</b>
+&nbsp;            }
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;        return itemID;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * takes in a string and tests whether it is an alpha
+&nbsp;     * @param name  string being used
+&nbsp;     * @return      whether the string is compatible with the back-end implementation
+&nbsp;     */
+&nbsp;    public boolean isAlpha(String name) {
+<b class="nc">&nbsp;        return name.matches(&quot;[a-zA-Z0-9]+&quot;);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * updates the list of user groups the user is a part of
+&nbsp;     * @param userGroups    the current list of groups the user is a part of
+&nbsp;     * @param groupID       the new group&#39;s ID
+&nbsp;     * @param newPlanningList   the planning list of the group
+&nbsp;     * @param newPurchaseList   the purchased list of the group
+&nbsp;     * @param newDebtData       the debt data of the group
+&nbsp;     */
+&nbsp;    public void updateUserGroups(List&lt;List&lt;Object&gt;&gt; userGroups, String groupID,
+&nbsp;                                 List&lt;List&lt;String&gt;&gt; newPlanningList, List&lt;List&lt;String&gt;&gt;
+&nbsp;                                 newPurchaseList, List&lt;List&lt;Object&gt;&gt; newDebtData){
+<b class="nc">&nbsp;        for (List&lt;Object&gt; group : userGroups){</b>
+<b class="nc">&nbsp;            if (group.get(0).equals(groupID)){</b>
+<b class="nc">&nbsp;                group.set(2, newPlanningList);</b>
+<b class="nc">&nbsp;                group.set(3, newPurchaseList);</b>
+<b class="nc">&nbsp;                group.set(5, newDebtData);</b>
+&nbsp;
+&nbsp;            }
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+<b class="nc">&nbsp;        System.out.println(&quot;updated user-groups &quot; + userGroups);</b>
+&nbsp;    }
+&nbsp;}
+&nbsp;
+&nbsp;
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2022-12-05 00:39</div>
+</div>
+</body>
+</html>

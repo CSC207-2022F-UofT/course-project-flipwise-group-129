@@ -1,0 +1,101 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > UserDataInterface</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">DataAccessInterface</a>
+</div>
+
+<h1>Coverage Summary for Class: UserDataInterface (DataAccessInterface)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">UserDataInterface</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package DataAccessInterface;
+&nbsp;
+&nbsp;import org.json.simple.parser.ParseException;
+&nbsp;
+&nbsp;import java.io.IOException;
+&nbsp;
+&nbsp;public interface UserDataInterface {
+&nbsp;    /*
+&nbsp;     * This represents a UserDataInterface defines methods needed to
+&nbsp;     * facilitate data reading and writing from users.json
+&nbsp;     */
+&nbsp;
+&nbsp;    /**
+&nbsp;     * This function will be called to add or update any user entity to the map and saving the updated information
+&nbsp;     * back into the users.json file
+&nbsp;     * @param username the username of the current modified or added user
+&nbsp;     * @param userInfo the summarized user information of the current modified or added user
+&nbsp;     */
+&nbsp;    void addorUpdateUser(String username, String userInfo) throws IOException, ParseException;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * This function will be called to check if a user entity already has been entered in users.json file
+&nbsp;     * @param username the username of the current modified or added user
+&nbsp;     * @return true if the username was found from the users.json file and false otherwise
+&nbsp;     */
+&nbsp;    boolean userIdExists(String username) throws IOException, ParseException;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * This function will be called to retrieve the stored information from users.json of a user based on its username
+&nbsp;     * @param username the username of the desired user
+&nbsp;     * @return user details corresponding to username in string form
+&nbsp;     */
+&nbsp;    String userAsString(String username) throws IOException, ParseException;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2022-12-05 00:39</div>
+</div>
+</body>
+</html>

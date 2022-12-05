@@ -1,0 +1,297 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > UpdatePaymentBalance</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">UseCases</a>
+</div>
+
+<h1>Coverage Summary for Class: UpdatePaymentBalance (UseCases)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">UpdatePaymentBalance</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    83.3%
+  </span>
+  <span class="absValue">
+    (5/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    82.5%
+  </span>
+  <span class="absValue">
+    (47/57)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package UseCases;
+&nbsp;
+&nbsp;import DataStructures.PaymentInformation;
+&nbsp;import DataStructures.UpdatedDebts;
+&nbsp;import Entities.*;
+&nbsp;import InputBoundary.UpdatePaymentBalanceBoundaryIn;
+&nbsp;import OutputBoundary.UpdatePaymentBalanceBoundaryOut;
+&nbsp;import DataAccessInterface.*;
+&nbsp;import org.json.simple.parser.ParseException;
+&nbsp;
+&nbsp;import java.io.IOException;
+&nbsp;import java.util.*;
+&nbsp;
+&nbsp;public class UpdatePaymentBalance implements UpdatePaymentBalanceBoundaryIn{
+&nbsp;
+&nbsp;    final GroupDataInterface groupDataInterface;
+&nbsp;    final ItemDataInterface itemDataInterface;
+&nbsp;    final UpdatePaymentBalanceBoundaryOut updatePaymentBalancePresenter;
+&nbsp;
+<b class="fc">&nbsp;    public UpdatePaymentBalance(GroupDataInterface gdi, ItemDataInterface idi, UpdatePaymentBalanceBoundaryOut upbp) {</b>
+<b class="fc">&nbsp;        this.groupDataInterface = gdi;</b>
+<b class="fc">&nbsp;        this.itemDataInterface = idi;</b>
+<b class="fc">&nbsp;        this.updatePaymentBalancePresenter = upbp;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Updates the list of debts for a group after the purchase of an item has been made.
+&nbsp;     * @param paymentDetails the data structure containing all the information required to update the debts in the
+&nbsp;     *                       group.
+&nbsp;     * @return the information that is prepared by the presenter to the controller.
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public UpdatedDebts updatePaymentBalance(PaymentInformation paymentDetails) {
+<b class="fc">&nbsp;        String groupID = paymentDetails.getGroupID();</b>
+<b class="fc">&nbsp;        String userPurchasedItem = paymentDetails.getUsername();</b>
+<b class="fc">&nbsp;        float itemPrice = paymentDetails.getItemPrice();</b>
+<b class="fc">&nbsp;        List&lt;String&gt; usersInvolvedInPurcase = paymentDetails.getUsersInvolvedInPurchase();</b>
+<b class="fc">&nbsp;        int amountOfUsersInvolvedInPurchase = usersInvolvedInPurcase.size();</b>
+&nbsp;
+&nbsp;        /*
+&nbsp;        There are going to be three steps, I can only implement step 2 right now, and then I can
+&nbsp;        implement steps 1 and 3 after the database has been made.
+&nbsp;
+&nbsp;        - (1) Use the itemID to get all the information that is required to construct our purchasedItem
+&nbsp;        item object.
+&nbsp;        - (2) Use this item object to obtain all the users that were involved in the purchase.
+&nbsp;        - (1) Use the groupID to get all the information which is used to construct the group of people who are involved
+&nbsp;        in the purchase.
+&nbsp;        - (2) Use the group object to get the purchaseBalance.
+&nbsp;        - (2) Use the itemPrice and the userPurchasedItem to update the debts between the
+&nbsp;        userPurchasedItem and all users involved in the purchase.
+&nbsp;        - (3) Deconstruct the data in the group object we previously created, and override existing
+&nbsp;        data with this new data in the database.
+&nbsp;        - (2) Obtain necessary information from the corresponding entities to construct an UpdatedDebts
+&nbsp;        object.
+&nbsp;        - (2) Return this.updatePaymentBalancePresenter.prepareUpdatedDebtList(with the UpdatedDebts object
+&nbsp;        we created in the last step).
+&nbsp;
+&nbsp;        /*
+&nbsp;         We now use the groupID to get the group of people in which the purchase has been made, and then we call
+&nbsp;         the getUsers() method to get the Set of Users in the group (not all of them are necessarily involved in
+&nbsp;         the purchase).
+&nbsp;         */
+&nbsp;
+<b class="fc">&nbsp;        for(String userInvolvedInPurchase : usersInvolvedInPurcase) {</b>
+<b class="fc">&nbsp;            int count = 0;</b>
+<b class="fc">&nbsp;            for(String u : usersInvolvedInPurcase) {</b>
+<b class="fc">&nbsp;                if(userInvolvedInPurchase.equals(u)) {</b>
+<b class="fc">&nbsp;                    count++;</b>
+&nbsp;                }
+<b class="fc">&nbsp;            }</b>
+<b class="fc">&nbsp;            if (count &gt;= 2) {</b>
+<b class="fc">&nbsp;                return this.updatePaymentBalancePresenter.prepareFailView(</b>
+&nbsp;                        new UpdatedDebts(&quot;The list containing users involved in the purchase contain duplicates.&quot;));
+&nbsp;            }
+<b class="fc">&nbsp;        }</b>
+&nbsp;
+&nbsp;        Group groupInvolvedInPurchase;
+&nbsp;        try {
+<b class="fc">&nbsp;            groupInvolvedInPurchase = getGroupFromDb(groupID);</b>
+&nbsp;        }
+<b class="nc">&nbsp;        catch (RuntimeException e) {</b>
+<b class="nc">&nbsp;            return raiseError(e);</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;
+&nbsp;        /*
+&nbsp;        We can now call getPurchaseBalance() and getAllDebts() on groupInvolvedInPurchase to get the list of all
+&nbsp;        debts in the group.
+&nbsp;         */
+<b class="fc">&nbsp;        List&lt;Debt&gt; currentDebtList = groupInvolvedInPurchase.getPurchaseBalance().getAllDebts();</b>
+&nbsp;
+&nbsp;        /*
+&nbsp;        Each of the debts in currentDebtList contains the user who is owed the money, and the user who needs to
+&nbsp;        pay that user, so we work our way through the list and all the usernames in usersInvolvedInPurchase, and
+&nbsp;        if the user owed is equal to the user who made the purchase, and the user owing is equal to username, then we
+&nbsp;        can update the debt between the two users using setDebtValue().
+&nbsp;         */
+<b class="fc">&nbsp;        for(Debt d : currentDebtList) {</b>
+<b class="fc">&nbsp;            for(String username : usersInvolvedInPurcase) {</b>
+<b class="fc">&nbsp;                if(d.getUserOwing().getUsername().equals(username) &amp;&amp;</b>
+<b class="fc">&nbsp;                        d.getUserOwed().getUsername().equals(userPurchasedItem)) {</b>
+<b class="fc">&nbsp;                    double currentDebt = d.getDebtValue();</b>
+<b class="fc">&nbsp;                    double updatedDebt = currentDebt + itemPrice/amountOfUsersInvolvedInPurchase;</b>
+<b class="fc">&nbsp;                    d.setDebtValue(updatedDebt);</b>
+&nbsp;                }
+<b class="fc">&nbsp;            }</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;
+&nbsp;        /*
+&nbsp;        Now we will need to save the data into the database. We need to save the user and group into the database.
+&nbsp;         */
+<b class="fc">&nbsp;        saveData(groupInvolvedInPurchase);</b>
+&nbsp;
+&nbsp;        /*
+&nbsp;        We now need to construct a Map&lt;String, List&lt;Object&gt;&gt;, where the String is the name of a user in the group who is
+&nbsp;        owed money, and at index[0], the List contains the name of the user who owes money as a String, and at index[1],
+&nbsp;        the List contains the amount the user owes as a double.
+&nbsp;         */
+&nbsp;
+<b class="fc">&nbsp;        List&lt;List&lt;Object&gt;&gt; updatedDebtsList = getOutputtedDebts(groupInvolvedInPurchase.getPurchaseBalance());</b>
+&nbsp;
+&nbsp;        /*
+&nbsp;        Now we can take the Map use it in the constructor for UpdatedDebts to create our final returned value.
+&nbsp;         */
+&nbsp;        try {
+<b class="fc">&nbsp;            return this.updatePaymentBalancePresenter.prepareSuccessView(new UpdatedDebts(updatedDebtsList));</b>
+<b class="nc">&nbsp;        } catch (IOException | ParseException e) {</b>
+<b class="nc">&nbsp;            return this.updatePaymentBalancePresenter.prepareFailView(</b>
+&nbsp;                    new UpdatedDebts(&quot;failed due to unreadable database&quot;));
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * This function gets a list of all the new debts in the group
+&nbsp;     *
+&nbsp;     * @param purchaseBalance the list of Debts in the group
+&nbsp;     * @return This returns a list of debts formatted as a nested list of strings
+&nbsp;     */
+&nbsp;    private List&lt;List&lt;Object&gt;&gt; getOutputtedDebts(PurchaseBalance purchaseBalance) {
+<b class="fc">&nbsp;        List&lt;List&lt;Object&gt;&gt; returnedDebts = new ArrayList&lt;&gt;();</b>
+<b class="fc">&nbsp;        for(Debt curDebt : purchaseBalance.getAllDebts()){</b>
+<b class="fc">&nbsp;            ArrayList&lt;Object&gt; currentDebt = new ArrayList&lt;&gt;();</b>
+<b class="fc">&nbsp;            currentDebt.add(curDebt.getUserOwed().getUsername());</b>
+<b class="fc">&nbsp;            currentDebt.add(curDebt.getUserOwing().getUsername());</b>
+<b class="fc">&nbsp;            currentDebt.add(curDebt.getDebtValue());</b>
+<b class="fc">&nbsp;            returnedDebts.add(currentDebt);</b>
+<b class="fc">&nbsp;        }</b>
+<b class="fc">&nbsp;        return returnedDebts;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Helper method for updatePaymentBalance which returns a failed instance of UpdatedDebts.
+&nbsp;     * @param e the runtime error given by the try catch in updatePaymentBalance when checking if itemID or groupID
+&nbsp;     *          exist.
+&nbsp;     * @return the failed view of the updatePaymentBalance presenter.
+&nbsp;     */
+&nbsp;    private UpdatedDebts raiseError(RuntimeException e) {
+<b class="nc">&nbsp;        return this.updatePaymentBalancePresenter.prepareFailView(new UpdatedDebts(e.toString()));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Helper method for updatePaymentBalance to check if the groupID exists in the given database.
+&nbsp;     * @param groupID the String which is the ID of the group in which the item was purchased.
+&nbsp;     * @return an instance of the actual group in which the item has been purchased if it exists in the database,
+&nbsp;     * otherwise, returns a RuntimeException.
+&nbsp;     */
+&nbsp;    private Group getGroupFromDb(String groupID){
+&nbsp;        // get the user from the database and create a User interface
+&nbsp;        //check if the user exists
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            if (!this.groupDataInterface.groupIdExists(groupID)){</b>
+<b class="nc">&nbsp;                throw new RuntimeException(&quot;Group Id does not exist&quot;);</b>
+&nbsp;            }
+<b class="fc">&nbsp;            String groupString = this.groupDataInterface.groupAsString(groupID);</b>
+<b class="fc">&nbsp;            return Group.fromString(groupString);</b>
+<b class="nc">&nbsp;        } catch (IOException | ParseException e) {</b>
+<b class="nc">&nbsp;            throw new RuntimeException(&quot;Unable to process group from database&quot;);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * A helper method for updatePaymentBalance which just saves the updated data to the database.
+&nbsp;     * @param group the Group in which the item has been purchased and in which the debts have been updated.
+&nbsp;     */
+&nbsp;    private void saveData(Group group){
+&nbsp;        //pass new info to db
+&nbsp;        try {
+<b class="fc">&nbsp;            this.groupDataInterface.addorUpdateGroup(group.getGroupId(), group.toString());</b>
+<b class="nc">&nbsp;        } catch (IOException | ParseException e) {</b>
+<b class="nc">&nbsp;            throw new RuntimeException(&quot;Unable to modify group info to database&quot;);</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2022-12-05 00:39</div>
+</div>
+</body>
+</html>
