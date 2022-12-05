@@ -1,6 +1,5 @@
 package Presenters;
 
-import DataStructures.CreatedGroupInfo;
 import DataStructures.JoinedGroupInfo;
 import OutputBoundary.GroupJoinBoundaryOut;
 
@@ -24,7 +23,7 @@ public class GroupJoinPresenter implements GroupJoinBoundaryOut {
     /**
      * prepares a failure view when group joining fails and presents the corresponding error message
      * @param joinedGroupInfo contains the error message
-     * @return the error message wrapped in an appropriate datastrcuture
+     * @return the error message wrapped in an appropriate data structure
      */
     @Override
     public JoinedGroupInfo prepareFailView(JoinedGroupInfo joinedGroupInfo){

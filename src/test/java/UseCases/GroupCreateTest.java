@@ -1,11 +1,11 @@
 package UseCases;
 
+import Controllers.GroupCreateController;
 import DataAccess.GroupDataAccess;
 import DataAccess.UserDataAccess;
 import DataAccessInterface.GroupDataInterface;
 import DataAccessInterface.UserDataInterface;
 import DataStructures.CreatedGroupInfo;
-import DataStructures.ProposedGroupInfo;
 import Entities.Group;
 import Entities.User;
 import InputBoundary.GroupCreateBoundaryIn;
@@ -24,7 +24,6 @@ import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 import Presenters.GroupCreatePresenter;
 
@@ -47,10 +46,10 @@ class GroupCreateTest {
     @After
     public void tearDown(){
         File groupFile = new File("././src/test/resources/testgroupsCopy.json");
-        groupFile.delete();
+        assert groupFile.delete();
 
         File userFile = new File("././src/test/resources/testusersCopy.json");
-        userFile.delete();
+        assert userFile.delete();
     }
 
     List<String> getUserInfo() throws IOException, ParseException {
@@ -103,13 +102,10 @@ class GroupCreateTest {
         GroupDataInterface groupData = new GroupDataAccess("test");
         UserDataInterface userData = new UserDataAccess("test");
         GroupCreateBoundaryIn useCase = new GroupCreate(presenter, groupData, userData);
+        GroupCreateController controller = new GroupCreateController(useCase);
 
-        // 2) Input data — we can make this up for the test. Normally it would
-        // be created by the Controller.
-        ProposedGroupInfo inputData = new ProposedGroupInfo("mishaalk", "groupDarcy");
-
-        // 3) Run the use case
-        useCase.createNewGroup(inputData);
+        // 2) Run the use case through the controller
+        controller.create("groupDarcy","mishaalk");
 
         tearDown();
     }
@@ -117,7 +113,7 @@ class GroupCreateTest {
     @Test
     void createUserNotExist() throws IOException, org.json.simple.parser.ParseException {
         // To test the use case:
-        // 1) Create a GroupCreateInteractorTest and prerequisite objects
+        // 1) Create a GroupCreateTest and prerequisite objects
         //    (arguments for the GroupCreateController constructor parameters)
         // 2) create the Input Data in the form of the group and users
         // 3) Call the use case GroupCreate Input Boundary method to run the use case
@@ -150,13 +146,10 @@ class GroupCreateTest {
         GroupDataInterface groupData = new GroupDataAccess("test");
         UserDataInterface userData = new UserDataAccess("test");
         GroupCreateBoundaryIn useCase = new GroupCreate(presenter, groupData, userData);
+        GroupCreateController controller = new GroupCreateController(useCase);
 
-        // 2) Input data — we can make this up for the test. Normally it would
-        // be created by the Controller.
-        ProposedGroupInfo inputData = new ProposedGroupInfo("mishaalki", "groupDarcy");
-
-        // 3) Run the use case
-        useCase.createNewGroup(inputData);
+        // 2) Run the use case through the controller
+        controller.create("groupDarcy", "mishaalki");
 
         tearDown();
     }
@@ -192,18 +185,15 @@ class GroupCreateTest {
         GroupDataInterface groupData = new GroupDataAccess("test");
         UserDataInterface userData = new UserDataAccess("test");
         GroupCreateBoundaryIn useCase = new GroupCreate(presenter, groupData, userData);
+        GroupCreateController controller = new GroupCreateController(useCase);
 
         //setting the data from the database as a constant to check later
         List<String> userInfoBefore = getUserInfo();
 
-        // 2) Input data — we can make this up for the test. Normally it would
-        // be created by the Controller.
-        ProposedGroupInfo inputData = new ProposedGroupInfo("mishaalk", "groupDarcy");
+        // 2) run the use case through the controller
+        controller.create("groupDarcy", "mishaalk");
 
-        // 3) Run the use case
-        useCase.createNewGroup(inputData);
-
-        // chekc if the users list of groups has been updated
+        // check if the users list of groups has been updated
         try {
             List<String> userInfoAfter = getUserInfo();
             for (String s : userInfoBefore) {

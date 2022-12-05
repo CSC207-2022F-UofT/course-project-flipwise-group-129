@@ -1,6 +1,5 @@
 package DataStructures;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class PaymentInformation {
@@ -43,41 +42,31 @@ public class PaymentInformation {
     }
 
     /**
-     <<<<<<< HEAD
-     * @return the username of the user who purchased the item.
-    =======
      * This function retrieves the username of the owed user in the debt
      * @return This returns the username of the owed user in the debt
-    >>>>>>> 6c8f8846703a862ca61272a4f9429562cae24dff
      */
     public String getUsername() {
         return this.username;
     }
 
     /**
-     <<<<<<< HEAD
-     * @return the price of the item purchased.
-    =======
      * This function retrieves the username of the owing user in the debt
      * @return This returns the username of the owing user in the debt
-    >>>>>>> 6c8f8846703a862ca61272a4f9429562cae24dff
      */
     public float getItemPrice() {
         return this.itemPrice;
     }
 
     /**
-     <<<<<<< HEAD
-     * @return the itemID of the purchased item.
-    =======
-     * This function retrieves the groupId of the group that contains this debt
-     * @return This returns the groupId of the group that contains this debt
-    >>>>>>> 6c8f8846703a862ca61272a4f9429562cae24dff
+     * This function retrieves the ID of the item purchased.
+     * @return This returns the ID of the item purchased.
      */
-    public String getItemID() {
-        return this.itemID;
-    }
+    public String getItemID() {return this.itemID;}
 
+    /**
+     * This function retrieves the users involved in the purchase of the item.
+     * @return This returns the list of usernames of users involved in the purchase.
+     */
     public List<String> getUsersInvolvedInPurchase() {
         return this.usersInvolvedInPurchase;
     }
