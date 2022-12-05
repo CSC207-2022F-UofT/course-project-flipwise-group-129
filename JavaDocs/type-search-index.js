@@ -1,1 +1,0 @@
-typeSearchIndex = [{"p":"Controllers","l":"AddToPlanningController"},{"l":"All Classes","url":"allclasses-index.html"}]
