@@ -17,10 +17,11 @@ public class UpdatePaymentBalance implements UpdatePaymentBalanceBoundaryIn{
     final ItemDataInterface itemDataInterface;
     final UpdatePaymentBalanceBoundaryOut updatePaymentBalancePresenter;
 
-    public UpdatePaymentBalance(GroupDataInterface gdi, ItemDataInterface idi, UpdatePaymentBalanceBoundaryOut upbp) {
+    public UpdatePaymentBalance(GroupDataInterface gdi, ItemDataInterface idi,
+                                UpdatePaymentBalanceBoundaryOut updatePaymentBalanceBoundaryOut) {
         this.groupDataInterface = gdi;
         this.itemDataInterface = idi;
-        this.updatePaymentBalancePresenter = upbp;
+        this.updatePaymentBalancePresenter = updatePaymentBalanceBoundaryOut;
     }
 
     /**
@@ -34,8 +35,8 @@ public class UpdatePaymentBalance implements UpdatePaymentBalanceBoundaryIn{
         String groupID = paymentDetails.getGroupID();
         String userPurchasedItem = paymentDetails.getUsername();
         float itemPrice = paymentDetails.getItemPrice();
-        List<String> usersInvolvedInPurcase = paymentDetails.getUsersInvolvedInPurchase();
-        int amountOfUsersInvolvedInPurchase = usersInvolvedInPurcase.size();
+        List<String> usersInvolvedInPurchase = paymentDetails.getUsersInvolvedInPurchase();
+        int amountOfUsersInvolvedInPurchase = usersInvolvedInPurchase.size();
 
         /*
         There are going to be three steps, I can only implement step 2 right now, and then I can
@@ -62,9 +63,9 @@ public class UpdatePaymentBalance implements UpdatePaymentBalanceBoundaryIn{
          the purchase).
          */
 
-        for(String userInvolvedInPurchase : usersInvolvedInPurcase) {
+        for(String userInvolvedInPurchase : usersInvolvedInPurchase) {
             int count = 0;
-            for(String u : usersInvolvedInPurcase) {
+            for(String u : usersInvolvedInPurchase) {
                 if(userInvolvedInPurchase.equals(u)) {
                     count++;
                 }
@@ -96,7 +97,7 @@ public class UpdatePaymentBalance implements UpdatePaymentBalanceBoundaryIn{
         can update the debt between the two users using setDebtValue().
          */
         for(Debt d : currentDebtList) {
-            for(String username : usersInvolvedInPurcase) {
+            for(String username : usersInvolvedInPurchase) {
                 if(d.getUserOwing().getUsername().equals(username) &&
                         d.getUserOwed().getUsername().equals(userPurchasedItem)) {
                     double currentDebt = d.getDebtValue();
