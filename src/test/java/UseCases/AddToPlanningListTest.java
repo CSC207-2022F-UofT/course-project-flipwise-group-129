@@ -2,12 +2,11 @@ package UseCases;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import Controllers.AddToPlanningController;
 import DataAccess.GroupDataAccess;
 import DataAccess.ItemDataAccess;
-import DataAccess.UserDataAccess;
 import DataAccessInterface.GroupDataInterface;
 import DataAccessInterface.ItemDataInterface;
-import DataAccessInterface.UserDataInterface;
 import DataStructures.PlannedItemInfo;
 import DataStructures.UpdatedLists;
 import Entities.*;
@@ -77,14 +76,11 @@ class AddToPlanningListTest {
         }
 
         AddToPlanningPresenter presenter = new AddToPlanningPresenter();
-        AddToPlanningBoundaryIn usecase = new AddToPlanningList(presenter, groupData, itemData);
-
-        // 2) Input data — we can make this up for the test. Normally it would
-        // be created by the Controller.
-        PlannedItemInfo newItem = new PlannedItemInfo("maggi", "grpOne11");
+        AddToPlanningBoundaryIn useCase = new AddToPlanningList(presenter, groupData, itemData);
+        AddToPlanningController controller = new AddToPlanningController(useCase);
 
         // 3) Run the use case
-        UpdatedLists outputData = usecase.addPlanning(newItem);
+        UpdatedLists outputData = controller.performPlanningAdd("maggi", "grpOne11");
 
         if(outputData.getNewPlanningList() != null){
             for (List<String> temp: outputData.getNewPlanningList()) {
@@ -124,14 +120,11 @@ class AddToPlanningListTest {
         }
 
         AddToPlanningPresenter presenter = new AddToPlanningPresenter();
-        AddToPlanningBoundaryIn usecase = new AddToPlanningList(presenter, groupData, itemData);
-
-        // 2) Input data — we can make this up for the test. Normally it would
-        // be created by the Controller.
-        PlannedItemInfo newItem = new PlannedItemInfo("maggi", "noGroup");
+        AddToPlanningBoundaryIn useCase = new AddToPlanningList(presenter, groupData, itemData);
+        AddToPlanningController controller = new AddToPlanningController(useCase);
 
         // 3) Run the use case
-        UpdatedLists outputData = usecase.addPlanning(newItem);
+        UpdatedLists outputData = controller.performPlanningAdd("maggi", "noGroup");
 
         if(outputData.getNewPlanningList() == null && outputData.getResultMessage().equals("Group cannot be found")){
             flagExists = true;
