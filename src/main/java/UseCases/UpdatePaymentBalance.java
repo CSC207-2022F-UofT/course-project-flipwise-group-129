@@ -81,6 +81,9 @@ public class UpdatePaymentBalance implements UpdatePaymentBalanceBoundaryIn {
         catch (RuntimeException e) {
             return raiseError(e);
         }
+        catch (IOException | ParseException e) {
+            throw new RuntimeException(e);
+        }
         Set<String> usersInGroup = groupInvolvedInPurchase.getUsers();
 
         int amountOfUsersInvolvedInPurchase = usersInvolvedInPurchase.size();

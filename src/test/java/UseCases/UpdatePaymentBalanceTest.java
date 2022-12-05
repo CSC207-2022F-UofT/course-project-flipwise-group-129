@@ -82,9 +82,9 @@ class UpdatePaymentBalanceTest {
         }
     }
 
-    Map<String, List<List<Object>>> getGroupInfo() throws IOException, ParseException {
+    List<Debt> getGroupInfo(List<String> usersInvolvedInPurchase) throws IOException, ParseException {
         GroupDataInterface groupDsInterface = new GroupDataAccess("test");
-        Map<String, List<List<Object>>> debtsList = new HashMap<>();
+        List<Debt> debtsList = new ArrayList<>();
         // get the user from the database
         // check if the user exists
         if (!groupDsInterface.groupIdExists("0001")){
@@ -94,13 +94,8 @@ class UpdatePaymentBalanceTest {
 
         try {
             Group group = Group.fromString(groupString);
-            for (Debt allDebt : group.getPurchaseBalance().getAllDebts()) {
-                List<List<Object>> lst = new ArrayList<>();
-                List<Object> userOwingAndDebtValue = new ArrayList<>();
-                userOwingAndDebtValue.add(allDebt.getUserOwing());
-                userOwingAndDebtValue.add(allDebt.getDebtValue());
-                lst.add(userOwingAndDebtValue);
-                debtsList.put(allDebt.getUserOwed().getUsername(), lst);
+            for(String usersOwing : usersInvolvedInPurchase) {
+                debtsList.add(group.getPurchaseBalance().getDebtPair("mishaalk", usersOwing));
             }
             return debtsList;
         } catch (JsonProcessingException e) {
@@ -117,13 +112,13 @@ class UpdatePaymentBalanceTest {
         UpdatePaymentBalancePresenter presenter = new UpdatePaymentBalancePresenter() {
             @Override
             public UpdatedDebts prepareSuccessView(UpdatedDebts updatedDebts) throws IOException, ParseException {
-                Map<String, List<List<Object>>> groupInfoBefore = getGroupInfo();
+                List<Debt> groupInfoBefore = getGroupInfo(Arrays.asList("rcordi", "randomC", "sopleee"));
                 List<String> users = Arrays.asList("rcordi", "randomC", "sopleee");
 
-                assert updatedDebts.getUpdatedBalances().containsKey("mishaalk");
+                assert updatedDebts.getUpdatedBalances().get("mishaalk") != null;
                 for (List<Object> userOwed : updatedDebts.getUpdatedBalances().get("mishaalk")) {
-                    int indexOfUserOwing = groupInfoBefore.get("mishaalk").indexOf(userOwed);
-                    double previousDebt = (double) groupInfoBefore.get("mishaalk").get(indexOfUserOwing).get(1);
+                    int indexOfUserOwing = groupInfoBefore.indexOf(userOwed.get(1));
+                    double previousDebt = groupInfoBefore.get(indexOfUserOwing).getDebtValue();
                     if(users.contains((String) userOwed.get(0))) {
                         assert (double) userOwed.get(1) == previousDebt + 19.99/3;
                     }
@@ -145,7 +140,7 @@ class UpdatePaymentBalanceTest {
         // 2. Input Data - we can make this up for the test, but normally it would be created from the controller.
         PaymentInformation inputData = new PaymentInformation("grpOne11", "mishaalk", (float) 19.99,
                 "itemApple", Arrays.asList("rcordi", "randomC", "sopleee"));
-        UpdatePaymentBalanceBoundaryIn useCase = new UpdatePaymentBalance(groupData, itemData, presenter, inputData);
+        UpdatePaymentBalanceBoundaryIn useCase = new UpdatePaymentBalance(groupData, itemData, presenter);
 
         // 3. Run the use case.
         useCase.updatePaymentBalance(inputData);
@@ -181,7 +176,7 @@ class UpdatePaymentBalanceTest {
         // 2. Input Data - we can make this up for the test, but normally it would be created from the controller.
         PaymentInformation inputData = new PaymentInformation("grpOne11", "mishaalk", (float) 19.99,
                 "itemApple", Arrays.asList("rcordi", "rcordi", "sopleee"));
-        UpdatePaymentBalanceBoundaryIn useCase = new UpdatePaymentBalance(groupData, itemData, presenter, inputData);
+        UpdatePaymentBalanceBoundaryIn useCase = new UpdatePaymentBalance(groupData, itemData, presenter);
 
         // 3. Run the use case.
         useCase.updatePaymentBalance(inputData);
@@ -216,11 +211,10 @@ class UpdatePaymentBalanceTest {
         // 2. Input Data - we can make this up for the test, but normally it would be created from the controller.
         PaymentInformation inputData = new PaymentInformation("grpOne11", "mishaalk", (float) 19.99,
                 "itemApple", Arrays.asList("rcordi", "randomC", "sopleee"));
-        UpdatePaymentBalanceBoundaryIn useCase = new UpdatePaymentBalance(groupData, itemData, presenter, inputData);
+        UpdatePaymentBalanceBoundaryIn useCase = new UpdatePaymentBalance(groupData, itemData, presenter);
 
         // We now set the data from the database as a constant to check against our use case.
-        List<String> userInfoBefore = getUserInfo();
-        Map<String, List<List<Object>>> groupInfoBefore = getGroupInfo();
+        List<Debt> groupInfoBefore = getGroupInfo(Arrays.asList("rcordi", "randomC", "sopleee"));
 
         // 3. Run the use case.
         useCase.updatePaymentBalance(inputData);
@@ -236,18 +230,11 @@ class UpdatePaymentBalanceTest {
             throw new RuntimeException(e);
         }
         try {
-            Map<String, List<List<Object>>> groupInfoAfter = getGroupInfo();
+            List<Debt> groupInfoAfter = getGroupInfo(Arrays.asList("rcordi", "randomC", "sopleee"));
             for(int x = 0; x < groupInfoAfter.size(); ++x) {
-                List<List<Object>> currentAfterSublist = groupInfoAfter.get("mishaalk");
-                List<List<Object>> currentBeforeSublist = groupInfoBefore.get("mishaalk");
-
-                assert currentAfterSublist.get(x).get(0).equals(currentBeforeSublist.get(x).get(0));
-                if(inputData.getUsersInvolvedInPurchase().contains(currentBeforeSublist.get(x).get(0))) {
-                    assert (double) currentAfterSublist.get(x).get(1) == (double) currentBeforeSublist.get(x).get(1) + 19.99/3;
-                }
-                else {
-                    assert (double) currentAfterSublist.get(x).get(1) == (double) currentBeforeSublist.get(x).get(1);
-                }
+                Debt current = groupInfoBefore.get(x);
+                current.setDebtValue(current.getDebtValue() + 19.99/3);
+                assert groupInfoAfter.contains(current);
             }
         } catch (IOException | ParseException e) {
             throw new RuntimeException(e);
