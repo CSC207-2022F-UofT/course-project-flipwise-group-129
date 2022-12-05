@@ -20,7 +20,7 @@ public class GroupCreatePresenter implements GroupCreateBoundaryOut{
     /**
      * prepares a failure view when group creation fails and presents the corresponding error message
      * @param createdGroupInfo contains the error message
-     * @return the error message wrapped in an appropriate datastrcuture
+     * @return the error message wrapped in an appropriate data structure
      */
     @Override
     public CreatedGroupInfo prepareFailView(CreatedGroupInfo createdGroupInfo){

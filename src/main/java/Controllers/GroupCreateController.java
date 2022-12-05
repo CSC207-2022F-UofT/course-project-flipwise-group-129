@@ -7,7 +7,7 @@ public class GroupCreateController {
     /**
     The controller that provides the inputs the user provided to create a new group
      */
-    final GroupCreateBoundaryIn userInput; // the interface that enables us to call the usecase interactor
+    final GroupCreateBoundaryIn userInput; // the interface that enables us to call the useCase
 
     /**
      * takes the input boundary that enables the controller to execute the use case
@@ -18,8 +18,8 @@ public class GroupCreateController {
     }
 
     /**
-     * method to create a group to be executed by the use case interactor by calling the method in the input boundary
-     * parses input data into a ProposedGroupInfo object which is passed to the use case interactor
+     * method to create a group to be executed by the use case by calling the method in the input boundary
+     * parses input data into a ProposedGroupInfo object which is passed to the use case
      * @param groupName the name of the group to be created
      * @param userId the username of the user requesting group creation
      * @return the output data structure with all the information to display to the view

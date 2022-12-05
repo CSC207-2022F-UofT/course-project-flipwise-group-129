@@ -2,7 +2,6 @@ package Entities;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.json.simple.JSONObject;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -63,7 +62,7 @@ public class Item {
      * @return the price
      */
     public double getPrice(){
-        // reutn the price of the item
+        // return the price of the item
         return price;
     }
 
@@ -113,7 +112,7 @@ public class Item {
     }
 
     /**
-     * set all the users invovled in the purchase of item
+     * set all the users involved in the purchase of item
      * @param users the users involved in the purchase of item
      */
     public void setUsersInvolved(List<String> users){
@@ -126,22 +125,10 @@ public class Item {
      * @param user the person to add to purchase of item
      */
     public void addUsersInvolved(String user){
-        // add all the users invovled in this item purchase
+        // add all the users involved in this item purchase
         this.usersInvolved.add(user);
     }
 
-//    public JSONObject toJSON(){
-//        JSONObject obj = new JSONObject();
-//        obj.put("itemId", this.itemId);
-//        obj.put("itemName", this.itemName);
-//        obj.put("userBuyer", this.buyer);
-//        List<String> usersInvolved = new ArrayList<>();
-//        this.usersInvolved.forEach(user -> usersInvolved.add(user.toString()));
-//        obj.put("usersInvolved", usersInvolved);
-//        obj.put("price", this.price);
-//
-//        return obj;
-//    }
     /**
      * method to return a JSONString representation of an instance of this class Item
      * @return a JSONString representation of an instance of this class Item

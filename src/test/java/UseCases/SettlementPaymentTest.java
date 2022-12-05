@@ -12,16 +12,10 @@ import org.json.simple.parser.ParseException;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.util.*;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import org.json.simple.parser.ParseException;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.jupiter.api.Test;
 
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -45,10 +39,10 @@ class SettlementPaymentTest {
     @After
     public void tearDown(){
         File groupFile = new File("src/test/resources/testgroupsCopy.json");
-        groupFile.delete();
+        assert groupFile.delete();
 
         File userFile = new File("src/test/resources/testusersCopy.json");
-        userFile.delete();
+        assert userFile.delete();
     }
 
     @Test
@@ -106,7 +100,7 @@ class SettlementPaymentTest {
     }
 
     @Test
-    void createDebtDbCheck() throws IOException, org.json.simple.parser.ParseException {
+    void createDebtDbCheck() throws IOException{
         
         setUp();
         GroupDataInterface groupData;

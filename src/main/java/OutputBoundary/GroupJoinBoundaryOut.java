@@ -23,7 +23,7 @@ public interface GroupJoinBoundaryOut {
     /**
      * Alerts the view in case of a failure
      * @param joinedGroupInfo contains the error message
-     * @return the error messaged wrapped in an output datastructure
+     * @return the error messaged wrapped in an output data structure
      */
     JoinedGroupInfo prepareFailView(JoinedGroupInfo joinedGroupInfo);
 }
