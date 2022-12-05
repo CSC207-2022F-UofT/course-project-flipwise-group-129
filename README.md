@@ -4,11 +4,15 @@
 - [ ] Go to file Main.java located in the src/main/java directory
 - [ ] Right click on the Main and select Run Main.main() 
 
-## 2. How to run the testing program and generate the test coverage report
+## 2a. If Running on MacOS- How to run the testing program and generate the test coverage report
 - [ ] Select 'Testing Configurations' in the Configuration dropdown and click on 'Edit Configurations'
 - [ ] In the pop up under 'Build and Run' make sure the tests read from 'All Directory' and change the path to be your path to the test package within src
 - [ ] Select 'Run Testing Configurations with Coverage' button three buttons left of Configuration dropdown
 - [ ] Coverage Report will thus indicate that Entity and Controllers are tested to 100%.
+
+## 2b. If Running on Windows computers- How to Open Test Coverage Report
+- [ ] Because of Windows file system errors, the tests don't run as intended: 
+- [ ] Please open the TestCoverageReport folder in files and open index.html to open the Test Coverage Report
 
 ## 3. Generating Javadocs
 - [ ] On the top of Intellij, open the Tools dropdown and select GenerateJavadoc
