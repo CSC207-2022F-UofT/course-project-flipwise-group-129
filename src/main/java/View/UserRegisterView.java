@@ -91,7 +91,7 @@ public class UserRegisterView extends JPanel implements ActionListener {
      */
     public void actionPerformed (ActionEvent e){
         if (e.getActionCommand().equals("Sign Up")){
-            if (isAlpha(getUsername()) && isAlpha(getPassword())) {
+            if (isAlpha(getUsername()) && isPassword(getPassword())) {
                 this.final_output = controller.controlUseCase(username.getText(),
                         String.valueOf(password.getPassword()),
                     String.valueOf(repeatPassword.getPassword()));
@@ -130,11 +130,6 @@ public class UserRegisterView extends JPanel implements ActionListener {
      * @return the username of the user that logged in.
      */
     public String getUsername() { return this.username.getText(); }
-
-    /**
-     * @return return the final output
-     */
-    public boolean getFinalOutput() { return this.final_output; }
 
     /**
      * helper function to confirm whether input added is valid
