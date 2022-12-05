@@ -7,15 +7,13 @@ import DataAccess.UserDataAccess;
 import DataAccessInterface.GroupDataInterface;
 import DataAccessInterface.ItemDataInterface;
 import DataAccessInterface.UserDataInterface;
-import DataStructures.PurchaseInfo;
+
 import DataStructures.UpdatedLists;
 import Entities.Group;
 import Entities.Item;
 import Entities.PlanningList;
 import Entities.PurchaseList;
 import InputBoundary.AddPurchaseBoundaryIn;
-import UseCases.AddPurchase;
-import static org.junit.jupiter.api.Assertions.*;
 
 import org.json.simple.parser.ParseException;
 import org.junit.After;
@@ -52,13 +50,13 @@ class AddPurchaseControllerTest {
     @After
     public void tearDown(){
         File groupFile = new File("src/test/resources/testgroupsCopy.json");
-        groupFile.delete();
+        assert groupFile.delete();
 
         File userFile = new File("src/test/resources/testusersCopy.json");
-        userFile.delete();
+        assert userFile.delete();
 
         File itemFile = new File("src/test/resources/testitemsCopy.json");
-        itemFile.delete();
+        assert itemFile.delete();
     }
 
     @Test
@@ -132,8 +130,6 @@ class AddPurchaseControllerTest {
         List<String> participatingUsers = new ArrayList<>();
         participatingUsers.add("sopleee");
         participatingUsers.add("mishaalk");
-        PurchaseInfo inputData = new PurchaseInfo("itemApple", participatingUsers,
-                "sopleee", 10.0f, "grpOne11", presenter, groupData, itemData, userData);
 
         // 3) Run the use case
         UpdatedLists outputData = controller.controlAddPurchaseUseCase("itemApple", participatingUsers, "sopleee", 10.0f, "grpOne11");
