@@ -1,13 +1,12 @@
 package UseCases;
-import DataAccess.GroupDataAccess;
-import DataAccessInterface.*;
+import DataAccessInterface.GroupDataInterface;
 import DataStructures.PaymentDetails;
-import Entities.*;
+import Entities.Group;
+import Entities.PurchaseBalance;
+import Entities.Debt;
 import InputBoundary.SettlementBoundaryIn;
 import DataStructures.UpdatedDebts;
 import OutputBoundary.SettlementBoundaryOut;
-import Presenters.SettlementPresenter;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.json.simple.parser.ParseException;
 
 import java.io.IOException;
