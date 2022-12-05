@@ -28,7 +28,6 @@ import UseCases.UpdatePaymentBalance;
 import org.json.simple.parser.ParseException;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -222,9 +221,6 @@ public class GroupSummaryView extends JPanel implements ActionListener {
 
         if (evt.getActionCommand().equals("Purchase Item")){
             JTable table = planningListView.getTable();
-
-            DefaultTableModel model = (DefaultTableModel) table.getModel();
-
             if (table.getSelectedRowCount() == 1) {
                 String item = (String) table.getValueAt(table.getSelectedRow(), 0);
 

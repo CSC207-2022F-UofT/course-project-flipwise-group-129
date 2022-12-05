@@ -10,8 +10,6 @@ public class AddPurchaseView extends JOptionPane{
     JTextField item_price;
     JTextArea text_contributing_members;
     JCheckBox[] contributing_members;
-
-    int reply;
     public AddPurchaseView(String itemID, String username, String groupID, List<String> groupUserNames) {
 
 
@@ -62,14 +60,6 @@ public class AddPurchaseView extends JOptionPane{
             output[i] = checkbox_member;
         }
         return output;
-    }
-
-    /**
-     *
-     * @return getter function for reply
-     */
-    public int getReply(){
-        return this.reply;
     }
 
     /**

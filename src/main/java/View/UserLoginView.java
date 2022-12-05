@@ -1,19 +1,7 @@
 package View;
 
-import Controllers.UserLoginController;
-import DataAccess.GroupDataAccess;
-import DataAccess.UserDataAccess;
-import DataAccessInterface.GroupDataInterface;
-import DataAccessInterface.UserDataInterface;
-import DataStructures.LoggedInInfo;
-import InputBoundary.UserLoginBoundaryIn;
-import Presenters.UserLoginPresenter;
-import UseCases.UserLogin;
-import org.json.simple.parser.ParseException;
-
 import javax.swing.*;
 import java.awt.*;
-import java.io.IOException;
 
 
 public class UserLoginView extends JPanel {
@@ -23,27 +11,11 @@ public class UserLoginView extends JPanel {
     private final JPasswordField password = new JPasswordField(15);
     public JButton login;
     public JButton toRegister;
-    private LoggedInInfo userInfo;
 
     /**
      * Builds the gui for the user login page.
      */
     public UserLoginView(){
-
-        UserDataInterface userData;
-        GroupDataInterface groupData;
-        try {
-            userData = new UserDataAccess();
-            groupData = new GroupDataAccess();
-        } catch (IOException | ParseException e2) {
-            throw new RuntimeException(e2); // Display popup
-        }
-
-        UserLoginPresenter presenter = new UserLoginPresenter();
-        UserLoginBoundaryIn useCase = new UserLogin(presenter, userData, groupData);
-
-        UserLoginController controller = new UserLoginController(useCase);
-
         // Defining JComponents
         title = new JLabel("Welcome Back!");
         Font f = new Font("Arial", Font.BOLD, 24);
@@ -102,11 +74,6 @@ public class UserLoginView extends JPanel {
      * @return the button that brings user to registration page.
      */
     public JButton getToRegister(){ return toRegister; }
-
-    /**
-     * @return the data of the user.
-     */
-    public LoggedInInfo getUserInfo() { return this.userInfo; }
 
 }
 

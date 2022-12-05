@@ -5,15 +5,10 @@ import DataAccess.GroupDataAccess;
 import DataAccess.UserDataAccess;
 import DataAccessInterface.GroupDataInterface;
 import DataAccessInterface.UserDataInterface;
-import DataStructures.CreatedGroupInfo;
-import DataStructures.JoinGroupRequest;
 import DataStructures.JoinedGroupInfo;
-import DataStructures.ProposedGroupInfo;
 import Entities.Group;
 import Entities.User;
-import InputBoundary.GroupCreateBoundaryIn;
 import InputBoundary.GroupJoinBoundaryIn;
-import Presenters.GroupCreatePresenter;
 import Presenters.GroupJoinPresenter;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.json.simple.parser.ParseException;
@@ -56,10 +51,10 @@ class GroupJoinTest {
     @After
     public void tearDown(){
         File groupFile = new File("././src/test/resources/testgroupsCopy.json");
-        groupFile.delete();
+        assert groupFile.delete();
 
         File userFile = new File("././src/test/resources/testusersCopy.json");
-        userFile.delete();
+        assert userFile.delete();
     }
     @Test
     void joinGroupSuccess() throws IOException, ParseException {
