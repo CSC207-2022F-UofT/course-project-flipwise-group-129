@@ -1,20 +1,19 @@
 package UseCases;
 
+import Controllers.AddPurchaseController;
 import DataAccess.GroupDataAccess;
 import DataAccess.ItemDataAccess;
 import DataAccess.UserDataAccess;
 import DataAccessInterface.GroupDataInterface;
 import DataAccessInterface.ItemDataInterface;
 import DataAccessInterface.UserDataInterface;
-import DataStructures.PurchaseInfo;
+
 import DataStructures.UpdatedLists;
 import Entities.Group;
 import Entities.Item;
 import Entities.PlanningList;
 import Entities.PurchaseList;
 import InputBoundary.AddPurchaseBoundaryIn;
-import UseCases.AddPurchase;
-import static org.junit.jupiter.api.Assertions.*;
 
 import org.json.simple.parser.ParseException;
 import org.junit.After;
@@ -51,13 +50,13 @@ class AddPurchaseControllerTest {
     @After
     public void tearDown(){
         File groupFile = new File("src/test/resources/testgroupsCopy.json");
-        groupFile.delete();
+        assert groupFile.delete();
 
         File userFile = new File("src/test/resources/testusersCopy.json");
-        userFile.delete();
+        assert userFile.delete();
 
         File itemFile = new File("src/test/resources/testitemsCopy.json");
-        itemFile.delete();
+        assert itemFile.delete();
     }
 
     @Test
@@ -73,10 +72,12 @@ class AddPurchaseControllerTest {
         setUp();
         // 1) Instantiate
         AddPurchasePresenter presenter = new AddPurchasePresenter();
-        AddPurchaseBoundaryIn usecase = new AddPurchase();
+        AddPurchaseBoundaryIn useCase = new AddPurchase();
+
         GroupDataInterface groupData = new GroupDataAccess("test");
         UserDataInterface userData = new UserDataAccess("test");
         ItemDataInterface itemData = new ItemDataAccess("test");
+        AddPurchaseController controller = new AddPurchaseController(presenter, useCase, groupData, itemData, userData);
 
 
         // 2) Input data — we can make this up for the test. Normally it would
@@ -84,11 +85,10 @@ class AddPurchaseControllerTest {
         List<String> participatingUsers = new ArrayList<>();
         participatingUsers.add("sopleee");
         participatingUsers.add("mishaalk");
-        PurchaseInfo inputData = new PurchaseInfo("itemApple", participatingUsers,
-                "sopleee", 10.0f, "grpOne11", presenter, groupData, itemData, userData);
+
 
         // 3) Run the use case
-        UpdatedLists outputData = usecase.executeUseCase(inputData);
+        UpdatedLists outputData = controller.controlAddPurchaseUseCase("itemApple", participatingUsers, "sopleee", 10.0f, "grpOne11");
 
         for (List<String> temp: outputData.getNewPlanningList()) {
             assert (!Objects.equals(temp.get(0), "itemApple"));
@@ -117,10 +117,12 @@ class AddPurchaseControllerTest {
         
         // 1) Instantiate
         AddPurchasePresenter presenter = new AddPurchasePresenter();
-        AddPurchaseBoundaryIn usecase = new AddPurchase();
+        AddPurchaseBoundaryIn useCase = new AddPurchase();
+
         GroupDataInterface groupData = new GroupDataAccess("test");
         UserDataInterface userData = new UserDataAccess("test");
         ItemDataInterface itemData = new ItemDataAccess("test");
+        AddPurchaseController controller = new AddPurchaseController(presenter, useCase, groupData, itemData, userData);
 
 
         // 2) Input data — we can make this up for the test. Normally it would
@@ -128,11 +130,9 @@ class AddPurchaseControllerTest {
         List<String> participatingUsers = new ArrayList<>();
         participatingUsers.add("sopleee");
         participatingUsers.add("mishaalk");
-        PurchaseInfo inputData = new PurchaseInfo("itemApple", participatingUsers,
-                "sopleee", 10.0f, "grpOne11", presenter, groupData, itemData, userData);
 
         // 3) Run the use case
-        UpdatedLists outputData = usecase.executeUseCase(inputData);
+        UpdatedLists outputData = controller.controlAddPurchaseUseCase("itemApple", participatingUsers, "sopleee", 10.0f, "grpOne11");
 
         Group groupInfoAfter = getGroupInfo();
         Item itemInfoAfter = getItemInfo();

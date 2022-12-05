@@ -1,5 +1,6 @@
 package UseCases;
 
+import Controllers.UpdatePaymentBalanceController;
 import DataAccess.GroupDataAccess;
 import DataAccess.ItemDataAccess;
 import DataAccess.UserDataAccess;
@@ -147,13 +148,12 @@ class UpdatePaymentBalanceTest {
         ItemDataInterface itemData = new ItemDataAccess("test");
 
         // 2. Input Data - we can make this up for the test, but normally it would be created from the controller.
-        PaymentInformation inputData = new PaymentInformation("grpOne11", "mishaalk", (float) 20,
-                "itemApple", Arrays.asList("randomC", "sopleee"));
         UpdatePaymentBalanceBoundaryIn useCase = new UpdatePaymentBalance(groupData, itemData, presenter);
+        UpdatePaymentBalanceController controller = new UpdatePaymentBalanceController(useCase);
 
         // 3. Run the use case.
 
-        useCase.updatePaymentBalance(inputData);
+        controller.create("grpOne11", "mishaalk", 20, "itemApple", Arrays.asList("randomC", "sopleee"));
 
         tearDown();
     }
@@ -183,13 +183,12 @@ class UpdatePaymentBalanceTest {
         GroupDataInterface groupData = new GroupDataAccess("test");
         ItemDataInterface itemData = new ItemDataAccess("test");
 
-        // 2. Input Data - we can make this up for the test, but normally it would be created from the controller.
-        PaymentInformation inputData = new PaymentInformation("grpOne11", "mishaalk", (float) 20,
-                "itemApple", Arrays.asList("rcordi", "rcordi", "sopleee"));
+
         UpdatePaymentBalanceBoundaryIn useCase = new UpdatePaymentBalance(groupData, itemData, presenter);
+        UpdatePaymentBalanceController controller = new UpdatePaymentBalanceController(useCase);
 
         // 3. Run the use case.
-        useCase.updatePaymentBalance(inputData);
+        controller.create("grpOne11", "mishaalk", 20, "itemApple", Arrays.asList("rcordi", "rcordi", "sopleee"));
 
         tearDown();
     }
@@ -222,6 +221,7 @@ class UpdatePaymentBalanceTest {
         PaymentInformation inputData = new PaymentInformation("grpOne11", "mishaalk", (float) 20,
                 "itemApple", Arrays.asList("randomC", "sopleee"));
         UpdatePaymentBalanceBoundaryIn useCase = new UpdatePaymentBalance(groupData, itemData, presenter);
+        UpdatePaymentBalanceController controller = new UpdatePaymentBalanceController(useCase);
 
         // We now set the data from the database as a constant to check against our use case.
         List<String> userInfoBefore = getUserInfo();
@@ -235,7 +235,7 @@ class UpdatePaymentBalanceTest {
             }
         }
 
-        useCase.updatePaymentBalance(inputData);
+        controller.create("grpOne11", "mishaalk", (float) 20, "itemApple", Arrays.asList("randomC", "sopleee"));
 
         try {
             List<String> userInfoAfter = getUserInfo();

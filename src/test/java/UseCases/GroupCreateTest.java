@@ -1,5 +1,6 @@
 package UseCases;
 
+import Controllers.GroupCreateController;
 import DataAccess.GroupDataAccess;
 import DataAccess.UserDataAccess;
 import DataAccessInterface.GroupDataInterface;
@@ -103,13 +104,10 @@ class GroupCreateTest {
         GroupDataInterface groupData = new GroupDataAccess("test");
         UserDataInterface userData = new UserDataAccess("test");
         GroupCreateBoundaryIn useCase = new GroupCreate(presenter, groupData, userData);
+        GroupCreateController controller = new GroupCreateController(useCase);
 
-        // 2) Input data — we can make this up for the test. Normally it would
-        // be created by the Controller.
-        ProposedGroupInfo inputData = new ProposedGroupInfo("mishaalk", "groupDarcy");
-
-        // 3) Run the use case
-        useCase.createNewGroup(inputData);
+        // 2) Run the use case through the controller
+        controller.create("groupDarcy","mishaalk");
 
         tearDown();
     }
@@ -150,13 +148,10 @@ class GroupCreateTest {
         GroupDataInterface groupData = new GroupDataAccess("test");
         UserDataInterface userData = new UserDataAccess("test");
         GroupCreateBoundaryIn useCase = new GroupCreate(presenter, groupData, userData);
+        GroupCreateController controller = new GroupCreateController(useCase);
 
-        // 2) Input data — we can make this up for the test. Normally it would
-        // be created by the Controller.
-        ProposedGroupInfo inputData = new ProposedGroupInfo("mishaalki", "groupDarcy");
-
-        // 3) Run the use case
-        useCase.createNewGroup(inputData);
+        // 2) Run the use case through the controller
+        controller.create("groupDarcy", "mishaalki");
 
         tearDown();
     }
@@ -192,18 +187,15 @@ class GroupCreateTest {
         GroupDataInterface groupData = new GroupDataAccess("test");
         UserDataInterface userData = new UserDataAccess("test");
         GroupCreateBoundaryIn useCase = new GroupCreate(presenter, groupData, userData);
+        GroupCreateController controller = new GroupCreateController(useCase);
 
         //setting the data from the database as a constant to check later
         List<String> userInfoBefore = getUserInfo();
 
-        // 2) Input data — we can make this up for the test. Normally it would
-        // be created by the Controller.
-        ProposedGroupInfo inputData = new ProposedGroupInfo("mishaalk", "groupDarcy");
+        // 2) run the use case through the controller
+        controller.create("groupDarcy", "mishaalk");
 
-        // 3) Run the use case
-        useCase.createNewGroup(inputData);
-
-        // chekc if the users list of groups has been updated
+        // check if the users list of groups has been updated
         try {
             List<String> userInfoAfter = getUserInfo();
             for (String s : userInfoBefore) {

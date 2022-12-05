@@ -61,7 +61,7 @@ public class HomePageView extends JPanel {
 
     /**.
      * Generates a list of JButtons of all the groups that include the user to display
-     * on the home page.
+     * on the home page
      * @param Current_Groups the list of all groups that include the user
      * @return list including all inputted groups converted into JButtons
      */
