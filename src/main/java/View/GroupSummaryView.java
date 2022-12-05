@@ -152,7 +152,7 @@ public class GroupSummaryView extends JPanel implements ActionListener {
         right_hand_side.add(btn_group);
         right_hand_side.add(toHomepage);
 
-        this.planningListView = new PlanningListView(planningListData, username, groupID, groupUserNames);
+        this.planningListView = new PlanningListView(planningListData, username, groupID);
         PurchaseListView p = new PurchaseListView(purchaseListData);
         BalanceView b = new BalanceView(debtData, username, groupUserNames);
         p2.add(p);
