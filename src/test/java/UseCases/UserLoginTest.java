@@ -21,6 +21,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import static org.junit.jupiter.api.Assertions.*;
 
+@SuppressWarnings("ResultOfMethodCallIgnored")
 class UserLoginTest {
     
     @Before

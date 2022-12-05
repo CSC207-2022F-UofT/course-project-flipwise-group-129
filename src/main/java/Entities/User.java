@@ -1,15 +1,15 @@
+/**
+ * Represents a user in the application
+ */
 package Entities;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.util.Comparator;
 import java.util.List;
 
 public class User implements Comparable<User> {
 
-    /*
-    Represents a User in this applications
-     */
+
 
     private String username;
     private String password;
@@ -17,9 +17,9 @@ public class User implements Comparable<User> {
 
     /**
      * Constructor to create a new user object
-     * @param username
-     * @param password
-     * @param groups
+     * @param username the user's username
+     * @param password the user's password
+     * @param groups the groups that the user is a part of
      */
 
     public User(String username, String password, List<String> groups){
@@ -82,15 +82,10 @@ public class User implements Comparable<User> {
     /**
      * remove user from a group
      * @param group the group to remove the user from
-     * @return whether removal was successful
      */
-    public boolean removeFromGroup(Group group){
+    public void removeFromGroup(Group group){
         // remove group from the list of groups the user is part of
-        if (this.groups.contains(group)){
-            this.groups.remove(group);
-            return true;
-        }
-        return false;
+        this.groups.remove(group);
     }
 
 //    public JSONObject toJSON(){
@@ -135,7 +130,7 @@ public class User implements Comparable<User> {
      * compare two User objects
      * if their usernames match, they're the same user
      * @param o the object to be compared.
-     * @return
+     * @return if two users are the same.
      */
     @Override
     public int compareTo(User o) {

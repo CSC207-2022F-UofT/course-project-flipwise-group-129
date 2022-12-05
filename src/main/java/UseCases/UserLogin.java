@@ -9,7 +9,6 @@ import DataStructures.LoginCredentials;
 import Entities.*;
 import InputBoundary.UserLoginBoundaryIn;
 import OutputBoundary.UserLoginBoundaryOut;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.json.simple.parser.ParseException;
 
 import java.io.IOException;
@@ -41,13 +40,9 @@ public class UserLogin implements UserLoginBoundaryIn {
      */
     @Override
     public LoggedInInfo executeUserLogin(LoginCredentials credentials) {
-        try {
-            String username = credentials.getUsername();
-            String password = credentials.getPassword();
-            return(outputBoundary.successfulLogin(usernamePasswordMatch(username, password)));
-        } catch (JsonProcessingException e) {
-            return(outputBoundary.failedLogin(new LoggedInInfo(false)));
-        }
+        String username = credentials.getUsername();
+        String password = credentials.getPassword();
+        return(outputBoundary.successfulLogin(usernamePasswordMatch(username, password)));
     }
 
     /**
@@ -56,9 +51,8 @@ public class UserLogin implements UserLoginBoundaryIn {
      * @param username username entered by the user
      * @param password password entered by the user
      * @return if the login details are valid
-     * @throws JsonProcessingException if there is an error parsing the JSON
      */
-    private LoggedInInfo usernamePasswordMatch(String username, String password) throws JsonProcessingException {
+    private LoggedInInfo usernamePasswordMatch(String username, String password) {
         try {
             if (userDataInterface.userIdExists(username)) {
                 String userDetails = userDataInterface.userAsString(username);
@@ -79,7 +73,7 @@ public class UserLogin implements UserLoginBoundaryIn {
      * @param user user object that logged in successfully
      * @return A LoggedInInfo data structure
      */
-    private LoggedInInfo successDetails(User user) throws JsonProcessingException {
+    private LoggedInInfo successDetails(User user) {
         List<List<Object>> allGroups = new ArrayList<>();
         List<String> groups = user.getGroups();
         for (String stringGroup : groups) {
