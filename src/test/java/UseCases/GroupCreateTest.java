@@ -45,9 +45,11 @@ class GroupCreateTest {
 
     @After
     public void tearDown(){
+        System.gc();
         File groupFile = new File("././src/test/resources/testgroupsCopy.json");
         assert groupFile.delete();
 
+        System.gc();
         File userFile = new File("././src/test/resources/testusersCopy.json");
         assert userFile.delete();
     }

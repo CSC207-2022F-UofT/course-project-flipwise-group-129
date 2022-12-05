@@ -45,12 +45,15 @@ class AddToPlanningListTest {
 
     @After
     public void tearDown(){
+        System.gc();
         File groupFile = new File("src/test/resources/testgroupsCopy.json");
         assert groupFile.delete();
 
+        System.gc();
         File userFile = new File("src/test/resources/testusersCopy.json");
         assert userFile.delete();
 
+        System.gc();
         File itemFile = new File("src/test/resources/testitemsCopy.json");
         if (itemFile.delete()){
             System.out.println("successfully deleted items file");
