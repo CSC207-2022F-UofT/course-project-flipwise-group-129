@@ -6,7 +6,6 @@ import Entities.*;
 import InputBoundary.UpdatePaymentBalanceBoundaryIn;
 import OutputBoundary.UpdatePaymentBalanceBoundaryOut;
 import DataAccessInterface.*;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.json.simple.parser.ParseException;
 
 import java.io.IOException;
@@ -84,13 +83,13 @@ public class UpdatePaymentBalance implements UpdatePaymentBalanceBoundaryIn{
         catch (RuntimeException e) {
             return raiseError(e);
         }
-        Set<String> usersInGroup = groupInvolvedInPurchase.getUsers();
+//        Set<String> usersInGroup = groupInvolvedInPurchase.getUsers();
 
         int amountOfUsersInvolvedInPurchase = usersInvolvedInPurcase.size();
-        List<String> groupUsernames = new ArrayList<>();
-        for(String user : usersInGroup) {
-            groupUsernames.add(user);
-        }
+//        List<String> groupUsernames = new ArrayList<>();
+//        for(String user : usersInGroup) {
+//            groupUsernames.add(user);
+//        }
 
         /*
         We can now call getPurchaseBalance() and getAllDebts() on groupInvolvedInPurchase to get the list of all

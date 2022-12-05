@@ -233,8 +233,7 @@ public class GroupSummaryView extends JPanel implements ActionListener {
                 if ((addPurchaseView.getItemPrice().matches("[0-9]+")) && (addPurchaseView.getSelectedMembers().size() > 0)) {
                     Float item_price = Float.parseFloat(addPurchaseView.getItemPrice());
                     UpdatedLists updatedList = controllerAddPurchase.controlAddPurchaseUseCase(itemID,
-                            addPurchaseView.getSelectedMembers(), this.username,
-                            , this.groupID);
+                            addPurchaseView.getSelectedMembers(), this.username, , this.groupID);
                     UpdatedDebts updatedDebts = this.updatePaymentBalanceController.create(this.groupID,
                             this.username, item_price, itemID, addPurchaseView.getSelectedMembers());
 
