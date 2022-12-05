@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import DataAccessInterface.*;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.json.simple.parser.ParseException;
 
 public class GroupCreate implements GroupCreateBoundaryIn{
@@ -100,7 +99,7 @@ public class GroupCreate implements GroupCreateBoundaryIn{
         //check if the group exists
 
         try {
-            if (!this.groupDsInterface.groupIdExists(groupId)){
+            if (this.groupDsInterface.groupIdExists(groupId)){
                 throw new RuntimeException("Invalid GroupID provided");
             }
             String groupString = "";

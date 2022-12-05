@@ -8,7 +8,6 @@ import DataStructures.UpdatedLists;
 import Entities.*;
 import InputBoundary.AddPurchaseBoundaryIn;
 import OutputBoundary.AddPurchaseBoundaryOut;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.json.simple.parser.ParseException;
 
 import java.io.IOException;
@@ -220,7 +219,7 @@ public class AddPurchase implements AddPurchaseBoundaryIn {
         // into the format of 2 dimensional lists with the required data to show the modification on the view
         List<List<String>> tempListItemStrings = new ArrayList<>();
         for (Item item : inputList) {
-            List<String> tempList = new ArrayList<>();
+            ArrayList<String> tempList = new ArrayList<>();
             tempList.add(item.getItemId());
             tempList.add(item.getItemName());
             // since only purchased items have a price and buyer, need to check the

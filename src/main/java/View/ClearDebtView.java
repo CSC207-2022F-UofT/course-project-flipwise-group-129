@@ -9,7 +9,7 @@ public class ClearDebtView extends JOptionPane {
 
     private final ButtonGroup radio_btn_group;
 
-    public ClearDebtView(String username, String groupID, List<String> members) {
+    public ClearDebtView(List<String> members) {
 
         List<JRadioButton> list_of_members = createRadioButtons(members);
 

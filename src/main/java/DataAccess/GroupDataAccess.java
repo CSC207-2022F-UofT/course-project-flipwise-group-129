@@ -26,8 +26,10 @@ public class GroupDataAccess extends DataAccess implements GroupDataInterface {
      * @param testString a string confirming database to access is test
      */
     public GroupDataAccess(String testString) throws IOException, ParseException {
-        this.groupFile = new File("././src/test/resources/testgroupsCopy.json");
-        super.readFile(new File("././src/test/resources/testgroupsCopy.json"), groupMap);
+        if(!Objects.equals(testString, "")){
+            this.groupFile = new File("././src/test/resources/testgroupsCopy.json");
+            super.readFile(new File("././src/test/resources/testgroupsCopy.json"), groupMap);
+        }
     }
 
     /**
@@ -50,7 +52,7 @@ public class GroupDataAccess extends DataAccess implements GroupDataInterface {
     @Override
     public boolean groupIdExists(String groupId) throws IOException, ParseException {
         super.readFile(groupFile, groupMap);
-        return groupMap.containsKey(groupId);
+        return !groupMap.containsKey(groupId);
     }
 
     /**

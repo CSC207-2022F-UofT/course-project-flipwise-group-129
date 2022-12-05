@@ -1,0 +1,201 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > PurchaseInfo</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">DataStructures</a>
+</div>
+
+<h1>Coverage Summary for Class: PurchaseInfo (DataStructures)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">PurchaseInfo</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (10/10)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (19/19)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package DataStructures;
+&nbsp;import DataAccessInterface.GroupDataInterface;
+&nbsp;import DataAccessInterface.ItemDataInterface;
+&nbsp;import DataAccessInterface.UserDataInterface;
+&nbsp;import OutputBoundary.AddPurchaseBoundaryOut;
+&nbsp;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;public class PurchaseInfo {
+&nbsp;    private final String purchasedItemId;
+&nbsp;    private final List&lt;String&gt; participatingUsernames;
+&nbsp;    private final String buyerUsername;
+&nbsp;    private final float price;
+&nbsp;    private final String purchaseGroupId;
+&nbsp;    private final AddPurchaseBoundaryOut presenter;
+&nbsp;    private final GroupDataInterface groupData;
+&nbsp;    private final ItemDataInterface itemData;
+&nbsp;    private final UserDataInterface userData;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Assigns values from the parameters to the class attribute variables
+&nbsp;     * @param purchasedItemId the id of the item that&#39;s being purchased
+&nbsp;     * @param participatingUsernames the usernames of the users involved in the purchase
+&nbsp;     * @param buyerUsername the username of the user who purchased the item
+&nbsp;     * @param itemPrice the price of the item that was purchased
+&nbsp;     * @param purchaseGroupId the id of the group that this purchase was made in
+&nbsp;     * @param presenter the presenter output boundary object for the use case to reflect ui changes
+&nbsp;     * @param groupData the data access boundary for groups
+&nbsp;     * @param itemData the data access boundary for items
+&nbsp;     * @param userData the data access boundary for users
+&nbsp;     */
+&nbsp;    public PurchaseInfo(String purchasedItemId, List&lt;String&gt; participatingUsernames, String buyerUsername,
+&nbsp;                        float itemPrice, String purchaseGroupId, AddPurchaseBoundaryOut presenter,
+<b class="fc">&nbsp;                        GroupDataInterface groupData, ItemDataInterface itemData, UserDataInterface userData) {</b>
+&nbsp;        // Instantiate the private attributes of all the different pieces of data packaged into this data structure
+&nbsp;        // for the use cases use
+<b class="fc">&nbsp;        this.purchasedItemId = purchasedItemId;</b>
+<b class="fc">&nbsp;        this.participatingUsernames = participatingUsernames;</b>
+<b class="fc">&nbsp;        this.buyerUsername = buyerUsername;</b>
+<b class="fc">&nbsp;        this.price = itemPrice;</b>
+<b class="fc">&nbsp;        this.purchaseGroupId = purchaseGroupId;</b>
+<b class="fc">&nbsp;        this.presenter = presenter;</b>
+<b class="fc">&nbsp;        this.groupData = groupData;</b>
+<b class="fc">&nbsp;        this.itemData = itemData;</b>
+<b class="fc">&nbsp;        this.userData = userData;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    // Since this data structure will only be read from, define and implement getters for each of the attributes
+&nbsp;
+&nbsp;    /**
+&nbsp;     * @return the item id of the item being purchased
+&nbsp;     */
+&nbsp;    public String getItemId(){
+<b class="fc">&nbsp;        return this.purchasedItemId;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * @return participating usernames private attribute
+&nbsp;     */
+<b class="fc">&nbsp;    public List&lt;String&gt; getUsers(){ return this.participatingUsernames; }</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * @return price private attribute
+&nbsp;     */
+&nbsp;    public float getPrice(){
+<b class="fc">&nbsp;        return this.price;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * @return purchase group id private attribute
+&nbsp;     */
+<b class="fc">&nbsp;    public String getPurchaseGroup() { return this.purchaseGroupId; }</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * @return buyer username private attribute
+&nbsp;     */
+<b class="fc">&nbsp;    public String getBuyer() { return this.buyerUsername; }</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * @return output boundary presenter private attribute
+&nbsp;     */
+<b class="fc">&nbsp;    public AddPurchaseBoundaryOut getPresenter() { return this.presenter; }</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * @return group data access interface private attribute
+&nbsp;     */
+<b class="fc">&nbsp;    public GroupDataInterface getGroupData() { return this.groupData; }</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * @return item data access interface private attribute
+&nbsp;     */
+<b class="fc">&nbsp;    public ItemDataInterface getItemData() { return this.itemData; }</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * @return user data access interface private attribute
+&nbsp;     */
+<b class="fc">&nbsp;    public UserDataInterface getUserData() { return this.userData; }</b>
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2022-12-05 00:39</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,197 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > ItemList</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">Entities</a>
+</div>
+
+<h1>Coverage Summary for Class: ItemList (Entities)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ItemList</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (5/5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (5/5)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package Entities;
+&nbsp;import java.util.Iterator;
+&nbsp;import java.util.List;
+&nbsp;
+<b class="fc">&nbsp;abstract public class ItemList implements Iterable&lt;Item&gt; {</b>
+&nbsp;    /*
+&nbsp;    Abstract class representing a list of items
+&nbsp;    Used for the lists of item that were planned to be purchased
+&nbsp;    and the list of items that have been purchased.
+&nbsp;     */
+&nbsp;    private List&lt;Item&gt; items; //list of items
+&nbsp;
+&nbsp;    /**
+&nbsp;     * get all the items in the list
+&nbsp;     * @return the list of all items in the list
+&nbsp;     */
+&nbsp;    public List&lt;Item&gt; getItems(){
+&nbsp;        // return the list of al items in this list
+<b class="fc">&nbsp;        return this.items;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * set the items in the list
+&nbsp;     * @param items in the list
+&nbsp;     */
+&nbsp;    public void setItems(List&lt;Item&gt; items){
+&nbsp;        // set the list of all items in this list
+<b class="fc">&nbsp;        this.items = items;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * add an item into the list
+&nbsp;     * @param item the item to be added into the list
+&nbsp;     */
+&nbsp;    public void addItems(Item item){
+&nbsp;        // add an item into the list
+<b class="fc">&nbsp;        this.items.add(item);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * iterator function for iteration
+&nbsp;     * @return the iterator that has been initialized
+&nbsp;     */
+&nbsp;    public Iterator&lt;Item&gt; iterator() {
+<b class="fc">&nbsp;        return new ItemListIterator&lt;&gt;(this.items);</b>
+&nbsp;    }
+&nbsp;}
+&nbsp;
+&nbsp;class ItemListIterator&lt;Item&gt; implements Iterator&lt;Item&gt; {
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Class implementing the iterator object for the class itemList.
+&nbsp;     * This class is used to iterate over the list of items in any implementation of ItemList
+&nbsp;     */
+&nbsp;    Integer current;
+&nbsp;    List&lt;Item&gt; items;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Constructor for the iterator object
+&nbsp;     * @param obj the list of items in the ItemList implementation
+&nbsp;     */
+&nbsp;    ItemListIterator(List&lt;Item&gt; obj){
+&nbsp;        // initialize cursor
+&nbsp;        if (obj.isEmpty()){
+&nbsp;            current = null;
+&nbsp;        }else{
+&nbsp;            current = 0;
+&nbsp;        }
+&nbsp;        this.items = obj;
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * checking if the next element exists
+&nbsp;     * @return whether a next element exists
+&nbsp;     */
+&nbsp;    public boolean hasNext() {
+&nbsp;        return current != null;
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * moves the cursor/iterator to next element
+&nbsp;     * @return the element at the current cursor position
+&nbsp;     */
+&nbsp;    public Item next() {
+&nbsp;        Item toReturn = items.get(this.current);
+&nbsp;        if (items.size() == current + 1){
+&nbsp;            current = null;
+&nbsp;        }else{
+&nbsp;            current = current + 1;
+&nbsp;        }
+&nbsp;        return toReturn;
+&nbsp;    }
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2022-12-05 00:39</div>
+</div>
+</body>
+</html>

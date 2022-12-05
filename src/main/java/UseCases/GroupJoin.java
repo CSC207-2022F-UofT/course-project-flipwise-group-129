@@ -8,11 +8,8 @@ import OutputBoundary.GroupJoinBoundaryOut;
 import DataAccessInterface.*;
 
 import java.io.IOException;
-import java.sql.Array;
-import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Map;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.json.simple.parser.ParseException;
@@ -119,7 +116,7 @@ public class GroupJoin implements GroupJoinBoundaryIn{
     private Group getGroupFromDb(String groupId) throws IOException, ParseException {
         //obtain the group info form the database
         //check if the group exists
-        if (!this.groupDsInterface.groupIdExists(groupId)){
+        if (this.groupDsInterface.groupIdExists(groupId)){
             throw new RuntimeException("Invalid GroupID provided");
         }
         String groupString = this.groupDsInterface.groupAsString(groupId);

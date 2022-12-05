@@ -1,0 +1,278 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > GroupCreate</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">UseCases</a>
+</div>
+
+<h1>Coverage Summary for Class: GroupCreate (UseCases)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">GroupCreate</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (7/7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    73.7%
+  </span>
+  <span class="absValue">
+    (42/57)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package UseCases;
+&nbsp;import DataStructures.ProposedGroupInfo;
+&nbsp;import DataStructures.CreatedGroupInfo;
+&nbsp;import Entities.*;
+&nbsp;import InputBoundary.GroupCreateBoundaryIn;
+&nbsp;import OutputBoundary.GroupCreateBoundaryOut;
+&nbsp;
+&nbsp;import java.io.IOException;
+&nbsp;import java.util.Set;
+&nbsp;import java.util.TreeSet;
+&nbsp;import java.util.ArrayList;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;import DataAccessInterface.*;
+&nbsp;import com.fasterxml.jackson.core.JsonProcessingException;
+&nbsp;import org.json.simple.parser.ParseException;
+&nbsp;
+&nbsp;public class GroupCreate implements GroupCreateBoundaryIn{
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Usecase interactor that handles the creation of a group
+&nbsp;     */
+&nbsp;    final GroupDataInterface groupDsInterface; //the database interface that enables us to add and obtain group info
+&nbsp;    final UserDataInterface userDsInterface; // the database interface that enables us to add and obtain user infos
+&nbsp;    final GroupCreateBoundaryOut groupCreatePresenter; // the presenter to provide the created group to
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Constructor to initiate the usecase interactor
+&nbsp;     * @param presenter an interface that is implemented by the presentor to access the output from use case interactor
+&nbsp;     * @param groupDsInterface interface to access group related database queries
+&nbsp;     * @param userDsInterface interface to access user related dataase queries
+&nbsp;     */
+<b class="fc">&nbsp;    public GroupCreate(GroupCreateBoundaryOut presenter, GroupDataInterface groupDsInterface, UserDataInterface userDsInterface){</b>
+<b class="fc">&nbsp;        this.groupCreatePresenter = presenter;</b>
+<b class="fc">&nbsp;        this.groupDsInterface = groupDsInterface;</b>
+<b class="fc">&nbsp;        this.userDsInterface = userDsInterface;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Allows the user to create a group
+&nbsp;     * adds the user in as the sole member of group
+&nbsp;     * @param newGroupInfo the data structure containing all the information required to create a new group
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public CreatedGroupInfo createNewGroup(ProposedGroupInfo newGroupInfo){
+&nbsp;        //obtain the user from the database
+&nbsp;        User createdUser;
+&nbsp;        try{
+<b class="fc">&nbsp;            createdUser = this.getUserFromDb(newGroupInfo.getUsername());</b>
+<b class="fc">&nbsp;        }catch (RuntimeException e) {</b>
+<b class="fc">&nbsp;            CreatedGroupInfo createdGroupInfo = new CreatedGroupInfo(e.toString());</b>
+<b class="fc">&nbsp;            return this.groupCreatePresenter.prepareFailView(createdGroupInfo);</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;
+&nbsp;        //creating a new group
+<b class="fc">&nbsp;        Group group = this.createGroup(createdUser, newGroupInfo.getGroupName());</b>
+&nbsp;
+&nbsp;        //saving the data into the database
+&nbsp;        try{
+<b class="fc">&nbsp;            this.saveData(createdUser, group);</b>
+<b class="nc">&nbsp;        } catch (RuntimeException e){</b>
+<b class="nc">&nbsp;            CreatedGroupInfo createdGroupInfo = new CreatedGroupInfo(e.toString());</b>
+<b class="nc">&nbsp;            return this.groupCreatePresenter.prepareFailView(createdGroupInfo);</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;
+&nbsp;        try{
+<b class="fc">&nbsp;            CreatedGroupInfo createdGroupInfo = this.createOutputData(createdUser, group);</b>
+<b class="fc">&nbsp;            return this.groupCreatePresenter.prepareSuccessView(createdGroupInfo); //present it to the presenter</b>
+<b class="nc">&nbsp;        }catch (RuntimeException e){</b>
+<b class="nc">&nbsp;            CreatedGroupInfo createdGroupInfo = new CreatedGroupInfo(e.toString());</b>
+<b class="nc">&nbsp;            return this.groupCreatePresenter.prepareFailView(createdGroupInfo);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * gets the specified user by username from the database if exists
+&nbsp;     * otherwise throws a Runtime exception
+&nbsp;     * @param username contains the unique username that can be used to identify user data from database
+&nbsp;     * @return returns the user object obtained from db
+&nbsp;     */
+&nbsp;    private User getUserFromDb(String username){
+&nbsp;        // get the user from the database and create a User interface
+&nbsp;        //check if the user exists
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            if (!this.userDsInterface.userIdExists(username)){</b>
+<b class="fc">&nbsp;                throw new RuntimeException(&quot;User Id does not exist&quot;);</b>
+&nbsp;            }
+<b class="fc">&nbsp;            String userString = &quot;&quot;;</b>
+<b class="fc">&nbsp;            userString = this.userDsInterface.userAsString(username);</b>
+<b class="fc">&nbsp;            return User.fromString(userString);</b>
+<b class="nc">&nbsp;        } catch (IOException | ParseException e) {</b>
+<b class="nc">&nbsp;            throw new RuntimeException(&quot;Unable to process user from database&quot;);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    private Group getGroupFromDb(String groupId){
+&nbsp;        //obtain the group info form the database
+&nbsp;        //check if the group exists
+&nbsp;
+&nbsp;        try {
+<b class="fc">&nbsp;            if (!this.groupDsInterface.groupIdExists(groupId)){</b>
+<b class="nc">&nbsp;                throw new RuntimeException(&quot;Invalid GroupID provided&quot;);</b>
+&nbsp;            }
+<b class="fc">&nbsp;            String groupString = &quot;&quot;;</b>
+&nbsp;            Group group;
+<b class="fc">&nbsp;            groupString = this.groupDsInterface.groupAsString(groupId);</b>
+<b class="fc">&nbsp;            group = Group.fromString(groupString);</b>
+<b class="fc">&nbsp;            return group;</b>
+<b class="nc">&nbsp;        } catch (IOException | ParseException e) {</b>
+<b class="nc">&nbsp;            throw new RuntimeException(&quot;Unable to obtain group info from database&quot;);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * creates the group
+&nbsp;     * adds the user to the group
+&nbsp;     * adds the group to the list of groups the user is a part of
+&nbsp;     * @param createdUser the user that requested group creation
+&nbsp;     * @param groupName the requested group&#39;s name
+&nbsp;     */
+&nbsp;    private Group createGroup(User createdUser, String groupName){
+&nbsp;        //intialize a set of users in the group
+<b class="fc">&nbsp;        Set&lt;String&gt; users = new TreeSet&lt;&gt;();</b>
+<b class="fc">&nbsp;        users.add(createdUser.getUsername()); //add the created user into the group</b>
+<b class="fc">&nbsp;        Group group = new Group(groupName, users);// create the required group</b>
+<b class="fc">&nbsp;        createdUser.addGroup(group.getGroupId()); // add the new group the list of groups the user is a part of</b>
+&nbsp;
+<b class="fc">&nbsp;        return group;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Saves the modified user and new group data into the database
+&nbsp;     * @param user the user object after modifications
+&nbsp;     * @param group the new group object with all the required new information about the list of users
+&nbsp;     */
+&nbsp;    private void saveData(User user, Group group){
+&nbsp;        //pass new info to db
+&nbsp;        try {
+<b class="fc">&nbsp;            this.groupDsInterface.addorUpdateGroup(group.getGroupId(), group.toString());</b>
+<b class="nc">&nbsp;        } catch (IOException | ParseException e) {</b>
+<b class="nc">&nbsp;            throw new RuntimeException(&quot;unable to update group into database&quot;);</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;        try {
+<b class="fc">&nbsp;            this.userDsInterface.addorUpdateUser(user.getUsername(), user.toString());</b>
+<b class="nc">&nbsp;        } catch (IOException | ParseException e) {</b>
+<b class="nc">&nbsp;            throw new RuntimeException(&quot;unable to update user data into database&quot;);</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Creates the data to be handled by presenter that will have the group names the person is part of
+&nbsp;     * its ids
+&nbsp;     * @param createdUser the user object that has been modified
+&nbsp;     * @param group the group object that has been created
+&nbsp;     * @return the datastructure that will be handled by the presenter
+&nbsp;     */
+&nbsp;    private CreatedGroupInfo createOutputData(User createdUser, Group group){
+<b class="fc">&nbsp;        List&lt;String&gt; allGroupIds = new ArrayList&lt;&gt;(createdUser.getGroups());</b>
+<b class="fc">&nbsp;        List&lt;String&gt; allGroupNames = new ArrayList&lt;&gt;();</b>
+<b class="fc">&nbsp;        for (String groupid: allGroupIds){</b>
+<b class="fc">&nbsp;            allGroupNames.add(getGroupFromDb(groupid).getGroupName());</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;        //return the output ds
+<b class="fc">&nbsp;        return new CreatedGroupInfo(</b>
+<b class="fc">&nbsp;                group.getGroupId(),</b>
+<b class="fc">&nbsp;                group.getGroupName(),</b>
+<b class="fc">&nbsp;                createdUser.getUsername(),</b>
+&nbsp;                allGroupIds,
+&nbsp;                allGroupNames
+&nbsp;        );
+&nbsp;    }
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2022-12-05 00:39</div>
+</div>
+</body>
+</html>

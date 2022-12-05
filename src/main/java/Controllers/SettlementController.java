@@ -9,7 +9,7 @@ import DataStructures.PaymentDetails;
  * input boundary to perform the use case.
  */
 public class SettlementController {
-    public SettlementBoundaryIn inputBoundary;
+    public final SettlementBoundaryIn inputBoundary;
     /**
      * Creates a new SettlementController to execute the SettlementPayment use case
      * @param inputBoundary an instance of the input boundary passed in from the main/view to execute the use case

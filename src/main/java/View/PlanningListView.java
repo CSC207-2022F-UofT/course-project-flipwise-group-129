@@ -14,7 +14,7 @@ public class PlanningListView extends JPanel {
     /**
      * the constructor to create a planning list view
      */
-    public PlanningListView(List<List<String>> planningListData, String username, String groupID) {
+    public PlanningListView(List<List<String>> planningListData) {
 
         setSize(1000, 600);
         setLayout(new BoxLayout(this, BoxLayout.X_AXIS));

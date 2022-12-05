@@ -5,18 +5,16 @@ import Entities.*;
 import InputBoundary.AddToPlanningBoundaryIn;
 import DataStructures.UpdatedLists;
 import OutputBoundary.AddToPlanningBoundaryOut;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.json.simple.parser.ParseException;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class AddToPlanningList implements AddToPlanningBoundaryIn{
-    AddToPlanningBoundaryOut outputBoundary;
-    GroupDataInterface groupAccess;
-    ItemDataInterface itemAccess;
+    final AddToPlanningBoundaryOut outputBoundary;
+    final GroupDataInterface groupAccess;
+    final ItemDataInterface itemAccess;
 
     /**
      * Creates a new AddtoPlanningList use case instance to implement the use case
@@ -68,14 +66,6 @@ public class AddToPlanningList implements AddToPlanningBoundaryIn{
      */
     private List<List<String>> getUpdatedPlanning(PlanningList planningList){
         List<List<String>> stringPlanningList = new ArrayList<>();
-//        Iterator iter = planningList.iterator();
-//        while(iter.hasNext()){
-//            Item curItem = iter.next();
-//            List<String> currentItem = new ArrayList<>();
-//            currentItem.add(curItem.getItemId());
-//            currentItem.add(curItem.getItemName());
-//            stringPlanningList.add(currentItem);
-//        }
         for(Item curItem: planningList){
             List<String> currentItem = new ArrayList<>();
             currentItem.add(curItem.getItemId());
@@ -93,9 +83,7 @@ public class AddToPlanningList implements AddToPlanningBoundaryIn{
         Item newItem = new Item(item.getName());
         try {
             itemAccess.addorUpdateItem(newItem.getItemId(), newItem.toString());
-        } catch (IOException e) {
-            return null;
-        } catch (ParseException e) {
+        } catch (IOException | ParseException e) {
             return null;
         }
         return newItem;
@@ -107,7 +95,7 @@ public class AddToPlanningList implements AddToPlanningBoundaryIn{
      */
     private Group retreiveGroup(String groupId) {
         try {
-            if(!groupAccess.groupIdExists(groupId)){
+            if(groupAccess.groupIdExists(groupId)){
                 return null;
             }
         } catch (IOException | ParseException e) {

@@ -1,0 +1,230 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > Debt</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">Entities</a>
+</div>
+
+<h1>Coverage Summary for Class: Debt (Entities)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Debt</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    90%
+  </span>
+  <span class="absValue">
+    (9/10)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    77.8%
+  </span>
+  <span class="absValue">
+    (14/18)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package Entities;
+&nbsp;import com.fasterxml.jackson.core.JsonProcessingException;
+&nbsp;
+&nbsp;import com.fasterxml.jackson.databind.ObjectMapper;
+&nbsp;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;public class Debt {
+&nbsp;
+&nbsp;    /**
+&nbsp;     * This class represents a single debt pair between a user owing money and user that is owed money
+&nbsp;     */
+&nbsp;
+&nbsp;    private User userOwed; //the user that is being owed money
+&nbsp;    private User userOwing; //the user that is owing the money
+&nbsp;    private String groupId; // the id of the group this debt belongs to
+&nbsp;    private Double debtValue; //the value userOwed is owed by userOwing
+&nbsp;
+&nbsp;    private List&lt;User&gt; users;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Constructor to create a new Debt object
+&nbsp;     * Debt is initialized to 0
+&nbsp;     * @param user1 user owed money
+&nbsp;     * @param user2 user owing money
+&nbsp;     * @param groupId the id of the group they&#39;re in
+&nbsp;     */
+<b class="fc">&nbsp;    public Debt(User user1, User user2, String groupId){</b>
+<b class="fc">&nbsp;        this.userOwed = user1;</b>
+<b class="fc">&nbsp;        this.userOwing = user2;</b>
+<b class="fc">&nbsp;        this.groupId = groupId;</b>
+<b class="fc">&nbsp;        this.debtValue = 0.0;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Empty constructor for JSON parsing
+&nbsp;     */
+&nbsp;    public Debt(){
+<b class="fc">&nbsp;        super();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * get the user owed money
+&nbsp;     * @return the user owed money
+&nbsp;     */
+&nbsp;    public User getUserOwed(){
+&nbsp;        //returns the user that is being owed money
+<b class="fc">&nbsp;        return this.userOwed;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * get the user owing money
+&nbsp;     * @return the userOwing money
+&nbsp;     */
+&nbsp;
+&nbsp;    public User getUserOwing() {
+&nbsp;        //returns the user that owes the money
+<b class="fc">&nbsp;        return this.userOwing;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * get both the users
+&nbsp;     * @return both the users
+&nbsp;     */
+&nbsp;    public List&lt;User&gt; getUsers(){
+&nbsp;        // return a list of both the users
+<b class="fc">&nbsp;        return this.users;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * get the value of the debt between them
+&nbsp;     * @return the value of the debt between them
+&nbsp;     */
+&nbsp;    public Double getDebtValue(){
+&nbsp;        // returns the value of the debt between the two users
+<b class="fc">&nbsp;        return this.debtValue;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * set the debt between the two users
+&nbsp;     * @param debtValue the new debt value to be set
+&nbsp;     */
+&nbsp;    public void setDebtValue(Double debtValue){
+&nbsp;        // set the amount userOwing owes userOwed
+<b class="fc">&nbsp;        this.debtValue = debtValue;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * get the id of the group they belong to
+&nbsp;     * @return the id of the group they belong to
+&nbsp;     */
+&nbsp;    public String getGroupId() {
+&nbsp;        // get the id of the group this debt is involved in
+<b class="fc">&nbsp;        return this.groupId;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * method to return a JSONString representation of an instance of this class Debt
+&nbsp;     * @return a JSONString representation of an instance of this class Debt
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;//    public String toString() {
+&nbsp;//        return this.toJSON().toJSONString();
+&nbsp;//    }
+&nbsp;    public String toString() {
+&nbsp;        // converts the current class into a JSON string for data storage purposes later
+<b class="fc">&nbsp;        ObjectMapper mapper = new ObjectMapper();</b>
+&nbsp;        try {
+<b class="fc">&nbsp;            return mapper.writeValueAsString(this);</b>
+<b class="nc">&nbsp;        } catch (JsonProcessingException e) {</b>
+<b class="nc">&nbsp;            throw new RuntimeException(e);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * returns the instance of class Debt present in the JSONString
+&nbsp;     * if unable to parse, throw exception
+&nbsp;     * @param debtString the JSONString containing all the information
+&nbsp;     * @return returns the instance stored in the JSONString
+&nbsp;     * @throws JsonProcessingException if unable to process the String into a Group instance
+&nbsp;     */
+&nbsp;    public static Debt fromString(String debtString) throws JsonProcessingException {
+&nbsp;        // converts the JSONString into the required object class
+<b class="nc">&nbsp;        ObjectMapper mapper = new ObjectMapper();</b>
+<b class="nc">&nbsp;        return mapper.readValue(debtString, Debt.class);</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2022-12-05 00:39</div>
+</div>
+</body>
+</html>
