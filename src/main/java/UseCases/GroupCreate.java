@@ -17,17 +17,17 @@ import org.json.simple.parser.ParseException;
 public class GroupCreate implements GroupCreateBoundaryIn{
 
     /**
-     * Usecase interactor that handles the creation of a group
+     * UseCase that handles the creation of a group
      */
     final GroupDataInterface groupDsInterface; //the database interface that enables us to add and obtain group info
     final UserDataInterface userDsInterface; // the database interface that enables us to add and obtain user infos
     final GroupCreateBoundaryOut groupCreatePresenter; // the presenter to provide the created group to
 
     /**
-     * Constructor to initiate the usecase interactor
-     * @param presenter an interface that is implemented by the presentor to access the output from use case interactor
+     * Constructor to initiate the useCase
+     * @param presenter an interface that is implemented by the presenter to access the output from use case
      * @param groupDsInterface interface to access group related database queries
-     * @param userDsInterface interface to access user related dataase queries
+     * @param userDsInterface interface to access user related database queries
      */
     public GroupCreate(GroupCreateBoundaryOut presenter, GroupDataInterface groupDsInterface, UserDataInterface userDsInterface){
         this.groupCreatePresenter = presenter;
@@ -86,7 +86,7 @@ public class GroupCreate implements GroupCreateBoundaryIn{
             if (!this.userDsInterface.userIdExists(username)){
                 throw new RuntimeException("User Id does not exist");
             }
-            String userString = "";
+            String userString;
             userString = this.userDsInterface.userAsString(username);
             return User.fromString(userString);
         } catch (IOException | ParseException e) {
@@ -102,7 +102,7 @@ public class GroupCreate implements GroupCreateBoundaryIn{
             if (this.groupDsInterface.groupIdExists(groupId)){
                 throw new RuntimeException("Invalid GroupID provided");
             }
-            String groupString = "";
+            String groupString;
             Group group;
             groupString = this.groupDsInterface.groupAsString(groupId);
             group = Group.fromString(groupString);
@@ -120,7 +120,7 @@ public class GroupCreate implements GroupCreateBoundaryIn{
      * @param groupName the requested group's name
      */
     private Group createGroup(User createdUser, String groupName){
-        //intialize a set of users in the group
+        //initialize a set of users in the group
         Set<String> users = new TreeSet<>();
         users.add(createdUser.getUsername()); //add the created user into the group
         Group group = new Group(groupName, users);// create the required group
@@ -153,13 +153,13 @@ public class GroupCreate implements GroupCreateBoundaryIn{
      * its ids
      * @param createdUser the user object that has been modified
      * @param group the group object that has been created
-     * @return the datastructure that will be handled by the presenter
+     * @return the data structure that will be handled by the presenter
      */
     private CreatedGroupInfo createOutputData(User createdUser, Group group){
         List<String> allGroupIds = new ArrayList<>(createdUser.getGroups());
         List<String> allGroupNames = new ArrayList<>();
-        for (String groupid: allGroupIds){
-            allGroupNames.add(getGroupFromDb(groupid).getGroupName());
+        for (String groupId: allGroupIds){
+            allGroupNames.add(getGroupFromDb(groupId).getGroupName());
         }
         //return the output ds
         return new CreatedGroupInfo(

@@ -16,17 +16,17 @@ import org.json.simple.parser.ParseException;
 
 public class GroupJoin implements GroupJoinBoundaryIn{
     /**
-     * Usecase interactor that allows for the joining of a user into a specified group
+     * Use case  that allows for the joining of a user into a specified group
      */
     final GroupDataInterface groupDsInterface; //the database interface that enables us to add and obtain group info
     final UserDataInterface userDsInterface; // the database interface that enables us to add and obtain user infos
     final GroupJoinBoundaryOut groupJoinPresenter; // presenter that will update view after use case executes
 
     /**
-     * Constructor to initiate the usecase interactor
-     * @param presenter an interface that is implemented by the presentor to access the output from use case interactor
+     * Constructor to initiate the use case
+     * @param presenter an interface that is implemented by the presenter to access the output from use case
      * @param groupDsInterface interface to access group related database queries
-     * @param userDsInterface interface to access user related dataase queries
+     * @param userDsInterface interface to access user related database queries
      */
     public GroupJoin(GroupJoinBoundaryOut presenter, GroupDataInterface groupDsInterface, UserDataInterface userDsInterface){
         this.groupJoinPresenter = presenter;
@@ -44,7 +44,7 @@ public class GroupJoin implements GroupJoinBoundaryIn{
     @Override
     public JoinedGroupInfo joinGroup(JoinGroupRequest reqGroupInfo){
         //obtain the user from the database
-        User user = null;
+        User user;
         try{
             user = this.getUserFromDb(reqGroupInfo.getUsername());
         }catch (RuntimeException | IOException | ParseException e) {
@@ -52,7 +52,7 @@ public class GroupJoin implements GroupJoinBoundaryIn{
             return this.groupJoinPresenter.prepareFailView(joinedGroupInfo);
         }
 
-        //obtain the group from the databse:
+        //obtain the group from the database:
         Group group;
         try{
             group = this.getGroupFromDb(reqGroupInfo.getGroupId());
@@ -120,7 +120,7 @@ public class GroupJoin implements GroupJoinBoundaryIn{
             throw new RuntimeException("Invalid GroupID provided");
         }
         String groupString = this.groupDsInterface.groupAsString(groupId);
-        Group group = null;
+        Group group;
         try {
             group = Group.fromString(groupString);
         } catch (JsonProcessingException e) {
@@ -178,13 +178,13 @@ public class GroupJoin implements GroupJoinBoundaryIn{
      * Creates the data to be handled by presenter that will have the username, groupId, and groupNames;
      * @param user the user object that has been modified
      * @param group the group object that has been modified
-     * @return the datastructure that will be handled by the presenter
+     * @return the data structure that will be handled by the presenter
      */
 
     private JoinedGroupInfo createOutputData(User user, Group group){
         List<String> groupNames = new ArrayList<>();
-        List<List<String>> planningList = new ArrayList<>();
-        List<List<String>> purchasedList = new ArrayList<>();
+        List<List<String>> planningList;
+        List<List<String>> purchasedList;
 
         List<String> usersInGroup = new ArrayList<>(group.getUsers());
         List<String> groupIds = new ArrayList<>(user.getGroups());
