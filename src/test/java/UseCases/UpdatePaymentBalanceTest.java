@@ -60,10 +60,10 @@ class UpdatePaymentBalanceTest {
     @After
     public void tearDown(){
         File groupFile = new File("src/test/resources/testgroupsCopy.json");
-        groupFile.delete();
+        assert groupFile.delete();
 
         File userFile = new File("src/test/resources/testusersCopy.json");
-        userFile.delete();
+        assert userFile.delete();
     }
 
     List<String> getUserInfo() throws IOException, ParseException {
@@ -76,8 +76,7 @@ class UpdatePaymentBalanceTest {
         String userString = userDsInterface.userAsString("mishaalk");
 
         try {
-            List<String> stringGroups = new ArrayList<>(User.fromString(userString).getGroups());
-            return stringGroups;
+            return new ArrayList<>(User.fromString(userString).getGroups());
         } catch (JsonProcessingException e) {
             throw new RuntimeException("Unable to process user from database");
         }
@@ -116,7 +115,6 @@ class UpdatePaymentBalanceTest {
         UpdatePaymentBalancePresenter presenter = new UpdatePaymentBalancePresenter() {
             @Override
             public UpdatedDebts prepareSuccessView(UpdatedDebts updatedDebts) {
-                List<String> users = Arrays.asList("randomC", "sopleee");
                 boolean containsOwed = false;
                 for(List<Object> curDebt : updatedDebts.getUpdatedBalances()){
                     if(curDebt.get(0).equals("mishaalk")){
@@ -125,14 +123,6 @@ class UpdatePaymentBalanceTest {
                     }
                 }
                 assert containsOwed;
-//                        updatedDebts.getUpdatedBalances().containsKey("mishaalk");
-//                for (List<Object> userOwed : updatedDebts.getUpdatedBalances().get("mishaalk")) {
-//                    int indexOfUserOwing = groupInfoBefore.get("mishaalk").indexOf(userOwed);
-//                    Object previousDebt = groupInfoBefore.get("mishaalk").get(indexOfUserOwing).get(1);
-//                    if(users.contains((String) userOwed.get(0))) {
-//                        assert (double) userOwed.get(1) == ((double) previousDebt) + 19.99/3;
-//                    }
-//                }
                 assert Objects.equals(updatedDebts.getOutcomeMessage(), "Success");
                 return null;
             }
@@ -223,12 +213,8 @@ class UpdatePaymentBalanceTest {
         UpdatePaymentBalanceBoundaryIn useCase = new UpdatePaymentBalance(groupData, itemData, presenter);
         UpdatePaymentBalanceController controller = new UpdatePaymentBalanceController(useCase);
 
-        // We now set the data from the database as a constant to check against our use case.
-        List<String> userInfoBefore = getUserInfo();
-        List<Debt> groupInfoBefore = getGroupInfo(Arrays.asList("randomC", "sopleee"));
-
         // 3. Run the use case.
-        HashMap<String, Double> prevDebts = new HashMap<String, Double>();
+        HashMap<String, Double> prevDebts = new HashMap<>();
         for (Debt allDebt : Group.fromString(groupData.groupAsString(inputData.getGroupID())).getPurchaseBalance().getAllDebts()) {
             if (allDebt.getUserOwed().getUsername().equals("mishaalk") && inputData.getUsersInvolvedInPurchase().contains(allDebt.getUserOwing().getUsername())){
                 prevDebts.put(allDebt.getUserOwing().getUsername(), allDebt.getDebtValue());

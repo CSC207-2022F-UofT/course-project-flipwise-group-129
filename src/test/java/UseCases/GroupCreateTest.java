@@ -6,7 +6,6 @@ import DataAccess.UserDataAccess;
 import DataAccessInterface.GroupDataInterface;
 import DataAccessInterface.UserDataInterface;
 import DataStructures.CreatedGroupInfo;
-import DataStructures.ProposedGroupInfo;
 import Entities.Group;
 import Entities.User;
 import InputBoundary.GroupCreateBoundaryIn;
@@ -25,7 +24,6 @@ import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 import Presenters.GroupCreatePresenter;
 
@@ -48,10 +46,10 @@ class GroupCreateTest {
     @After
     public void tearDown(){
         File groupFile = new File("././src/test/resources/testgroupsCopy.json");
-        groupFile.delete();
+        assert groupFile.delete();
 
         File userFile = new File("././src/test/resources/testusersCopy.json");
-        userFile.delete();
+        assert userFile.delete();
     }
 
     List<String> getUserInfo() throws IOException, ParseException {
@@ -115,7 +113,7 @@ class GroupCreateTest {
     @Test
     void createUserNotExist() throws IOException, org.json.simple.parser.ParseException {
         // To test the use case:
-        // 1) Create a GroupCreateInteractorTest and prerequisite objects
+        // 1) Create a GroupCreateTest and prerequisite objects
         //    (arguments for the GroupCreateController constructor parameters)
         // 2) create the Input Data in the form of the group and users
         // 3) Call the use case GroupCreate Input Boundary method to run the use case
