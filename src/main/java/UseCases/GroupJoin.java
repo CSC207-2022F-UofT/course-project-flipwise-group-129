@@ -44,7 +44,7 @@ public class GroupJoin implements GroupJoinBoundaryIn{
     @Override
     public JoinedGroupInfo joinGroup(JoinGroupRequest reqGroupInfo){
         //obtain the user from the database
-        User user;
+        User user = null;
         try{
             user = this.getUserFromDb(reqGroupInfo.getUsername());
         }catch (RuntimeException | IOException | ParseException e) {
@@ -120,7 +120,7 @@ public class GroupJoin implements GroupJoinBoundaryIn{
             throw new RuntimeException("Invalid GroupID provided");
         }
         String groupString = this.groupDsInterface.groupAsString(groupId);
-        Group group;
+        Group group = null;
         try {
             group = Group.fromString(groupString);
         } catch (JsonProcessingException e) {
@@ -183,8 +183,8 @@ public class GroupJoin implements GroupJoinBoundaryIn{
 
     private JoinedGroupInfo createOutputData(User user, Group group){
         List<String> groupNames = new ArrayList<>();
-        List<List<String>> planningList;
-        List<List<String>> purchasedList;
+        List<List<String>> planningList = new ArrayList<>();
+        List<List<String>> purchasedList = new ArrayList<>();
 
         List<String> usersInGroup = new ArrayList<>(group.getUsers());
         List<String> groupIds = new ArrayList<>(user.getGroups());

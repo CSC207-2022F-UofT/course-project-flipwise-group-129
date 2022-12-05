@@ -86,7 +86,7 @@ public class GroupCreate implements GroupCreateBoundaryIn{
             if (!this.userDsInterface.userIdExists(username)){
                 throw new RuntimeException("User Id does not exist");
             }
-            String userString;
+            String userString = "";
             userString = this.userDsInterface.userAsString(username);
             return User.fromString(userString);
         } catch (IOException | ParseException e) {
@@ -102,7 +102,7 @@ public class GroupCreate implements GroupCreateBoundaryIn{
             if (this.groupDsInterface.groupIdExists(groupId)){
                 throw new RuntimeException("Invalid GroupID provided");
             }
-            String groupString;
+            String groupString = "";
             Group group;
             groupString = this.groupDsInterface.groupAsString(groupId);
             group = Group.fromString(groupString);
