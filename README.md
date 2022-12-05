@@ -1,4 +1,4 @@
-#Flipwise Submission
+5# Flipwise Submission
 ## 1. How to Start and Run Flipwise
 - [ ] Clone the Project Flipwise repository and open the folder in your Intellij (preferred to easily make JavaDoc)
 - [ ] Go to file Main.java located in the src/main/java directory
