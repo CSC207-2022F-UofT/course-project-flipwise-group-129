@@ -31,7 +31,7 @@
  - [] All our presenter classes follow clean architecture and as a result implement their respective outputboundary interfaces.
  - [] The corresponding use case modifies the data and once done utilizes the output boundary which notifies the presenter of the changes that have been made through the output data structures.
   - [] In this way, an object is able to notify other objects without making assumptions about who these objects are. 
-### 3. Iterator Design Pattern (to be implemented):
+### 3. Iterator Design Pattern:
 - [] We have implemented the iteration design for our classes were we have stored data in List or other Collection objects (such as PurchaseBalance, PurchaseList, and PlannedList)
 - [] Example: 
 - [] we have implemented the Iterator design pattern for our ItemList  abstract class, where we have the abstract class implement iterable .
