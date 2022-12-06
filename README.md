@@ -25,7 +25,7 @@
 - [] As a result we do not want a hard dependency on the Debt class within the PurchaseBalances Class.
 - [] Thus, when we want to add a Debt pair, we create the Debt pair outside the class, and inject it inside.
 - [] This way, we can accomodate for future subclasses of Debt
-### 2. Observer Dependency Pattern
+### 2. Observer Design Pattern
  - [] In order to update the views directly whenever the presenter ihas new information, we have the observer dependency pattern implemented in all our presenter classes.
  - [] Example:
  - [] All our presenter classes follow clean architecture and as a result implement their respective outputboundary interfaces.
