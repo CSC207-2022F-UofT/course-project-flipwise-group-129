@@ -1,15 +1,16 @@
 package UseCases;
 
-import Controllers.GroupJoinController;
-import DataAccess.GroupDataAccess;
-import DataAccess.UserDataAccess;
-import DataAccessInterface.GroupDataInterface;
-import DataAccessInterface.UserDataInterface;
-import DataStructures.JoinedGroupInfo;
+import InterfaceAdapters.Controllers.GroupJoinController;
+import UseCaseLayer.UseCases.GroupJoin;
+import FrameworkDriversLayer.DataAccess.GroupDataAccess;
+import FrameworkDriversLayer.DataAccess.UserDataAccess;
+import UseCaseLayer.DataAccessInterface.GroupDataInterface;
+import UseCaseLayer.DataAccessInterface.UserDataInterface;
+import UseCaseLayer.DataStructures.JoinedGroupInfo;
 import Entities.Group;
 import Entities.User;
-import InputBoundary.GroupJoinBoundaryIn;
-import Presenters.GroupJoinPresenter;
+import UseCaseLayer.InputBoundary.GroupJoinBoundaryIn;
+import InterfaceAdapters.Presenters.GroupJoinPresenter;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.json.simple.parser.ParseException;
 import org.junit.After;

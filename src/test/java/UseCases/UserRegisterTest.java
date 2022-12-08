@@ -3,10 +3,11 @@
  */
 package UseCases;
 
-import Controllers.UserRegisterController;
-import DataAccess.UserDataAccess;
-import InputBoundary.UserRegisterBoundaryIn;
-import Presenters.UserRegisterPresenter;
+import InterfaceAdapters.Controllers.UserRegisterController;
+import UseCaseLayer.UseCases.UserRegister;
+import FrameworkDriversLayer.DataAccess.UserDataAccess;
+import UseCaseLayer.InputBoundary.UserRegisterBoundaryIn;
+import InterfaceAdapters.Presenters.UserRegisterPresenter;
 import org.json.simple.parser.ParseException;
 import org.junit.jupiter.api.Test;
 import java.io.IOException;

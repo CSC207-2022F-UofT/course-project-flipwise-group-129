@@ -1,4 +1,4 @@
-import View.MainWindowView;
+import FrameworkDriversLayer.View.MainWindowView;
 
 import javax.swing.*;
 

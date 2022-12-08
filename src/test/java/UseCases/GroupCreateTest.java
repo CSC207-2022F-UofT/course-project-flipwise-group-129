@@ -1,14 +1,15 @@
 package UseCases;
 
-import Controllers.GroupCreateController;
-import DataAccess.GroupDataAccess;
-import DataAccess.UserDataAccess;
-import DataAccessInterface.GroupDataInterface;
-import DataAccessInterface.UserDataInterface;
-import DataStructures.CreatedGroupInfo;
+import InterfaceAdapters.Controllers.GroupCreateController;
+import UseCaseLayer.UseCases.GroupCreate;
+import FrameworkDriversLayer.DataAccess.GroupDataAccess;
+import FrameworkDriversLayer.DataAccess.UserDataAccess;
+import UseCaseLayer.DataAccessInterface.GroupDataInterface;
+import UseCaseLayer.DataAccessInterface.UserDataInterface;
+import UseCaseLayer.DataStructures.CreatedGroupInfo;
 import Entities.Group;
 import Entities.User;
-import InputBoundary.GroupCreateBoundaryIn;
+import UseCaseLayer.InputBoundary.GroupCreateBoundaryIn;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.json.simple.parser.ParseException;
 import org.junit.After;
@@ -25,7 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import Presenters.GroupCreatePresenter;
+import InterfaceAdapters.Presenters.GroupCreatePresenter;
 
 import static org.junit.jupiter.api.Assertions.*;
 

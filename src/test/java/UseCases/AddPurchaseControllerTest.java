@@ -1,25 +1,26 @@
 package UseCases;
 
-import Controllers.AddPurchaseController;
-import DataAccess.GroupDataAccess;
-import DataAccess.ItemDataAccess;
-import DataAccess.UserDataAccess;
-import DataAccessInterface.GroupDataInterface;
-import DataAccessInterface.ItemDataInterface;
-import DataAccessInterface.UserDataInterface;
+import InterfaceAdapters.Controllers.AddPurchaseController;
+import UseCaseLayer.UseCases.AddPurchase;
+import FrameworkDriversLayer.DataAccess.GroupDataAccess;
+import FrameworkDriversLayer.DataAccess.ItemDataAccess;
+import FrameworkDriversLayer.DataAccess.UserDataAccess;
+import UseCaseLayer.DataAccessInterface.GroupDataInterface;
+import UseCaseLayer.DataAccessInterface.ItemDataInterface;
+import UseCaseLayer.DataAccessInterface.UserDataInterface;
 
-import DataStructures.UpdatedLists;
+import UseCaseLayer.DataStructures.UpdatedLists;
 import Entities.Group;
 import Entities.Item;
 import Entities.PlanningList;
 import Entities.PurchaseList;
-import InputBoundary.AddPurchaseBoundaryIn;
+import UseCaseLayer.InputBoundary.AddPurchaseBoundaryIn;
 
 import org.json.simple.parser.ParseException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.jupiter.api.Test;
-import Presenters.AddPurchasePresenter;
+import InterfaceAdapters.Presenters.AddPurchasePresenter;
 
 import java.io.File;
 import java.io.IOException;

@@ -2,16 +2,17 @@ package UseCases;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import Controllers.AddToPlanningController;
-import DataAccess.GroupDataAccess;
-import DataAccess.ItemDataAccess;
-import DataAccessInterface.GroupDataInterface;
-import DataAccessInterface.ItemDataInterface;
-import DataStructures.PlannedItemInfo;
-import DataStructures.UpdatedLists;
+import InterfaceAdapters.Controllers.AddToPlanningController;
+import UseCaseLayer.UseCases.AddToPlanningList;
+import FrameworkDriversLayer.DataAccess.GroupDataAccess;
+import FrameworkDriversLayer.DataAccess.ItemDataAccess;
+import UseCaseLayer.DataAccessInterface.GroupDataInterface;
+import UseCaseLayer.DataAccessInterface.ItemDataInterface;
+import UseCaseLayer.DataStructures.PlannedItemInfo;
+import UseCaseLayer.DataStructures.UpdatedLists;
 import Entities.*;
-import InputBoundary.AddToPlanningBoundaryIn;
-import Presenters.AddToPlanningPresenter;
+import UseCaseLayer.InputBoundary.AddToPlanningBoundaryIn;
+import InterfaceAdapters.Presenters.AddToPlanningPresenter;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.json.simple.parser.ParseException;
 import org.junit.After;

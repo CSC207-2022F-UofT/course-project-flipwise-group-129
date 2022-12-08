@@ -3,12 +3,13 @@
  */
 package UseCases;
 
-import Controllers.UserLoginController;
-import DataAccess.GroupDataAccess;
-import DataAccess.UserDataAccess;
-import DataStructures.LoggedInInfo;
-import InputBoundary.UserLoginBoundaryIn;
-import Presenters.UserLoginPresenter;
+import InterfaceAdapters.Controllers.UserLoginController;
+import UseCaseLayer.UseCases.UserLogin;
+import FrameworkDriversLayer.DataAccess.GroupDataAccess;
+import FrameworkDriversLayer.DataAccess.UserDataAccess;
+import UseCaseLayer.DataStructures.LoggedInInfo;
+import UseCaseLayer.InputBoundary.UserLoginBoundaryIn;
+import InterfaceAdapters.Presenters.UserLoginPresenter;
 import org.json.simple.parser.ParseException;
 import org.junit.After;
 import org.junit.Before;

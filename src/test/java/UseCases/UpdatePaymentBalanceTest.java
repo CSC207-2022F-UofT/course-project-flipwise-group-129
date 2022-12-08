@@ -1,20 +1,21 @@
 package UseCases;
 
-import Controllers.UpdatePaymentBalanceController;
-import DataAccess.GroupDataAccess;
-import DataAccess.ItemDataAccess;
-import DataAccess.UserDataAccess;
-import DataAccessInterface.GroupDataInterface;
-import DataAccessInterface.ItemDataInterface;
+import InterfaceAdapters.Controllers.UpdatePaymentBalanceController;
+import UseCaseLayer.UseCases.UpdatePaymentBalance;
+import FrameworkDriversLayer.DataAccess.GroupDataAccess;
+import FrameworkDriversLayer.DataAccess.ItemDataAccess;
+import FrameworkDriversLayer.DataAccess.UserDataAccess;
+import UseCaseLayer.DataAccessInterface.GroupDataInterface;
+import UseCaseLayer.DataAccessInterface.ItemDataInterface;
 
-import DataAccessInterface.UserDataInterface;
-import DataStructures.PaymentInformation;
-import DataStructures.UpdatedDebts;
+import UseCaseLayer.DataAccessInterface.UserDataInterface;
+import UseCaseLayer.DataStructures.PaymentInformation;
+import UseCaseLayer.DataStructures.UpdatedDebts;
 import Entities.Debt;
 import Entities.Group;
 import Entities.User;
-import InputBoundary.UpdatePaymentBalanceBoundaryIn;
-import Presenters.UpdatePaymentBalancePresenter;
+import UseCaseLayer.InputBoundary.UpdatePaymentBalanceBoundaryIn;
+import InterfaceAdapters.Presenters.UpdatePaymentBalancePresenter;
 
 import java.io.File;
 import java.io.IOException;

@@ -1,12 +1,13 @@
 package UseCases;
 
-import Controllers.SettlementController;
-import DataAccess.GroupDataAccess;
-import DataAccessInterface.GroupDataInterface;
-import DataStructures.UpdatedDebts;
+import InterfaceAdapters.Controllers.SettlementController;
+import UseCaseLayer.UseCases.SettlementPayment;
+import FrameworkDriversLayer.DataAccess.GroupDataAccess;
+import UseCaseLayer.DataAccessInterface.GroupDataInterface;
+import UseCaseLayer.DataStructures.UpdatedDebts;
 import Entities.Group;
-import InputBoundary.SettlementBoundaryIn;
-import Presenters.SettlementPresenter;
+import UseCaseLayer.InputBoundary.SettlementBoundaryIn;
+import InterfaceAdapters.Presenters.SettlementPresenter;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.json.simple.parser.ParseException;
 import org.junit.jupiter.api.Test;
