@@ -229,7 +229,7 @@ public class GroupSummaryView extends JPanel implements ActionListener {
                 AddPurchaseView addPurchaseView = new AddPurchaseView(
                         this.groupUserNames);
 
-                if ((addPurchaseView.getItemPrice().matches("[0-9]+")) && (addPurchaseView.getSelectedMembers().size() > 0)) {
+                if ((addPurchaseView.getItemPrice().matches("\\d*\\.?\\d*")) && (addPurchaseView.getSelectedMembers().size() > 0)) {
                     float item_price = Float.parseFloat(addPurchaseView.getItemPrice());
                     UpdatedLists updatedList = controllerAddPurchase.controlAddPurchaseUseCase(itemID,
                             addPurchaseView.getSelectedMembers(), this.username, item_price, this.groupID);
